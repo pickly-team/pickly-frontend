@@ -33,6 +33,10 @@ module.exports = {
     'no-unused-vars': 'off',
     'unused-imports/no-unused-imports': 'error',
     'react/react-in-jsx-scope': 'off',
+    'react/function-component-definition': [
+      2,
+      { namedComponents: 'arrow-function' },
+    ],
     quotes: ['error', 'single'],
     'react-hooks/rules-of-hooks': 'error',
   },
