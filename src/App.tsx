@@ -5,7 +5,7 @@ import Bear from '@/components/Bear';
 
 const queryClient = new QueryClient();
 
-function App() {
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -16,6 +16,6 @@ function App() {
       </BrowserRouter>
     </QueryClientProvider>
   );
-}
+};
 
 export default App;
