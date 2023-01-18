@@ -39,5 +39,11 @@ module.exports = {
     ],
     quotes: ['error', 'single'],
     'react-hooks/rules-of-hooks': 'error',
+    'jest/expect-expect': [
+      'off',
+      {
+        assertFunctionNames: ['expect', 'fc.assert'],
+      },
+    ],
   },
 };
