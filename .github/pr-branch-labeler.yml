@@ -5,9 +5,11 @@ fix:
   head: ["bugfix/*", "fix/*"]
 hotfix:
   head: "hotfix/*"
+enhancement:
+  head: ["enhance/*", "enhancement/*"]
 
 
 develop:
-  base: "develop/*"
-main:
-  base: "release/*"
+  base: "develop"
+release:
+  base: "main"
