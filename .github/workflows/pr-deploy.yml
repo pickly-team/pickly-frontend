@@ -6,9 +6,10 @@ on:
       - main
       - develop
 
+permissions: write-all
+
 jobs:
   coverage:
-    permissions: write-all
     name: Test Coverage Test
     runs-on: ubuntu-latest
     steps:
