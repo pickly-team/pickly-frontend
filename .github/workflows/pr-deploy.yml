@@ -29,8 +29,11 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install Dependencies
+      - name: Install Yarn
         run: npm i -g yarn
+
+      - name: Install Dependencies
+        run: yarn install
 
       - name: Check lint
         run: yarn lint
