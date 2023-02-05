@@ -1,0 +1,13 @@
+name: PR Labeler
+
+on: pull_request
+
+jobs:
+  label_prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label PRs
+        uses: aeong98/Pull-Request-Labeler@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          config-pathname: .github/pr-labeler.yml

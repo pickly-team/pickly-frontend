@@ -1,0 +1,24 @@
+# 새로운 기능 추가
+feature:
+  head: 'feat/*'
+# 버그 수정
+fix:
+  head: 'fix/*'
+# 문서 관련
+docs:
+  head: 'docs/*'
+# 코드 리팩토링
+refactoring:
+  head: 'refactor/*'
+# 테스트 관련 코드
+test:
+  head: 'test/*'
+# 빌드 관련 파일 수정
+build:
+  build: 'build/*'
+# CI 설정 파일 수정
+ci:
+  ci : 'ci/*'
+# 성능 개선
+perf:
+  perf: 'perf/*'
