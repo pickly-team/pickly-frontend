@@ -9,8 +9,8 @@ refactoring:
 test:
   head: 'test/*'
 build:
-  build: 'build/*'
+  head: 'build/*'
 ci:
-  ci: 'ci/*'
+  head: 'ci/*'
 perf:
-  perf: 'perf/*'
+  head: 'perf/*'
