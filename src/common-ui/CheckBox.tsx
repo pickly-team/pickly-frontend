@@ -21,7 +21,7 @@ const StyledInput = styled.input`
 `;
 
 type CheckBoxProps = {
-  onChange?: (isChecked: boolean) => void;
+  onChange: (isChecked: boolean) => void;
   isChecked?: boolean;
   size?: number;
   color?: string;
