@@ -10,16 +10,6 @@ import UnCheckedCircleIcon from '@/common-ui/icons/UnCheckedCircleIcon';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 
-const StyledLabel = styled.label`
-  display: flex;
-  align-items: center;
-  height: fit-content;
-`;
-
-const StyledInput = styled.input`
-  display: none;
-`;
-
 type CheckBoxProps = {
   onChange: (isChecked: boolean) => void;
   isChecked?: boolean;
@@ -68,3 +58,13 @@ const CheckBox: ForwardRefRenderFunction<HTMLInputElement, CheckBoxProps> = (
 };
 
 export default forwardRef(CheckBox);
+
+const StyledLabel = styled.label`
+  display: flex;
+  align-items: center;
+  height: fit-content;
+`;
+
+const StyledInput = styled.input`
+  display: none;
+`;
