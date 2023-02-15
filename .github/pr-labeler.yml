@@ -14,3 +14,7 @@ ci:
   head: 'ci/*'
 perf:
   head: 'perf/*'
+format:
+  head: 'format/*'
+style:
+  head: 'style/*'
