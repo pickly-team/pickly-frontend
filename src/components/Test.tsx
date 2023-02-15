@@ -1,11 +1,10 @@
-import styled from '@emotion/styled';
-
-const Container = styled.div`
-  color: pink;
-`;
+import CheckBox from '@/common-ui/CheckBox';
 
 const Test = () => {
-  return <Container>Test</Container>;
+  const onChange = (checked: boolean) => {
+    console.log(checked);
+  };
+  return <CheckBox onChange={onChange}>hi</CheckBox>;
 };
 
 export default Test;
