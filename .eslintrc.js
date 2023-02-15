@@ -45,5 +45,6 @@ module.exports = {
         assertFunctionNames: ['expect', 'fc.assert'],
       },
     ],
+    '@typescript-eslint/no-empty-interface': 'warn',
   },
 };
