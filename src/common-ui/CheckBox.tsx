@@ -33,7 +33,7 @@ const CheckBox: ForwardRefRenderFunction<HTMLInputElement, CheckBoxProps> = (
     onChange,
     isChecked,
     size = 24,
-    color = theme.colors.black,
+    color = theme.colors.white,
     children,
     ...restProps
   },
