@@ -5,10 +5,10 @@ import {
   ForwardRefRenderFunction,
   useState,
 } from 'react';
-import CheckCircleIcon from '@/common-ui/icons/CheckCircleIcon';
-import UnCheckedCircleIcon from '@/common-ui/icons/UnCheckedCircleIcon';
-import styled from '@emotion/styled';
+
 import { theme } from '@/styles/theme';
+import styled from '@emotion/styled';
+import Icon from './assets/Icon';
 
 type CheckBoxProps = {
   onChange: (isChecked: boolean) => void;
@@ -48,9 +48,9 @@ const CheckBox: ForwardRefRenderFunction<HTMLInputElement, CheckBoxProps> = (
         ref={ref}
       />
       {checked ? (
-        <CheckCircleIcon width={size} height={size} color={color} />
+        <Icon name="check" size="s" />
       ) : (
-        <UnCheckedCircleIcon width={size} height={size} color={color} />
+        <Icon name="check-none" size="s" />
       )}
       {children}
     </StyledLabel>
