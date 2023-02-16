@@ -5,45 +5,50 @@ const IconLoader = () => (
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
     style={{ display: 'none' }}
+    data-testid="icon"
   >
     <defs id="defs">
-      <symbol id="check" viewBox="0 0 20 20">
+      <symbol id="check" data-testid="check" viewBox="0 0 20 20">
         <path
           fill="#fff"
           d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0ZM8 15l-5-5 1.41-1.41L8 12.17l7.59-7.59L17 6l-9 9Z"
         />
       </symbol>
-      <symbol id="check-none" viewBox="0 0 20 20">
+      <symbol id="check-none" data-testid="check-none" viewBox="0 0 20 20">
         <path
           fill="#fff"
           d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0Zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8Z"
         />
       </symbol>
-      <symbol id="like" viewBox="0 0 15 13">
+      <symbol id="like" data-testid="like" viewBox="0 0 15 13">
         <path
           fill="#fff"
           d="M0 13h2.727V5.2H0V13Zm15-7.15c0-.715-.614-1.3-1.364-1.3H9.334l.648-2.97.02-.209a.956.956 0 0 0-.3-.689L8.98 0 4.493 4.284a1.242 1.242 0 0 0-.402.916v6.5c0 .715.614 1.3 1.364 1.3h6.136c.566 0 1.05-.325 1.255-.793l2.059-4.583c.06-.149.095-.305.095-.474v-1.3Z"
         />
       </symbol>
-      <symbol id="like-green" viewBox="0 0 15 13">
+      <symbol id="like-green" data-testid="like-green" viewBox="0 0 15 13">
         <path
           fill="#A7E100"
           d="M0 13h2.727V5.2H0V13Zm15-7.15c0-.715-.614-1.3-1.364-1.3H9.334l.648-2.97.02-.209a.956.956 0 0 0-.3-.689L8.98 0 4.493 4.284a1.242 1.242 0 0 0-.402.916v6.5c0 .715.614 1.3 1.364 1.3h6.136c.566 0 1.05-.325 1.255-.793l2.059-4.583c.06-.149.095-.305.095-.474v-1.3Z"
         />
       </symbol>
-      <symbol id="message-on-green" viewBox="0 0 15 14">
+      <symbol
+        id="message-on-green"
+        data-testid="message-on-green"
+        viewBox="0 0 15 14"
+      >
         <path
           fill="#A7E100"
           d="M14.583 5.36v6.39a1.42 1.42 0 0 1-1.417 1.416H1.833A1.42 1.42 0 0 1 .417 11.75v-8.5c0-.78.637-1.417 1.416-1.417h7.154A3.523 3.523 0 0 0 10.1 5.17L7.5 6.792 1.834 3.25v1.417L7.5 8.207l3.754-2.352c.383.142.78.227 1.204.227.8 0 1.53-.276 2.125-.722Zm-4.25-2.819c0 1.176.95 2.126 2.125 2.126 1.176 0 2.125-.95 2.125-2.125 0-1.176-.949-2.125-2.125-2.125-1.176 0-2.125.949-2.125 2.125Z"
         />
       </symbol>
-      <symbol id="message" viewBox="0 0 15 13">
+      <symbol id="message" data-testid="message" viewBox="0 0 15 13">
         <path
           fill="#fff"
           d="M13.1.5H1.9C1.13.5.507 1.175.507 2L.5 11c0 .825.63 1.5 1.4 1.5h11.2c.77 0 1.4-.675 1.4-1.5V2c0-.825-.63-1.5-1.4-1.5Zm0 3L7.5 7.25 1.9 3.5V2l5.6 3.75L13.1 2v1.5Z"
         />
       </symbol>
-      <symbol id="not-read" viewBox="0 0 15 13">
+      <symbol id="noread" data-testid="noread" viewBox="0 0 15 13">
         <path
           fill="#fff"
           fillRule="evenodd"
