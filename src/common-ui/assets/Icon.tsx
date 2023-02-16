@@ -11,6 +11,12 @@ interface IconProps {
   size: keyof typeof sizeMap;
 }
 
+/**
+ *
+ * @example
+ * <Icon name="check" size="s" />
+ */
+
 const Icon = ({ name, size }: IconProps) => (
   <svg
     width={sizeMap[size]}
