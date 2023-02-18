@@ -11,4 +11,4 @@ export const theme = {
     grey800: '#424242',
     grey900: '#212121',
   },
-};
+} as const;
