@@ -6,27 +6,16 @@ import {
   useState,
 } from 'react';
 
-import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Icon from './assets/Icon';
 
 type CheckBoxProps = {
   onChange: (isChecked: boolean) => void;
   isChecked: boolean;
-  size?: number;
-  color?: string;
 } & Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'onChange' | 'checked'>;
 
 const CheckBox: ForwardRefRenderFunction<HTMLInputElement, CheckBoxProps> = (
-  {
-    id,
-    onChange,
-    isChecked,
-    size = 24,
-    color = theme.colors.white,
-    children,
-    ...restProps
-  },
+  { id, onChange, isChecked, children, ...restProps },
   ref,
 ) => {
   const [checked, setChecked] = useState<boolean>(isChecked);
