@@ -12,7 +12,7 @@ import Icon from './assets/Icon';
 
 type CheckBoxProps = {
   onChange: (isChecked: boolean) => void;
-  isChecked?: boolean;
+  isChecked: boolean;
   size?: number;
   color?: string;
 } & Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'onChange' | 'checked'>;
@@ -29,7 +29,7 @@ const CheckBox: ForwardRefRenderFunction<HTMLInputElement, CheckBoxProps> = (
   },
   ref,
 ) => {
-  const [checked, setChecked] = useState<boolean | undefined>(isChecked);
+  const [checked, setChecked] = useState<boolean>(isChecked);
 
   const _onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const { checked } = event.target;
