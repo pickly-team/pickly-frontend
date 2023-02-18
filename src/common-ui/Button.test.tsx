@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Button from './Button';
 
 describe('Button test', () => {
@@ -11,5 +11,17 @@ describe('Button test', () => {
 
     //then
     expect(screen.getByText(TEXT)).toBeInTheDocument();
+  });
+  it('Button 클릭 테스트', () => {
+    //given
+    const onClick = jest.fn();
+
+    //when
+    render(<Button onClick={onClick}>Hello World</Button>);
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+
+    //then
+    expect(onClick).toHaveBeenCalled();
   });
 });
