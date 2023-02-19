@@ -28,6 +28,7 @@ const Select = ({
   ...restProps
 }: SelectProps) => {
   const ref = useRef<HTMLSelectElement>(null);
+  const [selectedValue, setSelectedValue] = useState<string | undefined>(value);
   const [options, setOptions] = useState<HTMLOptionElement[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const toggleSelect = () => {
@@ -48,12 +49,13 @@ const Select = ({
     if (ref.current) {
       ref.current.value = value;
     }
+    setSelectedValue(value);
     onChange(value);
     closeSelect();
   };
 
   const buttonText = options
-    .filter((option) => option.value === value)
+    .filter((option) => option.value === selectedValue)
     .at(0)?.label;
 
   return (
