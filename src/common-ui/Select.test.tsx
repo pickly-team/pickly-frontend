@@ -31,7 +31,7 @@ describe('Select test', () => {
     });
   });
   describe('옵션 선택 테스트', () => {
-    test('옵션 영역을 클릭하면 > 선택한 옵션의 라벨이 버튼에 보인다.', () => {
+    test('옵션 아이템을 클릭하면 > 선택한 옵션의 라벨이 버튼에 보인다.', () => {
       //given
       const VALUE = '1';
 
@@ -45,7 +45,7 @@ describe('Select test', () => {
       //then
       screen.getByRole('button', { name: VALUE });
     });
-    test('옵션 영역을 클릭하면 > select의 value가 변경된다.', () => {
+    test('옵션 아이템을 클릭하면 > select의 value가 변경된다.', () => {
       //given
       const VALUE = '2';
       //when
@@ -57,6 +57,19 @@ describe('Select test', () => {
 
       //then
       screen.getByDisplayValue(VALUE);
+    });
+    test('옵션 아이템을 클릭하면 > 옵션 리스트가 닫힌다.(보이지 않는다.)', () => {
+      //given
+      const VALUE = '2';
+      //when
+      const button = screen.getByRole('button');
+      fireEvent.click(button);
+
+      const option = screen.getAllByText(VALUE)[1];
+      fireEvent.click(option);
+
+      //then
+      expect(screen.queryByRole('listitem')).toBeNull();
     });
   });
 });
