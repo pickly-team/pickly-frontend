@@ -2,7 +2,7 @@ import { theme } from '@/styles/theme';
 import { css } from '@emotion/react';
 import { ButtonHTMLAttributes, FunctionComponent } from 'react';
 
-type ButtonProps = {
+export type ButtonProps = {
   buttonColor?: keyof typeof theme.colors;
   activeButtonColor?: keyof typeof theme.colors;
   disabledButtonColor?: keyof typeof theme.colors;
