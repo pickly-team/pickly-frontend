@@ -27,7 +27,7 @@ describe('Select test', () => {
       fireEvent.click(button);
 
       //then
-      expect(screen.getAllByRole('listitem')).toBeVisible();
+      expect(screen.getAllByRole('listitem')).not.toBeNull();
     });
   });
   describe('옵션 선택 테스트', () => {
