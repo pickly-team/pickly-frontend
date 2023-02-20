@@ -5,7 +5,7 @@ import Button from '@/common-ui/Button';
 import { useState } from 'react';
 import userEvent from '@testing-library/user-event';
 
-const options = [
+const OPTIONS = [
   { value: '1', label: '1 라벨' },
   { value: '2', label: '2 라벨' },
 ];
@@ -15,7 +15,7 @@ const RenderUsage = () => {
 
   return (
     <Select value={value} onChange={setValue} TriggerButton={Button}>
-      {options.map((option) => (
+      {OPTIONS.map((option) => (
         <option value={option.value} key={option.value}>
           {option.label}
         </option>
@@ -80,7 +80,7 @@ describe('Select test', () => {
           TriggerButton={Button}
           isSearchActive
         >
-          {options.map((option) => (
+          {OPTIONS.map((option) => (
             <option value={option.value} key={option.value}>
               {option.label}
             </option>
@@ -96,11 +96,11 @@ describe('Select test', () => {
     });
     test('검색어를 입력하면 > 해당 검색어에 일치하는 옵션이 보인다.', async () => {
       //given
-      const searchValue = '1 라벨';
+      const SEARCH_VALUE = '1 라벨';
 
       //when
       const input = screen.getByRole('textbox');
-      await userEvent.type(input, searchValue);
+      await userEvent.type(input, SEARCH_VALUE);
 
       //then
       expect(screen.queryAllByText('1 라벨')[1]).not.toBeUndefined();
@@ -108,11 +108,11 @@ describe('Select test', () => {
     });
     test('검색어에 일치하는 옵션이 없으면 > [검색결과가 없습니다] 문구가 보인다.', async () => {
       //given
-      const searchValue = '아아아';
+      const SEARCH_VALUE = '아아아';
 
       //when
       const input = screen.getByRole('textbox');
-      await userEvent.type(input, searchValue);
+      await userEvent.type(input, SEARCH_VALUE);
 
       //then
       screen.getByText('검색결과가 없습니다');
