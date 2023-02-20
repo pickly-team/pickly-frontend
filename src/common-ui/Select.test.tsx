@@ -71,35 +71,7 @@ describe('Select test', () => {
     });
   });
   describe('검색 테스트', () => {
-    test('isSearchActive가 true이면 > 검색 인풋이 보인다.', () => {
-      //given
-      const isSearchActive = true;
-
-      //when
-      render(
-        <Select
-          value={'1'}
-          onChange={() => {}}
-          TriggerButton={Button}
-          isSearchActive={isSearchActive}
-        >
-          {options.map((option) => (
-            <option value={option.value} key={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Select>,
-      );
-      const button = screen.getByRole('button');
-      fireEvent.click(button);
-
-      //then
-      screen.getByRole('textbox');
-    });
-    test('검색어를 입력하면 > 해당 검색어에 일치하는 옵션이 보인다.', async () => {
-      //given
-      const searchValue = '1 라벨';
-
+    beforeEach(() => {
       //when
       render(
         <Select
@@ -116,7 +88,17 @@ describe('Select test', () => {
         </Select>,
       );
       const button = screen.getByRole('button');
-      await userEvent.click(button);
+      fireEvent.click(button);
+    });
+    test('검색 인풋이 보인다.', () => {
+      //then
+      screen.getByRole('textbox');
+    });
+    test('검색어를 입력하면 > 해당 검색어에 일치하는 옵션이 보인다.', async () => {
+      //given
+      const searchValue = '1 라벨';
+
+      //when
       const input = screen.getByRole('textbox');
       await userEvent.type(input, searchValue);
 
@@ -129,22 +111,6 @@ describe('Select test', () => {
       const searchValue = '아아아';
 
       //when
-      render(
-        <Select
-          value={'1'}
-          onChange={() => {}}
-          TriggerButton={Button}
-          isSearchActive
-        >
-          {options.map((option) => (
-            <option value={option.value} key={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Select>,
-      );
-      const button = screen.getByRole('button');
-      await userEvent.click(button);
       const input = screen.getByRole('textbox');
       await userEvent.type(input, searchValue);
 
