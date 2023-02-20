@@ -3,6 +3,7 @@ import { render } from '@/test/utils';
 import Select from '@/common-ui/Select';
 import Button from '@/common-ui/Button';
 import { useState } from 'react';
+import userEvent from '@testing-library/user-event';
 
 const options = [
   { value: '1', label: '1 라벨' },
@@ -94,6 +95,61 @@ describe('Select test', () => {
 
       //then
       screen.getByRole('textbox');
+    });
+    test('검색어를 입력하면 > 해당 검색어에 일치하는 옵션이 보인다.', async () => {
+      //given
+      const searchValue = '1 라벨';
+
+      //when
+      render(
+        <Select
+          value={'1'}
+          onChange={() => {}}
+          TriggerButton={Button}
+          isSearchActive
+        >
+          {options.map((option) => (
+            <option value={option.value} key={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </Select>,
+      );
+      const button = screen.getByRole('button');
+      await userEvent.click(button);
+      const input = screen.getByRole('textbox');
+      await userEvent.type(input, searchValue);
+
+      //then
+      expect(screen.queryAllByText('1 라벨')[1]).not.toBeUndefined();
+      expect(screen.queryAllByText('2 라벨')[1]).toBeUndefined();
+    });
+    test('검색어에 일치하는 옵션이 없으면 > [검색결과가 없습니다] 문구가 보인다.', async () => {
+      //given
+      const searchValue = '아아아';
+
+      //when
+      render(
+        <Select
+          value={'1'}
+          onChange={() => {}}
+          TriggerButton={Button}
+          isSearchActive
+        >
+          {options.map((option) => (
+            <option value={option.value} key={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </Select>,
+      );
+      const button = screen.getByRole('button');
+      await userEvent.click(button);
+      const input = screen.getByRole('textbox');
+      await userEvent.type(input, searchValue);
+
+      //then
+      screen.getByText('검색결과가 없습니다');
     });
   });
 });
