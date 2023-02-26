@@ -105,7 +105,7 @@ const useOptions = (ref: RefObject<HTMLSelectElement>) => {
 
   useEffect(() => {
     if (ref.current) {
-      setOptions(Array.from(ref.current?.querySelectorAll('option')));
+      setOptions(Array.from(ref.current.querySelectorAll('option')));
     }
   }, []);
 
