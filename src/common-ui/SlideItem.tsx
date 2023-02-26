@@ -12,6 +12,7 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
     useGetDivWrapperWidth();
   const innerWrapperRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
+  const [isSlideEventStart, setIsSlideEventStart] = useState(false);
 
   // x 시작점
   const [startX, setStartX] = useState(0);
@@ -38,6 +39,7 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
       const startX = currentTargetX - rect.left;
       setStartX(startX);
     }
+    setIsSlideEventStart(true);
   };
 
   const updateMovedPositionX = (currentTargetX: number) => {
@@ -45,6 +47,9 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
     if (rect) {
       const moveX = currentTargetX - rect.left - startX;
       setMoveX(moveX);
+    }
+    if (isSlideEventStart && innerWrapperRef?.current) {
+      innerWrapperRef.current.style.left = `${moveX}px`;
     }
   };
 
@@ -55,6 +60,7 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
       } else {
         innerWrapperRef.current.style.left = '0';
       }
+      setIsSlideEventStart(false);
     }
   };
 
