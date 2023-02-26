@@ -120,9 +120,7 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
     >
       <SlideInnerWrapper ref={innerWrapperRef}>
         <MainItemWrapper ref={mainRef}>{main}</MainItemWrapper>
-        {wrapperWidth && (
-          <OptionItemWrapper ref={optionWrapperRef}>{option}</OptionItemWrapper>
-        )}
+        <OptionItemWrapper ref={optionWrapperRef}>{option}</OptionItemWrapper>
       </SlideInnerWrapper>
     </SlideWrapper>
   );
@@ -132,7 +130,7 @@ export default SlideItem;
 
 const useGetDivWrapperWidth = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
+  const [width, setWidth] = useState(5000);
 
   useEffect(() => {
     function initializeData() {

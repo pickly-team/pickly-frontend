@@ -18,7 +18,7 @@ describe('SlideItem test', () => {
     const OPTION = '옵션';
 
     //when
-    render(<SlideItem main={<></>} option={<div>{OPTION}</div>} />);
+    render(<SlideItem main={<div>Main</div>} option={<div>{OPTION}</div>} />);
 
     //then
     screen.getByText(OPTION);
