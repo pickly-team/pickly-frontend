@@ -12,13 +12,14 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
     useGetDivWrapperWidth();
   const innerWrapperRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
-  const [isSlideEventStart, setIsSlideEventStart] = useState(false);
-
   // x 시작점
   const [startX, setStartX] = useState(0);
 
   // x 움직인 거리
   const [moveX, setMoveX] = useState(0);
+
+  // 슬라이드 이벤트 시작했는지 표시
+  const [isSlideEventStart, setIsSlideEventStart] = useState(false);
 
   useEffect(() => {
     initializeItemsStyle();
