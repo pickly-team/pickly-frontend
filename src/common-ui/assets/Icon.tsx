@@ -37,4 +37,14 @@ export type IconName =
   | 'like-green'
   | 'message'
   | 'message-on-green'
-  | 'not-read';
+  | 'not-read'
+  | 'list'
+  | 'list-green'
+  | 'people'
+  | 'people-green'
+  | 'alarm'
+  | 'alarm-green'
+  | 'profile'
+  | 'profile-green'
+  | 'plus'
+  | 'plus-dark';
