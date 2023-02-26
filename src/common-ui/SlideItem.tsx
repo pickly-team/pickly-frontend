@@ -1,5 +1,6 @@
 import { HTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
+import { theme } from '@/styles/theme';
 
 type SlideItemProps = {
   main: ReactNode;
@@ -175,5 +176,5 @@ const MainItemWrapper = styled.div`
 const OptionItemWrapper = styled.div`
   width: fit-content;
   height: 100%;
-  background-color: ${(p) => p.theme.colors.primary};
+  background-color: ${theme.colors.primary};
 `;
