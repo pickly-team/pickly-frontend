@@ -47,8 +47,8 @@ describe('SlideItem test', () => {
     //when
     render(<SlideItem main={<div>{MAIN}</div>} option={<div>{OPTION}</div>} />);
     const element = screen.getByText(MAIN);
-    fireEvent.touchStart(element);
-    fireEvent.touchMove(element, { clientX: -100 });
+    fireEvent.touchStart(element, { touches: [{ clientX: 0 }] });
+    fireEvent.touchMove(element, { touches: [{ clientX: -100 }] });
     fireEvent.touchEnd(element);
 
     //then
