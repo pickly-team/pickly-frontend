@@ -21,6 +21,9 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
   // 슬라이드 이벤트 시작했는지 표시
   const [isSlideEventStart, setIsSlideEventStart] = useState(false);
 
+  // 왼쪽으로 최대로 이동할 수 있는 거리
+  const maxLeftPositionX = optionWrapperWidth;
+
   useEffect(() => {
     initializeItemsStyle();
   }, [wrapperWidth]);
@@ -36,43 +39,55 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
 
   const updateStartPositionX = (currentTargetX: number) => {
     const rect = wrapperRef.current?.getBoundingClientRect();
-    if (rect) {
-      const startX = currentTargetX - rect.left;
-      setStartX(startX);
+    if (!rect) {
+      return;
     }
+
+    const startX = currentTargetX - rect.left;
+
+    setStartX(startX);
     setIsSlideEventStart(true);
   };
 
   const updateMovedPositionX = (currentTargetX: number) => {
     const rect = wrapperRef.current?.getBoundingClientRect();
-    if (rect) {
-      const moveX = currentTargetX - rect.left - startX;
-      setMoveX(moveX);
+    if (!rect) {
+      return;
     }
-    if (isSlideEventStart && moveX < 0) {
-      handleSlideLeftEvent();
+    const moveX = currentTargetX - rect.left - startX;
+    setMoveX(moveX);
+
+    if (isSlideEventStart && isMoveToLeft(moveX)) {
+      handleLeftMovedPositionX();
     }
   };
 
-  const handleSlideLeftEvent = () => {
+  const handleLeftMovedPositionX = () => {
     const absoluteMoveX = Math.abs(moveX);
     const adjustedMoveX =
-      absoluteMoveX > optionWrapperWidth ? optionWrapperWidth : absoluteMoveX;
+      absoluteMoveX > maxLeftPositionX ? maxLeftPositionX : absoluteMoveX;
 
-    if (innerWrapperRef?.current) {
-      innerWrapperRef.current.style.left = `-${adjustedMoveX}px`;
-    }
+    changeSlideItemLeftPosition(`-${adjustedMoveX}`);
   };
 
   const moveToSlideDirection = () => {
-    if (innerWrapperRef?.current) {
-      if (moveX < 0) {
-        innerWrapperRef.current.style.left = `-${optionWrapperWidth}px`;
-      } else {
-        innerWrapperRef.current.style.left = '0';
-      }
-      setIsSlideEventStart(false);
+    if (isMoveToLeft(moveX)) {
+      changeSlideItemLeftPosition(`-${maxLeftPositionX}`);
+    } else {
+      changeSlideItemLeftPosition(0);
     }
+    setIsSlideEventStart(false);
+  };
+
+  const changeSlideItemLeftPosition = (leftMoveX: number | string) => {
+    if (!innerWrapperRef?.current) {
+      return;
+    }
+    innerWrapperRef.current.style.left = `${leftMoveX}px`;
+  };
+
+  const isMoveToLeft = (moveX: number) => {
+    return moveX < 0;
   };
 
   return (
