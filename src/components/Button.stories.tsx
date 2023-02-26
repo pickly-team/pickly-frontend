@@ -1,16 +1,18 @@
-import Button from "@/common-ui/Button";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import Button from '@/common-ui/Button';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 export default {
-  title: "Button",
+  title: 'Button',
   component: Button,
 } as ComponentMeta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof Button> = (args) => (
+  <Button {...args}>Button</Button>
+);
 
 export const Default = Template.bind({});
 Default.args = {
-  children: "버튼",
+  children: '버튼',
 };
 
 export const Secondary = Template.bind({});
