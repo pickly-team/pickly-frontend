@@ -105,13 +105,13 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
         updateStartPositionX(event.clientX);
       }}
       onTouchStart={(event) => {
-        updateMovedPositionX(event.touches[0].clientX);
+        updateStartPositionX(event.touches[0].clientX);
       }}
       onMouseMove={(event) => {
         updateMovedPositionX(event.clientX);
       }}
       onTouchMove={(event) => {
-        updateStartPositionX(event.touches[0].clientX);
+        updateMovedPositionX(event.touches[0].clientX);
       }}
       onMouseUp={moveToSlideDirection}
       onTouchEnd={moveToSlideDirection}
