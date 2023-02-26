@@ -4,7 +4,15 @@ import styled from '@emotion/styled';
 type SlideItemProps = {
   main: ReactNode;
   option: ReactNode;
-} & HTMLAttributes<HTMLDivElement>;
+} & Omit<
+  HTMLAttributes<HTMLDivElement>,
+  | 'onMouseMove'
+  | 'onMouseDown'
+  | 'onMouseUp'
+  | 'onTouchStart'
+  | 'onTouchMove'
+  | 'onTouchEnd'
+>;
 
 const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
   const { ref: wrapperRef, width: wrapperWidth } = useGetDivWrapperWidth();
