@@ -120,7 +120,9 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
     >
       <SlideInnerWrapper ref={innerWrapperRef}>
         <MainItemWrapper ref={mainRef}>{main}</MainItemWrapper>
-        <OptionItemWrapper ref={optionWrapperRef}>{option}</OptionItemWrapper>
+        {wrapperWidth && (
+          <OptionItemWrapper ref={optionWrapperRef}>{option}</OptionItemWrapper>
+        )}
       </SlideInnerWrapper>
     </SlideWrapper>
   );
