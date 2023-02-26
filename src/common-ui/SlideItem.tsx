@@ -49,8 +49,18 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
       const moveX = currentTargetX - rect.left - startX;
       setMoveX(moveX);
     }
-    if (isSlideEventStart && innerWrapperRef?.current) {
-      innerWrapperRef.current.style.left = `${moveX}px`;
+    if (isSlideEventStart && moveX < 0) {
+      handleSlideLeftEvent();
+    }
+  };
+
+  const handleSlideLeftEvent = () => {
+    const absoluteMoveX = Math.abs(moveX);
+    const adjustedMoveX =
+      absoluteMoveX > optionWrapperWidth ? optionWrapperWidth : absoluteMoveX;
+
+    if (innerWrapperRef?.current) {
+      innerWrapperRef.current.style.left = `-${adjustedMoveX}px`;
     }
   };
 
