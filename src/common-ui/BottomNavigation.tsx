@@ -1,15 +1,9 @@
+import { navigatePath } from '@/config/navigatePath';
 import { theme } from '@/styles/theme';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from './assets/Icon';
-
-const navigatePath = {
-  MAIN: '/',
-  FRIEND: '/friend',
-  ALARM: '/alarm',
-  PROFILE: '/profile',
-} as const;
 
 // TODO : 네비게이터에 대한 path를 재정의 필요
 
@@ -26,16 +20,16 @@ const BottomNavigation = () => {
   return (
     <>
       <NavigationWrapper>
-        <Link to="" css={plusButton}>
+        <Link to="/" css={plusButton}>
           <Icon name="plus-dark" size="m" />
         </Link>
-        <Link data-testid="main" to={navigatePath.MAIN} css={iconStyle}>
+        <Link to={navigatePath.MAIN} css={iconStyle}>
           {pathname === `${navigatePath.MAIN}` && (
             <Icon size="l" name="list-green" />
           )}
           {pathname !== `${navigatePath.MAIN}` && <Icon size="l" name="list" />}
         </Link>
-        <Link data-testid="friend" to="/friend" css={iconStyle}>
+        <Link to="/friend" css={iconStyle}>
           {pathname === `${navigatePath.FRIEND}` && (
             <Icon size="l" name="people-green" />
           )}
@@ -43,7 +37,7 @@ const BottomNavigation = () => {
             <Icon size="l" name="people" />
           )}
         </Link>
-        <Link data-testid="alarm" to="/alarm" css={iconStyle}>
+        <Link to="/alarm" css={iconStyle}>
           {pathname === `${navigatePath.ALARM}` && (
             <Icon size="m" name="alarm-green" />
           )}
@@ -51,7 +45,7 @@ const BottomNavigation = () => {
             <Icon size="m" name="alarm" />
           )}
         </Link>
-        <Link data-testid="profile" to="/profile" css={iconStyle}>
+        <Link to="/profile" css={iconStyle}>
           {pathname === `${navigatePath.PROFILE}` && (
             <Icon size="m" name="profile-green" />
           )}
