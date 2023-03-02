@@ -1,4 +1,4 @@
-import { theme } from '@/styles/theme';
+import { ColorType, theme } from '@/styles/theme';
 import { css } from '@emotion/react';
 import {
   ChangeEvent,
@@ -9,18 +9,17 @@ import {
 
 export type InputProps = {
   value: string;
-  color?: keyof typeof theme.colors;
-  backgroundColor?: keyof typeof theme.colors;
+  color?: ColorType;
+  backgroundColor?: ColorType;
   focusTheme?: {
-    color?: keyof typeof theme.colors;
-    backgroundColor?: keyof typeof theme.colors;
+    color?: ColorType;
+    backgroundColor?: ColorType;
   };
   border?: {
-    color?: keyof typeof theme.colors;
+    color?: ColorType;
     borderWidth?: number;
     borderRadius?: number;
   };
-  placeholderText?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 } & ComponentPropsWithRef<'input'>;
 
@@ -37,7 +36,6 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
       color: 'white',
       backgroundColor: 'grey800',
     },
-    placeholderText = '',
     ...restProps
   },
   ref,
@@ -45,7 +43,6 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   return (
     <input
       type={'text'}
-      placeholder={placeholderText}
       css={css`
         box-shadow: none;
         font-size: 1rem;

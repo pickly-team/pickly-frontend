@@ -28,13 +28,7 @@ describe('Input Test', () => {
       const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
       };
-      return (
-        <Input
-          onChange={onChange}
-          value={value}
-          placeholderText="입력 테스트"
-        />
-      );
+      return <Input onChange={onChange} value={value} />;
     };
 
     //when
@@ -57,7 +51,6 @@ describe('Input Test', () => {
         <Input
           onChange={onChange}
           border={{ borderRadius: 10, borderWidth: 3, color: 'grey900' }}
-          placeholderText="입력 테스트"
           value={value}
         />
       );
@@ -83,8 +76,8 @@ describe('Input Test', () => {
       return (
         <Input
           onChange={onChange}
-          placeholderText={placeholderText}
           value={value}
+          placeholder={placeholderText}
         />
       );
     };
@@ -118,7 +111,7 @@ describe('Input Test', () => {
         <Input
           onChange={onChange}
           focusTheme={focus.focusTheme}
-          placeholderText={placeholderText}
+          placeholder={placeholderText}
           value={value}
         />
       );
