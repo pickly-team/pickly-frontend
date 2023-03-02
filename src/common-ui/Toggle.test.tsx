@@ -15,8 +15,8 @@ describe('Toggle test', () => {
       const onUnsetToggle = () => setSelect(false);
       return (
         <Toggle
-          firstText={Button1}
-          secondText={Button2}
+          offText={Button1}
+          onText={Button2}
           isToggle={select}
           setToggleTrue={onSetToggle}
           setToggleFalse={onUnsetToggle}
@@ -63,6 +63,47 @@ describe('Toggle test', () => {
       //then
       expect(button1).toHaveStyle(`color: ${theme.colors.grey900}`);
       expect(button2).toHaveStyle(`color: ${theme.colors.white}`);
+    });
+    it('off 버튼을 누르면 > setToggleFalse 이벤트가 외부로 전달된다.', () => {
+      // given
+      const offButtonText = 'off';
+      const setToggleFalse = jest.fn();
+      // when
+      render(
+        <Toggle
+          offText={offButtonText}
+          onText={''}
+          isToggle={true}
+          setToggleTrue={() => {}}
+          setToggleFalse={setToggleFalse}
+        />,
+      );
+      const button = screen.getByText(offButtonText);
+      fireEvent.click(button);
+
+      //then
+      expect(setToggleFalse).toHaveBeenCalled();
+    });
+
+    it('on 버튼을 누르면 > setToggleTrue 이벤트가 외부로 전달된다.', () => {
+      // given
+      const onButtonText = 'on';
+      const setToggleTrue = jest.fn();
+      // when
+      render(
+        <Toggle
+          offText={''}
+          onText={onButtonText}
+          isToggle={false}
+          setToggleTrue={setToggleTrue}
+          setToggleFalse={() => {}}
+        />,
+      );
+      const button = screen.getByText(onButtonText);
+      fireEvent.click(button);
+
+      //then
+      expect(setToggleTrue).toHaveBeenCalled();
     });
   });
 });

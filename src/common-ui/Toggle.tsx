@@ -4,8 +4,8 @@ import styled from '@emotion/styled';
 import Text from './Text';
 
 interface Props {
-  firstText: string;
-  secondText: string;
+  offText: string;
+  onText: string;
   isToggle: boolean;
   setToggleTrue: () => void;
   setToggleFalse: () => void;
@@ -22,8 +22,8 @@ interface AnimatedProp {
  * @param setToggleFalse - 토글 상태값을 false로 변경하는 함수
  * @example
     <Toggle
-      firstText='오전'
-      secondText='오후'
+      offText='오전'
+      onText='오후'
       isToggle={select}
       setToggleTrue={setToggleTrue}
       setToggleFalse={setToggleFalse}
@@ -31,8 +31,8 @@ interface AnimatedProp {
  */
 
 const Toggle = ({
-  firstText,
-  secondText,
+  offText,
+  onText,
   isToggle,
   setToggleTrue,
   setToggleFalse,
@@ -41,27 +41,23 @@ const Toggle = ({
     <>
       <ToggleUIWrapper>
         <AnimatedLabel isToggle={isToggle} />
-        <StyledButton onClick={setToggleFalse} value={firstText}>
-          <Text
-            type={{ tag: 'span', type: 'content' }}
+        <StyledButton onClick={setToggleFalse} value={offText}>
+          <Text.Span
             color={isToggle ? 'grey900' : 'white'}
-            customCss={css`
-              transition: color 500ms ease-in-out;
-            `}
+            style={{
+              transition: 'color 500ms ease-in-out',
+            }}
           >
-            {firstText}
-          </Text>
+            {offText}
+          </Text.Span>
         </StyledButton>
-        <StyledButton onClick={setToggleTrue} value={secondText}>
-          <Text
-            type={{ tag: 'span', type: 'content' }}
+        <StyledButton onClick={setToggleTrue} value={onText}>
+          <Text.Span
             color={isToggle ? 'white' : 'grey900'}
-            customCss={css`
-              transition: color 500ms ease-in-out;
-            `}
+            style={{ transition: 'color 500ms ease-in-out' }}
           >
-            {secondText}
-          </Text>
+            {onText}
+          </Text.Span>
         </StyledButton>
       </ToggleUIWrapper>
     </>
