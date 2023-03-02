@@ -9,10 +9,10 @@ describe('BottomNavigation test', () => {
   });
   test('BottomNavigation 컴포넌트는 4개의 아이템을 렌더링한다.', () => {
     // then
-    const homeBtn = screen.getByTestId('main');
-    const friendBtn = screen.getByTestId('friend');
-    const alarmBtn = screen.getByTestId('alarm');
-    const profileBtn = screen.getByTestId('profile');
+    const homeBtn = screen.getByRole('link', { name: 'list-green' });
+    const friendBtn = screen.getByRole('link', { name: 'people' });
+    const alarmBtn = screen.getByRole('link', { name: 'alarm' });
+    const profileBtn = screen.getByRole('link', { name: 'profile' });
 
     expect(homeBtn).toBeInTheDocument();
     expect(friendBtn).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe('BottomNavigation test', () => {
   describe('BottomNavigation 컴포넌트는 아이템을 클릭하면 > 링크로 이동한다', () => {
     it('홈 아이템을 클릭하면 > /main으로 이동한다.', () => {
       // given
-      const homeBtn = screen.getByTestId('main');
+      const homeBtn = screen.getByRole('link', { name: 'list-green' });
 
       // when
       act(() => homeBtn.click());
@@ -32,7 +32,7 @@ describe('BottomNavigation test', () => {
     });
     it('친구 아이템을 클릭하면 > /friend으로 이동한다.', () => {
       // given
-      const friendBtn = screen.getByTestId('friend');
+      const friendBtn = screen.getByRole('link', { name: 'people' });
 
       // when
       act(() => friendBtn.click());
@@ -42,7 +42,7 @@ describe('BottomNavigation test', () => {
     });
     it('알림 아이템을 클릭하면 > /alarm으로 이동한다.', () => {
       // given
-      const alarmBtn = screen.getByTestId('alarm');
+      const alarmBtn = screen.getByRole('link', { name: 'alarm' });
 
       // when
       act(() => alarmBtn.click());
@@ -52,7 +52,7 @@ describe('BottomNavigation test', () => {
     });
     it('프로필 아이템을 클릭하면 > /profile로 이동한다.', () => {
       // given
-      const profileBtn = screen.getByTestId('profile');
+      const profileBtn = screen.getByRole('link', { name: 'profile' });
 
       // when
       act(() => profileBtn.click());
