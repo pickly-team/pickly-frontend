@@ -12,3 +12,5 @@ export const theme = {
     grey900: '#212121',
   },
 } as const;
+
+export type ColorType = keyof typeof theme.colors;

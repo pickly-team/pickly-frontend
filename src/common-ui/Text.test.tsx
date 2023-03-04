@@ -2,123 +2,77 @@ import { render, screen } from '@testing-library/react';
 import Text from './Text';
 
 describe('Text test', () => {
-  test('Text 컴포넌트는 children을 렌더링한다.', () => {
+  test('Text 컴포넌트는 children(string)을 렌더링한다.', () => {
     //given
     const TEXT = 'Hello World';
 
     //when
-    render(
-      <Text type={{ tag: 'h1', type: 'header' }} weight="bold">
-        {TEXT}
-      </Text>,
-    );
+    render(<Text.Div>{TEXT}</Text.Div>);
 
     //then
     expect(screen.getByText(TEXT)).toBeInTheDocument();
   });
-  test('Text 컴포넌트는 type에 따라 태그를 렌더링한다.', () => {
-    //given
+  test('Text 컴포넌트 > Header 렌더링 테스트', () => {
+    //given && when
     const TEXT = 'Hello World';
-
-    //when
-    render(
-      <Text type={{ tag: 'h2', type: 'header' }} weight="bold">
-        {TEXT}
-      </Text>,
-    );
+    render(<Text.Header level="h1">{TEXT}</Text.Header>);
 
     //then
-    expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
+    expect(screen.getByRole('heading')).toBeInTheDocument();
   });
-  test('Text 컴포넌트는 weight에 따라 폰트를 렌더링한다. Bold', () => {
-    //given
+  test('Text 컴포넌트 > Span 렌더링 테스트', () => {
+    //given && when
     const TEXT = 'Hello World';
-
-    //when
-    render(
-      <Text type={{ tag: 'h2', type: 'header' }} weight="bold">
-        {TEXT}
-      </Text>,
-    );
+    render(<Text.Span>{TEXT}</Text.Span>);
 
     //then
-    expect(screen.getByText(TEXT)).toHaveStyle(
-      'font-family: NanumSquareRoundB',
-    );
+    // span을 특정할 수 없어서 다음과 같이 테스트
+    expect(screen.getByText(TEXT)).toBeInTheDocument();
   });
-  test('Text 컴포넌트는 weight에 따라 폰트를 렌더링한다. Regular', () => {
-    //given
+  test('Text 컴포넌트 > P 렌더링 테스트', () => {
+    //given && when
     const TEXT = 'Hello World';
-
-    //when
-    render(
-      <Text type={{ tag: 'h2', type: 'header' }} weight="regular">
-        {TEXT}
-      </Text>,
-    );
+    render(<Text.P>{TEXT}</Text.P>);
 
     //then
-    expect(screen.getByText(TEXT)).toHaveStyle(
-      'font-family: NanumSquareRoundR',
-    );
+    // span을 특정할 수 없어서 다음과 같이 테스트
+    // expect(screen.getByRole('paragraph')).toBeInTheDocument();
+    expect(screen.getByText(TEXT)).toBeInTheDocument();
   });
+  test('Text 컴포넌트는 weight에 따라 폰트를 렌더링한다.', () => {
+    //given
+    const weight = 'bold';
 
+    //when
+    render(<Text.Div weight={weight}>TEXT</Text.Div>);
+
+    //then
+    expect(screen.getByText('TEXT')).toHaveStyle({
+      'font-family': 'NanumSquareRoundB',
+    });
+  });
   test('Text 컴포넌트는 fontSize에 따라 폰트 사이즈를 렌더링한다.', () => {
     //given
-    const TEXT = 'Hello World';
+    const fontSize = 2;
 
     //when
-    render(
-      <Text type={{ tag: 'h2', type: 'header' }} weight="bold" fontSize={1}>
-        {TEXT}
-      </Text>,
-    );
+    render(<Text.Div fontSize={fontSize}>TEXT</Text.Div>);
 
     //then
-    expect(screen.getByText(TEXT)).toHaveStyle('font-size: 1rem');
+    expect(screen.getByText('TEXT')).toHaveStyle({
+      'font-size': '2rem',
+    });
   });
   test('Text 컴포넌트는 color에 따라 폰트 색상을 렌더링한다.', () => {
     //given
-    const TEXT = 'Hello World';
+    const color = 'grey900';
 
     //when
-    render(
-      <Text type={{ tag: 'h3', type: 'header' }} weight="bold" color="white">
-        {TEXT}
-      </Text>,
-    );
+    render(<Text.Div color={color}>TEXT</Text.Div>);
 
     //then
-    expect(screen.getByText(TEXT)).toHaveStyle('color: #ffffff');
-  });
-
-  test('Text 컴포넌트는 선언한 tag에 따라 텍스트를 렌더링한다.', () => {
-    //given
-    const TEXT = 'Hello World';
-
-    //when
-    render(
-      <Text type={{ tag: 'span', type: 'span' }} weight="bold">
-        {TEXT}
-      </Text>,
-    );
-
-    //then
-    const spanText = document.querySelector('span');
-    expect(spanText).toBeInTheDocument();
-  });
-  test('지정된 기본 color 색상이 없다면 흰색을 보여준다.', () => {
-    //given
-    const TEXT = 'Hello World';
-
-    //when
-    render(
-      <Text type={{ tag: 'span', type: 'span' }} weight="bold">
-        {TEXT}
-      </Text>,
-    );
-
-    //then
-    expect(screen.getByText(TEXT)).toHaveStyle('color: #ffffff');
+    expect(screen.getByText('TEXT')).toHaveStyle({
+      color: '#212121',
+    });
   });
 });

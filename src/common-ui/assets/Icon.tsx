@@ -8,6 +8,7 @@ const sizeMap = {
 
 interface IconProps {
   name: IconName;
+  /** l: 28, m:24, s:20, xs: 15 */
   size: keyof typeof sizeMap;
 }
 
@@ -24,6 +25,7 @@ const Icon = ({ name, size }: IconProps) => (
     fill="none"
     style={{ pointerEvents: 'none' }}
   >
+    <title>{name}</title>
     <use href={`#${name}`} />
   </svg>
 );
@@ -37,4 +39,14 @@ export type IconName =
   | 'like-green'
   | 'message'
   | 'message-on-green'
-  | 'not-read';
+  | 'not-read'
+  | 'list'
+  | 'list-green'
+  | 'people'
+  | 'people-green'
+  | 'alarm'
+  | 'alarm-green'
+  | 'profile'
+  | 'profile-green'
+  | 'plus'
+  | 'plus-dark';

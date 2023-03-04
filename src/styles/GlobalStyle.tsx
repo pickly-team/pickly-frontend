@@ -11,7 +11,6 @@ const GlobalStyle = () => (
         -moz-box-sizing: border-box;
         box-sizing: border-box;
       }
-      @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
       html,
       body,
       div,
