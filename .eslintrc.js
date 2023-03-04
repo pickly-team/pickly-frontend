@@ -12,6 +12,7 @@ module.exports = {
     'plugin:jest/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
+    'plugin:storybook/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -35,7 +36,9 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/function-component-definition': [
       2,
-      { namedComponents: 'arrow-function' },
+      {
+        namedComponents: 'arrow-function',
+      },
     ],
     quotes: ['error', 'single'],
     'react-hooks/rules-of-hooks': 'error',
@@ -47,6 +50,11 @@ module.exports = {
     ],
     '@typescript-eslint/no-empty-interface': 'warn',
     '@typescript-eslint/no-empty-function': 'warn',
-    'react/no-unknown-property': ['error', { ignore: ['css'] }],
+    'react/no-unknown-property': [
+      'error',
+      {
+        ignore: ['css'],
+      },
+    ],
   },
 };
