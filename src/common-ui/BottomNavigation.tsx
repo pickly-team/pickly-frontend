@@ -1,4 +1,4 @@
-import { navigatePath } from '@/config/navigatePath';
+import { navigatePath } from '@/constant/navigatePath';
 import { theme } from '@/styles/theme';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
