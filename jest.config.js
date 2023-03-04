@@ -11,6 +11,7 @@ module.exports = {
   //TODO: alias 패턴 수정 필요
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^.+\\.css$': ['jest-transform-css', { modules: true }],
   },
   setupFilesAfterEnv: ['<rootDir>/src/jest.setup.ts'],
   transform: {
