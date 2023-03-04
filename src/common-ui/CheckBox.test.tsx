@@ -13,7 +13,7 @@ describe('Checkbox test', () => {
         Check
       </CheckBox>,
     );
-    const checkbox = screen.getByLabelText('Check');
+    const checkbox = screen.getByLabelText(/Check/);
     await userEvent.click(checkbox);
 
     //then
@@ -29,7 +29,7 @@ describe('Checkbox test', () => {
         Check
       </CheckBox>,
     );
-    const checkbox = screen.getByLabelText('Check');
+    const checkbox = screen.getByLabelText(/Check/);
     await userEvent.click(checkbox);
 
     //then
@@ -46,7 +46,7 @@ describe('Checkbox test', () => {
           Check
         </CheckBox>,
       );
-      const checkbox = screen.getByLabelText('Check');
+      const checkbox = screen.getByLabelText(/Check/);
       await userEvent.click(checkbox);
 
       //then
