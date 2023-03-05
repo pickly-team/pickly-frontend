@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import getRem from '@/utils/getRem';
+import { theme } from '@/styles/theme';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -32,6 +33,10 @@ const Header = ({
 export default Header;
 
 const HeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: ${theme.colors.black};
   padding: 8px 20px;
   height: 56px;
   width: 100%;

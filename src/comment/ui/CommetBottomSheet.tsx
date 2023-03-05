@@ -8,13 +8,13 @@ const CommentBottomSheet = ({ ...restProps }: BottomSheetProps) => {
   return (
     <BottomSheet {...restProps}>
       <Button buttonColor={'grey900'}>
-        <TextWrapper>신고하기</TextWrapper>
+        <ButtonInnerWrapper>신고하기</ButtonInnerWrapper>
       </Button>
       <Button buttonColor={'grey900'}>
-        <TextWrapper>수정하기</TextWrapper>
+        <ButtonInnerWrapper>수정하기</ButtonInnerWrapper>
       </Button>
       <Button buttonColor={'grey900'}>
-        <TextWrapper>삭제하기</TextWrapper>
+        <ButtonInnerWrapper>삭제하기</ButtonInnerWrapper>
       </Button>
     </BottomSheet>
   );
@@ -22,7 +22,7 @@ const CommentBottomSheet = ({ ...restProps }: BottomSheetProps) => {
 
 export default CommentBottomSheet;
 
-const TextWrapper = styled.div`
+const ButtonInnerWrapper = styled.div`
   width: 100%;
   padding: 10px 20px;
   text-align: left;

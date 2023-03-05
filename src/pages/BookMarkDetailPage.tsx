@@ -21,21 +21,37 @@ const BookMarkDetailPage = () => {
         }
         showBackButton
       />
-      <BookMarkArticle
-        title="발가락으로 만드는 CRUD 게시판"
-        previewImgSrc="https://mblogthumb-phinf.pstatic.net/20160526_126/emo-art_1464269073322MHPQj_JPEG/zLNFIBtisESk634049407784855842.jpg?type=w800"
-        category="프론트엔드"
-        createdAt="2023/01/25 23:40:08"
-        bookMarkUrl="https://velog.io/@aeong98"
-        likeButton={<BookMarkLikeButton isLike={false} />}
-        messageInfo={<CommentCountInfo commentCount={2} />}
-      />
-      <Comment
-        nickname="피클리 마스터"
-        content="야무진 맛도리 글 👍 자기전에 봐야징"
-        updatedAt="2023/01/31 01:23:11"
-        isWriter
-      />
+      <Body>
+        <BookMarkArticle
+          title="발가락으로 만드는 CRUD 게시판"
+          previewImgSrc="https://mblogthumb-phinf.pstatic.net/20160526_126/emo-art_1464269073322MHPQj_JPEG/zLNFIBtisESk634049407784855842.jpg?type=w800"
+          category="프론트엔드"
+          createdAt="2023/01/25 23:40:08"
+          bookMarkUrl="https://velog.io/@aeong98"
+          likeButton={<BookMarkLikeButton isLike={false} />}
+          messageInfo={<CommentCountInfo commentCount={2} />}
+        />
+        <CommentListWrapper>
+          <Comment
+            nickname="피클리 마스터"
+            content="야무진 맛도리 글 👍 자기전에 봐야징"
+            updatedAt="2023/01/31 01:23:11"
+            isWriter={true}
+          />
+          <Comment
+            nickname="피클리 마스터"
+            content="야무진 맛도리 글 👍 자기전에 봐야징"
+            updatedAt="2023/01/31 01:23:11"
+            isWriter={false}
+          />
+          <Comment
+            nickname="피클리 마스터"
+            content="야무진 맛도리 글 👍 자기전에 봐야징"
+            updatedAt="2023/01/31 01:23:11"
+            isWriter={false}
+          />
+        </CommentListWrapper>
+      </Body>
       <CommentUploadInputBottomBar>
         <CommentUploadInput />
       </CommentUploadInputBottomBar>
@@ -44,6 +60,18 @@ const BookMarkDetailPage = () => {
 };
 
 export default BookMarkDetailPage;
+
+const Body = styled.div`
+  padding: 0 10px;
+`;
+
+const CommentListWrapper = styled.div`
+  height: 300px;
+  overflow: scroll;
+  > * + * {
+    margin-bottom: 10px;
+  }
+`;
 
 const CommentUploadInputBottomBar = styled.div`
   position: absolute;
