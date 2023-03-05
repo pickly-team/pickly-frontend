@@ -66,7 +66,7 @@ const Body = styled.div`
 `;
 
 const CommentListWrapper = styled.div`
-  height: 300px;
+  height: 220px;
   overflow: scroll;
   > * + * {
     margin-bottom: 10px;
@@ -74,7 +74,7 @@ const CommentListWrapper = styled.div`
 `;
 
 const CommentUploadInputBottomBar = styled.div`
-  position: absolute;
+  position: fixed;
   width: 100%;
   left: 0;
   bottom: 0;
