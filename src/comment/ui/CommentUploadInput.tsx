@@ -15,7 +15,7 @@ const CommentUploadInput = () => {
     <Container>
       <Input value={comment} onChange={onChange} backgroundColor={'black'} />
       <button>
-        <Icon name={'arrow-circle-up-white'} size={'m'} />
+        <Icon name={'arrow-circle-up-white'} size={'l'} />
       </button>
     </Container>
   );

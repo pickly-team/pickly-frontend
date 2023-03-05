@@ -56,4 +56,7 @@ export type IconName =
   | 'more'
   | 'heart-green'
   | 'message-green'
-  | 'arrow-circle-up-white';
+  | 'arrow-circle-up-white'
+  | 'calendar-white'
+  | 'location-white'
+  | 'time-history-white';

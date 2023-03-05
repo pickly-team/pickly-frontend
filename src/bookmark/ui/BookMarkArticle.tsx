@@ -41,14 +41,14 @@ const BookMarkArticle = ({
       </BookMarkMainInfo>
       <BookMarkSubInfo>
         <SubInfoRow>
-          <Icon name="heart-green" size="m" />
+          <Icon name="calendar-white" size="m" />
           <SubInfoTextWrapper>
             <Text.Span>등록일자</Text.Span>
             <Text.Span>{createdAt}</Text.Span>
           </SubInfoTextWrapper>
         </SubInfoRow>
         <SubInfoRow>
-          <Icon name="heart-green" size="m" />
+          <Icon name="location-white" size="m" />
           <SubInfoTextWrapper>
             <Text.Span>원본 URL</Text.Span>
             <a href={bookMarkUrl} target="_blank" rel="noreferrer">

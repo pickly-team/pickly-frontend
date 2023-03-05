@@ -25,7 +25,10 @@ const Comment = ({ nickname, content, updatedAt, isWriter }: CommentProps) => {
           </button>
         </NicknameAndIconWrapper>
         <ContentText fontSize={getRem(13)}>{content}</ContentText>
-        <UpdatedAtText fontSize={getRem(13)}>{updatedAt}</UpdatedAtText>
+        <IconAndTextWrapper>
+          <Icon name={'time-history-white'} size={'s'} />
+          <UpdatedAtText fontSize={getRem(13)}>{updatedAt}</UpdatedAtText>
+        </IconAndTextWrapper>
       </Container>
       <CommentBottomSheet open={isOpen} onClose={close}>
         수정 삭제
@@ -55,3 +58,8 @@ const NicknameAndIconWrapper = styled.div`
 const NicknameText = styled(Text.Span)``;
 const ContentText = styled(Text.Span)``;
 const UpdatedAtText = styled(Text.Span)``;
+const IconAndTextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+`;
