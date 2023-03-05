@@ -55,4 +55,5 @@ export type IconName =
   | 'backward'
   | 'more'
   | 'heart-green'
-  | 'message-green';
+  | 'message-green'
+  | 'arrow-circle-up-white';

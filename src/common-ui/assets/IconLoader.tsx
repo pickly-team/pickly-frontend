@@ -212,6 +212,59 @@ const IconLoader = () => (
           </clipPath>
         </defs>
       </symbol>
+      <symbol id="arrow-circle-up-white" viewBox="0 0 29 30">
+        <g clipPath="url(#clip0_640_7648)" filter="url(#filter0_d_640_7648)">
+          <path
+            d="M14.5 20C10.09 20 6.5 16.41 6.5 12C6.5 7.59 10.09 4 14.5 4C18.91 4 22.5 7.59 22.5 12C22.5 16.41 18.91 20 14.5 20ZM14.5 22C20.02 22 24.5 17.52 24.5 12C24.5 6.48 20.02 2 14.5 2C8.98 2 4.5 6.48 4.5 12C4.5 17.52 8.98 22 14.5 22ZM13.5 12V16H15.5V12H18.5L14.5 8L10.5 12H13.5Z"
+            fill="white"
+          />
+        </g>
+        <defs>
+          <filter
+            id="filter0_d_640_7648"
+            x="-1.5"
+            y="0"
+            width="32"
+            height="32"
+            filterUnits="userSpaceOnUse"
+            colorInterpolationFilters="sRGB"
+          >
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
+            <feColorMatrix
+              in="SourceAlpha"
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+              result="hardAlpha"
+            />
+            <feOffset dy="4" />
+            <feGaussianBlur stdDeviation="2" />
+            <feComposite in2="hardAlpha" operator="out" />
+            <feColorMatrix
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+            />
+            <feBlend
+              mode="normal"
+              in2="BackgroundImageFix"
+              result="effect1_dropShadow_640_7648"
+            />
+            <feBlend
+              mode="normal"
+              in="SourceGraphic"
+              in2="effect1_dropShadow_640_7648"
+              result="shape"
+            />
+          </filter>
+          <clipPath id="clip0_640_7648">
+            <rect
+              width="24"
+              height="24"
+              fill="white"
+              transform="translate(2.5)"
+            />
+          </clipPath>
+        </defs>
+      </symbol>
     </defs>
   </svg>
 );

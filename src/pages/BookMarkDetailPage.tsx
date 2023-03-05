@@ -5,6 +5,7 @@ import BookMarkArticle from '@/bookmark/ui/BookMarkArticle';
 import BookMarkLikeButton from '@/bookmark/ui/BookMarkLikeButton';
 import CommentCountInfo from '@/comment/ui/CommentCountInfo';
 import Comment from '@/comment/ui/Comment';
+import CommentUploadInput from '@/comment/ui/CommentUploadInput';
 
 const BookMarkDetailPage = () => {
   const { id } = useParams();
@@ -34,6 +35,7 @@ const BookMarkDetailPage = () => {
         updatedAt="2023/01/31 01:23:11"
         isWriter
       />
+      <CommentUploadInput />
     </>
   );
 };
