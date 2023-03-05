@@ -21,11 +21,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.2",
-<<<<<<< 961fee975aca834cb8a1bee8bba203fa3d7de524
-    "uuid": "^9.0.0",
-    "react-spring-bottom-sheet": "^3.4.1",
-=======
->>>>>>> 08c120d28120cb9cfcac5d1df000978a71e490b3
     "uuid": "^9.0.0",
     "react-spring-bottom-sheet": "^3.4.1",
     "zustand": "^4.3.2"
