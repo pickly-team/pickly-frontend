@@ -16,11 +16,14 @@ const Header = ({
   title,
   rightButton,
 }: HeaderProps) => {
+  const onClickBackButton = () => {
+    window.history.back();
+  };
   return (
     <HeaderContainer>
       <BackButtonAndTitleWrapper>
         {showBackButton && (
-          <button type="button">
+          <button type="button" onClick={onClickBackButton}>
             <Icon name="backward" size={'m'} />
           </button>
         )}
