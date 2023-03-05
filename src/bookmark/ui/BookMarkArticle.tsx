@@ -30,7 +30,7 @@ const BookMarkArticle = ({
       <BookMarkTitle level="h1" fontSize={getRem(24)}>
         {title}
       </BookMarkTitle>
-      <BookMarkMainInfo>
+      <BookMarkMainInfoWrapper>
         <CategoryButtonWrapper>
           <Button>{category}</Button>
         </CategoryButtonWrapper>
@@ -38,30 +38,48 @@ const BookMarkArticle = ({
           {likeButton}
           {messageInfo}
         </LikeAndMessageIconWrapper>
-      </BookMarkMainInfo>
-      <BookMarkSubInfo>
-        <SubInfoRow>
-          <Icon name="calendar-white" size="m" />
-          <SubInfoTextWrapper>
-            <Text.Span>등록일자</Text.Span>
-            <Text.Span>{createdAt}</Text.Span>
-          </SubInfoTextWrapper>
-        </SubInfoRow>
-        <SubInfoRow>
-          <Icon name="location-white" size="m" />
-          <SubInfoTextWrapper>
-            <Text.Span>원본 URL</Text.Span>
+      </BookMarkMainInfoWrapper>
+      <BookMarkSubInfoWrapper>
+        <BookMarkSubInfo
+          description="등록일자"
+          icon={<Icon name="calendar-white" size="m" />}
+          content={<Text.Span>{createdAt}</Text.Span>}
+        />
+        <BookMarkSubInfo
+          description="원본 URL"
+          icon={<Icon name="location-white" size="m" />}
+          content={
             <a href={bookMarkUrl} target="_blank" rel="noreferrer">
               <Text.Span>{bookMarkUrl}</Text.Span>
             </a>
-          </SubInfoTextWrapper>
-        </SubInfoRow>
-      </BookMarkSubInfo>
+          }
+        />
+      </BookMarkSubInfoWrapper>
     </Container>
   );
 };
 
 export default BookMarkArticle;
+
+const BookMarkSubInfo = ({
+  description,
+  icon,
+  content,
+}: {
+  description: string;
+  icon: ReactNode;
+  content: ReactNode;
+}) => {
+  return (
+    <SubInfoRow>
+      {icon}
+      <SubInfoTextWrapper>
+        <Text.Span>{description}</Text.Span>
+        {content}
+      </SubInfoTextWrapper>
+    </SubInfoRow>
+  );
+};
 
 const Container = styled.article``;
 const BookMarkImage = styled.img`
@@ -75,7 +93,7 @@ const BookMarkTitle = styled(Text.Header)`
   margin-top: 28px;
 `;
 
-const BookMarkMainInfo = styled.div`
+const BookMarkMainInfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
@@ -91,7 +109,7 @@ const LikeAndMessageIconWrapper = styled.div`
   column-gap: 12px;
 `;
 
-const BookMarkSubInfo = styled.div`
+const BookMarkSubInfoWrapper = styled.div`
   padding: 10px;
   > * {
     margin-bottom: 10px;
