@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 const useBookMarkHandler = () => {
   const [isRead, setRead] = useState(false);
   const [isEdit, setEdit] = useState(false);
-  const [category, setCategory] = useState('전체');
+  const [category] = useState('전체');
   const [clientBookMarkList, setClientBookMarkList] = useState<
     ClientBookMarkItem[]
   >([]);

@@ -4,9 +4,9 @@ import styled from '@emotion/styled';
 
 // TODO : 추후에 유저 정보를 받아올 수 있도록 수정
 
-interface UserInfoProps {
-  userName: string;
-}
+// interface UserInfoProps {
+//   userName: string;
+// }
 
 const UserInfo = () => {
   const userName = '피클리 마스터';
