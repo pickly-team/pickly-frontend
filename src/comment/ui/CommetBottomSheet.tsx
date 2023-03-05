@@ -5,9 +5,11 @@ import Button from '@/common-ui/Button';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
 
-const CommentBottomSheet = ({ ...restProps }: BottomSheetProps) => {
+const CommentBottomSheet = ({
+  ...props
+}: Omit<BottomSheetProps, 'children'>) => {
   return (
-    <BottomSheet {...restProps}>
+    <BottomSheet {...props}>
       <BottomSheetInnerWrapper>
         <StyledButton buttonColor={'grey900'} activeButtonColor={'grey800'}>
           <ButtonInnerWrapper>신고하기</ButtonInnerWrapper>

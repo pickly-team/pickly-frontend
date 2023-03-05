@@ -33,9 +33,7 @@ const Comment = ({ nickname, content, updatedAt, isWriter }: CommentProps) => {
           <UpdatedAtText fontSize={13}>{updatedAt}</UpdatedAtText>
         </IconAndTextWrapper>
       </Container>
-      <CommentBottomSheet open={isOpen} onClose={close}>
-        수정 삭제
-      </CommentBottomSheet>
+      <CommentBottomSheet open={isOpen} onClose={close} />
     </>
   );
 };
