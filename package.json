@@ -20,11 +20,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.2",
-<<<<<<< 8fc38e76841f60edbb4bd5a0a19720e6a04f22c2
     "uuid": "^9.0.0",
-=======
     "react-spring-bottom-sheet": "^3.4.1",
->>>>>>> 0d60055b6b9e4044eb4e636b63f9568c73dc72c1
     "zustand": "^4.3.2"
   },
   "devDependencies": {
