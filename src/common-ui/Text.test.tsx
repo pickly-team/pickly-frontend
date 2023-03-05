@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import Text from './Text';
+import getRem from '@/utils/getRem';
 
 describe('Text test', () => {
   test('Text 컴포넌트는 children(string)을 렌더링한다.', () => {
@@ -53,14 +54,14 @@ describe('Text test', () => {
   });
   test('Text 컴포넌트는 fontSize에 따라 폰트 사이즈를 렌더링한다.', () => {
     //given
-    const fontSize = 2;
+    const fontSize = 10;
 
     //when
     render(<Text.Div fontSize={fontSize}>TEXT</Text.Div>);
 
     //then
     expect(screen.getByText('TEXT')).toHaveStyle({
-      'font-size': '2rem',
+      'font-size': getRem(fontSize),
     });
   });
   test('Text 컴포넌트는 color에 따라 폰트 색상을 렌더링한다.', () => {
