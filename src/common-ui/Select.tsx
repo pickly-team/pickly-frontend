@@ -9,6 +9,9 @@ import {
 } from 'react';
 import { ButtonProps } from '@/common-ui/Button';
 import styled from '@emotion/styled';
+import Input from '@/common-ui/Input';
+import { theme } from '@/styles/theme';
+import Icon from '@/common-ui/assets/Icon';
 
 const NO_RESULT_TEST = '선택해주세요';
 const NO_SEARCH_RESULT_TEXT = '검색결과가 없습니다';
@@ -62,7 +65,7 @@ const Select = ({
   );
 
   return (
-    <>
+    <Container>
       <TriggerButton onClick={toggleSelect}>
         {buttonText ?? NO_RESULT_TEST}
       </TriggerButton>
@@ -72,12 +75,12 @@ const Select = ({
       {isOpen && (
         <SelectUlWrapper>
           {isSearchActive && (
-            // TODO: 추후 공통 Input 컴포넌트로 변경
-            <input
-              value={searchValue}
-              onChange={onChangeSearch}
-              style={{ color: 'black' }}
-            />
+            <SearchInputContainer>
+              <SearchIconWrapper>
+                <Icon name={'search'} size={'s'} />
+              </SearchIconWrapper>
+              <StyledInput value={searchValue} onChange={onChangeSearch} />
+            </SearchInputContainer>
           )}
           <SelectUl>
             {searchedOptions.map((option) => (
@@ -94,7 +97,7 @@ const Select = ({
           </SelectUl>
         </SelectUlWrapper>
       )}
-    </>
+    </Container>
   );
 };
 
@@ -128,6 +131,10 @@ const useSearch = () => {
   };
 };
 
+const Container = styled.div`
+  position: relative;
+`;
+
 const SelectUlWrapper = styled.div`
   width: 100%;
   border-radius: 10px;
@@ -144,4 +151,19 @@ const SelectUl = styled.ul`
 const SelectLi = styled.li`
   cursor: pointer;
   padding: 10px 0;
+`;
+
+const SearchInputContainer = styled.div`
+  position: relative;
+  margin-bottom: 12px;
+`;
+
+const SearchIconWrapper = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 0;
+`;
+const StyledInput = styled(Input)`
+  border-bottom: 1px solid ${theme.colors.white};
+  border-radius: 0;
 `;
