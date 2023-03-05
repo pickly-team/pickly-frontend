@@ -1,4 +1,5 @@
 // TODO : 아이콘 사이즈 논의 필요
+
 const sizeMap = {
   l: 28,
   m: 24,
@@ -50,4 +51,8 @@ export type IconName =
   | 'profile-green'
   | 'plus'
   | 'plus-dark'
-  | 'search';
+  | 'search'
+  | 'backward'
+  | 'more'
+  | 'heart-green'
+  | 'message-green';
