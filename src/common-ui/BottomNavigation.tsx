@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from './assets/Icon';
+import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
 
 // TODO : 네비게이터에 대한 path를 재정의 필요
 
@@ -69,7 +70,7 @@ const NavigationWrapper = styled.div`
   left: 0;
   right: 0;
   background-color: ${theme.colors.grey900};
-  z-index: 10;
+  z-index: ${BOTTOM_NAVIGATION_Z_INDEX};
   height: 5rem;
 `;
 
