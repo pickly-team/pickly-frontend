@@ -6,4 +6,6 @@ const navigatePath = {
   BOOKMARK_DETAIL: '/bookmark/:id',
 } as const;
 
-export { navigatePath };
+type NavigatePath = (typeof navigatePath)[keyof typeof navigatePath];
+
+export { navigatePath, NavigatePath };

@@ -1,12 +1,21 @@
 import { ReactNode } from 'react';
 import styled from '@emotion/styled';
 import BottomNavigation from '@/common-ui/BottomNavigation';
+import { navigatePath, NavigatePath } from '@/constants/navigatePath';
+import { useLocation } from 'react-router-dom';
+
+const SHOW_BOTTOM_NAVIGATION_URL: NavigatePath[] = [navigatePath.MAIN];
 
 const Layout = ({ children }: { children: ReactNode }) => {
+  const { pathname } = useLocation();
+  const isShowBottomNavigation = SHOW_BOTTOM_NAVIGATION_URL.includes(
+    pathname as NavigatePath,
+  );
+
   return (
     <LayoutContainer>
       {children}
-      <BottomNavigation />
+      {isShowBottomNavigation && <BottomNavigation />}
     </LayoutContainer>
   );
 };
