@@ -178,7 +178,7 @@ const IconLoader = () => (
           strokeLinejoin="round"
         />
       </symbol>
-      <symbol id="more" viewBox="0 0 24 24">
+      <symbol id="more" viewBox="0 0 24 30">
         <g clipPath="url(#clip0_817_8692)">
           <path
             d="M6 18C4.9 18 4 18.9 4 20C4 21.1 4.9 22 6 22C7.1 22 8 21.1 8 20C8 18.9 7.1 18 6 18ZM18 18C16.9 18 16 18.9 16 20C16 21.1 16.9 22 18 22C19.1 22 20 21.1 20 20C20 18.9 19.1 18 18 18ZM12 18C10.9 18 10 18.9 10 20C10 21.1 10.9 22 12 22C13.1 22 14 21.1 14 20C14 18.9 13.1 18 12 18Z"
@@ -187,12 +187,7 @@ const IconLoader = () => (
         </g>
         <defs>
           <clipPath id="clip0_817_8692">
-            <rect
-              width="24"
-              height="24"
-              fill="white"
-              transform="translate(0 8)"
-            />
+            <rect fill="white" transform="translate(0 8)" />
           </clipPath>
         </defs>
       </symbol>
