@@ -44,7 +44,6 @@ const Container = styled.div`
   display: grid;
   row-gap: ${getRem(10)};
   width: 100%;
-  height: ${getRem(110)};
   padding: ${getRem(15, 20)};
   border-radius: ${getRem(7)};
   background-color: ${theme.colors.grey800};
@@ -55,6 +54,7 @@ const CommentHeader = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 const NicknameTextAndIconWrapper = styled.div`
   display: flex;
   align-items: center;
