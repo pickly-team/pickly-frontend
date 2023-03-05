@@ -42,6 +42,7 @@
     "@typescript-eslint/parser": "^5.48.2",
     "@vitejs/plugin-react": "^3.0.0",
     "babel-loader": "^8.3.0",
+    "chromatic": "^6.17.1",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-import-resolver-typescript": "^3.5.3",
