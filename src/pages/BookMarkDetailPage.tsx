@@ -66,15 +66,15 @@ const Body = styled.div`
 `;
 
 const CommentListWrapper = styled.div`
-  height: 220px;
-  overflow: scroll;
+  overflow: auto;
+  height: calc(100vh - 580px);
   > * + * {
     margin-bottom: 10px;
   }
 `;
 
 const CommentUploadInputBottomBar = styled.div`
-  position: fixed;
+  position: absolute;
   width: 100%;
   left: 0;
   bottom: 0;
