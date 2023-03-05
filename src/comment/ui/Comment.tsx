@@ -3,6 +3,8 @@ import { theme } from '@/styles/theme';
 import Text from '@/common-ui/Text';
 import getRem from '@/utils/getRem';
 import Icon from '@/common-ui/assets/Icon';
+import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
+import CommentBottomSheet from '@/comment/ui/CommetBottomSheet';
 
 interface CommentProps {
   nickname: string;
@@ -12,17 +14,23 @@ interface CommentProps {
 }
 
 const Comment = ({ nickname, content, updatedAt, isWriter }: CommentProps) => {
+  const { isOpen, open, close } = useBottomSheet();
   return (
-    <Container>
-      <NicknameAndIconWrapper>
-        <NicknameText fontSize={getRem(16)}>{nickname}</NicknameText>
-        <button>
-          <Icon name="more" size="m" />
-        </button>
-      </NicknameAndIconWrapper>
-      <ContentText fontSize={getRem(13)}>{content}</ContentText>
-      <UpdatedAtText fontSize={getRem(13)}>{updatedAt}</UpdatedAtText>
-    </Container>
+    <>
+      <Container>
+        <NicknameAndIconWrapper>
+          <NicknameText fontSize={getRem(16)}>{nickname}</NicknameText>
+          <button onClick={open}>
+            <Icon name="more" size="m" />
+          </button>
+        </NicknameAndIconWrapper>
+        <ContentText fontSize={getRem(13)}>{content}</ContentText>
+        <UpdatedAtText fontSize={getRem(13)}>{updatedAt}</UpdatedAtText>
+      </Container>
+      <CommentBottomSheet open={isOpen} onClose={close}>
+        수정 삭제
+      </CommentBottomSheet>
+    </>
   );
 };
 
