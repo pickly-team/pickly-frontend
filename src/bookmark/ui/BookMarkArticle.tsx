@@ -27,7 +27,7 @@ const BookMarkArticle = ({
   return (
     <Container>
       <BookMarkImage src={previewImgSrc} />
-      <BookMarkTitle level="h1" fontSize={getRem(24)} weight="bold">
+      <BookMarkTitle level="h1" fontSize={24} weight="bold">
         {title}
       </BookMarkTitle>
       <BookMarkMainInfoWrapper>
@@ -84,49 +84,49 @@ const BookMarkSubInfo = ({
 const Container = styled.article``;
 const BookMarkImage = styled.img`
   width: 100%;
-  height: 247px;
+  height: ${getRem(247)};
   object-fit: cover;
   border-radius: 0 0 32px 32px;
 `;
 
 const BookMarkTitle = styled(Text.Header)`
-  margin-top: 28px;
+  margin-top: ${getRem(28)};
 `;
 
 const BookMarkMainInfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: ${getRem(15)};
 `;
 
 const CategoryButtonWrapper = styled.div`
-  width: 154px;
+  width: ${getRem(154)};
 `;
 
 const LikeAndMessageIconWrapper = styled.div`
   display: flex;
   align-items: center;
-  column-gap: 12px;
+  column-gap: ${getRem(12)};
 `;
 
 const BookMarkSubInfoWrapper = styled.div`
-  padding: 10px;
+  padding: ${getRem(10)};
   > * {
-    margin-bottom: 10px;
+    margin-bottom: ${getRem(10)};
   }
 `;
 const SubInfoRow = styled.div`
   display: flex;
   align-items: center;
-  column-gap: 10px;
+  column-gap: ${getRem(10)};
 `;
 
 const SubInfoDescriptionText = styled(Text.Span)`
   display: block;
-  width: ${getRem(70)}rem;
+  width: ${getRem(70)};
 `;
 const SubInfoTextWrapper = styled.div`
   width: 100%;
   display: flex;
-  column-gap: 35px;
+  column-gap: ${getRem(35)};
 `;

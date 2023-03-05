@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
-import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
 import { ReactNode } from 'react';
 
@@ -27,7 +26,7 @@ const Header = ({
             <Icon name="backward" size={'m'} />
           </button>
         )}
-        {title && <Text.Div fontSize={getRem(20)}>{title}</Text.Div>}
+        {title && <Text.Div fontSize={20}>{title}</Text.Div>}
       </BackButtonAndTitleWrapper>
       <RightButtonWrapper>{rightButton}</RightButtonWrapper>
     </HeaderContainer>

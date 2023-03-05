@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 import Text from '@/common-ui/Text';
-import getRem from '@/utils/getRem';
 import Icon from '@/common-ui/assets/Icon';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import CommentBottomSheet from '@/comment/ui/CommetBottomSheet';
@@ -20,17 +19,17 @@ const Comment = ({ nickname, content, updatedAt, isWriter }: CommentProps) => {
       <Container>
         <CommentHeader>
           <NicknameTextAndIconWrapper>
-            <NicknameText fontSize={getRem(16)}>{nickname}</NicknameText>
+            <NicknameText fontSize={16}>{nickname}</NicknameText>
             {isWriter && <Icon name={'verify-green'} size={'s'} />}
           </NicknameTextAndIconWrapper>
           <button onClick={open}>
             <Icon name="more" size="m" />
           </button>
         </CommentHeader>
-        <ContentText fontSize={getRem(13)}>{content}</ContentText>
+        <ContentText fontSize={13}>{content}</ContentText>
         <IconAndTextWrapper>
           <Icon name={'time-history-white'} size={'s'} />
-          <UpdatedAtText fontSize={getRem(13)}>{updatedAt}</UpdatedAtText>
+          <UpdatedAtText fontSize={13}>{updatedAt}</UpdatedAtText>
         </IconAndTextWrapper>
       </Container>
       <CommentBottomSheet open={isOpen} onClose={close}>
