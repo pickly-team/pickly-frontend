@@ -2,6 +2,7 @@
 import { ColorType, theme } from '@/styles/theme';
 import { css } from '@emotion/react';
 import type { FunctionComponent, HTMLAttributes } from 'react';
+import getRem from '@/utils/getRem';
 
 type StrictPropsWithChildren<P = unknown> = P & { children: string };
 
@@ -30,10 +31,10 @@ interface HeaderTextProps extends TextProps {
 const cssText = ({
   weight,
   color = 'white',
-  fontSize,
+  fontSize = 10,
 }: Omit<TextProps, 'children'>) =>
   css`
-    font-size: ${fontSize}rem;
+    font-size: ${getRem(fontSize)};
     color: ${theme.colors[color]};
     font-family: ${weight === 'bold'
       ? 'NanumSquareRoundB'
