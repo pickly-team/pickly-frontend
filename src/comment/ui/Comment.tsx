@@ -18,12 +18,15 @@ const Comment = ({ nickname, content, updatedAt, isWriter }: CommentProps) => {
   return (
     <>
       <Container>
-        <NicknameAndIconWrapper>
-          <NicknameText fontSize={getRem(16)}>{nickname}</NicknameText>
+        <CommentHeader>
+          <NicknameTextAndIconWrapper>
+            <NicknameText fontSize={getRem(16)}>{nickname}</NicknameText>
+            {isWriter && <Icon name={'verify-green'} size={'s'} />}
+          </NicknameTextAndIconWrapper>
           <button onClick={open}>
             <Icon name="more" size="m" />
           </button>
-        </NicknameAndIconWrapper>
+        </CommentHeader>
         <ContentText fontSize={getRem(13)}>{content}</ContentText>
         <IconAndTextWrapper>
           <Icon name={'time-history-white'} size={'s'} />
@@ -49,9 +52,14 @@ const Container = styled.div`
   row-gap: 10px;
 `;
 
-const NicknameAndIconWrapper = styled.div`
+const CommentHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+`;
+const NicknameTextAndIconWrapper = styled.div`
+  display: flex;
+  column-gap: 8px;
   align-items: center;
 `;
 

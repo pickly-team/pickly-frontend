@@ -59,4 +59,5 @@ export type IconName =
   | 'arrow-circle-up-white'
   | 'calendar-white'
   | 'location-white'
-  | 'time-history-white';
+  | 'time-history-white'
+  | 'verify-green';
