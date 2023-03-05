@@ -4,6 +4,7 @@ import Icon from '@/common-ui/assets/Icon';
 import BookMarkArticle from '@/bookmark/ui/BookMarkArticle';
 import BookMarkLikeButton from '@/bookmark/ui/BookMarkLikeButton';
 import CommentCountInfo from '@/comment/ui/CommentCountInfo';
+import Comment from '@/comment/ui/Comment';
 
 const BookMarkDetailPage = () => {
   const { id } = useParams();
@@ -26,6 +27,12 @@ const BookMarkDetailPage = () => {
         bookMarkUrl="https://velog.io/@aeong98"
         likeButton={<BookMarkLikeButton isLike={false} />}
         messageInfo={<CommentCountInfo commentCount={2} />}
+      />
+      <Comment
+        nickname="피클리 마스터"
+        content="야무진 맛도리 글 👍 자기전에 봐야징"
+        updatedAt="2023/01/31 01:23:11"
+        isWriter
       />
     </>
   );
