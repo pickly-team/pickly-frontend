@@ -1,4 +1,4 @@
-import Header from '@/common-ui/Header';
+import Header from '@/common-ui/Header/Header';
 import Icon from '@/common-ui/assets/Icon';
 import BookMarkArticle from '@/bookmark/ui/BookMarkArticle';
 import BookMarkLikeButton from '@/bookmark/ui/BookMarkLikeButton';
