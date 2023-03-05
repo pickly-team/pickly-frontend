@@ -31,8 +31,8 @@ interface HeaderTextProps extends TextProps {
 const cssText = ({
   weight,
   color = 'white',
-  fontSize = 10,
-}: Omit<TextProps, 'children'>) =>
+  fontSize,
+}: Omit<TextProps, 'children' | 'fonSize'> & { fontSize: number }) =>
   css`
     font-size: ${getRem(fontSize)};
     color: ${theme.colors[color]};
@@ -43,7 +43,7 @@ const cssText = ({
 
 const P: FunctionComponent<TextProps> = ({
   weight = 'regular',
-  fontSize = 1,
+  fontSize = 14,
   color,
   children,
   ...restProps
@@ -57,7 +57,7 @@ const P: FunctionComponent<TextProps> = ({
 
 const Span: FunctionComponent<TextProps> = ({
   weight = 'regular',
-  fontSize = 1,
+  fontSize = 14,
   color,
   children,
   ...restProps
@@ -71,7 +71,7 @@ const Span: FunctionComponent<TextProps> = ({
 
 const Div: FunctionComponent<TextProps> = ({
   weight = 'regular',
-  fontSize = 1,
+  fontSize = 14,
   color,
   children,
   ...restProps
@@ -86,7 +86,7 @@ const Div: FunctionComponent<TextProps> = ({
 const Header: FunctionComponent<HeaderTextProps> = ({
   level,
   weight = 'regular',
-  fontSize = 1,
+  fontSize = 14,
   color,
   children,
   ...restProps
