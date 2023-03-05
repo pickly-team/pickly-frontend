@@ -15,7 +15,6 @@ jobs:
     steps:
       - name: Checkbox
       - uses: actions/checkout@v1
-        run: yarn
 
       - name: Setup Node
         uses: actions/setup-node@v3
