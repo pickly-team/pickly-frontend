@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import Header from '@/common-ui/Header';
 import Icon from '@/common-ui/assets/Icon';
 import BookMarkArticle from '@/bookmark/ui/BookMarkArticle';
@@ -9,8 +8,6 @@ import CommentUploadInput from '@/comment/ui/CommentUploadInput';
 import styled from '@emotion/styled';
 
 const BookMarkDetailPage = () => {
-  const { id } = useParams();
-
   return (
     <>
       <Header
