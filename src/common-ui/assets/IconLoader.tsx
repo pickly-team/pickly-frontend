@@ -177,6 +177,7 @@ const IconLoader = () => (
           </clipPath>
         </defs>
       </symbol>
+<<<<<<< 8683067a7c98b5d9ffa45c95f86cb91b8d453338
       <symbol id="arrow-down-green" viewBox="0 0 15 10">
         <path
           fill="#A7E100"
@@ -190,6 +191,8 @@ const IconLoader = () => (
           d="M1.762 0 7.5 6.18 13.238 0 15 1.903 7.5 10 0 1.903 1.762 0Z"
         />
       </symbol>
+=======
+>>>>>>> b82e65c2013effe8ae55c69a2d7003713a299f25
     </defs>
   </svg>
 );
