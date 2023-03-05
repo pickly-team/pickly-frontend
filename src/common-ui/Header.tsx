@@ -3,6 +3,7 @@ import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
+import { ReactNode } from 'react';
 
 interface HeaderProps {
   showBackButton?: boolean;
