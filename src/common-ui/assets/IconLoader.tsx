@@ -184,6 +184,12 @@ const IconLoader = () => (
         />
 >>>>>>> 86b27196046679878cb24f8e480897c0bc6a8b0e
       </symbol>
+      <symbol id="arrow-down-green" viewBox="0 0 15 10">
+        <path
+          fill="#A7E100"
+          d="M1.762 0 7.5 6.18 13.238 0 15 1.903 7.5 10 0 1.903 1.762 0Z"
+        />
+      </symbol>
     </defs>
   </svg>
 );
