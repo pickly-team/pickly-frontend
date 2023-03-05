@@ -50,4 +50,5 @@ export type IconName =
   | 'profile-green'
   | 'plus'
   | 'plus-dark'
-  | 'arrow-down-green';
+  | 'arrow-down-green'
+  | 'search';
