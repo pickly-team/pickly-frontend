@@ -35,6 +35,6 @@ const StyledButton = styled(Button)`
 
 const ButtonInnerWrapper = styled.div`
   width: 100%;
-  padding: ${getRem(10, 20)}
+  padding: ${getRem(10, 20)};
   text-align: left;
 `;

@@ -6,6 +6,7 @@ import CommentCountInfo from '@/comment/ui/CommentCountInfo';
 import Comment from '@/comment/ui/Comment';
 import CommentUploadInput from '@/comment/ui/CommentUploadInput';
 import styled from '@emotion/styled';
+import getRem from '@/utils/getRem';
 
 const BookMarkDetailPage = () => {
   return (
@@ -65,12 +66,12 @@ const BookMarkDetailPage = () => {
 export default BookMarkDetailPage;
 
 const Body = styled.div`
-  padding: 0 10px;
+  padding: ${getRem(0, 10)};
 `;
 
 const CommentListWrapper = styled.div`
   > * + * {
-    margin-bottom: 10px;
+    margin-bottom: ${getRem(10)};
   }
 `;
 
