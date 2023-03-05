@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import IconLoader from './common-ui/assets/IconLoader';
 import GlobalStyle from './styles/GlobalStyle';
+import { navigatePath } from '@/constants/navigatePath';
+import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
+import Layout from '@/common-ui/Layout';
 
 const queryClient = new QueryClient();
 
@@ -15,9 +18,15 @@ const App = () => {
         <BrowserRouter>
           <IconLoader />
           <GlobalStyle />
-          <Routes>
-            <Route path={'/'} element={<Bear />} />
-          </Routes>
+          <Layout>
+            <Routes>
+              <Route path={navigatePath.MAIN} element={<Bear />} />
+              <Route
+                path={navigatePath.BOOKMARK_DETAIL}
+                element={<BookMarkDetailPage />}
+              />
+            </Routes>
+          </Layout>
         </BrowserRouter>
       </QueryClientProvider>
     </ThemeProvider>
