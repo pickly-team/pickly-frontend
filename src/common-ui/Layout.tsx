@@ -1,8 +1,14 @@
 import { ReactNode } from 'react';
 import styled from '@emotion/styled';
+import BottomNavigation from '@/common-ui/BottomNavigation';
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  return <LayoutContainer>{children}</LayoutContainer>;
+  return (
+    <LayoutContainer>
+      {children}
+      <BottomNavigation />
+    </LayoutContainer>
+  );
 };
 
 export default Layout;
