@@ -68,7 +68,7 @@ const GETBookMarkList = {
           id: uuid(),
           title: '발가락으로 만드는 CRUD 게시판 발가락으로 만드는 CRUD 게시판',
           img_src:
-            'https://user-images.githubusercontent.com/54137044/222968023-210fe434-eeec-4ea4-982f-650b82948f8a.png',
+            'https://user-images.githubusercontent.com/54137044/222977918-198a3ce1-d139-4755-b5d5-6f3152dcbbb3.png',
           is_liked: randomBoolean(),
           is_bookmarked: randomBoolean(),
           is_message: randomBoolean(),
