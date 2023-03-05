@@ -183,6 +183,7 @@ const IconLoader = () => (
           d="M1.762 0 7.5 6.18 13.238 0 15 1.903 7.5 10 0 1.903 1.762 0Z"
         />
       </symbol>
+<<<<<<< 6b240242114a8c4f00e037ce74952c715d21960f
       <symbol id="arrow-down-green" viewBox="0 0 15 10">
         <path
           fill="#A7E100"
