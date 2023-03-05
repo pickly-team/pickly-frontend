@@ -164,7 +164,6 @@ const IconLoader = () => (
         />
         <rect width="20" height="2" y="9" fill="#212121" rx="1" />
       </symbol>
-<<<<<<< 8880c662055308231c5aa2c5fd595486e33c32b2
       <symbol id="search" viewBox="0 0 20 20">
         <g clipPath="url(#clip0_813_9506)">
           <path
@@ -177,7 +176,7 @@ const IconLoader = () => (
             <rect width="24" height="24" fill="white" />
           </clipPath>
         </defs>
-=======
+      </symbol>
       <symbol id="arrow-down-green" viewBox="0 0 15 10">
         <path
           fill="#A7E100"
