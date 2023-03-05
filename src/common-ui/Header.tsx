@@ -41,8 +41,8 @@ const HeaderContainer = styled.div`
   top: 0;
   left: 0;
   background-color: ${theme.colors.black};
-  padding: ${getRem(8, 20)}
-  height: ${getRem(56)}
+  padding: ${getRem(8, 20)};
+  height: ${getRem(56)};
   width: 100%;
   display: flex;
   align-items: center;
@@ -51,7 +51,7 @@ const HeaderContainer = styled.div`
 
 const BackButtonAndTitleWrapper = styled.div`
   display: flex;
-  column-gap: ${getRem(16)}
+  column-gap: ${getRem(16)};
   align-items: center;
 `;
 
