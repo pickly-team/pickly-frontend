@@ -4,6 +4,7 @@ import Text from '@/common-ui/Text';
 import Icon from '@/common-ui/assets/Icon';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import CommentBottomSheet from '@/comment/ui/CommetBottomSheet';
+import getRem from '@/utils/getRem';
 
 interface CommentProps {
   nickname: string;
@@ -42,13 +43,13 @@ const Comment = ({ nickname, content, updatedAt, isWriter }: CommentProps) => {
 export default Comment;
 
 const Container = styled.div`
-  width: 100%;
-  height: 110px;
-  background-color: ${theme.colors.grey800};
-  padding: 15px 20px;
-  border-radius: 7px;
   display: grid;
-  row-gap: 10px;
+  row-gap: ${getRem(10)};
+  width: 100%;
+  height: ${getRem(110)};
+  padding: ${getRem(15, 20)};
+  border-radius: ${getRem(7)};
+  background-color: ${theme.colors.grey800};
 `;
 
 const CommentHeader = styled.div`
@@ -58,8 +59,8 @@ const CommentHeader = styled.div`
 `;
 const NicknameTextAndIconWrapper = styled.div`
   display: flex;
-  column-gap: 8px;
   align-items: center;
+  column-gap: ${getRem(8)};
 `;
 
 const NicknameText = styled(Text.Span)``;
@@ -68,5 +69,5 @@ const UpdatedAtText = styled(Text.Span)``;
 const IconAndTextWrapper = styled.div`
   display: flex;
   align-items: center;
-  column-gap: 8px;
+  column-gap: ${getRem(8)};
 `;

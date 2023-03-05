@@ -3,6 +3,7 @@ import Input from '@/common-ui/Input';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 import Icon from '@/common-ui/assets/Icon';
+import getRem from '@/utils/getRem';
 
 const CommentUploadInput = () => {
   const [comment, setComment] = useState<string>('');
@@ -30,9 +31,9 @@ export default CommentUploadInput;
 
 const Container = styled.form`
   display: flex;
-  column-gap: 10px;
   align-items: center;
-  padding: 10px;
+  column-gap: ${getRem(10)};
+  padding: ${getRem(10)};
   background-color: ${theme.colors.grey900};
 `;
 

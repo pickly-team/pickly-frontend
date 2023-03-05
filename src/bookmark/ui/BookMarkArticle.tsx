@@ -86,7 +86,7 @@ const BookMarkImage = styled.img`
   width: 100%;
   height: ${getRem(247)};
   object-fit: cover;
-  border-radius: 0 0 32px 32px;
+  border-radius: ${getRem(0, 0, 32, 32)};
 `;
 
 const BookMarkTitle = styled(Text.Header)`

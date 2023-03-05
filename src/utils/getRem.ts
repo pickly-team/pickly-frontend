@@ -1,9 +1,5 @@
-function getRem(pixels: number | number[]): string {
-  if (typeof pixels === 'number') {
-    return `${calculateRem(pixels)}rem`;
-  } else {
-    return pixels.map((pixel) => `${calculateRem(pixel)}rem`).join(' ');
-  }
+function getRem(...pixels: number[]): string {
+  return pixels.map((pixel) => `${calculateRem(pixel)}rem`).join(' ');
 }
 
 const calculateRem = (pixel: number) => {

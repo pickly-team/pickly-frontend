@@ -3,6 +3,7 @@ import BottomSheet, {
 } from '@/common-ui/BottomSheet/BottomSheet';
 import Button from '@/common-ui/Button';
 import styled from '@emotion/styled';
+import getRem from '@/utils/getRem';
 
 const CommentBottomSheet = ({ ...restProps }: BottomSheetProps) => {
   return (
@@ -25,7 +26,7 @@ const CommentBottomSheet = ({ ...restProps }: BottomSheetProps) => {
 export default CommentBottomSheet;
 
 const BottomSheetInnerWrapper = styled.div`
-  padding: 10px 0 20px;
+  padding: ${getRem(10, 0, 20)};
 `;
 
 const StyledButton = styled(Button)`
@@ -34,6 +35,6 @@ const StyledButton = styled(Button)`
 
 const ButtonInnerWrapper = styled.div`
   width: 100%;
-  padding: 10px 20px;
+  padding: ${getRem(10, 20)}
   text-align: left;
 `;
