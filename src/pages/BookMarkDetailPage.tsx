@@ -6,6 +6,7 @@ import BookMarkLikeButton from '@/bookmark/ui/BookMarkLikeButton';
 import CommentCountInfo from '@/comment/ui/CommentCountInfo';
 import Comment from '@/comment/ui/Comment';
 import CommentUploadInput from '@/comment/ui/CommentUploadInput';
+import styled from '@emotion/styled';
 
 const BookMarkDetailPage = () => {
   const { id } = useParams();
@@ -35,9 +36,18 @@ const BookMarkDetailPage = () => {
         updatedAt="2023/01/31 01:23:11"
         isWriter
       />
-      <CommentUploadInput />
+      <CommentUploadInputBottomBar>
+        <CommentUploadInput />
+      </CommentUploadInputBottomBar>
     </>
   );
 };
 
 export default BookMarkDetailPage;
+
+const CommentUploadInputBottomBar = styled.div`
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+`;

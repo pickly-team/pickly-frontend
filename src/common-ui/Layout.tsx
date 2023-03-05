@@ -8,6 +8,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 export default Layout;
 
 const LayoutContainer = styled.div`
+  position: relative;
   max-width: 480px;
   height: 100vh;
   margin: 0 auto;
