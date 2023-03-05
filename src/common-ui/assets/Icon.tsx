@@ -50,8 +50,11 @@ export type IconName =
   | 'profile-green'
   | 'plus'
   | 'plus-dark'
+<<<<<<< 40a7ad0ce35371b3f35b1542bf219404b9471ff4
 <<<<<<< 6b240242114a8c4f00e037ce74952c715d21960f
 <<<<<<< 8683067a7c98b5d9ffa45c95f86cb91b8d453338
+=======
+>>>>>>> 23dd820333ee0026448f68ab7016946dbaeb6931
   | 'arrow-down-green'
   | 'search'
   | 'arrow-down-green';
