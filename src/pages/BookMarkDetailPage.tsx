@@ -75,7 +75,7 @@ const CommentListWrapper = styled.div`
 `;
 
 const CommentUploadInputBottomBar = styled.div`
-  position: absolute;
+  position: sticky;
   width: 100%;
   left: 0;
   bottom: 0;

@@ -13,7 +13,12 @@ const CommentUploadInput = () => {
   };
   return (
     <Container>
-      <Input value={comment} onChange={onChange} backgroundColor={'black'} />
+      <StyledInput
+        value={comment}
+        onChange={onChange}
+        backgroundColor={'black'}
+        placeholder="댓글을 입력하세요"
+      />
       <button>
         <Icon name={'arrow-circle-up-white'} size={'l'} />
       </button>
@@ -29,4 +34,10 @@ const Container = styled.form`
   align-items: center;
   padding: 10px;
   background-color: ${theme.colors.grey900};
+`;
+
+const StyledInput = styled(Input)`
+  ::placeholder {
+    color: ${theme.colors.grey800};
+  }
 `;

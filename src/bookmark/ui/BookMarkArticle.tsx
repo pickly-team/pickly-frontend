@@ -27,7 +27,7 @@ const BookMarkArticle = ({
   return (
     <Container>
       <BookMarkImage src={previewImgSrc} />
-      <BookMarkTitle level="h1" fontSize={getRem(24)}>
+      <BookMarkTitle level="h1" fontSize={getRem(24)} weight="bold">
         {title}
       </BookMarkTitle>
       <BookMarkMainInfoWrapper>
@@ -74,7 +74,7 @@ const BookMarkSubInfo = ({
     <SubInfoRow>
       {icon}
       <SubInfoTextWrapper>
-        <Text.Span>{description}</Text.Span>
+        <SubInfoDescriptionText>{description}</SubInfoDescriptionText>
         {content}
       </SubInfoTextWrapper>
     </SubInfoRow>
@@ -119,6 +119,11 @@ const SubInfoRow = styled.div`
   display: flex;
   align-items: center;
   column-gap: 10px;
+`;
+
+const SubInfoDescriptionText = styled(Text.Span)`
+  display: block;
+  width: ${getRem(70)}rem;
 `;
 const SubInfoTextWrapper = styled.div`
   width: 100%;

@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <LayoutContainer>
-      <LayoutInnerContainer>{children}</LayoutInnerContainer>
+      <InnerWrapper>{children}</InnerWrapper>
       {isShowBottomNavigation && <BottomNavigation />}
     </LayoutContainer>
   );
@@ -29,7 +29,7 @@ const LayoutContainer = styled.div`
   overflow: hidden;
 `;
 
-const LayoutInnerContainer = styled.div`
+const InnerWrapper = styled.div`
   height: 100vh;
   overflow: auto;
 `;
