@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <LayoutContainer>
-      {children}
+      <LayoutInnerContainer>{children}</LayoutInnerContainer>
       {isShowBottomNavigation && <BottomNavigation />}
     </LayoutContainer>
   );
@@ -25,6 +25,11 @@ export default Layout;
 const LayoutContainer = styled.div`
   position: relative;
   max-width: 480px;
-  height: 100vh;
   margin: 0 auto;
+  overflow: hidden;
+`;
+
+const LayoutInnerContainer = styled.div`
+  height: 100vh;
+  overflow: auto;
 `;

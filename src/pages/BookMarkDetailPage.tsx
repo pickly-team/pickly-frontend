@@ -47,6 +47,12 @@ const BookMarkDetailPage = () => {
             updatedAt="2023/01/31 01:23:11"
             isWriter={false}
           />
+          <Comment
+            nickname="피클리 마스터"
+            content="야무진 맛도리 글 👍 자기전에 봐야징"
+            updatedAt="2023/01/31 01:23:11"
+            isWriter={false}
+          />
         </CommentListWrapper>
       </Body>
       <CommentUploadInputBottomBar>
@@ -63,8 +69,6 @@ const Body = styled.div`
 `;
 
 const CommentListWrapper = styled.div`
-  overflow: auto;
-  height: calc(100vh - 580px);
   > * + * {
     margin-bottom: 10px;
   }
