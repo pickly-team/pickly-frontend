@@ -52,4 +52,4 @@ export type IconName =
   | 'plus-dark'
   | 'search';
   | 'plus-dark'
-  | 'arrow-down-green';
+  | 'arrow-down-green'

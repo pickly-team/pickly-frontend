@@ -128,13 +128,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const TriggerButton = styled(Button)`
-  border: 2px solid ${theme.colors.primary};
-  background-color: ${theme.colors.black};
-  height: 35px;
-  color: ${theme.colors.primary};
-`;
-
 const SelectUlWrapper = styled.div`
   width: 100%;
   border-radius: 10px;
