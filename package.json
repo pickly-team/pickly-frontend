@@ -10,7 +10,8 @@
     "converage": "jest --converage",
     "lint": "eslint .",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "npx chromatic --project-token=%CHROMATIC_PROJECT_TOKEN% --auto-accept-changes"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
