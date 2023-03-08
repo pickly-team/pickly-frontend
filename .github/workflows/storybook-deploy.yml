@@ -28,6 +28,6 @@ jobs:
         run: yarn build-storybook
 
       - name: Deploy storybook to Chromatic
-        run: yarn chromatic
+        run: npx chromatic --project-token=${{ env.CHROMATIC_PROJECT_TOKEN }} --auto-accept-changes
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
