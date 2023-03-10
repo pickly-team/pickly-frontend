@@ -12,12 +12,12 @@
     transform: translate3d(0, 0px, 0);
     transform: translate3d(0, var(--rsbs-overlay-translate-y, 0px), 0);
     will-change: height;
-    z-index: 9999;
+    z-index: 100;
 }
 
 [data-rsbs-overlay]:focus {
     outline: none;
-    z-index: 9999;
+    z-index: 100;
 }
 
 [data-rsbs-is-blocking='false'] [data-rsbs-overlay] {
