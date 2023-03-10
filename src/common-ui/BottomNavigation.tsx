@@ -21,7 +21,7 @@ const BottomNavigation = () => {
     <>
       <NavigationWrapper>
         <Link to="/" css={plusButton}>
-          <Icon name="plus-dark" size="m" />
+          <Icon name="plus" size="m" />
         </Link>
         <Link to={navigatePath.MAIN} css={iconStyle}>
           {pathname === `${navigatePath.MAIN}` && (
@@ -69,7 +69,7 @@ const NavigationWrapper = styled.div`
   left: 0;
   right: 0;
   background-color: ${theme.colors.grey900};
-  z-index: 10;
+  z-index: 1;
   height: 5rem;
 `;
 
@@ -86,7 +86,7 @@ const plusButton = css`
   justify-content: center;
   align-items: center;
   position: fixed;
-  bottom: 4rem;
+  bottom: 3rem;
 
   background-color: ${theme.colors.lightPrimary};
   width: 4rem;
