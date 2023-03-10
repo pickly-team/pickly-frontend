@@ -1,6 +1,6 @@
 import { ColorType, theme } from '@/styles/theme';
 import { css } from '@emotion/react';
-import { ButtonHTMLAttributes, FunctionComponent } from 'react';
+import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from 'react';
 
 export type ButtonProps = {
   buttonColor?: ColorType;
@@ -10,7 +10,7 @@ export type ButtonProps = {
   width?: number;
   height?: number;
   fontSize?: number;
-  children: string;
+  children: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 /**
