@@ -1,5 +1,7 @@
-import bookmark, { ClientBookMarkItem } from '@/bookmarks/api/bookmark';
-import useGetHandler from '@/common/service/hooks/useGETHandler';
+import {
+  ClientBookMarkItem,
+  useGETBookMarkListQuery,
+} from '@/bookmarks/api/bookmark';
 import { useEffect, useState } from 'react';
 
 export type CategoryType = {
@@ -10,9 +12,9 @@ export type CategoryType = {
 const useBookMarkHandler = () => {
   // SEVER
   // 1. 북마크 리스트 조회
-  const { data: bookMarkList, isLoading } = useGetHandler(async () =>
-    bookmark.GETBookMarkList.MockAPI(),
-  );
+  const { data: bookMarkList, isLoading } = useGETBookMarkListQuery({
+    userId: '1',
+  });
 
   // INTERACTION
   // 1. 카테고리 변경
@@ -52,10 +54,9 @@ const useBookMarkHandler = () => {
   }, [bookMarkList?.bookmark_list]);
 
   const onChangeEdit = () => {
-    if (isEdit) {
-      if (deleteBookMarkList.length) {
-        setDeleteBS(true);
-      }
+    if (isEdit && deleteBookMarkList.length) {
+      setDeleteBS(true);
+      return;
     }
     setEdit(!isEdit);
   };

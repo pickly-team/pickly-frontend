@@ -1,6 +1,17 @@
+import { navigatePath } from '@/constants/navigatePath';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 const BASE_URL = '';
+
+const DOMAIN = 'BOOKMARK';
+
+const GET_BOOKMARK_LIST = (userId: string) => [
+  getKeyofObject(navigatePath, '/'),
+  DOMAIN,
+  'BOOKMARK_LIST',
+  userId,
+];
 
 /** API call 결과 */
 interface SeverBookMarkItem {
@@ -39,7 +50,7 @@ export interface bookmarkGETBookMarkList {
 const GETBookMarkList = {
   API: async () => {
     const { data } = await axios.get<bookmarkGETBookMarkListResponse>(
-      `${BASE_URL}/bookmark/list`,
+      `${BASE_URL}/bookmarks/list`,
     );
     return data;
   },
@@ -81,6 +92,22 @@ const GETBookMarkList = {
   },
 };
 
+export interface GETBookMarkListRequest {
+  userId: string;
+}
+
+export const useGETBookMarkListQuery = ({ userId }: GETBookMarkListRequest) => {
+  return useQuery(
+    GET_BOOKMARK_LIST(userId),
+    async () => GETBookMarkList.MockAPI(),
+    {
+      refetchOnWindowFocus: true,
+      retry: 0,
+      enabled: !!userId,
+    },
+  );
+};
+
 // SERVER 연동 후 삭제
 const range = (start: number, end: number) => {
   const array = [];
@@ -98,5 +125,9 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const randomBoolean = () => Math.random() >= 0.5;
 
 export default {
-  GETBookMarkList,
+  useGETBookMarkListQuery,
 };
+
+// TODO : 추후 테스트 코드 작성
+const getKeyofObject = <T extends object>(obj: T, value: unknown) =>
+  (Object.keys(obj) as (keyof T)[]).find((key) => obj[key] === value);
