@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
+import { numberWithCommas } from '@/utils/numberWithCommas';
 
 const StatsBox = ({
   numberOfLikes,
@@ -40,10 +41,6 @@ const StatsBox = ({
     </StyleWrapper>
   );
 };
-
-function numberWithCommas(x: number): string {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
 
 export default StatsBox;
 
