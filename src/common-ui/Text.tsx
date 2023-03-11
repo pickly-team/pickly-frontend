@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { ColorType, theme } from '@/styles/theme';
 import { css } from '@emotion/react';
-import type { FunctionComponent, HTMLAttributes } from 'react';
+import type { FunctionComponent, HTMLAttributes, ReactNode } from 'react';
 
 type StrictPropsWithChildren<P = unknown> = P & { children: string };
 
@@ -9,6 +9,7 @@ type TextProps = {
   weight?: 'bold' | 'regular';
   fontSize?: number;
   color?: ColorType;
+  children: ReactNode;
 } & StrictPropsWithChildren &
   HTMLAttributes<HTMLParagraphElement | HTMLSpanElement | HTMLDivElement>;
 
@@ -45,8 +46,13 @@ const P: FunctionComponent<TextProps> = ({
   fontSize = 1,
   color,
   children,
+  ...restProps
 }) => {
-  return <p css={cssText({ color, fontSize, weight })}>{children}</p>;
+  return (
+    <p {...restProps} css={cssText({ color, fontSize, weight })}>
+      {children}
+    </p>
+  );
 };
 
 const Span: FunctionComponent<TextProps> = ({
@@ -54,8 +60,13 @@ const Span: FunctionComponent<TextProps> = ({
   fontSize = 1,
   color,
   children,
+  ...restProps
 }) => {
-  return <span css={cssText({ color, fontSize, weight })}>{children}</span>;
+  return (
+    <span {...restProps} css={cssText({ color, fontSize, weight })}>
+      {children}
+    </span>
+  );
 };
 
 const Div: FunctionComponent<TextProps> = ({
@@ -63,8 +74,13 @@ const Div: FunctionComponent<TextProps> = ({
   fontSize = 1,
   color,
   children,
+  ...restProps
 }) => {
-  return <span css={cssText({ color, fontSize, weight })}>{children}</span>;
+  return (
+    <div {...restProps} css={cssText({ color, fontSize, weight })}>
+      {children}
+    </div>
+  );
 };
 
 const Header: FunctionComponent<HeaderTextProps> = ({
@@ -73,9 +89,14 @@ const Header: FunctionComponent<HeaderTextProps> = ({
   fontSize = 1,
   color,
   children,
+  ...restProps
 }) => {
   const Tag = level;
-  return <Tag css={cssText({ color, fontSize, weight })}>{children}</Tag>;
+  return (
+    <Tag {...restProps} css={cssText({ color, fontSize, weight })}>
+      {children}
+    </Tag>
+  );
 };
 
 type TextType = {
