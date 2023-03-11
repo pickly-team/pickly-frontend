@@ -4,6 +4,12 @@ import Text from '@/common-ui/Text';
 import Icon from '@/common-ui/assets/Icon';
 import Button from '@/common-ui/Button';
 import WhiteRoundedBox from '@/members/ui/WhiteRoundBox';
+import {
+  NotificationSetting,
+  toReadableNotificationSettingType,
+  toReadableTime,
+} from '@/notification/api/notification';
+import { useState } from 'react';
 
 const NotificationSettingBox = () => {
   return (
@@ -12,23 +18,8 @@ const NotificationSettingBox = () => {
         알림 시간 관리
       </Text.Span>
       <NotificationRow>
-        <NotificationSettingTextContainer>
-          <Icon name={'alarm-green'} size={'s'} />
-          <Text.Span
-            color={'grey900'}
-            weight="bold"
-            fontSize={0.75}
-            style={{ marginLeft: '0.625rem', marginRight: '0.625rem' }}
-          >
-            매일
-          </Text.Span>
-          <Text.Span color={'grey600'} weight="bold" fontSize={0.625}>
-            오전 10시
-          </Text.Span>
-        </NotificationSettingTextContainer>
-        <Button width={40} disabled style={{ fontWeight: 'bold' }}>
-          변경하기
-        </Button>
+        <NotificationSettingText />
+        <ChangeButton />
       </NotificationRow>
     </WhiteRoundedBox>
   );
@@ -46,3 +37,36 @@ const NotificationSettingTextContainer = styled.div`
   display: flex;
   align-items: center;
 `;
+const NotificationSettingText = () => {
+  const [notificationSetting] = useState<NotificationSetting>({
+    type: 'daily',
+    time: {
+      hour: 10,
+      minute: 0,
+    },
+  });
+
+  return (
+    <NotificationSettingTextContainer>
+      <Icon name={'alarm-green'} size={'s'} />
+      <Text.Span
+        color={'grey900'}
+        weight="bold"
+        fontSize={0.75}
+        style={{ marginLeft: '0.625rem', marginRight: '0.625rem' }}
+      >
+        {toReadableNotificationSettingType(notificationSetting)}
+      </Text.Span>
+      <Text.Span color={'grey600'} weight="bold" fontSize={0.625}>
+        {toReadableTime(notificationSetting.time)}
+      </Text.Span>
+    </NotificationSettingTextContainer>
+  );
+};
+const ChangeButton = () => {
+  return (
+    <Button width={40} disabled style={{ fontWeight: 'bold' }}>
+      변경하기
+    </Button>
+  );
+};
