@@ -15,6 +15,7 @@ const useGetHandler = <T>(fetchCallback: () => Promise<T>, enabled = true) => {
     } catch (e) {
       console.error(e);
       setError(e);
+      return null;
     } finally {
       setIsLoading(false);
     }

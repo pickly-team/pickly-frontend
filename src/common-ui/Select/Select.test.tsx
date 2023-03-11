@@ -1,7 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { render } from '@/test/utils';
-import Select from '@/common-ui/Select';
-import Button from '@/common-ui/Button';
+import Select from '@/common-ui/Select/Select';
 import { useState } from 'react';
 import userEvent from '@testing-library/user-event';
 
@@ -14,7 +13,7 @@ const RenderUsage = () => {
   const [value, setValue] = useState('1');
 
   return (
-    <Select value={value} onChange={setValue} TriggerButton={Button}>
+    <Select value={value} onChange={setValue}>
       {OPTIONS.map((option) => (
         <option value={option.value} key={option.value}>
           {option.label}
@@ -74,12 +73,7 @@ describe('Select test', () => {
     beforeEach(() => {
       //when
       render(
-        <Select
-          value={'1'}
-          onChange={() => {}}
-          TriggerButton={Button}
-          isSearchActive
-        >
+        <Select value={'1'} onChange={() => {}} isSearchActive>
           {OPTIONS.map((option) => (
             <option value={option.value} key={option.value}>
               {option.label}

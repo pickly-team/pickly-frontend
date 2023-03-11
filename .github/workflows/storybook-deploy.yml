@@ -1,0 +1,33 @@
+name: Storybook deploy
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: StoryBook Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install Yarn
+        run: npm i -g yarn
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name : Storybook build
+        run: yarn build-storybook
+
+      - name: Deploy storybook to Chromatic
+        run: npx chromatic --project-token=${{ env.CHROMATIC_PROJECT_TOKEN }} --auto-accept-changes
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

@@ -38,7 +38,7 @@ const ToggleHandler = ({
     >
       <Text.Span color="lightPrimary">백엔드</Text.Span>
       <IconWrapper>
-        <Icon name="arrow-down-green" size="xs" />
+        <Icon name="alarm-green" size="xs" />
       </IconWrapper>
     </Button>
   );
