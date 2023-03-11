@@ -20,6 +20,7 @@ interface SelectProps {
   value: string | undefined;
   onChange: (selectedValue: string) => void;
   isSearchActive?: boolean;
+  buttonStyle?: React.CSSProperties;
 }
 
 const Select = ({
@@ -27,6 +28,7 @@ const Select = ({
   onChange,
   children,
   isSearchActive = false,
+  buttonStyle,
 }: SelectProps) => {
   const ref = useRef<HTMLSelectElement>(null);
   const { searchValue, onChangeSearch } = useSearch();
@@ -59,7 +61,7 @@ const Select = ({
 
   return (
     <Container>
-      <TriggerButton onClick={toggleSelect}>
+      <TriggerButton style={buttonStyle} onClick={toggleSelect}>
         {buttonText ?? NO_RESULT_TEST}
       </TriggerButton>
       <select ref={ref} style={{ display: 'none' }}>
@@ -133,6 +135,7 @@ const TriggerButton = styled(Button)`
   background-color: ${theme.colors.black};
   height: 35px;
   color: ${theme.colors.primary};
+  margin-right: 2rem;
 `;
 
 const SelectUlWrapper = styled.div`
