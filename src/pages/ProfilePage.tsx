@@ -18,7 +18,11 @@ const ProfilePage = () => {
           numberOfCategories={230}
           numberOfNotes={1234}
         />
-        <ModeInfoBox remainingDays={3} />
+        <ModeInfoBox
+          remainingDays={3}
+          daysPassedSinceCurrentMode={7}
+          numberOfStaleBookmarks={1421}
+        />
         <NotificationSettingBox />
       </LBody>
       <LBottom>
