@@ -9,7 +9,7 @@ const CommentBottomSheet = ({
   ...props
 }: Omit<BottomSheetProps, 'children'>) => {
   return (
-    <BottomSheet {...props}>
+    <BottomSheet maxHeight={30} {...props}>
       <BottomSheetInnerWrapper>
         <StyledButton buttonColor={'grey900'} activeButtonColor={'grey800'}>
           <ButtonInnerWrapper>신고하기</ButtonInnerWrapper>
