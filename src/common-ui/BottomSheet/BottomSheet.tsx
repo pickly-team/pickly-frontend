@@ -6,7 +6,7 @@ import {
 
 import './style.module.css';
 
-interface BottomSheetProps {
+export interface BottomSheetProps {
   children: React.ReactNode;
   open: boolean;
   /** 바텀 시트 닫히는 조건

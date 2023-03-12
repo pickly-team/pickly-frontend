@@ -32,7 +32,7 @@ const cssText = ({
   weight,
   color = 'white',
   fontSize,
-}: Omit<TextProps, 'children'>) =>
+}: Omit<TextProps, 'children' | 'fonSize'> & { fontSize: number }) =>
   css`
     font-size: ${fontSize}rem;
     color: ${theme.colors[color]};
@@ -49,7 +49,7 @@ const P: FunctionComponent<TextProps> = ({
   ...restProps
 }) => {
   return (
-    <p {...restProps} css={cssText({ color, fontSize, weight })}>
+    <p css={cssText({ color, fontSize, weight })} {...restProps}>
       {children}
     </p>
   );
@@ -63,7 +63,7 @@ const Span: FunctionComponent<TextProps> = ({
   ...restProps
 }) => {
   return (
-    <span {...restProps} css={cssText({ color, fontSize, weight })}>
+    <span css={cssText({ color, fontSize, weight })} {...restProps}>
       {children}
     </span>
   );
@@ -77,9 +77,9 @@ const Div: FunctionComponent<TextProps> = ({
   ...restProps
 }) => {
   return (
-    <div {...restProps} css={cssText({ color, fontSize, weight })}>
+    <span css={cssText({ color, fontSize, weight })} {...restProps}>
       {children}
-    </div>
+    </span>
   );
 };
 
@@ -93,7 +93,7 @@ const Header: FunctionComponent<HeaderTextProps> = ({
 }) => {
   const Tag = level;
   return (
-    <Tag {...restProps} css={cssText({ color, fontSize, weight })}>
+    <Tag css={cssText({ color, fontSize, weight })} {...restProps}>
       {children}
     </Tag>
   );

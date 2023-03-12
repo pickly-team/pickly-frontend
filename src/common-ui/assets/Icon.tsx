@@ -1,4 +1,5 @@
 // TODO : 아이콘 사이즈 논의 필요
+
 const sizeMap = {
   l: 28,
   m: 24,
@@ -39,7 +40,6 @@ export type IconName =
   | 'like-green'
   | 'message'
   | 'message-on-green'
-  | 'not-read'
   | 'list'
   | 'list-green'
   | 'people'
@@ -50,4 +50,24 @@ export type IconName =
   | 'profile-green'
   | 'plus'
   | 'plus-dark'
-  | 'search';
+  | 'search'
+  | 'pencil'
+  | 'question'
+  | 'not-read'
+  | 'message-green'
+  | 'calendar-plus'
+  | 'location'
+  | 'badge-green'
+  | 'timeline'
+  | 'send'
+  | 'more'
+  | 'arrow-down-green'
+  | 'check-circle-green'
+  | 'folder'
+  | 'arrow-right'
+  | 'back'
+  | 'plus'
+  | 'heart-fill-green'
+  | 'heart-blank-green'
+  | 'close'
+  | 'bookmark';
