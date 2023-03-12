@@ -28,7 +28,7 @@ const CommentItem = ({
             <NicknameText fontSize={1.2} weight={'bold'}>
               {nickname}
             </NicknameText>
-            {isWriter && <Icon name={'verify-green'} size={'s'} />}
+            {isWriter && <Icon name="badge-green" size={'s'} />}
           </NicknameTextAndIconWrapper>
           <button onClick={open}>
             <Icon name="more" size="m" />
@@ -36,7 +36,7 @@ const CommentItem = ({
         </CommentHeader>
         <ContentText>{content}</ContentText>
         <IconAndTextWrapper>
-          <Icon name={'time-history-white'} size={'s'} />
+          <Icon name="timeline" size={'s'} />
           <UpdatedAtText>{updatedAt}</UpdatedAtText>
         </IconAndTextWrapper>
       </Container>

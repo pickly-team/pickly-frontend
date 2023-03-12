@@ -43,12 +43,12 @@ const BookMarkArticle = ({
       <BookMarkInfoWrapper>
         <BookMarkInfo
           description="등록일자"
-          icon={<Icon name="calendar-white" size="m" />}
+          icon={<Icon name="calendar-plus" size="m" />}
           content={<Text.Span>{createdAt}</Text.Span>}
         />
         <BookMarkInfo
           description="원본 URL"
-          icon={<Icon name="location-white" size="m" />}
+          icon={<Icon name="location" size="m" />}
           content={
             <Link to={bookMarkUrl} target={'_blank'} rel={'noreferrer'}>
               <Text.Span>{bookMarkUrl}</Text.Span>

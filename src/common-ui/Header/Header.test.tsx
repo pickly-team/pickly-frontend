@@ -12,7 +12,7 @@ describe('Header test', () => {
     render(<Header showBackButton={showBackButton} />);
 
     //then
-    screen.getByText('backward');
+    screen.getByText('back');
   });
   it('title 이 보인다.', () => {
     //given

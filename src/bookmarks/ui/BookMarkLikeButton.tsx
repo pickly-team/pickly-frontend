@@ -9,9 +9,9 @@ const BookMarkLikeButton = ({ isLike }: BookMarkLikeButtonProps) => {
     <button>
       {isLike ? (
         //TODO : fill heart green 아이콘 추가
-        <Icon name="heart-green" size="m" />
+        <Icon name="heart-fill-green" size="m" />
       ) : (
-        <Icon name="heart-green" size="m" />
+        <Icon name="heart-blank-green" size="m" />
       )}
     </button>
   );
