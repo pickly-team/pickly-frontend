@@ -3,7 +3,7 @@ import Icon from '@/common-ui/assets/Icon';
 import BookMarkArticle from '@/bookmarks/ui/BookMarkArticle';
 import BookMarkLikeButton from '@/bookmarks/ui/BookMarkLikeButton';
 import CommentCountInfo from '@/comment/ui/CommentCountInfo';
-import Comment from '@/comment/ui/Comment';
+import CommentItem from '@/comment/ui/CommentItem';
 import CommentUploadInput from '@/comment/ui/CommentUploadInput';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
@@ -30,25 +30,25 @@ const BookMarkDetailPage = () => {
           messageInfo={<CommentCountInfo commentCount={2} />}
         />
         <CommentListWrapper>
-          <Comment
+          <CommentItem
             nickname="피클리 마스터"
             content="야무진 맛도리 글 👍 자기전에 봐야징"
             updatedAt="2023/01/31 01:23:11"
             isWriter={true}
           />
-          <Comment
+          <CommentItem
             nickname="피클리 마스터"
             content="야무진 맛도리 글 👍 자기전에 봐야징"
             updatedAt="2023/01/31 01:23:11"
             isWriter={false}
           />
-          <Comment
+          <CommentItem
             nickname="피클리 마스터"
             content="야무진 맛도리 글 👍 자기전에 봐야징"
             updatedAt="2023/01/31 01:23:11"
             isWriter={false}
           />
-          <Comment
+          <CommentItem
             nickname="피클리 마스터"
             content="야무진 맛도리 글 👍 자기전에 봐야징"
             updatedAt="2023/01/31 01:23:11"
@@ -66,12 +66,12 @@ const BookMarkDetailPage = () => {
 export default BookMarkDetailPage;
 
 const Body = styled.div`
-  padding: ${getRem(0, 10)};
+  padding: ${getRem(0, 20)};
 `;
 
 const CommentListWrapper = styled.div`
   > * + * {
-    margin-bottom: ${getRem(10)};
+    margin-bottom: ${getRem(16)};
   }
 `;
 

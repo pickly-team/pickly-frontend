@@ -27,7 +27,7 @@ const BookMarkArticle = ({
   return (
     <Container>
       <BookMarkImage src={previewImgSrc} />
-      <BookMarkTitle level="h1" fontSize={24} weight="bold">
+      <BookMarkTitle level="h1" fontSize={2} weight="bold">
         {title}
       </BookMarkTitle>
       <BookMarkMainInfoWrapper>

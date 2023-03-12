@@ -13,24 +13,31 @@ interface CommentProps {
   isWriter: boolean;
 }
 
-const Comment = ({ nickname, content, updatedAt, isWriter }: CommentProps) => {
+const CommentItem = ({
+  nickname,
+  content,
+  updatedAt,
+  isWriter,
+}: CommentProps) => {
   const { isOpen, open, close } = useBottomSheet();
   return (
     <>
       <Container>
         <CommentHeader>
           <NicknameTextAndIconWrapper>
-            <NicknameText fontSize={16}>{nickname}</NicknameText>
+            <NicknameText fontSize={1.2} weight={'bold'}>
+              {nickname}
+            </NicknameText>
             {isWriter && <Icon name={'verify-green'} size={'s'} />}
           </NicknameTextAndIconWrapper>
           <button onClick={open}>
             <Icon name="more" size="m" />
           </button>
         </CommentHeader>
-        <ContentText fontSize={13}>{content}</ContentText>
+        <ContentText>{content}</ContentText>
         <IconAndTextWrapper>
           <Icon name={'time-history-white'} size={'s'} />
-          <UpdatedAtText fontSize={13}>{updatedAt}</UpdatedAtText>
+          <UpdatedAtText>{updatedAt}</UpdatedAtText>
         </IconAndTextWrapper>
       </Container>
       <CommentBottomSheet open={isOpen} onClose={close} />
@@ -38,7 +45,7 @@ const Comment = ({ nickname, content, updatedAt, isWriter }: CommentProps) => {
   );
 };
 
-export default Comment;
+export default CommentItem;
 
 const Container = styled.div`
   display: grid;

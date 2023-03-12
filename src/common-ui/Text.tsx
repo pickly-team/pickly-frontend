@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { ColorType, theme } from '@/styles/theme';
 import { css } from '@emotion/react';
-import type { FunctionComponent, HTMLAttributes } from 'react';
-import getRem from '@/utils/getRem';
+import type { FunctionComponent, HTMLAttributes, ReactNode } from 'react';
 
 type StrictPropsWithChildren<P = unknown> = P & { children: string };
 
@@ -35,7 +34,7 @@ const cssText = ({
   fontSize,
 }: Omit<TextProps, 'children' | 'fonSize'> & { fontSize: number }) =>
   css`
-    font-size: ${getRem(fontSize)};
+    font-size: ${fontSize}rem;
     color: ${theme.colors[color]};
     font-family: ${weight === 'bold'
       ? 'NanumSquareRoundB'
@@ -44,7 +43,7 @@ const cssText = ({
 
 const P: FunctionComponent<TextProps> = ({
   weight = 'regular',
-  fontSize = 14,
+  fontSize = 1,
   color,
   children,
   ...restProps
@@ -58,7 +57,7 @@ const P: FunctionComponent<TextProps> = ({
 
 const Span: FunctionComponent<TextProps> = ({
   weight = 'regular',
-  fontSize = 14,
+  fontSize = 1,
   color,
   children,
   ...restProps
@@ -72,7 +71,7 @@ const Span: FunctionComponent<TextProps> = ({
 
 const Div: FunctionComponent<TextProps> = ({
   weight = 'regular',
-  fontSize = 14,
+  fontSize = 1,
   color,
   children,
   ...restProps
@@ -87,7 +86,7 @@ const Div: FunctionComponent<TextProps> = ({
 const Header: FunctionComponent<HeaderTextProps> = ({
   level,
   weight = 'regular',
-  fontSize = 14,
+  fontSize = 1,
   color,
   children,
   ...restProps

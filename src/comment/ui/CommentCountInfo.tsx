@@ -6,7 +6,7 @@ const CommentCountInfo = ({ commentCount }: { commentCount: number }) => {
   return (
     <Container>
       <Icon name="message-green" size="m" />
-      <Text.Span fontSize={16}>{`: ${commentCount}`}</Text.Span>
+      <Text.Span fontSize={1.2}>{`: ${commentCount}`}</Text.Span>
     </Container>
   );
 };
