@@ -30,7 +30,7 @@ const BookMarkArticle = ({
       <BookMarkTitle level="h1" fontSize={2} weight="bold">
         {title}
       </BookMarkTitle>
-      <BookMarkMainInfoWrapper>
+      <CategoryAndIconsWrapper>
         <CategoryButtonWrapper>
           <Button>{category}</Button>
         </CategoryButtonWrapper>
@@ -38,14 +38,14 @@ const BookMarkArticle = ({
           {likeButton}
           {messageInfo}
         </LikeAndMessageIconWrapper>
-      </BookMarkMainInfoWrapper>
-      <BookMarkSubInfoWrapper>
-        <BookMarkSubInfo
+      </CategoryAndIconsWrapper>
+      <BookMarkInfoWrapper>
+        <BookMarkInfo
           description="등록일자"
           icon={<Icon name="calendar-white" size="m" />}
           content={<Text.Span>{createdAt}</Text.Span>}
         />
-        <BookMarkSubInfo
+        <BookMarkInfo
           description="원본 URL"
           icon={<Icon name="location-white" size="m" />}
           content={
@@ -54,14 +54,14 @@ const BookMarkArticle = ({
             </a>
           }
         />
-      </BookMarkSubInfoWrapper>
+      </BookMarkInfoWrapper>
     </Container>
   );
 };
 
 export default BookMarkArticle;
 
-const BookMarkSubInfo = ({
+const BookMarkInfo = ({
   description,
   icon,
   content,
@@ -71,13 +71,13 @@ const BookMarkSubInfo = ({
   content: ReactNode;
 }) => {
   return (
-    <SubInfoRow>
+    <InfoRow>
       {icon}
-      <SubInfoTextWrapper>
-        <SubInfoDescriptionText>{description}</SubInfoDescriptionText>
+      <InfoTextWrapper>
+        <InfoDescriptionText>{description}</InfoDescriptionText>
         {content}
-      </SubInfoTextWrapper>
-    </SubInfoRow>
+      </InfoTextWrapper>
+    </InfoRow>
   );
 };
 
@@ -93,7 +93,7 @@ const BookMarkTitle = styled(Text.Header)`
   margin-top: ${getRem(28)};
 `;
 
-const BookMarkMainInfoWrapper = styled.div`
+const CategoryAndIconsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: ${getRem(15)};
@@ -109,23 +109,23 @@ const LikeAndMessageIconWrapper = styled.div`
   column-gap: ${getRem(12)};
 `;
 
-const BookMarkSubInfoWrapper = styled.div`
+const BookMarkInfoWrapper = styled.div`
   padding: ${getRem(10)};
   > * {
     margin-bottom: ${getRem(10)};
   }
 `;
-const SubInfoRow = styled.div`
+const InfoRow = styled.div`
   display: flex;
   align-items: center;
   column-gap: ${getRem(10)};
 `;
 
-const SubInfoDescriptionText = styled(Text.Span)`
+const InfoDescriptionText = styled(Text.Span)`
   display: block;
   width: ${getRem(70)};
 `;
-const SubInfoTextWrapper = styled.div`
+const InfoTextWrapper = styled.div`
   width: 100%;
   display: flex;
   column-gap: ${getRem(35)};
