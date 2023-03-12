@@ -4,6 +4,7 @@ import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 interface BookMarkArticleProps {
   previewImgSrc: string;
@@ -49,9 +50,9 @@ const BookMarkArticle = ({
           description="원본 URL"
           icon={<Icon name="location-white" size="m" />}
           content={
-            <a href={bookMarkUrl} target="_blank" rel="noreferrer">
+            <Link to={bookMarkUrl} target={'_blank'} rel={'noreferrer'}>
               <Text.Span>{bookMarkUrl}</Text.Span>
-            </a>
+            </Link>
           }
         />
       </BookMarkInfoWrapper>
