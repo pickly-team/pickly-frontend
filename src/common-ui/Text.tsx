@@ -10,6 +10,7 @@ type TextProps = {
   weight?: 'bold' | 'regular';
   fontSize?: number;
   color?: ColorType;
+  children: ReactNode;
 } & StrictPropsWithChildren &
   HTMLAttributes<HTMLParagraphElement | HTMLSpanElement | HTMLDivElement>;
 

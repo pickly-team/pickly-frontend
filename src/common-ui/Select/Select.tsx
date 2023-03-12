@@ -1,13 +1,12 @@
 import {
   ChangeEventHandler,
-  FunctionComponent,
-  HTMLAttributes,
+  ReactNode,
   RefObject,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import { ButtonProps } from '@/common-ui/Button';
+import Button from '@/common-ui/Button';
 import styled from '@emotion/styled';
 import Input from '@/common-ui/Input';
 import { theme } from '@/styles/theme';
@@ -16,15 +15,12 @@ import Icon from '@/common-ui/assets/Icon';
 const NO_RESULT_TEST = '선택해주세요';
 const NO_SEARCH_RESULT_TEXT = '검색결과가 없습니다';
 
-interface SelectProps
-  extends Omit<
-    HTMLAttributes<HTMLSelectElement>,
-    'onChange' | 'style' | 'className'
-  > {
+interface SelectProps {
+  children: ReactNode;
   value: string | undefined;
   onChange: (selectedValue: string) => void;
   isSearchActive?: boolean;
-  TriggerButton: FunctionComponent<ButtonProps>;
+  buttonStyle?: React.CSSProperties;
 }
 
 const Select = ({
@@ -32,8 +28,7 @@ const Select = ({
   onChange,
   children,
   isSearchActive = false,
-  TriggerButton,
-  ...restProps
+  buttonStyle,
 }: SelectProps) => {
   const ref = useRef<HTMLSelectElement>(null);
   const { searchValue, onChangeSearch } = useSearch();
@@ -66,10 +61,10 @@ const Select = ({
 
   return (
     <Container>
-      <TriggerButton onClick={toggleSelect}>
+      <TriggerButton style={buttonStyle} onClick={toggleSelect}>
         {buttonText ?? NO_RESULT_TEST}
       </TriggerButton>
-      <select ref={ref} style={{ display: 'none' }} {...restProps}>
+      <select ref={ref} style={{ display: 'none' }}>
         {children}
       </select>
       {isOpen && (
@@ -133,6 +128,14 @@ const useSearch = () => {
 
 const Container = styled.div`
   position: relative;
+`;
+
+const TriggerButton = styled(Button)`
+  border: 2px solid ${theme.colors.primary};
+  background-color: ${theme.colors.black};
+  height: 35px;
+  color: ${theme.colors.primary};
+  margin-right: 2rem;
 `;
 
 const SelectUlWrapper = styled.div`
