@@ -20,13 +20,13 @@ const ModeInfoBox = ({
 
   return (
     <RoundedBox
-      backgroundColor={isHardMode ? 'lightPrimary' : 'white'}
+      backgroundColor={isHardMode ? 'primary' : 'white'}
       style={{ marginTop: '1.5rem' }}
     >
       <ModeText isHardMode={isHardMode} remainingDays={remainingDays} />
       <ButtonListContainer>
         <ButtonContainer>
-          <CircleButton backgroundColor={isHardMode ? 'white' : 'lightPrimary'}>
+          <CircleButton backgroundColor={isHardMode ? 'white' : 'darkPrimary'}>
             {isHardMode ? (
               <Icon name={'alarm-green'} size={'s'} />
             ) : (
@@ -43,7 +43,7 @@ const ModeInfoBox = ({
           >{`${numberWithCommas(daysPassedSinceCurrentMode)}일째`}</Text.Span>
         </ButtonContainer>
         <ButtonContainer>
-          <CircleButton backgroundColor={isHardMode ? 'white' : 'lightPrimary'}>
+          <CircleButton backgroundColor={isHardMode ? 'white' : 'darkPrimary'}>
             {isHardMode ? (
               <Icon name={'like-green'} size={'s'} />
             ) : (
@@ -61,7 +61,7 @@ const ModeInfoBox = ({
         </ButtonContainer>
         <ButtonContainer>
           <CircleButton
-            backgroundColor={isHardMode ? 'white' : 'lightPrimary'}
+            backgroundColor={isHardMode ? 'white' : 'darkPrimary'}
             onClick={() => setIsHardMode(!isHardMode)}
           >
             {isHardMode ? (
