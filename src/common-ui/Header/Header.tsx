@@ -24,7 +24,7 @@ const Header = ({
       <BackButtonAndTitleWrapper>
         {showBackButton && (
           <button type="button" onClick={onClickBackButton}>
-            <Icon name="backward" size={'m'} />
+            <Icon name="back" size={'m'} />
           </button>
         )}
         {title && <Text.Div fontSize={20}>{title}</Text.Div>}

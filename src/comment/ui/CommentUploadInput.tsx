@@ -21,7 +21,7 @@ const CommentUploadInput = () => {
         placeholder="댓글을 입력하세요"
       />
       <button>
-        <Icon name={'arrow-circle-up-white'} size={'l'} />
+        <Icon name="send" size={'l'} />
       </button>
     </Container>
   );
