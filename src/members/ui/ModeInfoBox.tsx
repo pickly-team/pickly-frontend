@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
 import Text from '@/common-ui/Text';
 import Icon from '@/common-ui/assets/Icon';
-import WhiteRoundedBox from '@/members/ui/WhiteRoundBox';
-import { theme } from '@/styles/theme';
+import RoundedBox from '@/members/ui/RoundedBox';
+import { ColorType, theme } from '@/styles/theme';
 import { numberWithCommas } from '@/utils/numberWithCommas';
 
 const ModeInfoBox = ({
@@ -19,11 +19,20 @@ const ModeInfoBox = ({
   const [isHardMode, setIsHardMode] = useState(false);
 
   return (
-    <WhiteRoundedBox style={{ marginTop: '1.5rem' }}>
+    <RoundedBox
+      backgroundColor={isHardMode ? 'lightPrimary' : 'white'}
+      style={{ marginTop: '1.5rem' }}
+    >
       <ModeText isHardMode={isHardMode} remainingDays={remainingDays} />
       <ButtonListContainer>
         <ButtonContainer>
-          <CircleButton child={<Icon name={'alarm'} size={'s'} />} />
+          <CircleButton backgroundColor={isHardMode ? 'white' : 'lightPrimary'}>
+            {isHardMode ? (
+              <Icon name={'alarm-green'} size={'s'} />
+            ) : (
+              <Icon name={'like'} size={'s'} />
+            )}
+          </CircleButton>
           <Text.Span
             fontSize={0.75}
             weight="bold"
@@ -34,7 +43,13 @@ const ModeInfoBox = ({
           >{`${numberWithCommas(daysPassedSinceCurrentMode)}일째`}</Text.Span>
         </ButtonContainer>
         <ButtonContainer>
-          <CircleButton child={<Icon name={'like'} size={'s'} />} />
+          <CircleButton backgroundColor={isHardMode ? 'white' : 'lightPrimary'}>
+            {isHardMode ? (
+              <Icon name={'like-green'} size={'s'} />
+            ) : (
+              <Icon name={'like'} size={'s'} />
+            )}
+          </CircleButton>
           <Text.Span
             fontSize={0.75}
             weight="bold"
@@ -45,7 +60,16 @@ const ModeInfoBox = ({
           >{`${numberWithCommas(numberOfStaleBookmarks)}개`}</Text.Span>
         </ButtonContainer>
         <ButtonContainer>
-          <CircleButton child={<Icon name={'check'} size={'s'} />} />
+          <CircleButton
+            backgroundColor={isHardMode ? 'white' : 'lightPrimary'}
+            onClick={() => setIsHardMode(!isHardMode)}
+          >
+            {isHardMode ? (
+              <Icon name={'people-green'} size={'s'} />
+            ) : (
+              <Icon name={'people'} size={'s'} />
+            )}
+          </CircleButton>
           <Text.Span
             fontSize={0.75}
             weight="bold"
@@ -58,7 +82,7 @@ const ModeInfoBox = ({
           </Text.Span>
         </ButtonContainer>
       </ButtonListContainer>
-    </WhiteRoundedBox>
+    </RoundedBox>
   );
 };
 
@@ -75,14 +99,27 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-const CircleButton = ({ child }: { child: React.ReactNode }) => {
+const CircleButton = ({
+  children,
+  backgroundColor = 'lightPrimary',
+  onClick,
+}: {
+  children: React.ReactNode;
+  backgroundColor?: ColorType;
+  onClick?: () => void;
+}) => {
   return (
     <StyledCircleButton
       style={{
-        backgroundColor: theme.colors.lightPrimary,
+        backgroundColor: theme.colors[backgroundColor],
+        cursor: onClick ? 'pointer' : 'default',
       }}
+      onClick={
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onClick ? onClick : () => {}
+      }
     >
-      {child}
+      {children}
     </StyledCircleButton>
   );
 };
@@ -125,7 +162,7 @@ const ModeText = ({
           피클리에 추가한 즐겨찾기 게시글을
         </Text.Div>
         <Text.Span
-          color={'lightPrimary'}
+          color={isHardMode ? 'white' : 'lightPrimary'}
           fontSize={1.25}
           weight="bold"
         >{`${remainingDays}일`}</Text.Span>

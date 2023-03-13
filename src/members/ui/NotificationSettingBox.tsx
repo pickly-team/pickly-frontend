@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import Text from '@/common-ui/Text';
 import Icon from '@/common-ui/assets/Icon';
 import Button from '@/common-ui/Button';
-import WhiteRoundedBox from '@/members/ui/WhiteRoundBox';
+import RoundedBox from '@/members/ui/RoundedBox';
 import {
   NotificationSetting,
   toReadableNotificationSettingType,
@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 const NotificationSettingBox = () => {
   return (
-    <WhiteRoundedBox style={{ marginTop: '2.375rem' }}>
+    <RoundedBox style={{ marginTop: '2.375rem' }}>
       <Text.Span color={'grey900'} weight="bold" fontSize={1.25}>
         알림 시간 관리
       </Text.Span>
@@ -21,7 +21,7 @@ const NotificationSettingBox = () => {
         <NotificationSettingText />
         <ChangeButton />
       </NotificationRow>
-    </WhiteRoundedBox>
+    </RoundedBox>
   );
 };
 

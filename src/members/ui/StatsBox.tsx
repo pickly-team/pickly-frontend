@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import { numberWithCommas } from '@/utils/numberWithCommas';
+import Icon from '@/common-ui/assets/Icon';
 
 const StatsBox = ({
   numberOfLikes,
@@ -17,24 +18,54 @@ const StatsBox = ({
     <StyleWrapper>
       <StatsContainer>
         <StatItemContainer>
-          <Text.Span weight="bold">좋아요</Text.Span>
-          <Text.Span weight="bold">{`${numberWithCommas(
-            numberOfLikes,
-          )}개`}</Text.Span>
+          <IconLabelContainer>
+            <Icon name={'like'} size={'s'} />
+            <Text.Span weight="bold" style={{ marginLeft: '0.8rem' }}>
+              좋아요
+            </Text.Span>
+          </IconLabelContainer>
+
+          <IconLabelContainer>
+            <Text.Span
+              weight="bold"
+              style={{ marginRight: '0.5rem' }}
+            >{`${numberWithCommas(numberOfLikes)}개`}</Text.Span>
+            <Icon name={'check'} size={'s'} />
+          </IconLabelContainer>
         </StatItemContainer>
         <Divider />
         <StatItemContainer>
-          <Text.Span weight="bold">카테고리</Text.Span>
-          <Text.Span weight="bold">{`${numberWithCommas(
-            numberOfCategories,
-          )}개`}</Text.Span>
+          <IconLabelContainer>
+            <Icon name={'alarm'} size={'s'} />
+            <Text.Span weight="bold" style={{ marginLeft: '0.8rem' }}>
+              카테고리
+            </Text.Span>
+          </IconLabelContainer>
+
+          <IconLabelContainer>
+            <Text.Span
+              weight="bold"
+              style={{ marginRight: '0.5rem' }}
+            >{`${numberWithCommas(numberOfCategories)}개`}</Text.Span>
+            <Icon name={'check'} size={'s'} />
+          </IconLabelContainer>
         </StatItemContainer>
         <Divider />
         <StatItemContainer>
-          <Text.Span weight="bold">메모</Text.Span>
-          <Text.Span weight="bold">{`${numberWithCommas(
-            numberOfNotes,
-          )}개`}</Text.Span>
+          <IconLabelContainer>
+            <Icon name={'list'} size={'s'} />
+            <Text.Span weight="bold" style={{ marginLeft: '0.8rem' }}>
+              메모
+            </Text.Span>
+          </IconLabelContainer>
+
+          <IconLabelContainer>
+            <Text.Span
+              weight="bold"
+              style={{ marginRight: '0.5rem' }}
+            >{`${numberWithCommas(numberOfNotes)}개`}</Text.Span>
+            <Icon name={'check'} size={'s'} />
+          </IconLabelContainer>
         </StatItemContainer>
         <Divider />
       </StatsContainer>
@@ -58,7 +89,10 @@ const StatItemContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-
+const IconLabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
 const Divider = styled.div`
   width: 100%;
   height: 1px;
