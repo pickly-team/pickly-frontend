@@ -153,22 +153,19 @@ const ModeText = ({
     <>
       <ModeTitle>{modedTitle(isHardMode)}</ModeTitle>
       <ModeDescriptionContainer>
-        <Text.Div
-          color={'grey900'}
-          fontSize={0.75}
-          weight="bold"
-          style={{ marginBottom: '0.3rem' }}
-        >
+        <Text.Div color={'grey900'} fontSize={0.75} weight="bold">
           피클리에 추가한 즐겨찾기 게시글을
         </Text.Div>
-        <Text.Span
-          color={isHardMode ? 'white' : 'lightPrimary'}
-          fontSize={1.25}
-          weight="bold"
-        >{`${remainingDays}일`}</Text.Span>
-        <Text.Span color={'grey900'} fontSize={0.75} weight="bold">
-          {modedDescription(isHardMode)}
-        </Text.Span>
+        <div style={{ marginTop: '0.3rem' }}>
+          <Text.Span
+            color={isHardMode ? 'white' : 'lightPrimary'}
+            fontSize={1.25}
+            weight="bold"
+          >{`${remainingDays}일 `}</Text.Span>
+          <Text.Span color={'grey900'} fontSize={0.75} weight="bold">
+            {modedDescription(isHardMode)}
+          </Text.Span>
+        </div>
       </ModeDescriptionContainer>
     </>
   );
