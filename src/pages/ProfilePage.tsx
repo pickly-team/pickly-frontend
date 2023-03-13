@@ -38,7 +38,7 @@ const GreyBackground = styled.div`
   position: absolute;
   width: 100%;
   background-color: ${theme.colors.darkGrey};
-  height: 40%;
+  height: 47%;
   border-bottom-left-radius: 2.125rem;
   border-bottom-right-radius: 2.125rem;
   z-index: -1;
