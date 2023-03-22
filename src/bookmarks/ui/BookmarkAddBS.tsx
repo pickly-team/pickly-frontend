@@ -8,8 +8,8 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useBookmarkAddHandler, {
   DisClosureType,
-} from '../service/hooks/useBookmarkAddHandler2';
-import TagBoxList from './BookmarkTagList2';
+} from '../service/hooks/useBookmarkAddHandler';
+import TagBoxList from './BookmarkTagList';
 
 interface BookmarkAddBSProps {
   isOpen: boolean;

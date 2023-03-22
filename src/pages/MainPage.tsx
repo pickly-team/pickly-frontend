@@ -1,9 +1,9 @@
-import useBookMarkHandler from '@/bookmarks/service/hooks/useBookMarkHandler2';
-import BookmarkItem from '@/bookmarks/ui/BookmarkItem2';
-import BSDeleteConfirmation from '@/bookmarks/ui/BookmarkBSDeleteConfirmation2';
-import EditBookMarkItem from '@/bookmarks/ui/BookmarkEditItem2';
-import ToggleHandler from '@/bookmarks/ui/BookmarkToggleHandler2';
-import UserInfo from '@/bookmarks/ui/BookmarkUserInfo2';
+import useBookMarkHandler from '@/bookmarks/service/hooks/useBookMarkHandler';
+import BookmarkItem from '@/bookmarks/ui/BookmarkItem';
+import BookmarkBSDeleteConfirmation from '@/bookmarks/ui/BookmarkBSDeleteConfirmation';
+import BookmarkEditItem from '@/bookmarks/ui/BookmarkEditItem';
+import ToggleHandler from '@/bookmarks/ui/BookmarkToggleHandler';
+import UserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import BottomNavigation from '@/common-ui/BottomNavigation';
 import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
@@ -48,7 +48,7 @@ const MainPage = () => {
           ))}
         {isEditMode &&
           bookMarkList.map((bookmark) => (
-            <EditBookMarkItem
+            <BookmarkEditItem
               onClickItem={onClickBookMarkItem}
               key={bookmark.id}
               {...bookmark}
@@ -58,7 +58,10 @@ const MainPage = () => {
       <LBottom>
         <BottomNavigation />
       </LBottom>
-      <BSDeleteConfirmation onClose={onCloseDeleteBS} open={isDeleteBSOpen} />
+      <BookmarkBSDeleteConfirmation
+        onClose={onCloseDeleteBS}
+        open={isDeleteBSOpen}
+      />
     </Layout>
   );
 };
