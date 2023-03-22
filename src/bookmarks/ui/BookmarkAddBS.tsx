@@ -107,7 +107,7 @@ const StyledInput = styled(Input)`
 const StyledCheckIcon = styled.div<{
   isValidateUrl: boolean;
 }>`
-  ${({ isValidateUrl }) => `opacity: (${isValidateUrl} ? 1 : 0)`};
+  opacity: ${(props) => (props.isValidateUrl ? 1 : 0)};
   transition: opacity 0.5s ease-in-out;
 `;
 
