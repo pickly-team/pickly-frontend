@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { ClientBookMarkItem } from '../api/bookmark';
 
-const EditBookMarkItem = ({
+const BookmarkEditItem = ({
   title,
   url,
   imgSrc,
@@ -60,7 +60,7 @@ const EditBookMarkItem = ({
   );
 };
 
-export default EditBookMarkItem;
+export default BookmarkEditItem;
 
 // TODO : Checkbox label에 접근 불가하여 한번 더 Wrapping 추후 해결
 const Box = styled.div`
