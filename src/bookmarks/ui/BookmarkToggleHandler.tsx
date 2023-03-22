@@ -17,7 +17,7 @@ interface ToggleHandlerProps {
 
 // TODO : Select 컴포넌트 수정
 
-const ToggleHandler = ({
+const BookmarkToggleHandler = ({
   isRead,
   isEdit,
   category,
@@ -82,7 +82,7 @@ const ToggleHandler = ({
   );
 };
 
-export default ToggleHandler;
+export default BookmarkToggleHandler;
 
 const ToggleWrapper = styled.div`
   display: flex;

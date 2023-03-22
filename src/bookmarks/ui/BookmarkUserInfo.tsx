@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 // TODO : 추후에 유저 정보를 받아올 수 있도록 수정
 
-const UserInfo = () => {
+const BookmarkUserInfo = () => {
   const userName = '피클리 마스터';
   return (
     <StyleWrapper>
@@ -19,7 +19,7 @@ const UserInfo = () => {
   );
 };
 
-export default UserInfo;
+export default BookmarkUserInfo;
 
 const StyleWrapper = styled.div`
   display: flex;
