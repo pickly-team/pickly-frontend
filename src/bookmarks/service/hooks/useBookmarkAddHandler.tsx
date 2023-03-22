@@ -26,7 +26,7 @@ const useBookmarkAddHandler = () => {
   const onChangeUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
   };
-  console.log(isValidateUrl);
+
   useEffect(() => {
     if (url.length) {
       setTimeout(() => {
@@ -37,7 +37,7 @@ const useBookmarkAddHandler = () => {
     }
   }, [url, isValidateUrl, setValidateUrl]);
 
-  // 1. 카테고리 변경
+  // 2. 카테고리 변경
   const onClickCategory = (id: string) => {
     setCategoryList(
       (prev) =>
@@ -55,7 +55,7 @@ const useBookmarkAddHandler = () => {
     );
   };
 
-  // 2. 공개 범위 선택
+  // 3. 공개 범위 선택
   const [selectedDisClosure, setDisClosure] =
     useState<DisClosureType>('PUBLIC');
 
