@@ -5,8 +5,8 @@ import CommentItem from '@/comment/ui/CommentItem';
 import CommentUploadInput from '@/comment/ui/CommentUploadInput';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
-import BookMarkArticle from '@/bookmarks/ui/BookmarkArticle2';
-import BookmarkLikeButton from '@/bookmarks/ui/BookmarkLikeButton2';
+import BookmarkArticle from '@/bookmarks/ui/BookmarkArticle';
+import BookmarkLikeButton from '@/bookmarks/ui/BookmarkLikeButton';
 
 const BookMarkDetailPage = () => {
   return (
@@ -20,7 +20,7 @@ const BookMarkDetailPage = () => {
         showBackButton
       />
       <Body>
-        <BookMarkArticle
+        <BookmarkArticle
           title="발가락으로 만드는 CRUD 게시판"
           previewImgSrc="https://mblogthumb-phinf.pstatic.net/20160526_126/emo-art_1464269073322MHPQj_JPEG/zLNFIBtisESk634049407784855842.jpg?type=w800"
           category="프론트엔드"
