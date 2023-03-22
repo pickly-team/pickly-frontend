@@ -28,7 +28,7 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
     color = 'white',
     backgroundColor = 'grey900',
     border = {
-      borderRadius: 10,
+      borderRadius: 1,
       borderWidth: 0,
       color: undefined,
     },
@@ -49,7 +49,7 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         appearance: none;
         color: ${theme.colors[color]};
         font-family: 'NanumSquareRoundR';
-        border-radius: ${border.borderRadius}px;
+        border-radius: ${border.borderRadius}rem;
         border: ${border.borderWidth && border.color
           ? `${border.borderWidth}px solid ${theme.colors[border.color]}`
           : 'none'};
