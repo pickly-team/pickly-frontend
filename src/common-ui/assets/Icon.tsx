@@ -70,4 +70,17 @@ export type IconName =
   | 'heart-fill-green'
   | 'heart-blank-green'
   | 'close'
-  | 'bookmark';
+  | 'bookmark'
+  | 'circle-pencil'
+  | 'setting'
+  | 'check-green'
+  | 'check-none-green'
+  | 'arrow-right-black'
+  | 'setting'
+  | 'close'
+  | 'refresh-white'
+  | 'refresh-green'
+  | 'hamburger'
+  | 'trash'
+  | 'check-green-reverse'
+  | 'arrow-down';
