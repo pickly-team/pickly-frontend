@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from './assets/Icon';
 import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
-import BookmarkAddBS from '@/bookmarks/ui/BookmarkAddBS';
+import BookmarkAddBS from '@/bookmarks/ui/BookmarkAddBS2';
 import useBottomSheet from './BottomSheet/hooks/useBottomSheet';
 
 // TODO : 네비게이터에 대한 path를 재정의 필요
