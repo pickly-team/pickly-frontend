@@ -3,7 +3,7 @@ import Select from '@/common-ui/Select/Select';
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { CategoryType } from '../service/hooks/useBookMarkHandler';
+import { CategoryType } from '../service/hooks/useBookMarkHandler2';
 
 interface ToggleHandlerProps {
   isRead: boolean;
