@@ -13,6 +13,10 @@ const GET_BOOKMARK_LIST = (userId: string) => [
   userId,
 ];
 
+///////////////////////////////////
+// 북마크 메인 페이지
+// 북마크 리스트 조회
+
 /** API call 결과 */
 interface SeverBookMarkItem {
   id: string;
@@ -100,6 +104,91 @@ export const useGETBookMarkListQuery = ({ userId }: GETBookMarkListRequest) => {
   return useQuery(
     GET_BOOKMARK_LIST(userId),
     async () => GETBookMarkList.MockAPI(),
+    {
+      refetchOnWindowFocus: true,
+      retry: 0,
+      enabled: !!userId,
+    },
+  );
+};
+
+///////////////////////////////////
+// 북마크 추가 BS
+// 북마크 카테고리 리스트 조회
+interface ServerBookmarkCategoryItem {
+  order: number;
+  id: string;
+  name: string;
+}
+
+export interface ClientBookmarkCategoryItem {
+  order: number;
+  id: string;
+  name: string;
+  isSelected: boolean;
+}
+
+interface GETBookmarkCategoryListResponse {
+  category_list: ServerBookmarkCategoryItem[];
+}
+
+const GETBookmarkCategoryList = {
+  API: async () => {
+    const { data } = await axios.get<GETBookmarkCategoryListResponse>(
+      `${BASE_URL}/bookmarks/category/list`,
+    );
+    return data;
+  },
+  Mapper: ({
+    category_list,
+  }: GETBookmarkCategoryListResponse): ClientBookmarkCategoryItem[] => {
+    return category_list.map((category, idx) => ({
+      order: category.order,
+      id: category.id,
+      name: category.name,
+      isSelected: idx === 1,
+    }));
+  },
+  MockAPI: async (): Promise<ClientBookmarkCategoryItem[]> => {
+    await sleep(1000);
+    return GETBookmarkCategoryList.Mapper({
+      category_list: [
+        {
+          order: 1,
+          id: uuid(),
+          name: '😃 프론트엔드',
+        },
+        {
+          order: 2,
+          id: uuid(),
+          name: '🧐 백엔드',
+        },
+        {
+          order: 3,
+          id: uuid(),
+          name: '✅ 라이프 스타일',
+        },
+        {
+          order: 4,
+          id: uuid(),
+          name: '🥹 퇴근 라이프',
+        },
+      ],
+    });
+  },
+};
+
+const GET_BOOKMARK_CATEGORY_LIST = (userId: string) => [
+  getKeyofObject(navigatePath, '/'),
+  DOMAIN,
+  'BOOKMARK_CATEGORY_LIST',
+  userId,
+];
+
+export const useGETCategoryListQuery = ({ userId }: GETBookMarkListRequest) => {
+  return useQuery(
+    GET_BOOKMARK_CATEGORY_LIST(userId),
+    async () => GETBookmarkCategoryList.MockAPI(),
     {
       refetchOnWindowFocus: true,
       retry: 0,
