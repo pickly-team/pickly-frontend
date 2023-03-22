@@ -61,7 +61,7 @@ const Button: FunctionComponent<ButtonProps> = ({
         white-space: nowrap;
         user-select: none;
         -webkit-font-smoothing: antialiased;
-        transition: color 0.1s ease-in-out, background-color 0.1s ease-in-out;
+        transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
         &:focus {
           outline: none;
         }
