@@ -5,8 +5,8 @@ import CommentItem from '@/comment/ui/CommentItem';
 import CommentUploadInput from '@/comment/ui/CommentUploadInput';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
-import BookMarkArticle from '@/bookmarks/ui/BookmarkArticle';
-import BookmarkLikeButton from '@/bookmarks/ui/BookmarkLikeButton';
+import BookMarkArticle from '@/bookmarks/ui/BookmarkArticle2';
+import BookmarkLikeButton from '@/bookmarks/ui/BookmarkLikeButton2';
 
 const BookMarkDetailPage = () => {
   return (
