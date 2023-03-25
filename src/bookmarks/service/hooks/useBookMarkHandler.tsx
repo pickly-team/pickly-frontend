@@ -10,7 +10,7 @@ export type CategoryType = {
 };
 
 const useBookMarkHandler = () => {
-  // SEVER
+  // SERVER
   // 1. 북마크 리스트 조회
   const { data: bookMarkList, isLoading } = useGETBookMarkListQuery({
     userId: '1',
@@ -27,9 +27,6 @@ const useBookMarkHandler = () => {
   // 2. 읽음/읽지않음 변경
   const [isRead, setRead] = useState(false);
 
-  // 3. 편집모드 변경
-  const [isEdit, setEdit] = useState(false);
-
   const onChangeRead = () => {
     if (isEdit) return;
     setRead(!isRead);
@@ -39,6 +36,9 @@ const useBookMarkHandler = () => {
       );
     }
   };
+
+  // 3. 편집모드 변경
+  const [isEdit, setEdit] = useState(false);
 
   // 3-1 북마크 삭제
   const [isDeleteBSOpen, setDeleteBS] = useState(false);
@@ -63,6 +63,7 @@ const useBookMarkHandler = () => {
 
   const onCloseDeleteBS = () => {
     setDeleteBS(false);
+    setEdit(false);
   };
 
   const onClickBookMarkItem = (bookmarkId: string) => {
@@ -70,9 +71,9 @@ const useBookMarkHandler = () => {
       setDeleteBookMarkList(
         deleteBookMarkList.filter((id) => id !== bookmarkId),
       );
-    } else {
-      setDeleteBookMarkList([...deleteBookMarkList, bookmarkId]);
+      return;
     }
+    setDeleteBookMarkList([...deleteBookMarkList, bookmarkId]);
   };
 
   return {
