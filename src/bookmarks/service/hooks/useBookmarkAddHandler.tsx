@@ -2,12 +2,12 @@ import {
   ClientBookmarkCategoryItem,
   useGETCategoryListQuery,
 } from '@/bookmarks/api/bookmark';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export type DisClosureType = 'PUBLIC' | 'PRIVATE' | 'FRIENDS';
 
 const useBookmarkAddHandler = () => {
-  // SEVER
+  // SERVER
   const { data, isLoading } = useGETCategoryListQuery({
     userId: '1',
   });
@@ -19,7 +19,7 @@ const useBookmarkAddHandler = () => {
   }, [data]);
 
   // INTERACTION
-  // 1. URL 체크
+  // 1. URL 입력
   const [url, setUrl] = useState<string>('');
   const [isValidateUrl, setValidateUrl] = useState(false);
 
@@ -27,8 +27,14 @@ const useBookmarkAddHandler = () => {
     setUrl(e.target.value);
   };
 
+  // 1-1. URL VALIDATION
+  const emailRegex = useMemo(
+    () =>
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    [],
+  );
   useEffect(() => {
-    if (url.length) {
+    if (url.match(emailRegex)) {
       setTimeout(() => {
         setValidateUrl(true);
       }, 500);
