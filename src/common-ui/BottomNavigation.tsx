@@ -7,6 +7,7 @@ import Icon from './assets/Icon';
 import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
 import BookmarkAddBS from '@/bookmarks/ui/BookmarkAddBS';
 import useBottomSheet from './BottomSheet/hooks/useBottomSheet';
+import useBookmarkAddHandler from '@/bookmarks/service/hooks/useBookmarkAddHandler';
 
 // TODO : 네비게이터에 대한 path를 재정의 필요
 
@@ -25,9 +26,34 @@ const BottomNavigation = () => {
     open();
   };
 
+  const {
+    categoryList,
+    isValidateUrl,
+    onChangeUrl,
+    onClickCategory,
+    onClickDisClosure,
+    selectedDisClosure,
+    url,
+  } = useBookmarkAddHandler();
+
   return (
     <>
-      <BookmarkAddBS isOpen={isOpen} close={close} />
+      <BookmarkAddBS isOpen={isOpen} close={close}>
+        <BookmarkAddBS.URLInput
+          url={url}
+          onChangeUrl={onChangeUrl}
+          isValidateUrl={isValidateUrl}
+        />
+        <BookmarkAddBS.SelectCategory
+          categoryList={categoryList}
+          onClickCategory={onClickCategory}
+        />
+        <BookmarkAddBS.DisclosureScope
+          selectedDisClosure={selectedDisClosure}
+          onClickDisClosure={onClickDisClosure}
+        />
+        <BookmarkAddBS.SubmitButton onClick={close} />
+      </BookmarkAddBS>
       <NavigationWrapper>
         <button onClick={onClickAddButton} css={plusButton}>
           <Icon name="plus" size="m" />
