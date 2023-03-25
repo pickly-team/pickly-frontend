@@ -76,7 +76,7 @@ const GETBookMarkList = {
     };
   },
   MockAPI: async (): Promise<bookmarkGETBookMarkList> => {
-    await sleep(10000);
+    await sleep(1500);
     return GETBookMarkList.Mapper({
       bookmark_list: range(0, Math.floor(Math.random() * 21) + 1).map(
         (): SeverBookMarkItem => ({
