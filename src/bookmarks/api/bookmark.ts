@@ -105,7 +105,7 @@ export const useGETBookMarkListQuery = ({ userId }: GETBookMarkListRequest) => {
     GET_BOOKMARK_LIST(userId),
     async () => GETBookMarkList.MockAPI(),
     {
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       retry: 0,
       enabled: !!userId,
     },
@@ -190,7 +190,7 @@ export const useGETCategoryListQuery = ({ userId }: GETBookMarkListRequest) => {
     GET_BOOKMARK_CATEGORY_LIST(userId),
     async () => GETBookmarkCategoryList.MockAPI(),
     {
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       retry: 0,
       enabled: !!userId,
     },
