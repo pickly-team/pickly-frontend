@@ -1,13 +1,14 @@
-import useBookMarkHandler from '@/bookmarks/service/hooks/useBookMarkHandler';
-import BookmarkItem from '@/bookmarks/ui/BookmarkItem';
-import BookmarkBSDeleteConfirmation from '@/bookmarks/ui/BookmarkBSDeleteConfirmation';
-import BookmarkEditItem from '@/bookmarks/ui/BookmarkEditItem';
-import BookmarkToggleHandler from '@/bookmarks/ui/BookmarkToggleHandler';
-import UserInfo from '@/bookmarks/ui/BookmarkUserInfo';
-import BottomNavigation from '@/common-ui/BottomNavigation';
-import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
+
+import useBookmarkHandler from '@/bookmarks/service/hooks/useBookmarkHandler2';
+import BookmarkToggleHandler from '@/bookmarks/ui/Main/BookmarkToggleHandler';
+import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
+import BookmarkList from '@/bookmarks/ui/Main/BookmarkList';
+import BookmarkItem from '@/bookmarks/ui/Main/BookmarkItem';
+import BookmarkEditItem from '@/bookmarks/ui/Main/BookmarkEditItem';
+import BookmarkBSDeleteConfirmation from '@/bookmarks/ui/Main/BookmarkBSDeleteConfirmation';
+import BottomNavigation from '@/common-ui/BottomNavigation';
+import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 
 const MainPage = () => {
   const {
@@ -15,22 +16,24 @@ const MainPage = () => {
     isEdit,
     isLoading,
     isRead,
-    onChangeEdit,
+    onClick편집,
     onChangeRead,
     onClickBookMarkItem,
     isDeleteBSOpen,
-    onCloseDeleteBS,
+    onClick삭제,
     categoryOptions,
     category,
     setCategory,
-  } = useBookMarkHandler();
+  } = useBookmarkHandler();
 
   const isEditMode = !isLoading && bookMarkList?.length !== 0 && isEdit;
 
+  console.log('bookMarkList', bookMarkList);
+  console.log(isLoading);
   return (
     <Layout>
       <LTop>
-        <UserInfo />
+        <BookmarkUserInfo userEmoji="😑" userName="까루" />
         <BookmarkToggleHandler>
           <BookmarkToggleHandler.SelectCategory
             category={category}
@@ -43,32 +46,40 @@ const MainPage = () => {
           />
           <BookmarkToggleHandler.ToggleEdit
             isEdit={isEdit}
-            onChangeEdit={onChangeEdit}
+            onClick편집={onClick편집}
           />
         </BookmarkToggleHandler>
       </LTop>
       <LMiddle>
-        <Suspense fallback={<Text.Span>로딩중...</Text.Span>}>
-          {!isEditMode &&
-            bookMarkList.map((bookmark) => (
-              <BookmarkItem key={bookmark.id} {...bookmark} />
-            ))}
-          {isEditMode &&
-            bookMarkList.map((bookmark) => (
+        {isLoading &&
+          [1, 2, 3, 4, 5].map((item) => <BookmarkSkeletonItem key={item} />)}
+        {!isEditMode && (
+          <BookmarkList
+            bookmarkList={bookMarkList}
+            renderItem={(bookMarkList) => (
+              <BookmarkItem key={bookMarkList.id} {...bookMarkList} />
+            )}
+          />
+        )}
+        {isEditMode && (
+          <BookmarkList
+            bookmarkList={bookMarkList}
+            renderItem={(bookMarkList) => (
               <BookmarkEditItem
+                key={bookMarkList.id}
                 onClickItem={onClickBookMarkItem}
-                key={bookmark.id}
-                {...bookmark}
+                {...bookMarkList}
               />
-            ))}
-        </Suspense>
+            )}
+          />
+        )}
       </LMiddle>
       <LBottom>
         <BottomNavigation />
       </LBottom>
       {/** 북마크 삭제 확인 */}
       <BookmarkBSDeleteConfirmation
-        onClose={onCloseDeleteBS}
+        onClose={onClick삭제}
         open={isDeleteBSOpen}
       />
     </Layout>
