@@ -28,20 +28,20 @@ const useBookmarkAddHandler = () => {
   };
 
   // 1-1. URL VALIDATION
-  const emailRegex = useMemo(
+  const urlRegex = useMemo(
     () =>
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      '^((http|https)://)[-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)$',
     [],
   );
   useEffect(() => {
-    if (url.match(emailRegex)) {
+    if (url.match(urlRegex)) {
       setTimeout(() => {
         setValidateUrl(true);
       }, 500);
     } else {
       setValidateUrl(false);
     }
-  }, [url, isValidateUrl, setValidateUrl]);
+  }, [url, setValidateUrl]);
 
   // 2. 카테고리 변경
   const onClickCategory = (id: string) => {
