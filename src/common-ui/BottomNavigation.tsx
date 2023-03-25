@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from './assets/Icon';
 import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
-import BookmarkAddBS from '@/bookmarks/ui/BookmarkAddBS';
+import BookmarkAddBS from '@/bookmarks/ui/Main/BookmarkAddBS';
 import useBottomSheet from './BottomSheet/hooks/useBottomSheet';
 import useBookmarkAddHandler from '@/bookmarks/service/hooks/useBookmarkAddHandler';
 
