@@ -76,7 +76,7 @@ const GETBookMarkList = {
     };
   },
   MockAPI: async (): Promise<bookmarkGETBookMarkList> => {
-    await sleep(1000);
+    await sleep(10000);
     return GETBookMarkList.Mapper({
       bookmark_list: range(0, Math.floor(Math.random() * 21) + 1).map(
         (): SeverBookMarkItem => ({
@@ -146,7 +146,7 @@ const GETBookmarkCategoryList = {
       order: category.order,
       id: category.id,
       name: category.name,
-      isSelected: idx === 1,
+      isSelected: idx === 0,
     }));
   },
   MockAPI: async (): Promise<ClientBookmarkCategoryItem[]> => {
