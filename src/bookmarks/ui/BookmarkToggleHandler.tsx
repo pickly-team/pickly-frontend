@@ -6,81 +6,103 @@ import styled from '@emotion/styled';
 import { CategoryType } from '../service/hooks/useBookMarkHandler';
 
 interface ToggleHandlerProps {
-  isRead: boolean;
-  isEdit: boolean;
-  category: string;
-  setCategory: (category: string) => void;
-  categoryOptions: CategoryType[];
-  onChangeRead: () => void;
-  onChangeEdit: () => void;
+  children: React.ReactNode;
 }
 
 // TODO : Select 컴포넌트 수정
 
-const BookmarkToggleHandler = ({
-  isRead,
-  isEdit,
-  category,
-  setCategory,
-  categoryOptions,
-  onChangeEdit,
-  onChangeRead,
-}: ToggleHandlerProps) => {
+const BookmarkToggleHandler = ({ children }: ToggleHandlerProps) => {
   return (
     <>
-      <ToggleWrapper>
-        <ButtonWrapper>
-          <Select
-            buttonStyle={{
-              border: `2px solid ${theme.colors.lightPrimary}`,
-              borderRadius: '0.8rem',
-              width: '100%',
-            }}
-            value={category}
-            onChange={setCategory}
-            isSearchActive
-          >
-            {categoryOptions.map((option) => (
-              <option value={option.value} key={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
-        </ButtonWrapper>
-        <ButtonWrapper>
-          <Button
-            buttonColor="black"
-            height={2.5}
-            style={{
-              border: `2px solid ${theme.colors.lightPrimary}`,
-              borderRadius: '0.8rem',
-            }}
-            onClick={onChangeRead}
-          >
-            <Text.Span color="lightPrimary">
-              {isRead ? '읽음' : '읽지 않음'}
-            </Text.Span>
-          </Button>
-        </ButtonWrapper>
-        <ButtonWrapper>
-          <Button
-            buttonColor="black"
-            height={2.5}
-            style={{
-              border: `2px solid ${theme.colors.lightPrimary}`,
-              borderRadius: '0.8rem',
-            }}
-            onClick={onChangeEdit}
-          >
-            <Text.Span color="lightPrimary">
-              {isEdit ? '완료' : '편집'}
-            </Text.Span>
-          </Button>
-        </ButtonWrapper>
-      </ToggleWrapper>
+      <ToggleWrapper>{children}</ToggleWrapper>
     </>
   );
 };
+
+interface SelectCategoryProps {
+  category: string;
+  setCategory: (category: string) => void;
+  categoryOptions: CategoryType[];
+}
+
+const SelectCategory = ({
+  category,
+  categoryOptions,
+  setCategory,
+}: SelectCategoryProps) => {
+  return (
+    <ButtonWrapper>
+      <Select
+        buttonStyle={{
+          border: `2px solid ${theme.colors.lightPrimary}`,
+          borderRadius: '0.8rem',
+          width: '100%',
+        }}
+        value={category}
+        onChange={setCategory}
+        isSearchActive
+      >
+        {categoryOptions.map((option) => (
+          <option value={option.value} key={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </Select>
+    </ButtonWrapper>
+  );
+};
+
+interface ToggleReadProps {
+  isRead: boolean;
+  onChangeRead: () => void;
+}
+
+const ToggleRead = ({ onChangeRead, isRead }: ToggleReadProps) => {
+  return (
+    <ButtonWrapper>
+      <Button
+        buttonColor="black"
+        height={2.5}
+        style={{
+          border: `2px solid ${theme.colors.lightPrimary}`,
+          borderRadius: '0.8rem',
+        }}
+        onClick={onChangeRead}
+      >
+        <Text.Span color="lightPrimary">
+          {isRead ? '읽음' : '읽지 않음'}
+        </Text.Span>
+      </Button>
+    </ButtonWrapper>
+  );
+};
+
+interface ToggleEditProps {
+  isEdit: boolean;
+  onChangeEdit: () => void;
+}
+
+const ToggleEdit = ({ isEdit, onChangeEdit }: ToggleEditProps) => {
+  return (
+    <ButtonWrapper>
+      <Button
+        buttonColor="black"
+        height={2.5}
+        style={{
+          border: `2px solid ${theme.colors.lightPrimary}`,
+          borderRadius: '0.8rem',
+        }}
+        onClick={onChangeEdit}
+      >
+        <Text.Span color="lightPrimary">{isEdit ? '완료' : '편집'}</Text.Span>
+      </Button>
+    </ButtonWrapper>
+  );
+};
+
+BookmarkToggleHandler.SelectCategory = SelectCategory;
+BookmarkToggleHandler.ToggleRead = ToggleRead;
+BookmarkToggleHandler.ToggleEdit = ToggleEdit;
 
 export default BookmarkToggleHandler;
 
