@@ -9,7 +9,13 @@ import { navigatePath } from '@/constants/navigatePath';
 import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => {
   return (
