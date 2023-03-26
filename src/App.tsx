@@ -8,6 +8,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import { navigatePath } from '@/constants/navigatePath';
 import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
+import CategoryAddPage from './pages/CategoryAddPage';
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,10 @@ const App = () => {
               <Route
                 path={navigatePath.BOOKMARK_DETAIL}
                 element={<BookMarkDetailPage />}
+              />
+              <Route
+                path={navigatePath.CATEGORY_ADD}
+                element={<CategoryAddPage />}
               />
             </Routes>
           </Layout>
