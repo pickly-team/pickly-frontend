@@ -1,4 +1,5 @@
 import { ColorType, theme } from '@/styles/theme';
+import getRem from '@/utils/getRem';
 import { css } from '@emotion/react';
 import {
   ChangeEvent,
@@ -56,8 +57,8 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         background-color: ${theme.colors[backgroundColor]};
         transition: all ease 0.5s 0s;
         width: 100%;
-        height: 2.5rem;
-        padding: 1.5rem;
+        height: ${getRem(52)};
+        padding: ${getRem(15)};
         box-sizing: border-box;
         :focus {
           outline: none;
