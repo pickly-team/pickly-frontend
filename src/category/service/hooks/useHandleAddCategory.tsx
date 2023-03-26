@@ -54,7 +54,6 @@ const useHandleAddCategory = () => {
   // 6. 사용자 카테고리 삭제
   const onClickDeleteCategory = useCallback(
     (id: string) => {
-      console.log('삭제');
       setCategoryList(categoryList.filter((item) => item.id !== id));
     },
     [categoryList],
@@ -63,7 +62,6 @@ const useHandleAddCategory = () => {
   // 7. 사용자 카테고리 수정
   const onClickEditCategory = useCallback(
     (id: string) => {
-      console.log('수정');
       // 1. 수정할 카테고리를 찾는다.
       const category = categoryList.find((category) => category.id === id);
       // 2. 수정할 카테고리의 이름과 이모지를 변경한다.
