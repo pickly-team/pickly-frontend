@@ -43,8 +43,9 @@ const TagBox = ({ tag, onClickCategory }: TagBoxProps) => {
       onClick={() => onClickCategory(tag.id)}
       css={css`
         background-color: ${tag.isSelected
-          ? theme.colors.primary
-          : theme.colors.darkGrey};
+          ? theme.colors.lightPrimary
+          : theme.colors.grey700};
+        color: ${tag.isSelected ? theme.colors.black : theme.colors.white};
         padding: ${getRem(7)} ${getRem(20)};
         border-radius: ${getRem(10)};
         transition: background-color 0.3s ease-in-out;
@@ -54,7 +55,13 @@ const TagBox = ({ tag, onClickCategory }: TagBoxProps) => {
         }
       `}
     >
-      <Text.Span fontSize={calculateRem(15)}>{tag.name}</Text.Span>
+      <Text.Span
+        color={tag.isSelected ? 'black' : 'white'}
+        fontSize={calculateRem(15)}
+        weight="bold"
+      >
+        {tag.name}
+      </Text.Span>
     </button>
   );
 };
@@ -71,17 +78,17 @@ const PlusBox = ({ onClick }: PlusBoxProps) => {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: ${theme.colors.primary};
+        background-color: ${theme.colors.lightPrimary};
         width: ${getRem(50)};
         height: ${getRem(50)};
         border-radius: ${getRem(10)};
         transition: background-color 0.3s ease-in-out;
         :active {
-          background-color: ${theme.colors.lightPrimary};
+          background-color: ${theme.colors.primary};
         }
       `}
     >
-      <Icon size="xs" name="plus" />
+      <Icon size="xs" name="plus-dark" />
     </div>
   );
 };
