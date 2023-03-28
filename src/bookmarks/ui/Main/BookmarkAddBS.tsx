@@ -1,4 +1,3 @@
-import Icon from '@/common-ui/assets/Icon';
 import BottomSheet from '@/common-ui/BottomSheet/BottomSheet';
 import Button from '@/common-ui/Button';
 import Input from '@/common-ui/Input';
@@ -39,16 +38,13 @@ const URLInput = ({ url, onChangeUrl, isValidateUrl }: URLInputProps) => {
       <StyledInputWrapper>
         <StyledInput
           border={{
-            color: 'primary',
+            color: isValidateUrl ? 'lightPrimary' : 'grey700',
             borderWidth: calculateRem(30),
             borderRadius: calculateRem(10),
           }}
           value={url}
           onChange={onChangeUrl}
         />
-        <StyledCheckIcon isValidateUrl={isValidateUrl}>
-          <Icon name="check-circle-green" size="m" />
-        </StyledCheckIcon>
       </StyledInputWrapper>
     </>
   );
@@ -94,26 +90,43 @@ const DisclosureScope = ({
         `}
       >
         <Button
-          buttonColor={selectedDisClosure === 'PUBLIC' ? 'primary' : 'darkGrey'}
+          buttonColor={
+            selectedDisClosure === 'PUBLIC' ? 'lightPrimary' : 'grey700'
+          }
           onClick={() => onClickDisClosure('PUBLIC')}
         >
-          <Text.Span>전체 공개</Text.Span>
+          <Text.Span
+            weight="bold"
+            color={selectedDisClosure === 'PUBLIC' ? 'black' : 'white'}
+          >
+            전체 공개
+          </Text.Span>
         </Button>
         <Button
           buttonColor={
-            selectedDisClosure === 'FRIENDS' ? 'primary' : 'darkGrey'
+            selectedDisClosure === 'FRIENDS' ? 'lightPrimary' : 'grey700'
           }
           onClick={() => onClickDisClosure('FRIENDS')}
         >
-          <Text.Span>친구 공개</Text.Span>
+          <Text.Span
+            weight="bold"
+            color={selectedDisClosure === 'FRIENDS' ? 'black' : 'white'}
+          >
+            친구 공개
+          </Text.Span>
         </Button>
         <Button
           buttonColor={
-            selectedDisClosure === 'PRIVATE' ? 'primary' : 'darkGrey'
+            selectedDisClosure === 'PRIVATE' ? 'lightPrimary' : 'grey700'
           }
           onClick={() => onClickDisClosure('PRIVATE')}
         >
-          <Text.Span>비공개</Text.Span>
+          <Text.Span
+            weight="bold"
+            color={selectedDisClosure === 'PRIVATE' ? 'black' : 'white'}
+          >
+            비공개
+          </Text.Span>
         </Button>
       </div>
     </>
@@ -121,20 +134,24 @@ const DisclosureScope = ({
 };
 
 interface SubmitButtonProps {
+  isAllWritten: boolean;
   onClick: () => void;
 }
 
-const SubmitButton = ({ onClick }: SubmitButtonProps) => {
+const SubmitButton = ({ isAllWritten, onClick }: SubmitButtonProps) => {
   return (
     <Button
+      disabled={!isAllWritten}
+      buttonColor="buttonGreen"
       style={{
         position: 'absolute',
         bottom: getRem(20),
         width: `calc(100% - ${getRem(40)})`,
       }}
+      height={calculateRem(52)}
       onClick={onClick}
     >
-      <Text.Span fontSize={calculateRem(18)} weight="bold">
+      <Text.Span color="white" fontSize={calculateRem(18)} weight="bold">
         저장
       </Text.Span>
     </Button>
@@ -173,17 +190,7 @@ const StyledInputWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const StyledInput = styled(Input)`
-  transition: width 0.1s ease-in-out;
-  width: 90%;
-`;
-
-const StyledCheckIcon = styled.div<{
-  isValidateUrl: boolean;
-}>`
-  opacity: ${(props) => (props.isValidateUrl ? 1 : 0)};
-  transition: opacity 0.5s ease-in-out;
-`;
+const StyledInput = styled(Input)``;
 
 const StyledMarginSpanText = styled.div`
   margin-top: ${getRem(25)};
