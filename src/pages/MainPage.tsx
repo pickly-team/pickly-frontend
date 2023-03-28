@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
-import useBookmarkHandler from '@/bookmarks/service/hooks/useBookmarkHandler2';
-import BookmarkToggleHandler from '@/bookmarks/ui/Main/BookmarkToggleHandler';
+import useBookmarkHandler from '@/bookmarks/service/hooks/useBookmarkHandler';
+import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import BookmarkList from '@/bookmarks/ui/Main/BookmarkList';
 import BookmarkItem from '@/bookmarks/ui/Main/BookmarkItem';
@@ -28,27 +28,25 @@ const MainPage = () => {
 
   const isEditMode = !isLoading && bookMarkList?.length !== 0 && isEdit;
 
-  console.log('bookMarkList', bookMarkList);
-  console.log(isLoading);
   return (
     <Layout>
       <LTop>
         <BookmarkUserInfo userEmoji="😑" userName="까루" />
-        <BookmarkToggleHandler>
-          <BookmarkToggleHandler.SelectCategory
+        <BookmarkToggle>
+          <BookmarkToggle.SelectCategory
             category={category}
             categoryOptions={categoryOptions}
             setCategory={setCategory}
           />
-          <BookmarkToggleHandler.ToggleRead
+          <BookmarkToggle.ToggleRead
             isRead={isRead}
             onChangeRead={onChangeRead}
           />
-          <BookmarkToggleHandler.ToggleEdit
+          <BookmarkToggle.ToggleEdit
             isEdit={isEdit}
             onClick편집={onClick편집}
           />
-        </BookmarkToggleHandler>
+        </BookmarkToggle>
       </LTop>
       <LMiddle>
         {isLoading &&
