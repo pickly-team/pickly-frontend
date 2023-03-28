@@ -3,7 +3,7 @@ import Select from '@/common-ui/Select/Select';
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { CategoryType } from '../../service/hooks/useBookmarkHandler2';
+import { CategoryType } from '../../service/hooks/useBookmarkHandler';
 
 interface ToggleHandlerProps {
   children: React.ReactNode;
@@ -11,12 +11,8 @@ interface ToggleHandlerProps {
 
 // TODO : Select 컴포넌트 수정
 
-const BookmarkToggleHandler = ({ children }: ToggleHandlerProps) => {
-  return (
-    <>
-      <ToggleWrapper>{children}</ToggleWrapper>
-    </>
-  );
+const BookmarkToggle = ({ children }: ToggleHandlerProps) => {
+  return <ToggleWrapper>{children}</ToggleWrapper>;
 };
 
 interface SelectCategoryProps {
@@ -100,11 +96,11 @@ const ToggleEdit = ({ isEdit, onClick편집 }: ToggleEditProps) => {
   );
 };
 
-BookmarkToggleHandler.SelectCategory = SelectCategory;
-BookmarkToggleHandler.ToggleRead = ToggleRead;
-BookmarkToggleHandler.ToggleEdit = ToggleEdit;
+BookmarkToggle.SelectCategory = SelectCategory;
+BookmarkToggle.ToggleRead = ToggleRead;
+BookmarkToggle.ToggleEdit = ToggleEdit;
 
-export default BookmarkToggleHandler;
+export default BookmarkToggle;
 
 const ToggleWrapper = styled.div`
   display: flex;
