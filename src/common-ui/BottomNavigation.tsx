@@ -34,6 +34,7 @@ const BottomNavigation = () => {
     onClickDisClosure,
     selectedDisClosure,
     url,
+    isAllWritten,
   } = useBookmarkAddHandler();
 
   return (
@@ -52,7 +53,10 @@ const BottomNavigation = () => {
           selectedDisClosure={selectedDisClosure}
           onClickDisClosure={onClickDisClosure}
         />
-        <BookmarkAddBS.SubmitButton onClick={close} />
+        <BookmarkAddBS.SubmitButton
+          onClick={close}
+          isAllWritten={isAllWritten}
+        />
       </BookmarkAddBS>
       <NavigationWrapper>
         <button onClick={onClickAddButton} css={plusButton}>

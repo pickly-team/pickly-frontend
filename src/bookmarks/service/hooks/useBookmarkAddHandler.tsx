@@ -14,8 +14,10 @@ const useBookmarkAddHandler = () => {
   const [categoryList, setCategoryList] = useState<
     ClientBookmarkCategoryItem[] | undefined
   >(data);
+  const [selectedCategory, setCategory] = useState('');
   useEffect(() => {
     setCategoryList(data);
+    data && setCategory(data[0].id);
   }, [data]);
 
   // INTERACTION
@@ -45,6 +47,7 @@ const useBookmarkAddHandler = () => {
 
   // 2. 카테고리 변경
   const onClickCategory = (id: string) => {
+    // 기존 선택된 카테고리 해제
     setCategoryList(
       (prev) =>
         prev &&
@@ -52,6 +55,9 @@ const useBookmarkAddHandler = () => {
           item.isSelected ? { ...item, isSelected: !item.isSelected } : item,
         ),
     );
+    // 새로운 카테고리 선택
+    setCategory(id);
+    // 선택된 카테고리 변경
     setCategoryList(
       (prev) =>
         prev &&
@@ -69,6 +75,14 @@ const useBookmarkAddHandler = () => {
     setDisClosure(type);
   }, []);
 
+  // 4. 모든 입력 확인
+  const isAllWritten = useMemo(() => {
+    if (url && isValidateUrl && selectedCategory && selectedDisClosure) {
+      return true;
+    }
+    return false;
+  }, [url, isValidateUrl, selectedCategory, selectedDisClosure]);
+
   return {
     url,
     onChangeUrl,
@@ -78,6 +92,7 @@ const useBookmarkAddHandler = () => {
     onClickCategory,
     selectedDisClosure,
     onClickDisClosure,
+    isAllWritten,
   };
 };
 export default useBookmarkAddHandler;
