@@ -28,11 +28,12 @@ const CategoryNameInput = styled(Input)`
 
 interface EmojiProps {
   emoji: string;
+  setEmojiBSOpen: () => void;
 }
 
-const Emoji = ({ emoji }: EmojiProps) => {
+const Emoji = ({ emoji, setEmojiBSOpen }: EmojiProps) => {
   return (
-    <UserEmojiEdit>
+    <UserEmojiEdit onClick={setEmojiBSOpen}>
       <UserBox>
         <Text.Span fontSize={calculateRem(48)}>{emoji}</Text.Span>
         <EditIcon>
