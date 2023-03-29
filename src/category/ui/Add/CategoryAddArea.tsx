@@ -102,13 +102,13 @@ const CategoryList = ({
       >
         <Icon name="plus" size="s" />
       </CircleIconButton>
-      {categoryList.map((category, index) => (
+      {categoryList.map((category) => (
         <CategoryItem
           onClick={(e) => {
             e.stopPropagation();
             onClickEditCategory(category.id);
           }}
-          key={index}
+          key={category.id}
         >
           <Text.P fontSize={calculateRem(16)}>{category.emoji}</Text.P>
           <Text.P fontSize={calculateRem(16)}>{category.categoryName}</Text.P>
