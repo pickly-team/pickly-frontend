@@ -7,7 +7,12 @@ import Icon from './assets/Icon';
 import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
 import BookmarkAddBS from '@/bookmarks/ui/Main/BookmarkAddBS';
 import useBottomSheet from './BottomSheet/hooks/useBottomSheet';
-import useBookmarkAddHandler from '@/bookmarks/service/hooks/useBookmarkAddHandler';
+import checkValidateURL from '@/utils/checkValidateURL';
+import useInputUrl from '@/bookmarks/service/hooks/add/useInputUrl';
+import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
+
+import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
+import useCategoryList from '@/bookmarks/service/hooks/add/useCategoryList';
 
 // TODO : 네비게이터에 대한 path를 재정의 필요
 
@@ -21,21 +26,39 @@ import useBookmarkAddHandler from '@/bookmarks/service/hooks/useBookmarkAddHandl
 const BottomNavigation = () => {
   const { pathname } = useLocation();
 
+  // SERVER
+  const { categoryList, setCategoryList, toggleCategory } = useCategoryList();
+  // 1. URL 입력
+  const { url, onChangeUrl } = useInputUrl();
+
+  // 2. 카테고리 선택
+  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory();
+
+  // 3. 공개 범위 선택
+  const { onClickPublishScoped, selectedPublishScoped } =
+    useSelectPublishScoped();
+
+  // 2. 카테고리 변경
+  const onClickCategory = (id: string) => {
+    // 새로운 카테고리 선택
+    setSelectedCategoryId(id);
+    // 선택된 카테고리 변경
+    setCategoryList(toggleCategory(id));
+  };
+
+  // VALIDATION
+  const isValidateUrl = checkValidateURL(url);
+  const isAllWritten = !!(
+    url &&
+    isValidateUrl &&
+    selectedCategoryId &&
+    selectedPublishScoped
+  );
+
   const { close, isOpen, open } = useBottomSheet();
   const onClickAddButton = () => {
     open();
   };
-
-  const {
-    categoryList,
-    isValidateUrl,
-    onChangeUrl,
-    onClickCategory,
-    onClickDisClosure,
-    selectedDisClosure,
-    url,
-    isAllWritten,
-  } = useBookmarkAddHandler();
 
   return (
     <>
@@ -49,9 +72,9 @@ const BottomNavigation = () => {
           categoryList={categoryList}
           onClickCategory={onClickCategory}
         />
-        <BookmarkAddBS.DisclosureScope
-          selectedDisClosure={selectedDisClosure}
-          onClickDisClosure={onClickDisClosure}
+        <BookmarkAddBS.PublishScoped
+          selectedPublishScoped={selectedPublishScoped}
+          onClickPublishScoped={onClickPublishScoped}
         />
         <BookmarkAddBS.SubmitButton
           onClick={close}
