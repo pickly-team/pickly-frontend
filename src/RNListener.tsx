@@ -1,5 +1,11 @@
 import useAuthStore from '@/store/auth';
 
+declare global {
+  interface Window {
+    isInWebview: boolean;
+  }
+}
+
 type MessageType = 'login';
 
 type Message = {
@@ -10,8 +16,9 @@ type Message = {
 
 const RNListener = () => {
   const login = useAuthStore((state) => state.login);
-  /** react native 환경에서만 가능 */
-  const listener = (event) => {
+
+  //TODO: type 지정
+  const listener = (event: any) => {
     const message = JSON.parse(event.data);
     handleMessage(message);
   };
