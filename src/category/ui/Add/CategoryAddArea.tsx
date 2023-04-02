@@ -4,8 +4,8 @@ import { theme } from '@/styles/theme';
 import getRem, { calculateRem } from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
-import type { CategoryItem } from '../../service/hooks/useHandleAddCategory';
 import IconButton from '../IconButton';
+import type { CategoryItem } from '@/category';
 
 type StrictPropsWithChildren<P = unknown> = P & { children: ReactNode };
 
@@ -38,7 +38,7 @@ const Card = styled.div<{ hasCategory: boolean }>`
 
 interface BlankCategoryBoxProps {
   onClickAddCategory: () => void;
-  isAllCategoryInfoFilled: () => boolean;
+  isAllCategoryInfoFilled: boolean;
 }
 
 const BlankCategoryBox = ({
@@ -52,7 +52,7 @@ const BlankCategoryBox = ({
           e.stopPropagation();
           onClickAddCategory();
         }}
-        disabled={!isAllCategoryInfoFilled()}
+        disabled={!isAllCategoryInfoFilled}
       >
         <Icon name="plus" size="s" />
       </CircleIconButton>
@@ -84,7 +84,7 @@ interface CategoryListProps {
   onClickAddCategory: () => void;
   onClickEditCategory: (id: string) => void;
   onClickDeleteCategory: (id: string) => void;
-  isAllCategoryInfoFilled: () => boolean;
+  isAllCategoryInfoFilled: boolean;
 }
 
 const CategoryList = ({
@@ -98,7 +98,7 @@ const CategoryList = ({
     <CategoryListWrapper>
       <CircleIconButton
         onClick={onClickAddCategory}
-        disabled={!isAllCategoryInfoFilled()}
+        disabled={!isAllCategoryInfoFilled}
       >
         <Icon name="plus" size="s" />
       </CircleIconButton>
