@@ -8,6 +8,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import { navigatePath } from '@/constants/navigatePath';
 import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
+import RNListener from '@/RNListener';
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = () => {
         <BrowserRouter>
           <IconLoader />
           <GlobalStyle />
+          <RNListener />
           <Layout>
             <Routes>
               <Route path={navigatePath.MAIN} element={<MainPage />} />
