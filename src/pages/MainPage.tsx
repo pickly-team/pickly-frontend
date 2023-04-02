@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 
-import useBookmarkHandler from '@/bookmarks/service/hooks/useBookmarkHandler';
 import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import BookmarkList from '@/bookmarks/ui/Main/BookmarkList';
@@ -9,22 +8,22 @@ import BookmarkEditItem from '@/bookmarks/ui/Main/BookmarkEditItem';
 import BookmarkBSDeleteConfirmation from '@/bookmarks/ui/Main/BookmarkBSDeleteConfirmation';
 import BottomNavigation from '@/common-ui/BottomNavigation';
 import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
+import useCategory from '@/bookmarks/service/hooks/home/useCategory';
+import useBookmarkList from '@/bookmarks/service/hooks/home/useBookmarkList';
+import useReadList from '@/bookmarks/service/hooks/home/useReadList';
+import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
 
 const MainPage = () => {
+  const { bookMarkList, isLoading, onChangeBookmarkList } = useBookmarkList();
+  const { category, categoryOptions, onChangeCategory } = useCategory();
+  const { isReadMode, onClickReadMode } = useReadList();
   const {
-    bookMarkList,
-    isEdit,
-    isLoading,
-    isRead,
-    onClick편집,
-    onChangeRead,
-    onClickBookMarkItem,
-    isDeleteBSOpen,
-    onClick삭제,
-    categoryOptions,
-    category,
-    setCategory,
-  } = useBookmarkHandler();
+    isEditMode: isEdit,
+    isDeleteBookmarkOpen,
+    onClickBookmarkItemInEdit,
+    onClickDelete,
+    onClickEdit,
+  } = useDeleteBookmarkList({ bookMarkList, onChangeBookmarkList });
 
   const isEditMode = !isLoading && bookMarkList?.length !== 0 && isEdit;
 
@@ -36,40 +35,46 @@ const MainPage = () => {
           <BookmarkToggle.SelectCategory
             category={category}
             categoryOptions={categoryOptions}
-            setCategory={setCategory}
+            setCategoryId={onChangeCategory}
           />
           <BookmarkToggle.ToggleRead
-            isRead={isRead}
-            onChangeRead={onChangeRead}
+            isRead={isReadMode}
+            onChangeRead={onClickReadMode}
           />
           <BookmarkToggle.ToggleEdit
             isEdit={isEdit}
-            onClick편집={onClick편집}
+            onClickEdit={onClickEdit}
           />
         </BookmarkToggle>
       </LTop>
       <LMiddle>
-        {isLoading &&
+        {!!isLoading &&
           [1, 2, 3, 4, 5].map((item) => <BookmarkSkeletonItem key={item} />)}
-        {!isEditMode && (
-          <BookmarkList
-            bookmarkList={bookMarkList}
-            renderItem={(bookMarkList) => (
-              <BookmarkItem key={bookMarkList.id} {...bookMarkList} />
-            )}
-          />
-        )}
-        {isEditMode && (
-          <BookmarkList
-            bookmarkList={bookMarkList}
-            renderItem={(bookMarkList) => (
-              <BookmarkEditItem
-                key={bookMarkList.id}
-                onClickItem={onClickBookMarkItem}
-                {...bookMarkList}
+        {!isLoading && bookMarkList && (
+          <>
+            {!isEditMode && (
+              <BookmarkList
+                bookmarkList={bookMarkList.filter((item) => {
+                  return item.isRead === isReadMode;
+                })}
+                renderItem={(bookMarkList) => (
+                  <BookmarkItem key={bookMarkList.id} {...bookMarkList} />
+                )}
               />
             )}
-          />
+            {isEditMode && (
+              <BookmarkList
+                bookmarkList={bookMarkList}
+                renderItem={(bookMarkList) => (
+                  <BookmarkEditItem
+                    key={bookMarkList.id}
+                    onClickItem={onClickBookmarkItemInEdit}
+                    {...bookMarkList}
+                  />
+                )}
+              />
+            )}
+          </>
         )}
       </LMiddle>
       <LBottom>
@@ -77,8 +82,8 @@ const MainPage = () => {
       </LBottom>
       {/** 북마크 삭제 확인 */}
       <BookmarkBSDeleteConfirmation
-        onClose={onClick삭제}
-        open={isDeleteBSOpen}
+        onClose={onClickDelete}
+        open={isDeleteBookmarkOpen}
       />
     </Layout>
   );
