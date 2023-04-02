@@ -3,7 +3,11 @@ import Select from '@/common-ui/Select/Select';
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { CategoryType } from '../../service/hooks/useBookmarkHandler';
+
+export type CategoryType = {
+  value: string;
+  label: string;
+};
 
 interface ToggleHandlerProps {
   children: React.ReactNode;
@@ -17,14 +21,14 @@ const BookmarkToggle = ({ children }: ToggleHandlerProps) => {
 
 interface SelectCategoryProps {
   category: string;
-  setCategory: (category: string) => void;
+  setCategoryId: (category: string) => void;
   categoryOptions: CategoryType[];
 }
 
 const SelectCategory = ({
   category,
   categoryOptions,
-  setCategory,
+  setCategoryId,
 }: SelectCategoryProps) => {
   return (
     <ButtonWrapper>
@@ -35,7 +39,7 @@ const SelectCategory = ({
           width: '100%',
         }}
         value={category}
-        onChange={setCategory}
+        onChange={setCategoryId}
         isSearchActive
       >
         {categoryOptions.map((option) => (
@@ -75,10 +79,10 @@ const ToggleRead = ({ onChangeRead, isRead }: ToggleReadProps) => {
 
 interface ToggleEditProps {
   isEdit: boolean;
-  onClick편집: () => void;
+  onClickEdit: () => void;
 }
 
-const ToggleEdit = ({ isEdit, onClick편집 }: ToggleEditProps) => {
+const ToggleEdit = ({ isEdit, onClickEdit }: ToggleEditProps) => {
   return (
     <ButtonWrapper>
       <Button
@@ -88,7 +92,7 @@ const ToggleEdit = ({ isEdit, onClick편집 }: ToggleEditProps) => {
           border: `2px solid ${theme.colors.lightPrimary}`,
           borderRadius: '0.8rem',
         }}
-        onClick={onClick편집}
+        onClick={onClickEdit}
       >
         <Text.Span color="lightPrimary">{isEdit ? '완료' : '편집'}</Text.Span>
       </Button>

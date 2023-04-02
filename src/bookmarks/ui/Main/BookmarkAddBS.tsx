@@ -6,7 +6,7 @@ import getRem, { calculateRem } from '@/utils/getRem';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ClientBookmarkCategoryItem } from '../../api/bookmark';
-import { DisClosureType } from '../../service/hooks/useBookmarkAddHandler';
+import { PublishScopedType } from '../../service/hooks/add/useSelectPublishScoped';
 import TagBoxList from '../BookmarkTagList';
 
 interface BookmarkAddBSProps {
@@ -27,7 +27,7 @@ const BookmarkAddBS = ({ isOpen, close, children }: BookmarkAddBSProps) => {
 
 interface URLInputProps {
   url: string;
-  onChangeUrl: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeUrl: (url: string) => void;
   isValidateUrl: boolean;
 }
 
@@ -43,7 +43,7 @@ const URLInput = ({ url, onChangeUrl, isValidateUrl }: URLInputProps) => {
             borderRadius: calculateRem(10),
           }}
           value={url}
-          onChange={onChangeUrl}
+          onChange={(e) => onChangeUrl(e.target.value)}
         />
       </StyledInputWrapper>
     </>
@@ -70,13 +70,13 @@ const SelectCategory = ({
 };
 
 interface DisclosureScopeProps {
-  selectedDisClosure: DisClosureType;
-  onClickDisClosure: (type: DisClosureType) => void;
+  selectedPublishScoped: PublishScopedType;
+  onClickPublishScoped: (type: PublishScopedType) => void;
 }
 
-const DisclosureScope = ({
-  selectedDisClosure,
-  onClickDisClosure,
+const PublishScoped = ({
+  selectedPublishScoped,
+  onClickPublishScoped,
 }: DisclosureScopeProps) => {
   return (
     <>
@@ -91,39 +91,39 @@ const DisclosureScope = ({
       >
         <Button
           buttonColor={
-            selectedDisClosure === 'PUBLIC' ? 'lightPrimary' : 'grey700'
+            selectedPublishScoped === 'PUBLIC' ? 'lightPrimary' : 'grey700'
           }
-          onClick={() => onClickDisClosure('PUBLIC')}
+          onClick={() => onClickPublishScoped('PUBLIC')}
         >
           <Text.Span
             weight="bold"
-            color={selectedDisClosure === 'PUBLIC' ? 'black' : 'white'}
+            color={selectedPublishScoped === 'PUBLIC' ? 'black' : 'white'}
           >
             전체 공개
           </Text.Span>
         </Button>
         <Button
           buttonColor={
-            selectedDisClosure === 'FRIENDS' ? 'lightPrimary' : 'grey700'
+            selectedPublishScoped === 'FRIENDS' ? 'lightPrimary' : 'grey700'
           }
-          onClick={() => onClickDisClosure('FRIENDS')}
+          onClick={() => onClickPublishScoped('FRIENDS')}
         >
           <Text.Span
             weight="bold"
-            color={selectedDisClosure === 'FRIENDS' ? 'black' : 'white'}
+            color={selectedPublishScoped === 'FRIENDS' ? 'black' : 'white'}
           >
             친구 공개
           </Text.Span>
         </Button>
         <Button
           buttonColor={
-            selectedDisClosure === 'PRIVATE' ? 'lightPrimary' : 'grey700'
+            selectedPublishScoped === 'PRIVATE' ? 'lightPrimary' : 'grey700'
           }
-          onClick={() => onClickDisClosure('PRIVATE')}
+          onClick={() => onClickPublishScoped('PRIVATE')}
         >
           <Text.Span
             weight="bold"
-            color={selectedDisClosure === 'PRIVATE' ? 'black' : 'white'}
+            color={selectedPublishScoped === 'PRIVATE' ? 'black' : 'white'}
           >
             비공개
           </Text.Span>
@@ -160,7 +160,7 @@ const SubmitButton = ({ isAllWritten, onClick }: SubmitButtonProps) => {
 
 BookmarkAddBS.URLInput = URLInput;
 BookmarkAddBS.SelectCategory = SelectCategory;
-BookmarkAddBS.DisclosureScope = DisclosureScope;
+BookmarkAddBS.PublishScoped = PublishScoped;
 BookmarkAddBS.SubmitButton = SubmitButton;
 
 export default BookmarkAddBS;
