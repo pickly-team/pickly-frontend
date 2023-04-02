@@ -6,7 +6,7 @@ const BASE_URL = '';
 
 const DOMAIN = 'BOOKMARK';
 
-const GET_BOOKMARK_LIST = (userId: string) => [
+export const GET_BOOKMARK_LIST = (userId: string) => [
   getKeyofObject(navigatePath, '/'),
   DOMAIN,
   'BOOKMARK_LIST',
@@ -47,9 +47,7 @@ interface bookmarkGETBookMarkListResponse {
 }
 
 /** mapping 결과 */
-export interface bookmarkGETBookMarkList {
-  bookmark_list: ClientBookMarkItem[];
-}
+export type bookmarkGETBookMarkList = ClientBookMarkItem[];
 
 const GETBookMarkList = {
   API: async () => {
@@ -61,19 +59,17 @@ const GETBookMarkList = {
   Mapper: ({
     bookmark_list,
   }: bookmarkGETBookMarkListResponse): bookmarkGETBookMarkList => {
-    return {
-      bookmark_list: bookmark_list.map((bookmark) => ({
-        id: bookmark.id,
-        isRead: bookmark.is_read,
-        title: bookmark.title,
-        imgSrc: bookmark.img_src,
-        isLiked: bookmark.is_liked,
-        isBookmarked: bookmark.is_bookmarked,
-        isMessage: bookmark.is_message,
-        date: bookmark.date,
-        url: bookmark.url,
-      })),
-    };
+    return bookmark_list.map((bookmark) => ({
+      id: bookmark.id,
+      isRead: bookmark.is_read,
+      title: bookmark.title,
+      imgSrc: bookmark.img_src,
+      isLiked: bookmark.is_liked,
+      isBookmarked: bookmark.is_bookmarked,
+      isMessage: bookmark.is_message,
+      date: bookmark.date,
+      url: bookmark.url,
+    }));
   },
   MockAPI: async (): Promise<bookmarkGETBookMarkList> => {
     await sleep(1500);
@@ -178,7 +174,7 @@ const GETBookmarkCategoryList = {
   },
 };
 
-const GET_BOOKMARK_CATEGORY_LIST = (userId: string) => [
+export const GET_BOOKMARK_CATEGORY_LIST = (userId: string) => [
   getKeyofObject(navigatePath, '/'),
   DOMAIN,
   'BOOKMARK_CATEGORY_LIST',
