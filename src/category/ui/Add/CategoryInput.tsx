@@ -4,7 +4,7 @@ import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import getRem, { calculateRem } from '@/utils/getRem';
 import styled from '@emotion/styled';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 interface CategoryInputProps {
   children: ReactNode;
@@ -14,7 +14,6 @@ const CategoryInput = ({ children }: CategoryInputProps) => {
   return <CategoryNameInputWrapper>{children}</CategoryNameInputWrapper>;
 };
 
-////////////////////////
 const CategoryNameInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,12 +27,12 @@ const CategoryNameInput = styled(Input)`
 
 interface EmojiProps {
   emoji: string;
-  setEmojiBSOpen: () => void;
+  onClickEmoji: () => void;
 }
 
-const Emoji = ({ emoji, setEmojiBSOpen }: EmojiProps) => {
+const Emoji = ({ emoji, onClickEmoji }: EmojiProps) => {
   return (
-    <UserEmojiEdit onClick={setEmojiBSOpen}>
+    <UserEmojiEdit onClick={onClickEmoji}>
       <UserBox>
         <Text.Span fontSize={calculateRem(48)}>{emoji}</Text.Span>
         <EditIcon>
@@ -69,7 +68,7 @@ const EditIcon = styled.div`
 `;
 
 interface NameProps {
-  onChangeCategoryName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeCategoryName: (name: string) => void;
   categoryName: string;
 }
 
@@ -79,7 +78,10 @@ const Name = ({ categoryName, onChangeCategoryName }: NameProps) => {
       <Text.Header level="h3" weight="bold" fontSize={calculateRem(16)}>
         카테고리 이름
       </Text.Header>
-      <CategoryNameInput value={categoryName} onChange={onChangeCategoryName} />
+      <CategoryNameInput
+        value={categoryName}
+        onChange={(e) => onChangeCategoryName(e.target.value)}
+      />
     </>
   );
 };
