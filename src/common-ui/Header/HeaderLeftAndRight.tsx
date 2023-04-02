@@ -6,12 +6,12 @@ import Icon from '../assets/Icon';
 import Text from '../Text';
 
 export interface HeaderProps {
-  left: {
+  leftButton: {
     type: 'back' | 'close';
     onClick: () => void;
   };
   middleText?: string;
-  right?: {
+  rightButton?: {
     text: string;
     disabled?: boolean;
     onClick: () => void;
@@ -21,43 +21,41 @@ export interface HeaderProps {
 /**
  *
  * @example
- * <HeaderLeftAndRight
-    left={{ type: 'back', onClick: () => console.log('clicked back') }}
-    middleText="게시물 수정"
-    right={{
-        type: 'button',
-        text: '완료',
-        disabled: true,
-        onClick: () => console.log('clicked right button'),
-        }}
-    />
+  <HeaderLeftAndRight
+    leftButton={{ type: 'back', onClick: onClickBack }}
+    rightButton={{ text: '저장', onClick: onClickSave }}
+  />
  */
-const HeaderLeftAndRight = ({ left, middleText, right }: HeaderProps) => {
+const HeaderLeftAndRight = ({
+  leftButton,
+  middleText,
+  rightButton,
+}: HeaderProps) => {
   return (
     <StyleHeader>
       <Left>
-        {left.type === 'back' && (
-          <button onClick={left.onClick}>
+        {leftButton.type === 'back' && (
+          <button onClick={leftButton.onClick}>
             <Icon name="back" size="m" />
           </button>
         )}
-        {left.type === 'close' && (
-          <button onClick={left.onClick}>
+        {leftButton.type === 'close' && (
+          <button onClick={leftButton.onClick}>
             <Icon name="close" size="s" />
           </button>
         )}
       </Left>
-      <Middle hasRightButton={!!right}>
+      <Middle hasRightButton={!!rightButton}>
         <Text.Header level="h1" weight="bold">
           {middleText ?? ''}
         </Text.Header>
       </Middle>
       <Right>
-        {!right && <StyleRight />}
-        {!!right && right.onClick && (
-          <button onClick={right.onClick}>
+        {!rightButton && <StyleRight />}
+        {!!rightButton && rightButton.onClick && (
+          <button onClick={rightButton.onClick}>
             <Text.Span weight="bold" fontSize={calculateRem(18)}>
-              {right.text}
+              {rightButton.text}
             </Text.Span>
           </button>
         )}
