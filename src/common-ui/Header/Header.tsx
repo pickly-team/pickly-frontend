@@ -29,7 +29,7 @@ const Header = ({
             <Icon name="back" size={'m'} />
           </button>
         )}
-        {title && fontSize && <Text.Div fontSize={fontSize}>{title}</Text.Div>}
+        {title && <Text.Div fontSize={1.5}>{title}</Text.Div>}
       </BackButtonAndTitleWrapper>
       <RightButtonWrapper>{rightButton}</RightButtonWrapper>
     </HeaderContainer>

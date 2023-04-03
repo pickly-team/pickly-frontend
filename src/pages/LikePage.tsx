@@ -18,7 +18,6 @@ const LikePage = () => {
     <Layout>
       <Header
         title={title}
-        fontSize={1.5}
         showBackButton={showBackButton}
         rightButton={rightButton}
       />
