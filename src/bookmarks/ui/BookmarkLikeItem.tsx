@@ -17,7 +17,8 @@ const BookmarkLikeItem = ({ title, url }: ClientBookMarkItem) => {
             {url}
           </EllipsisText>
         </ItemUpperLeft>
-        <ItemUpperRight>{<BookMarkLikeButton isLike={true} />}</ItemUpperRight>
+        <ItemUpperRight></ItemUpperRight>
+        {<BookMarkLikeButton isLike={true} />}
       </ItemWrapper>
       <UnderWrapper></UnderWrapper>
     </LinkWrapper>
@@ -29,7 +30,7 @@ export default BookmarkLikeItem;
 const LinkWrapper = styled(NavLink)`
   display: block;
   border-radius: 1rem;
-  padding: 10px 20px;
+  padding: 10px 0px;
   margin-bottom: 1rem;
   transition: background-color 0.1s ease-in-out, opacity 0.1s ease-in-out;
 
