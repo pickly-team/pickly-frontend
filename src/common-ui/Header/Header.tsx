@@ -8,12 +8,14 @@ import getRem from '@/utils/getRem';
 interface HeaderProps {
   showBackButton?: boolean;
   title?: string;
+  fontSize?: number;
   rightButton?: ReactNode;
 }
 
 const Header = ({
   showBackButton = false,
   title,
+  fontSize,
   rightButton,
 }: HeaderProps) => {
   const onClickBackButton = () => {
@@ -27,7 +29,7 @@ const Header = ({
             <Icon name="back" size={'m'} />
           </button>
         )}
-        {title && <Text.Div fontSize={20}>{title}</Text.Div>}
+        {title && fontSize && <Text.Div fontSize={fontSize}>{title}</Text.Div>}
       </BackButtonAndTitleWrapper>
       <RightButtonWrapper>{rightButton}</RightButtonWrapper>
     </HeaderContainer>

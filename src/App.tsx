@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import IconLoader from './common-ui/assets/IconLoader';
 import MainPage from './pages/MainPage';
+import LikePage from './pages/LikePage';
 import GlobalStyle from './styles/GlobalStyle';
 import { navigatePath } from '@/constants/navigatePath';
 import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
@@ -25,6 +26,7 @@ const App = () => {
                 path={navigatePath.BOOKMARK_DETAIL}
                 element={<BookMarkDetailPage />}
               />
+              <Route path={navigatePath.LIKE_PAGE} element={<LikePage />} />
             </Routes>
           </Layout>
         </BrowserRouter>
