@@ -4,6 +4,7 @@ const navigatePath = {
   ALARM: '/alarm',
   PROFILE: '/profile',
   BOOKMARK_DETAIL: '/bookmark/:id',
+  FAQ: '/faq',
 } as const;
 
 type NavigatePath = (typeof navigatePath)[keyof typeof navigatePath];
