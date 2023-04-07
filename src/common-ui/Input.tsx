@@ -73,7 +73,7 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
           color: ${theme.colors.black};
         }
         :disabled {
-          background-color: ${theme.colors.grey200};
+          background-color: ${theme.colors.darkBlack};
         }
       `}
       ref={ref}
