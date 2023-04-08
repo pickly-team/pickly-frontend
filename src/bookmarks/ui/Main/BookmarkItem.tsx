@@ -3,7 +3,7 @@ import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
-import { ClientBookMarkItem } from '../api/bookmark';
+import { ClientBookMarkItem } from '../../api/bookmark';
 
 const BookmarkItem = ({
   title,
@@ -21,7 +21,7 @@ const BookmarkItem = ({
           <EllipsisText fontSize={1.2} weight="bold">
             {title}
           </EllipsisText>
-          <EllipsisText fontSize={1} color="lightGreen">
+          <EllipsisText fontSize={1} color="lightPrimary">
             {url}
           </EllipsisText>
         </ItemUpperLeft>
@@ -35,7 +35,7 @@ const BookmarkItem = ({
           <Icon name={isMessage ? 'message-on-green' : 'message'} size="xs" />
           {!isRead && <Icon name="not-read" size="xs" />}
         </IconWrapper>
-        <Text.Span fontSize={0.9} color="lightGreen">
+        <Text.Span fontSize={0.9} color="lightPrimary">
           {date}
         </Text.Span>
       </UnderWrapper>

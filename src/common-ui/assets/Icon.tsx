@@ -7,7 +7,7 @@ const sizeMap = {
   xs: 15,
 } as const;
 
-interface IconProps {
+export interface IconProps {
   name: IconName;
   /** l: 28, m:24, s:20, xs: 15 */
   size: keyof typeof sizeMap;

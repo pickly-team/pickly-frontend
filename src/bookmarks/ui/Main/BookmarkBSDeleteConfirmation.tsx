@@ -8,7 +8,10 @@ interface BSDeleteConfirmationProps {
   onClose: () => void;
 }
 
-const BSDeleteConfirmation = ({ open, onClose }: BSDeleteConfirmationProps) => {
+const BookmarkBSDeleteConfirmation = ({
+  open,
+  onClose,
+}: BSDeleteConfirmationProps) => {
   return (
     <BottomSheet open={open} maxHeight={20} onClose={onClose}>
       <BSWrapper>
@@ -47,7 +50,7 @@ const BSDeleteConfirmation = ({ open, onClose }: BSDeleteConfirmationProps) => {
   );
 };
 
-export default BSDeleteConfirmation;
+export default BookmarkBSDeleteConfirmation;
 
 const BSWrapper = styled.div`
   display: flex;
