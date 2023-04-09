@@ -7,7 +7,7 @@ type StrictPropsWithChildren<P = unknown> = P & { children: string };
 
 type TextProps = {
   weight?: 'bold' | 'regular';
-  fontSize?: number;
+  fontSize?: string | number;
   color?: ColorType;
   children: ReactNode;
 } & StrictPropsWithChildren &
@@ -32,9 +32,9 @@ const cssText = ({
   weight,
   color = 'white',
   fontSize,
-}: Omit<TextProps, 'children' | 'fonSize'> & { fontSize: number }) =>
+}: Omit<TextProps, 'children' | 'fonSize'> & { fontSize: string | number }) =>
   css`
-    font-size: ${fontSize}rem;
+    font-size: ${typeof fontSize === 'number' ? `${fontSize}rem` : fontSize};
     color: ${theme.colors[color]};
     font-family: ${weight === 'bold'
       ? 'NanumSquareRoundB'
