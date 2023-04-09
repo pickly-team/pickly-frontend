@@ -103,4 +103,3 @@ const LTop = styled.div`
 const LMiddle = styled.div`
   padding-bottom: 5rem;
 `;
-const LBottom = styled.div``;
