@@ -45,14 +45,6 @@ const App = () => {
                 path={navigatePath.CATEGORY_ADD}
                 element={<CategoryAddPage />}
               />
-              <Route
-                path={navigatePath.USER}
-                element={<UserCreatePage mode="CREATE" />}
-              />
-              <Route
-                path={navigatePath.USER_EDIT}
-                element={<UserCreatePage mode="EDIT" />}
-              />
             </Routes>
           </Layout>
         </BrowserRouter>
