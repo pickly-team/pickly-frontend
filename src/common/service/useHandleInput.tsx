@@ -1,19 +1,21 @@
 import { ChangeEvent, useState } from 'react';
 
-interface HandleInput {
-  input: string;
-}
+const useHandleInput = (): [
+  string,
+  (e: ChangeEvent<HTMLInputElement>) => void,
+  (input: string) => void,
+] => {
+  const [input, setInput] = useState('');
 
-const useHandleInput = ({
-  input: prevInput,
-}: HandleInput): [string, (e: ChangeEvent<HTMLInputElement>) => void] => {
-  const [input, setInput] = useState(prevInput);
-
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeElementInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
-  return [input, onChangeInput];
+  const onChangeInput = (input: string) => {
+    setInput(input);
+  };
+
+  return [input, onChangeElementInput, onChangeInput];
 };
 
 export default useHandleInput;
