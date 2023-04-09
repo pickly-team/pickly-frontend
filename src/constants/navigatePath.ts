@@ -7,8 +7,6 @@ const navigatePath = {
   USER: '/user/:id',
   USER_EDIT: '/user/:id/edit',
   CATEGORY_ADD: '/category/add',
-  USER: '/user/:id',
-  USER_EDIT: '/user/:id/edit',
 } as const;
 
 type NavigatePath = (typeof navigatePath)[keyof typeof navigatePath];

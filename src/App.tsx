@@ -10,7 +10,6 @@ import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryAddPage';
-import UserCreatePage from './pages/UserInfoPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
