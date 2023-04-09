@@ -1,7 +1,8 @@
 import Button from '@/common-ui/Button';
 import Header from '@/common-ui/Header/Header';
+import Emoji from '@/common/ui/Emoji';
+import EmojiSelect from '@/common/ui/EmojiSelect';
 import EditBox from '@/user/ui/EditBox';
-import EditEmoji from '@/user/ui/Emoji';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 
@@ -10,6 +11,8 @@ interface UserProfileInfoProps {
   email: string;
   name: string;
   nickname: string;
+  isEmojiBSOpen: boolean;
+  setEmojiBSOpen: () => void;
   onChangeEmoji: (emoji: string) => void;
   onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeNickname: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,6 +24,8 @@ const UserProfileInfo = ({
   email,
   name,
   nickname,
+  isEmojiBSOpen,
+  setEmojiBSOpen,
   onChangeEmoji,
   onChangeName,
   onChangeNickname,
@@ -30,7 +35,7 @@ const UserProfileInfo = ({
     <>
       <Header showBackButton />
       {/** TODO : PR 반영되면 수정 */}
-      <EditEmoji emoji={emoji} onClickEmoji={() => console.log('emoji 클릭')} />
+      <Emoji emoji={emoji} onClickEmoji={setEmojiBSOpen} />
       <StyleEditBox>
         <EditBox name="이메일" value={email} onChange={onChangeName} disabled />
         <EditBox name="이름" value={name} onChange={onChangeName} isEssential />
@@ -43,10 +48,16 @@ const UserProfileInfo = ({
       </StyleEditBox>
       <StyleFixedButtonWrapper>
         {/** TODO : PR 반영되면 수정 */}
-        <FixedButton activeButtonColor="lightGreen" onClick={onClickSaveButton}>
+        <FixedButton
+          activeButtonColor="lightGreen"
+          buttonColor="buttonGreen"
+          onClick={onClickSaveButton}
+        >
           저장
         </FixedButton>
       </StyleFixedButtonWrapper>
+      {/** 이모지 BS */}
+      {isEmojiBSOpen && <EmojiSelect onChangeEmoji={onChangeEmoji} />}
     </>
   );
 };
@@ -63,6 +74,8 @@ const StyleEditBox = styled.div`
 const StyleFixedButtonWrapper = styled.div`
   position: fixed;
   width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
   padding: 0 ${getRem(20)};
   bottom: ${getRem(20)};
   padding: 0 ${getRem(20)};
