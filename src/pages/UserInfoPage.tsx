@@ -1,17 +1,27 @@
 import { useNavigate } from 'react-router-dom';
-import useHandleUserInfo from '../user/service/useHandleUserInfo';
 import UserProfileInfo from '@/user/ui/UserProfileInfo';
+import useChangeEmoji from '@/common/service/useChangeEmoji';
+import useHandleInput from '@/common/service/useHandleInput';
+import { useGETUserInfoQuery } from '@/user/api/user';
 
 interface UserCreatePageProps {
   mode: Mode;
 }
 
 const UserInfoPage = ({ mode }: UserCreatePageProps) => {
-  // TODO : PR 반영 후 수정
+  // API에 따라서
+  const { data: userInfoData } = useGETUserInfoQuery({ userId: '1', mode });
 
-  const { name, nickname, emoji, onChangeName, onChangeNickname } =
-    useHandleUserInfo({
-      mode,
+  const [name, onChangeName] = useHandleInput({
+    input: mode === 'EDIT' ? userInfoData?.name ?? '' : '',
+  });
+  const [nickname, onChangeNickname] = useHandleInput({
+    input: mode === 'EDIT' ? userInfoData?.nickname ?? '' : '',
+  });
+
+  const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen } =
+    useChangeEmoji({
+      emoji: mode === 'EDIT' ? userInfoData?.emoji ?? '📖' : '📖',
     });
 
   const router = useNavigate();
@@ -30,7 +40,9 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
       name={name}
       email={email}
       nickname={nickname}
-      onChangeEmoji={() => {}}
+      isEmojiBSOpen={isEmojiBSOpen}
+      onChangeEmoji={onChangeEmoji}
+      setEmojiBSOpen={setEmojiBSOpen}
       onChangeName={onChangeName}
       onChangeNickname={onChangeNickname}
       onClickSaveButton={onClickSaveButton}
