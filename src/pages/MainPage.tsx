@@ -6,7 +6,6 @@ import BookmarkList from '@/bookmarks/ui/Main/BookmarkList';
 import BookmarkItem from '@/bookmarks/ui/Main/BookmarkItem';
 import BookmarkEditItem from '@/bookmarks/ui/Main/BookmarkEditItem';
 import BookmarkBSDeleteConfirmation from '@/bookmarks/ui/Main/BookmarkBSDeleteConfirmation';
-import BottomNavigation from '@/common-ui/BottomNavigation';
 import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
 import useBookmarkList from '@/bookmarks/service/hooks/home/useBookmarkList';
@@ -77,9 +76,6 @@ const MainPage = () => {
           </>
         )}
       </LMiddle>
-      <LBottom>
-        <BottomNavigation />
-      </LBottom>
       {/** 북마크 삭제 확인 */}
       <BookmarkBSDeleteConfirmation
         onClose={onClickDelete}
