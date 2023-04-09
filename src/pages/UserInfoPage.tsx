@@ -18,7 +18,7 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
     useHandleInput();
 
   const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen } =
-    useChangeEmoji(userInfoData?.emoji);
+    useChangeEmoji();
 
   useEffect(() => {
     if (userInfoData) {

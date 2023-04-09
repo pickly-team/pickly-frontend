@@ -19,7 +19,7 @@ const CategoryAddPage = () => {
 
   // BUSINESS LOGIC
   const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen } =
-    useChangeEmoji({ emoji: '📖' });
+    useChangeEmoji();
   const { categoryName, onChangeCategoryName } = useChangeCategoryName();
   const { categoryList, addCategory, deleteCategory } =
     useAddAndDeleteCategory();
