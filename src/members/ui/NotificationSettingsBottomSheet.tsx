@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import BottomSheet, {
@@ -13,7 +13,7 @@ import Button from '@/common-ui/Button';
 const NotificationSettingsBottomSheet = ({
   ...props
 }: Omit<BottomSheetProps, 'children'>) => {
-  const [isAm, setIsAm] = useState(false);
+  const [isPm, setIsPm] = useState(false);
 
   return (
     <BottomSheet maxHeight={30} {...props}>
@@ -31,11 +31,11 @@ const NotificationSettingsBottomSheet = ({
           <Toggle
             offText={'오전'}
             onText={'오후'}
-            isToggle={isAm}
-            setToggleTrue={() => setIsAm(true)}
-            setToggleFalse={() => setIsAm(false)}
+            isToggle={isPm}
+            setToggleTrue={() => setIsPm(true)}
+            setToggleFalse={() => setIsPm(false)}
           />
-          <TimeInput />
+          <TimeInput isPm={isPm} />
         </InputContainer>
         <ButtonContainer>
           <Button
@@ -88,11 +88,29 @@ const BottomSheetInnerWrapper = styled.div`
   gap: ${getRem(20)};
 `;
 
-const TimeInput = () => {
+const TimeInput = ({ isPm }: { isPm: boolean }) => {
   const [time, setTime] = useState<string>('00:00');
 
+  const validateTime = (time: string) => {
+    if (!isPm && Number(time.split(':')[0]) >= 12) {
+      setTime('00:00');
+      return;
+    }
+
+    if (isPm && Number(time.split(':')[0]) === 0) {
+      setTime('12:00');
+      return;
+    }
+
+    setTime(time);
+  };
+
+  useEffect(() => {
+    validateTime(time);
+  });
+
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTime(e.target.value);
+    validateTime(e.target.value);
   };
 
   return (
@@ -102,6 +120,8 @@ const TimeInput = () => {
         onChange={handleTimeChange}
         style={{ textAlign: 'right' }}
         type="time"
+        min={'00:00'}
+        max={'12:00'}
       ></StyledTimeInput>
     </Container>
   );
@@ -135,5 +155,18 @@ const StyledTimeInput = styled.input`
   &::-webkit-datetime-edit-minute-field:focus {
     color: ${theme.colors.lightPrimary};
     background: transparent;
+  }
+
+  &::-webkit-datetime-edit-ampm-field {
+    display: none;
+  }
+
+  &::-webkit-clear-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    margin: ${getRem(-10)};
   }
 `;
