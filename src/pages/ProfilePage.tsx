@@ -33,7 +33,7 @@ const ProfilePage = () => {
           numberOfCategories={230}
           numberOfComments={1234}
         />
-        <SettingsBox remainingDays={3} />
+        <SettingsBox />
         <NotificationSettingBox
           notificationSetting={dummyNotificationSetting}
         />
