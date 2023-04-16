@@ -32,9 +32,9 @@ const BasicInfoBox = ({
         <ProfileNameRow>
           <NicknameColumn>
             <Text.Span fontSize={1.5}>{nickname}</Text.Span>
-            <Link to={`/user/${memberId}/edit`}>
+            <LinkContainer to={`/user/${memberId}/edit`}>
               <Icon name={'circle-pencil'} size={'l'} />
-            </Link>
+            </LinkContainer>
           </NicknameColumn>
           <MoreButtonContainer onClick={open}>
             <Icon name={'more'} size={'s'} />
@@ -88,6 +88,10 @@ const Container = styled.div`
   background-color: ${theme.colors.darkGrey};
   border-bottom-left-radius: 2.125rem;
   border-bottom-right-radius: 2.125rem;
+`;
+const LinkContainer = styled(Link)`
+  display: flex;
+  justify-content: center;
 `;
 const NicknameColumn = styled.div`
   display: flex;
