@@ -5,6 +5,7 @@ import EmojiSelect from '@/common/ui/EmojiSelect';
 import EditBox from '@/user/ui/EditBox';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
+import { FormEvent } from 'react';
 
 interface UserProfileInfoProps {
   emoji: string;
@@ -12,11 +13,12 @@ interface UserProfileInfoProps {
   name: string;
   nickname: string;
   isEmojiBSOpen: boolean;
+  buttonDisabled: boolean;
   setEmojiBSOpen: () => void;
   onChangeEmoji: (emoji: string) => void;
   onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeNickname: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClickSaveButton: () => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
 const UserProfileInfo = ({
@@ -25,16 +27,16 @@ const UserProfileInfo = ({
   name,
   nickname,
   isEmojiBSOpen,
+  buttonDisabled,
   setEmojiBSOpen,
   onChangeEmoji,
   onChangeName,
   onChangeNickname,
-  onClickSaveButton,
+  onSubmit,
 }: UserProfileInfoProps) => {
   return (
-    <>
+    <Form onSubmit={onSubmit}>
       <Header showBackButton />
-      {/** TODO : PR 반영되면 수정 */}
       <Emoji emoji={emoji} onClickEmoji={setEmojiBSOpen} />
       <StyleEditBox>
         <EditBox name="이메일" value={email} onChange={onChangeName} disabled />
@@ -47,22 +49,23 @@ const UserProfileInfo = ({
         />
       </StyleEditBox>
       <StyleFixedButtonWrapper>
-        {/** TODO : PR 반영되면 수정 */}
         <FixedButton
           activeButtonColor="lightGreen"
           buttonColor="buttonGreen"
-          onClick={onClickSaveButton}
+          type="submit"
+          disabled={buttonDisabled}
         >
           저장
         </FixedButton>
       </StyleFixedButtonWrapper>
-      {/** 이모지 BS */}
       {isEmojiBSOpen && <EmojiSelect onChangeEmoji={onChangeEmoji} />}
-    </>
+    </Form>
   );
 };
 
 export default UserProfileInfo;
+
+const Form = styled.form``;
 
 const StyleEditBox = styled.div`
   display: flex;
