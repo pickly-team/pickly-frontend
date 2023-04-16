@@ -13,9 +13,10 @@ const BookmarkItem = ({
   isLiked,
   isMessage,
   date,
+  id,
 }: ClientBookMarkItem) => {
   return (
-    <LinkWrapper to="/">
+    <LinkWrapper to={`/bookmark/${id}`}>
       <ItemWrapper>
         <ItemUpperLeft>
           <EllipsisText fontSize={1.2} weight="bold">
