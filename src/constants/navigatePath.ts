@@ -4,6 +4,8 @@ const navigatePath = {
   ALARM: '/alarm',
   PROFILE: '/profile',
   BOOKMARK_DETAIL: '/bookmark/:id',
+  USER: '/user/:id',
+  USER_EDIT: '/user/:id/edit',
   CATEGORY_ADD: '/category/add',
 } as const;
 

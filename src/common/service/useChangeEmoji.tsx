@@ -1,8 +1,8 @@
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
-import React from 'react';
+import { useState } from 'react';
 
 const useChangeEmoji = () => {
-  const [emoji, setEmoji] = React.useState('😎');
+  const [emoji, setEmoji] = useState('📖');
   const {
     close: closeEmojiBS,
     open: openEmojiBS,

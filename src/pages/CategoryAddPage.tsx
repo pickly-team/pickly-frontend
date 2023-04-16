@@ -1,15 +1,16 @@
 import useAddAndDeleteCategory from '@/category/service/hooks/useAddAndDeleteCategory';
 import useChangeCategoryName from '@/category/service/hooks/useChangeCategoryName';
-import useChangeEmoji from '@/category/service/hooks/useChangeEmoji';
+import useChangeEmoji from '@/common/service/useChangeEmoji';
 import CategoryAddArea from '@/category/ui/Add/CategoryAddArea';
 import CategoryAddInfo from '@/category/ui/Add/CategoryAddInfo';
-import CategoryInput from '@/category/ui/Add/CategoryInput';
-import EmojiSelect from '@/category/ui/Add/EmojiSelect';
+import EmojiSelect from '@/common/ui/EmojiSelect';
 import Divider from '@/category/ui/Divider';
 import HeaderLeftAndRight from '@/common-ui/Header/HeaderLeftAndRight';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
+import Emoji from '@/common/ui/Emoji';
+import CategoryName from '@/category/ui/Add/CategoryName';
 
 // TODO : 이모지 라이브러리 찾아서 연동
 
@@ -25,7 +26,13 @@ const CategoryAddPage = () => {
 
   // INTERACTION
   // 1. 뒤로가기 버튼 > 뒤로가기
-  const onClickBack = () => router(-1);
+  const onClickBack = () =>
+    router('/', {
+      preventScrollReset: true,
+      state: {
+        isCategoryAddPage: true,
+      },
+    });
   // 2. 저장 버튼 > 저장
   const onClickSave = () => router(-1);
 
@@ -69,13 +76,13 @@ const CategoryAddPage = () => {
       {/** 카테고리 페이지 설명 영역 */}
       <CategoryAddInfo />
       {/** 카테고리 입력 영역 */}
-      <CategoryInput>
-        <CategoryInput.Emoji emoji={emoji} onClickEmoji={setEmojiBSOpen} />
-        <CategoryInput.Name
+      <CategoryNameInputWrapper>
+        <Emoji emoji={emoji} onClickEmoji={setEmojiBSOpen} />
+        <CategoryName
           categoryName={categoryName}
           onChangeCategoryName={onChangeCategoryName}
         />
-      </CategoryInput>
+      </CategoryNameInputWrapper>
       <MarginDivider>
         <Divider size="s" margin="off" />
       </MarginDivider>
@@ -103,4 +110,11 @@ export default CategoryAddPage;
 
 const MarginDivider = styled.div`
   margin: ${getRem(40)} 0;
+`;
+
+const CategoryNameInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: ${getRem(20)};
+  padding: 0 ${getRem(20)};
 `;
