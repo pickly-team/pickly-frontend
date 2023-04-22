@@ -1,4 +1,4 @@
-import Button from '@/common-ui/Button';
+import BottomFixedButton from '@/common-ui/BottomFixedButton';
 import Header from '@/common-ui/Header/Header';
 import Emoji from '@/common/ui/Emoji';
 import EmojiSelect from '@/common/ui/EmojiSelect';
@@ -48,16 +48,14 @@ const UserProfileInfo = ({
           isEssential
         />
       </StyleEditBox>
-      <StyleFixedButtonWrapper>
-        <FixedButton
-          activeButtonColor="lightGreen"
-          buttonColor="buttonGreen"
-          type="submit"
-          disabled={buttonDisabled}
-        >
-          저장
-        </FixedButton>
-      </StyleFixedButtonWrapper>
+      <BottomFixedButton
+        activeButtonColor="lightGreen"
+        buttonColor="buttonGreen"
+        type="submit"
+        disabled={buttonDisabled}
+      >
+        저장
+      </BottomFixedButton>
       {isEmojiBSOpen && <EmojiSelect onChangeEmoji={onChangeEmoji} />}
     </Form>
   );
@@ -73,15 +71,3 @@ const StyleEditBox = styled.div`
   flex-direction: column;
   padding: 0 ${getRem(20)};
 `;
-
-const StyleFixedButtonWrapper = styled.div`
-  position: fixed;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 0 ${getRem(20)};
-  bottom: ${getRem(20)};
-  padding: 0 ${getRem(20)};
-`;
-
-const FixedButton = styled(Button)``;
