@@ -13,6 +13,7 @@ import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryManagePage';
 import ProfilePage from '@/pages/ProfilePage';
 import CategoryListPage from './pages/CategoryListPage';
+import ToastList from './common-ui/Toast/ToastList';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +31,7 @@ const App = () => {
           <IconLoader />
           <GlobalStyle />
           <RNListener />
+          <ToastList />
           <Layout>
             <Routes>
               <Route path={navigatePath.MAIN} element={<MainPage />} />
