@@ -40,8 +40,9 @@ const BookmarkReportList = ({
     setSelectedReport(
       reportList[id - 1].isChecked ? '' : reportList[id - 1].title,
     );
-    if (reportList[id - 1].mode === 'WRITE') setMode('WRITE');
-    else setMode('CHECK');
+    if (reportList[id - 1].mode === 'WRITE') {
+      reportList[id - 1].isChecked ? setMode('CHECK') : setMode('WRITE');
+    } else setMode('CHECK');
   };
 
   return (
