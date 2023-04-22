@@ -113,7 +113,7 @@ const GlobalStyle = () => (
         -ms-overflow-style: none !important; /* IE and Edge */
         scrollbar-width: none !important; /* Firefox */
       }
-
+      li,
       ol,
       ul {
         list-style: none;
