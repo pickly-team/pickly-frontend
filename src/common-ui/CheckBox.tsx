@@ -42,9 +42,9 @@ export const CheckBox: ForwardRefRenderFunction<
         ref={ref}
       />
       {checked ? (
-        <Icon name="check" size="s" />
+        <Icon name="check-green" size="s" />
       ) : (
-        <Icon name="check-none" size="s" />
+        <Icon name="check-none-green" size="s" />
       )}
       {children}
     </StyledLabel>
