@@ -10,6 +10,7 @@ import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryAddPage';
+import ReportPage from './pages/ReportPage';
 import ProfilePage from '@/pages/ProfilePage';
 
 const queryClient = new QueryClient({
@@ -34,6 +35,7 @@ const App = () => {
                 path={navigatePath.BOOKMARK_DETAIL}
                 element={<BookMarkDetailPage />}
               />
+              <Route path={navigatePath.REPORT} element={<ReportPage />} />
               <Route
                 path={navigatePath.USER}
                 element={<UserCreatePage mode="CREATE" />}
