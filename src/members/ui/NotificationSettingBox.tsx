@@ -33,12 +33,7 @@ const NotificationSettingBox = ({
         <Text.Span
           color={'grey900'}
           fontSize={1.25}
-          onClick={
-            isNotificationOn
-              ? open
-              : // eslint-disable-next-line @typescript-eslint/no-empty-function
-                () => {}
-          }
+          onClick={() => isNotificationOn && open()}
           style={{
             cursor: isNotificationOn ? 'pointer' : 'default',
           }}
