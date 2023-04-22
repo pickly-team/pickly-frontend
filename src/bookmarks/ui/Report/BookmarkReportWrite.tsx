@@ -17,7 +17,7 @@ const BookmarkReportWrite = ({
 }: ReportWriteProps) => {
   return (
     <StyleWrapper isWriteMode={isWriteMode}>
-      <StyleTextArea value={value} onChange={onChange} />
+      <StyleTextArea maxLength={200} value={value} onChange={onChange} />
       <CountText fontSize={getRem(10)}>{`${value.length} / 200자`}</CountText>
     </StyleWrapper>
   );
