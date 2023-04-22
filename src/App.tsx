@@ -11,6 +11,7 @@ import Layout from '@/common-ui/Layout';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryAddPage';
 import ProfilePage from '@/pages/ProfilePage';
+import ToastList from './common-ui/Toast/ToastList';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,6 +28,7 @@ const App = () => {
         <BrowserRouter>
           <IconLoader />
           <GlobalStyle />
+          <ToastList />
           <Layout>
             <Routes>
               <Route path={navigatePath.MAIN} element={<MainPage />} />
