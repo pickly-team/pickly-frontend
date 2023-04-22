@@ -11,6 +11,7 @@ import Layout from '@/common-ui/Layout';
 import RNListener from '@/RNListener';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryAddPage';
+import ReportPage from './pages/ReportPage';
 import ProfilePage from '@/pages/ProfilePage';
 import ToastList from './common-ui/Toast/ToastList';
 
@@ -38,6 +39,7 @@ const App = () => {
                 path={navigatePath.BOOKMARK_DETAIL}
                 element={<BookMarkDetailPage />}
               />
+              <Route path={navigatePath.REPORT} element={<ReportPage />} />
               <Route
                 path={navigatePath.USER}
                 element={<UserCreatePage mode="CREATE" />}
