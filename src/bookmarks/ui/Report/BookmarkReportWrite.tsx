@@ -32,7 +32,7 @@ interface StyleWrapperProps {
 const StyleWrapper = styled.div<StyleWrapperProps>`
   padding: 0 ${getRem(20)};
   opacity: ${({ isWriteMode }) => (isWriteMode ? 1 : 0)};
-  transition: all ease 0.3s 0s;
+  transition: opacity ease 0.3s 0s;
 `;
 
 const StyleTextArea = styled.textarea`
