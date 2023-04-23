@@ -1,7 +1,6 @@
 import formatDate from '@/utils/date/formatDate';
 
 describe('formatDate test', () => {
-  //test formatDate
   test('start, end 차이가 1분 미만이면 > 방금전 으로 표시된다.', () => {
     //given
     const start = new Date('2020-01-01 00:00:00');
