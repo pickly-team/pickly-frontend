@@ -99,6 +99,10 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
     return moveX < 0;
   };
 
+  if (!optionWrapperWidth) {
+    return null;
+  }
+
   return (
     <SlideWrapper
       ref={wrapperRef}
