@@ -5,6 +5,7 @@ import getRem, { calculateRem } from '@/utils/getRem';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ClientBookmarkCategoryItem } from '../api/bookmark';
+import { Link } from 'react-router-dom';
 
 interface TagBoxListProps {
   tags: ClientBookmarkCategoryItem[];
@@ -17,7 +18,7 @@ const TagBoxList = ({ tags, onClickCategory }: TagBoxListProps) => {
       {tags.map((tag) => (
         <TagBox key={tag.id} tag={tag} onClickCategory={onClickCategory} />
       ))}
-      <PlusBox onClick={() => console.log('플러스 버튼 클릭')} />
+      <PlusBox to="category/add" />
     </StyledListWrapper>
   );
 };
@@ -67,28 +68,29 @@ const TagBox = ({ tag, onClickCategory }: TagBoxProps) => {
 };
 
 interface PlusBoxProps {
-  onClick: () => void;
+  to: string;
 }
 
-const PlusBox = ({ onClick }: PlusBoxProps) => {
+const PlusBox = ({ to }: PlusBoxProps) => {
   return (
-    <div
-      onClick={onClick}
-      css={css`
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: ${theme.colors.lightPrimary};
-        width: ${getRem(50)};
-        height: ${getRem(50)};
-        border-radius: ${getRem(10)};
-        transition: background-color 0.3s ease-in-out;
-        :active {
-          background-color: ${theme.colors.primary};
-        }
-      `}
-    >
-      <Icon size="xs" name="plus-dark" />
-    </div>
+    <Link to={to}>
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: ${theme.colors.lightPrimary};
+          width: ${getRem(50)};
+          height: ${getRem(50)};
+          border-radius: ${getRem(10)};
+          transition: background-color 0.3s ease-in-out;
+          :active {
+            background-color: ${theme.colors.primary};
+          }
+        `}
+      >
+        <Icon size="xs" name="plus-dark" />
+      </div>
+    </Link>
   );
 };

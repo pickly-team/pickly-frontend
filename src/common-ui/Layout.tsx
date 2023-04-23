@@ -4,7 +4,12 @@ import BottomNavigation from '@/common-ui/BottomNavigation';
 import { navigatePath, NavigatePath } from '@/constants/navigatePath';
 import { useLocation } from 'react-router-dom';
 
-const SHOW_BOTTOM_NAVIGATION_URL: NavigatePath[] = [navigatePath.MAIN];
+const SHOW_BOTTOM_NAVIGATION_URL: NavigatePath[] = [
+  navigatePath.MAIN,
+  navigatePath.FRIEND,
+  navigatePath.ALARM,
+  navigatePath.PROFILE,
+];
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { pathname } = useLocation();
