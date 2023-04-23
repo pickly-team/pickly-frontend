@@ -4,12 +4,16 @@ import styled from '@emotion/styled';
 
 // TODO : 추후에 유저 정보를 받아올 수 있도록 수정
 
-const UserInfo = () => {
-  const userName = '피클리 마스터';
+interface BookmarkUserInfoProps {
+  userEmoji: string;
+  userName: string;
+}
+
+const BookmarkUserInfo = ({ userEmoji, userName }: BookmarkUserInfoProps) => {
   return (
     <StyleWrapper>
       <UserBox>
-        <Text.Span fontSize={2}>🥱</Text.Span>
+        <Text.Span fontSize={2}>{userEmoji}</Text.Span>
       </UserBox>
       <Text.Span
         fontSize={1.3}
@@ -19,7 +23,7 @@ const UserInfo = () => {
   );
 };
 
-export default UserInfo;
+export default BookmarkUserInfo;
 
 const StyleWrapper = styled.div`
   display: flex;

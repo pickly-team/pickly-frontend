@@ -4,9 +4,9 @@ import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { ClientBookMarkItem } from '../api/bookmark';
+import { ClientBookMarkItem } from '../../api/bookmark';
 
-const EditBookMarkItem = ({
+const BookmarkEditItem = ({
   title,
   url,
   imgSrc,
@@ -33,7 +33,7 @@ const EditBookMarkItem = ({
               <EllipsisText fontSize={1.2} weight="bold">
                 {title}
               </EllipsisText>
-              <Text.Span fontSize={1} color="lightGreen">
+              <Text.Span fontSize={1} color="lightPrimary">
                 {url}
               </Text.Span>
             </ItemUpperLeft>
@@ -50,7 +50,7 @@ const EditBookMarkItem = ({
               />
               {!isRead && <Icon name="not-read" size="xs" />}
             </IconWrapper>
-            <Text.Span fontSize={0.9} color="lightGreen">
+            <Text.Span fontSize={0.9} color="lightPrimary">
               {date}
             </Text.Span>
           </UnderWrapper>
@@ -60,7 +60,7 @@ const EditBookMarkItem = ({
   );
 };
 
-export default EditBookMarkItem;
+export default BookmarkEditItem;
 
 // TODO : Checkbox label에 접근 불가하여 한번 더 Wrapping 추후 해결
 const Box = styled.div`

@@ -4,7 +4,7 @@ interface BookMarkLikeButtonProps {
   isLike: boolean;
 }
 
-const BookMarkLikeButton = ({ isLike }: BookMarkLikeButtonProps) => {
+const BookmarkLikeButton = ({ isLike }: BookMarkLikeButtonProps) => {
   return (
     <button>
       {isLike ? (
@@ -17,4 +17,4 @@ const BookMarkLikeButton = ({ isLike }: BookMarkLikeButtonProps) => {
   );
 };
 
-export default BookMarkLikeButton;
+export default BookmarkLikeButton;
