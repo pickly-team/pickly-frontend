@@ -23,7 +23,7 @@ describe('formatDateByStartAndEnd test', () => {
     //then
     expect(result).toBe('1분전');
   });
-  test('start, end 차이가 1시간 이상 하루 미만이면 > ${hours}시간전 으로 표시된다.', () => {
+  test('start, end 차이가 1시간 이상 1일 미만이면 > ${hours}시간전 으로 표시된다.', () => {
     //given
     const start = new Date('2020-01-01 00:00:00');
     const end = new Date('2020-01-01 01:00:00');
@@ -34,7 +34,7 @@ describe('formatDateByStartAndEnd test', () => {
     //then
     expect(result).toBe('1시간전');
   });
-  test('start, end 차이가 하루 이상 1년 미만이면 > ${days}일전 으로 표시된다.', () => {
+  test('start, end 차이가 1일 이상 1년 미만이면 > ${days}일전 으로 표시된다.', () => {
     //given
     const start = new Date('2020-01-01 00:00:00');
     const end = new Date('2020-01-02 00:00:00');
