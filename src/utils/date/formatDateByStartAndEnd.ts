@@ -1,4 +1,4 @@
-function formatDate(start: Date, end: Date) {
+function formatDateByStartAndEnd(start: Date, end: Date) {
   const startDate = new Date(start);
   const endDate = new Date(end);
 
@@ -22,7 +22,7 @@ function formatDate(start: Date, end: Date) {
   return `${betweenYears}년전`;
 }
 
-export default formatDate;
+export default formatDateByStartAndEnd;
 
 function getBetweenMinutes(start: Date, end: Date) {
   return Math.floor((end.getTime() - start.getTime()) / 1000 / 60);

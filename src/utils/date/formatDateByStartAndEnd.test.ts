@@ -1,13 +1,13 @@
-import formatDate from '@/utils/date/formatDate';
+import formatDateByStartAndEnd from '@/utils/date/formatDateByStartAndEnd';
 
-describe('formatDate test', () => {
+describe('formatDateByStartAndEnd test', () => {
   test('start, end 차이가 1분 미만이면 > 방금전 으로 표시된다.', () => {
     //given
     const start = new Date('2020-01-01 00:00:00');
     const end = new Date('2020-01-01 00:00:30');
 
     //when
-    const result = formatDate(start, end);
+    const result = formatDateByStartAndEnd(start, end);
 
     //then
     expect(result).toBe('방금전');
@@ -18,7 +18,7 @@ describe('formatDate test', () => {
     const end = new Date('2020-01-01 00:01:00');
 
     //when
-    const result = formatDate(start, end);
+    const result = formatDateByStartAndEnd(start, end);
 
     //then
     expect(result).toBe('1분전');
@@ -29,7 +29,7 @@ describe('formatDate test', () => {
     const end = new Date('2020-01-01 01:00:00');
 
     //when
-    const result = formatDate(start, end);
+    const result = formatDateByStartAndEnd(start, end);
 
     //then
     expect(result).toBe('1시간전');
@@ -40,7 +40,7 @@ describe('formatDate test', () => {
     const end = new Date('2020-01-02 00:00:00');
 
     //when
-    const result = formatDate(start, end);
+    const result = formatDateByStartAndEnd(start, end);
 
     //then
     expect(result).toBe('1일전');
@@ -51,7 +51,7 @@ describe('formatDate test', () => {
     const end = new Date('2021-01-01 00:00:00');
 
     //when
-    const result = formatDate(start, end);
+    const result = formatDateByStartAndEnd(start, end);
 
     //then
     expect(result).toBe('1년전');
