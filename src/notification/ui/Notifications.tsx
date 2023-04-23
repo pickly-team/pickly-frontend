@@ -1,36 +1,23 @@
-import NotificationSlideItem from '@/notification/ui/NotificationSlideItem';
+import NotificationSlideItem from '@/notification/ui/skeleton/NotificationSlideItem';
+import { useGetNotifications } from '@/notification/api/notification';
 
 const Notifications = () => {
+  const { data } = useGetNotifications();
+
   return (
-    <div>
-      <NotificationSlideItem
-        bookMarkInfo={{
-          id: '1',
-          title:
-            'React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.',
-        }}
-        createdAt={new Date('2023-04-23 12:00:00')}
-        isRead={false}
-      />
-      <NotificationSlideItem
-        bookMarkInfo={{
-          id: '1',
-          title:
-            'React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.',
-        }}
-        createdAt={new Date('2023-04-23 12:00:00')}
-        isRead={true}
-      />
-      <NotificationSlideItem
-        bookMarkInfo={{
-          id: '1',
-          title:
-            'React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.',
-        }}
-        createdAt={new Date('2023-04-23 12:00:00')}
-        isRead={true}
-      />
-    </div>
+    <>
+      {data?.map((notification) => (
+        <NotificationSlideItem
+          key={notification.id}
+          bookMarkInfo={{
+            id: notification.id,
+            title: notification.title,
+          }}
+          createdAt={notification.createdAt}
+          isRead={notification.isRead}
+        />
+      ))}
+    </>
   );
 };
 
