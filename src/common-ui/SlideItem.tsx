@@ -133,6 +133,7 @@ const useGetDivWrapperWidth = () => {
   const [width, setWidth] = useState(5000);
 
   useEffect(() => {
+    initializeData();
     function initializeData() {
       const width = ref?.current?.clientWidth;
       if (width) {
