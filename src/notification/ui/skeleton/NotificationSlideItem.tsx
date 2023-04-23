@@ -89,7 +89,8 @@ const NotificationInfoWrapper = styled.div<{ isRead: boolean }>`
 const NotificationContentWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: ${getRem(400)} 1fr;
+  grid-template-columns: 1fr auto;
+  column-gap: ${getRem(18)};
   margin-top: ${getRem(8)};
 `;
 
