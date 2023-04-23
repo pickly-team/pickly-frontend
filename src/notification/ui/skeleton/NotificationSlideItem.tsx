@@ -75,12 +75,10 @@ const getFormattedCreatedAtByToday = (createdAt: string) => {
   return formatDateByStartAndEnd(createdAtDate, todayDate);
 };
 
-const StyledSlideItem = styled(SlideItem)`
-  height: ${getRem(80)};
-`;
+const StyledSlideItem = styled(SlideItem)``;
 
 const NotificationInfoWrapper = styled.div<{ isRead: boolean }>`
-  height: 100%;
+  height: ${getRem(80)};
   padding: ${getRem(12, 20)};
   background-color: ${(p) =>
     p.isRead ? theme.colors.grey900 : theme.colors.grey800};
@@ -97,7 +95,6 @@ const NotificationContentWrapper = styled.div`
 const TitleAndCreatedAtLink = styled(Link)`
   display: grid;
   width: 100%;
-  height: 100%;
   border-left: 3px solid ${theme.colors.lightPrimary};
   padding-left: ${getRem(8)};
 `;
