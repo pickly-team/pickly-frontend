@@ -112,6 +112,7 @@ const GlobalStyle = () => (
       body {
         -ms-overflow-style: none !important; /* IE and Edge */
         scrollbar-width: none !important; /* Firefox */
+        overflow: hidden;
       }
 
       ol,
