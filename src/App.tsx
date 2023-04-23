@@ -12,6 +12,7 @@ import RNListener from '@/RNListener';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryAddPage';
 import ProfilePage from '@/pages/ProfilePage';
+import NotificationPage from '@/pages/NotificationPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,6 +40,10 @@ const App = () => {
               <Route
                 path={navigatePath.USER}
                 element={<UserCreatePage mode="CREATE" />}
+              />
+              <Route
+                path={navigatePath.NOTIFICATION}
+                element={<NotificationPage />}
               />
               <Route
                 path={navigatePath.USER_EDIT}

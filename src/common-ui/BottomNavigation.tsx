@@ -112,11 +112,11 @@ const BottomNavigation = () => {
             <Icon size="l" name="people" />
           )}
         </Link>
-        <Link to="/alarm" css={iconStyle}>
-          {pathname === `${navigatePath.ALARM}` && (
+        <Link to={navigatePath.NOTIFICATION} css={iconStyle}>
+          {pathname === `${navigatePath.NOTIFICATION}` && (
             <Icon size="m" name="alarm-green" />
           )}
-          {pathname !== `${navigatePath.ALARM}` && (
+          {pathname !== `${navigatePath.NOTIFICATION}` && (
             <Icon size="m" name="alarm" />
           )}
         </Link>

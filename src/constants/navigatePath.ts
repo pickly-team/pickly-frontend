@@ -1,7 +1,7 @@
 const navigatePath = {
   MAIN: '/',
   FRIEND: '/friend',
-  ALARM: '/alarm',
+  NOTIFICATION: '/notification',
   PROFILE: '/profile',
   BOOKMARK_DETAIL: '/bookmark/:id',
   USER: '/user/:id',
