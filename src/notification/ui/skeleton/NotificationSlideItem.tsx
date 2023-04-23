@@ -34,7 +34,7 @@ const NotificationSlideItem = ({
   const showEllipse = !isRead;
 
   return (
-    <StyledSlideItem
+    <SlideItem
       main={
         <NotificationInfoWrapper isRead={isRead}>
           <Text.Span fontSize={getRem(16)} weight={'bold'}>
@@ -74,8 +74,6 @@ const getFormattedCreatedAtByToday = (createdAt: string) => {
   const todayDate = new Date();
   return formatDateByStartAndEnd(createdAtDate, todayDate);
 };
-
-const StyledSlideItem = styled(SlideItem)``;
 
 const NotificationInfoWrapper = styled.div<{ isRead: boolean }>`
   height: ${getRem(80)};
