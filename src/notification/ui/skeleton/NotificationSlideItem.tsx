@@ -87,6 +87,7 @@ const NotificationInfoWrapper = styled.div<{ isRead: boolean }>`
 `;
 
 const NotificationContentWrapper = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: ${getRem(400)} 1fr;
   margin-top: ${getRem(8)};
@@ -94,6 +95,7 @@ const NotificationContentWrapper = styled.div`
 
 const TitleAndCreatedAtLink = styled(Link)`
   display: grid;
+  width: 100%;
   height: 100%;
   border-left: 3px solid ${theme.colors.lightPrimary};
   padding-left: ${getRem(8)};
