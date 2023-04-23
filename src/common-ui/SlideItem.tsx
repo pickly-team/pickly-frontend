@@ -176,5 +176,5 @@ const MainItemWrapper = styled.div`
 const OptionItemWrapper = styled.div`
   width: fit-content;
   height: 100%;
-  background-color: ${theme.colors.primary};
+  background-color: ${theme.colors.lightPrimary};
 `;
