@@ -3,20 +3,20 @@ import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
-import { ClientBookMarkItem } from '../../api/bookmark';
+import type { BookmarkItem } from '../../api/bookmark';
 
 const BookmarkItem = ({
+  bookmarkId,
+  commentCnt,
+  createdDate,
+  isUserLike,
+  previewImageUrl,
+  readByUser,
   title,
   url,
-  imgSrc,
-  isRead,
-  isLiked,
-  isMessage,
-  date,
-  id,
-}: ClientBookMarkItem) => {
+}: BookmarkItem) => {
   return (
-    <LinkWrapper to={`/bookmark/${id}`}>
+    <LinkWrapper to={`/bookmark/${bookmarkId}`}>
       <ItemWrapper>
         <ItemUpperLeft>
           <EllipsisText fontSize={1.2} weight="bold">
@@ -27,17 +27,17 @@ const BookmarkItem = ({
           </EllipsisText>
         </ItemUpperLeft>
         <ItemUpperRight>
-          <Thumbnail src={imgSrc} />
+          <Thumbnail src={previewImageUrl} />
         </ItemUpperRight>
       </ItemWrapper>
       <UnderWrapper>
         <IconWrapper>
-          <Icon name={isLiked ? 'like-green' : 'like'} size="xs" />
-          <Icon name={isMessage ? 'message-on-green' : 'message'} size="xs" />
-          {!isRead && <Icon name="not-read" size="xs" />}
+          <Icon name={isUserLike ? 'like-green' : 'like'} size="xs" />
+          <Icon name={commentCnt ? 'message-on-green' : 'message'} size="xs" />
+          {!readByUser && <Icon name="not-read" size="xs" />}
         </IconWrapper>
         <Text.Span fontSize={0.9} color="lightPrimary">
-          {date}
+          {createdDate}
         </Text.Span>
       </UnderWrapper>
     </LinkWrapper>
