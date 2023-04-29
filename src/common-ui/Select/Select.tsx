@@ -1,34 +1,40 @@
 import {
   ChangeEventHandler,
+  Children,
+  ReactElement,
   ReactNode,
   RefObject,
+  cloneElement,
+  isValidElement,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import Button from '@/common-ui/Button';
 import styled from '@emotion/styled';
 import Input from '@/common-ui/Input';
 import { theme } from '@/styles/theme';
 import Icon from '@/common-ui/assets/Icon';
+import getRem from '@/utils/getRem';
+import { keyframes } from '@emotion/react';
+import Text, { TextProps } from '../Text';
 
-const NO_RESULT_TEST = '선택해주세요';
+const NO_RESULT_TEST = '전체';
 const NO_SEARCH_RESULT_TEXT = '검색결과가 없습니다';
 
 interface SelectProps {
+  trigger: ReactElement;
   children: ReactNode;
   value: string | undefined;
   onChange: (selectedValue: string) => void;
   isSearchActive?: boolean;
-  buttonStyle?: React.CSSProperties;
 }
 
 const Select = ({
+  trigger,
   value,
   onChange,
   children,
   isSearchActive = false,
-  buttonStyle,
 }: SelectProps) => {
   const ref = useRef<HTMLSelectElement>(null);
   const { searchValue, onChangeSearch } = useSearch();
@@ -59,39 +65,67 @@ const Select = ({
     option.label.includes(searchValue),
   );
 
+  const updateTextInChildren = (
+    children: ReactNode,
+    newText: string,
+  ): ReactNode => {
+    return Children.map(children, (child) => {
+      if (isValidElement(child) && child.type === Text.Span) {
+        const typedChild = child as ReactElement<TextProps>;
+        return cloneElement(typedChild, { children: newText });
+      } else if (isValidElement(child)) {
+        const typedChild = child as ReactElement;
+        if (typedChild.props.children) {
+          return cloneElement(typedChild, {
+            children: updateTextInChildren(typedChild.props.children, newText),
+          });
+        }
+      }
+      return child;
+    });
+  };
+
+  const triggerText = trigger.props.children;
+  const isTextSpan =
+    isValidElement(triggerText) && triggerText.type === Text.Span;
+
+  const clonedTrigger = cloneElement(trigger, {
+    children: isTextSpan
+      ? updateTextInChildren(
+          trigger.props.children,
+          buttonText ?? NO_RESULT_TEST,
+        )
+      : buttonText ?? NO_RESULT_TEST,
+    onClick: toggleSelect,
+  });
+
   return (
     <Container>
-      <TriggerButton style={buttonStyle} onClick={toggleSelect}>
-        {buttonText ?? NO_RESULT_TEST}
-      </TriggerButton>
+      {clonedTrigger}
       <select ref={ref} style={{ display: 'none' }}>
         {children}
       </select>
-      {isOpen && (
-        <SelectUlWrapper>
-          {isSearchActive && (
-            <SearchInputContainer>
-              <SearchIconWrapper>
-                <Icon name={'search'} size={'s'} />
-              </SearchIconWrapper>
-              <StyledInput value={searchValue} onChange={onChangeSearch} />
-            </SearchInputContainer>
+
+      <SelectUlWrapper isOpen={isOpen}>
+        {isSearchActive && (
+          <SearchInputContainer>
+            <SearchIconWrapper>
+              <Icon name={'search'} size={'s'} />
+            </SearchIconWrapper>
+            <StyledInput value={searchValue} onChange={onChangeSearch} />
+          </SearchInputContainer>
+        )}
+        <SelectUl>
+          {searchedOptions.map((option) => (
+            <SelectLi key={option.value} onClick={() => onClick(option.value)}>
+              {option.textContent}
+            </SelectLi>
+          ))}
+          {searchedOptions.length === 0 && (
+            <SelectLi>{NO_SEARCH_RESULT_TEXT}</SelectLi>
           )}
-          <SelectUl>
-            {searchedOptions.map((option) => (
-              <SelectLi
-                key={option.value}
-                onClick={() => onClick(option.value)}
-              >
-                {option.textContent}
-              </SelectLi>
-            ))}
-            {searchedOptions.length === 0 && (
-              <SelectLi>{NO_SEARCH_RESULT_TEXT}</SelectLi>
-            )}
-          </SelectUl>
-        </SelectUlWrapper>
-      )}
+        </SelectUl>
+      </SelectUlWrapper>
     </Container>
   );
 };
@@ -130,20 +164,24 @@ const Container = styled.div`
   position: relative;
 `;
 
-const TriggerButton = styled(Button)`
-  border: 2px solid ${theme.colors.primary};
-  background-color: ${theme.colors.black};
-  height: 35px;
-  color: ${theme.colors.primary};
-  margin-right: 2rem;
+const SelectUlWrapper = styled.div<{ isOpen: boolean }>`
+  position: absolute;
+  width: calc(100vw - ${getRem(38)});
+  border-radius: 10px;
+  animation: ${(p) => (p.isOpen ? showUp : showOut)} 0.3s ease-in-out;
+  display: ${(p) => (p.isOpen ? 'block' : 'none')};
+  background-color: ${(p) => p.theme.colors.grey900};
+  padding: ${getRem(10)} ${getRem(10)} ${getRem(20)};
+  margin-top: ${getRem(15)};
 `;
 
-const SelectUlWrapper = styled.div`
-  width: 100%;
-  border-radius: 10px;
-  background-color: ${(p) => p.theme.colors.grey900};
-  padding: 10px 10px 20px;
-  margin-top: 16px;
+const showUp = keyframes`
+    0% { opacity:0; }
+    100% { opacity:1; }
+    `;
+const showOut = keyframes`
+    0% { opacity:1; }
+    100% { opacity:0; }
 `;
 
 const SelectUl = styled.ul`
