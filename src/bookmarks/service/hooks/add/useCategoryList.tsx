@@ -7,10 +7,13 @@ import { useQueryClient } from '@tanstack/react-query';
 
 const useCategoryList = () => {
   // TODO : 추후 FIREBASE AUTH 연동 후 USER_ID 변경
-  const USER_ID = '1';
+  const USER_ID = 1;
   // SERVER
   const { data: categoryList } = useGETCategoryListQuery({
-    userId: USER_ID,
+    memberId: USER_ID,
+    pageRequest: {
+      pageSize: 15,
+    },
   });
 
   const queryClient = useQueryClient();
