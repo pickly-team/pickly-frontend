@@ -224,21 +224,9 @@ export const useGETCategoryListQuery = ({
   );
 };
 
-// SERVER 연동 후 삭제
-const range = (start: number, end: number) => {
-  const array = [];
-  for (let i = start; i < end; i += 1) {
-    array.push(i);
-  }
-  return array;
-};
-
 /** 의도적 지연 함수 : 로딩용 */
 // eslint-disable-next-line no-promise-executor-return
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-/** 랜덤 Boolean 생성 함수 */
-const randomBoolean = () => Math.random() >= 0.5;
 
 export default {
   useGETBookMarkListQuery,
