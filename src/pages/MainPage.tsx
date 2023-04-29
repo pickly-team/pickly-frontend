@@ -11,94 +11,116 @@ import useCategory from '@/bookmarks/service/hooks/home/useCategory';
 import useBookmarkList from '@/bookmarks/service/hooks/home/useBookmarkList';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
+import { useCallback, useRef } from 'react';
+import useIntersection from '@/common/service/hooks/useIntersection';
+import getRem from '@/utils/getRem';
 
 const MainPage = () => {
-  const { bookMarkList, isLoading, onChangeBookmarkList } = useBookmarkList();
   const { category, categoryOptions, onChangeCategory } = useCategory();
   const { isReadMode, onClickReadMode } = useReadList();
+
+  const { bookMarkList, isLoading, fetchNextPage, isFetchingNextPage } =
+    useBookmarkList({ readByUser: isReadMode });
   const {
     isEditMode: isEdit,
     isDeleteBookmarkOpen,
     onClickBookmarkItemInEdit,
     onClickDelete,
     onClickEdit,
-  } = useDeleteBookmarkList({ bookMarkList, onChangeBookmarkList });
+  } = useDeleteBookmarkList();
 
-  const isEditMode = !isLoading && bookMarkList?.length !== 0 && isEdit;
+  const isEditMode = !isLoading && bookMarkList?.pages.length !== 0 && isEdit;
+
+  const bottom = useRef(null);
+
+  const onIntersect = useCallback(
+    ([entry]: IntersectionObserverEntry[]) => {
+      if (entry.isIntersecting) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage],
+  );
+
+  useIntersection({
+    onIntersect,
+    target: bottom,
+  });
 
   return (
-    <Layout>
+    <>
       <LTop>
         <BookmarkUserInfo userEmoji="😑" userName="까루" />
-        <BookmarkToggle>
-          <BookmarkToggle.SelectCategory
-            category={category}
-            categoryOptions={categoryOptions}
-            setCategoryId={onChangeCategory}
-          />
-          <BookmarkToggle.ToggleRead
-            isRead={isReadMode}
-            onChangeRead={onClickReadMode}
-          />
-          <BookmarkToggle.ToggleEdit
-            isEdit={isEdit}
-            onClickEdit={onClickEdit}
-          />
-        </BookmarkToggle>
       </LTop>
+      <BookmarkToggle>
+        <BookmarkToggle.SelectCategory
+          category={category}
+          categoryOptions={categoryOptions}
+          setCategoryId={onChangeCategory}
+        />
+        <BookmarkToggle.ToggleRead
+          isRead={isReadMode}
+          onChangeRead={onClickReadMode}
+        />
+        <BookmarkToggle.ToggleEdit isEdit={isEdit} onClickEdit={onClickEdit} />
+      </BookmarkToggle>
+
       <LMiddle>
         {!!isLoading &&
-          [1, 2, 3, 4, 5].map((item) => <BookmarkSkeletonItem key={item} />)}
-        {!isLoading && bookMarkList && (
+          [1, 2, 3, 4, 5, 6].map((item) => <BookmarkSkeletonItem key={item} />)}
+        {!isLoading && bookMarkList?.pages.length && (
           <>
-            {!isEditMode && (
-              <BookmarkList
-                bookmarkList={bookMarkList.filter((item) => {
-                  return item.isRead === isReadMode;
-                })}
-                renderItem={(bookMarkList) => (
-                  <BookmarkItem key={bookMarkList.id} {...bookMarkList} />
-                )}
-              />
-            )}
-            {isEditMode && (
-              <BookmarkList
-                bookmarkList={bookMarkList}
-                renderItem={(bookMarkList) => (
-                  <BookmarkEditItem
-                    key={bookMarkList.id}
-                    onClickItem={onClickBookmarkItemInEdit}
-                    {...bookMarkList}
-                  />
-                )}
-              />
-            )}
+            {!isEditMode &&
+              bookMarkList.pages.map((page) => (
+                <BookmarkList
+                  key={page.contents[0].bookmarkId}
+                  bookmarkList={page.contents.filter(
+                    (item) => item.readByUser === isReadMode,
+                  )}
+                  renderItem={(bookMarkList) => (
+                    <BookmarkItem
+                      key={bookMarkList.bookmarkId}
+                      {...bookMarkList}
+                    />
+                  )}
+                />
+              ))}
+            {isEditMode &&
+              bookMarkList.pages.map((page) => (
+                <BookmarkList
+                  key={page.contents[0].bookmarkId}
+                  bookmarkList={page.contents.filter(
+                    (item) => item.readByUser === isReadMode,
+                  )}
+                  renderItem={(bookMarkList) => (
+                    <BookmarkEditItem
+                      key={bookMarkList.bookmarkId}
+                      {...bookMarkList}
+                      onClickItem={onClickBookmarkItemInEdit}
+                    />
+                  )}
+                />
+              ))}
           </>
         )}
+        <div ref={bottom} />
+        {isFetchingNextPage &&
+          [1, 2, 3, 4, 5, 6].map((item) => <BookmarkSkeletonItem key={item} />)}
       </LMiddle>
       {/** 북마크 삭제 확인 */}
       <BookmarkBSDeleteConfirmation
         onClose={onClickDelete}
+        onDelete={onClickDelete}
         open={isDeleteBookmarkOpen}
       />
-    </Layout>
+    </>
   );
 };
 
 export default MainPage;
 
-const Layout = styled.div`
-  .scroll::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scroll {
-    -ms-overflow-style: none; /* 인터넷 익스플로러 */
-    scrollbar-width: none; /* 파이어폭스 */
-  }
-`;
 const LTop = styled.div`
-  padding: 20px 20px;
+  padding: ${getRem(20)} ${getRem(20)} 0 ${getRem(20)};
 `;
 const LMiddle = styled.div`
   padding-bottom: 5rem;
