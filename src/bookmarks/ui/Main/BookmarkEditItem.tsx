@@ -4,29 +4,33 @@ import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { ClientBookMarkItem } from '../../api/bookmark';
+import { BookmarkItem } from '../../api/bookmark';
 
 const BookmarkEditItem = ({
+  bookmarkId,
+  commentCnt,
+  createdDate,
+  isUserLike,
+  previewImageUrl,
+  readByUser,
   title,
   url,
-  imgSrc,
-  isRead,
-  isLiked,
-  isMessage,
-  date,
-  id,
   onClickItem,
-}: ClientBookMarkItem & { onClickItem: (bookmarkId: string) => void }) => {
+}: BookmarkItem & { onClickItem: (bookmarkId: number) => void }) => {
   const [checked, setChecked] = useState(false);
 
   const onChangeCheck = () => {
     setChecked(!checked);
-    onClickItem(id);
+    onClickItem(bookmarkId);
   };
 
   return (
     <Box>
-      <CheckBox id={id} isChecked={checked} onChange={onChangeCheck}>
+      <CheckBox
+        id={String(bookmarkId)}
+        isChecked={checked}
+        onChange={onChangeCheck}
+      >
         <Wrapper>
           <ItemWrapper>
             <ItemUpperLeft>
@@ -38,20 +42,20 @@ const BookmarkEditItem = ({
               </Text.Span>
             </ItemUpperLeft>
             <ItemUpperRight>
-              <Thumbnail src={imgSrc} />
+              <Thumbnail src={previewImageUrl} />
             </ItemUpperRight>
           </ItemWrapper>
           <UnderWrapper>
             <IconWrapper>
-              <Icon name={isLiked ? 'like-green' : 'like'} size="xs" />
+              <Icon name={isUserLike ? 'like-green' : 'like'} size="xs" />
               <Icon
-                name={isMessage ? 'message-on-green' : 'message'}
+                name={commentCnt ? 'message-on-green' : 'message'}
                 size="xs"
               />
-              {!isRead && <Icon name="not-read" size="xs" />}
+              {!readByUser && <Icon name="not-read" size="xs" />}
             </IconWrapper>
             <Text.Span fontSize={0.9} color="lightPrimary">
-              {date}
+              {createdDate}
             </Text.Span>
           </UnderWrapper>
         </Wrapper>
