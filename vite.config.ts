@@ -31,9 +31,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/v1': {
           target:
-            mode === 'production'
-              ? env.VITE_SERVER_URI
-              : 'http://localhost:8080',
+            mode === 'production' ? env.VITE_SERVER_URI : env.VITE_SERVER_URI,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/v1/, ''),
           secure: false,
