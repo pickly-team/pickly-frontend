@@ -10,8 +10,9 @@ import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
 import RNListener from '@/RNListener';
 import UserCreatePage from './pages/UserInfoPage';
-import CategoryAddPage from './pages/CategoryAddPage';
+import CategoryAddPage from './pages/CategoryManagePage';
 import ProfilePage from '@/pages/ProfilePage';
+import CategoryListPage from './pages/CategoryListPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,8 +46,16 @@ const App = () => {
                 element={<UserCreatePage mode="EDIT" />}
               />
               <Route
+                path={navigatePath.CATEGORY_LIST}
+                element={<CategoryListPage />}
+              />
+              <Route
                 path={navigatePath.CATEGORY_ADD}
-                element={<CategoryAddPage />}
+                element={<CategoryAddPage mode="ADD" />}
+              />
+              <Route
+                path={navigatePath.CATEGORY_EDIT}
+                element={<CategoryAddPage mode="EDIT" />}
               />
               <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
             </Routes>
