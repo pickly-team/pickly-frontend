@@ -74,7 +74,7 @@ const MainPage = () => {
               bookMarkList.pages.map((page) => (
                 <BookmarkList
                   key={page.contents[0].bookmarkId}
-                  bookmarkList={page.contents.filter(
+                  bookmarkList={page.contents?.filter(
                     (item) => item.readByUser === isReadMode,
                   )}
                   renderItem={(bookMarkList) => (
@@ -89,7 +89,7 @@ const MainPage = () => {
               bookMarkList.pages.map((page) => (
                 <BookmarkList
                   key={page.contents[0].bookmarkId}
-                  bookmarkList={page.contents.filter(
+                  bookmarkList={page.contents?.filter(
                     (item) => item.readByUser === isReadMode,
                   )}
                   renderItem={(bookMarkList) => (
