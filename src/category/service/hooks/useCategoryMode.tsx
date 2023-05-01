@@ -10,9 +10,14 @@ import { useNavigate } from 'react-router-dom';
 interface CategoryModeProps {
   mode: Mode;
   setMode: Dispatch<SetStateAction<Mode>>;
+  openDeleteCategoryBS: () => void;
 }
 
-const useCategoryMode = ({ mode, setMode }: CategoryModeProps) => {
+const useCategoryMode = ({
+  mode,
+  setMode,
+  openDeleteCategoryBS,
+}: CategoryModeProps) => {
   const router = useNavigate();
   const navigateToCategoryAddPage = () => {
     router('/category/add', {
@@ -54,23 +59,33 @@ const useCategoryMode = ({ mode, setMode }: CategoryModeProps) => {
     if (mode === 'DELETE') {
       return (
         <RightButtonWrapper>
-          <Text.Span onClick={setNormalMode}>취소</Text.Span>
-          <Text.Span onClick={setNormalMode}>삭제</Text.Span>
+          <TextButton onClick={setNormalMode}>
+            <Text.Span>취소</Text.Span>
+          </TextButton>
+          <TextButton onClick={openDeleteCategoryBS}>
+            <Text.Span>삭제</Text.Span>
+          </TextButton>
         </RightButtonWrapper>
       );
     }
     if (mode === 'EDIT') {
       return (
         <RightButtonWrapper>
-          <Text.Span onClick={setNormalMode}>취소</Text.Span>
+          <TextButton>
+            <Text.Span onClick={setNormalMode}>취소</Text.Span>
+          </TextButton>
         </RightButtonWrapper>
       );
     }
     if (mode === 'ORDER') {
       return (
         <RightButtonWrapper>
-          <Text.Span onClick={setNormalMode}>취소</Text.Span>
-          <Text.Span onClick={setNormalMode}>저장</Text.Span>
+          <TextButton onClick={setNormalMode}>
+            <Text.Span>취소</Text.Span>
+          </TextButton>
+          <TextButton onClick={setNormalMode}>
+            <Text.Span>저장</Text.Span>
+          </TextButton>
         </RightButtonWrapper>
       );
     }
@@ -90,3 +105,5 @@ const RightButtonWrapper = styled.div`
   display: flex;
   column-gap: ${getRem(20)};
 `;
+
+const TextButton = styled.button``;
