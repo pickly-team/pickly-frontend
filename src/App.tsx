@@ -8,6 +8,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import { navigatePath } from '@/constants/navigatePath';
 import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
+import RNListener from '@/RNListener';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryAddPage';
 import ReportPage from './pages/ReportPage';
@@ -28,6 +29,7 @@ const App = () => {
         <BrowserRouter>
           <IconLoader />
           <GlobalStyle />
+          <RNListener />
           <Layout>
             <Routes>
               <Route path={navigatePath.MAIN} element={<MainPage />} />
