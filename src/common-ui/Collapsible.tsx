@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import Icon from '@/common-ui/assets/Icon';
 import { useState } from 'react';
+import getRem from '@/utils/getRem';
+
 interface Props {
   summary: string;
   detail: string;
@@ -39,17 +41,17 @@ const ToogleBody = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0px;
-  gap: 20px;
+  padding: ${getRem(0)};
+  gap: ${getRem(10)};
   background: #313131;
-  border-radius: 8px;
-  padding: 10px;
-  margin-left: 30px;
+  border-radius: ${getRem(8)};
+  padding: ${getRem(10)};
+  margin-left: ${getRem(30)};
 
   font-family: 'NanumSquareRound';
   font-style: normal;
-  font-weight: 700;
-  font-size: 11px;
+  font-weight: ${getRem(700)};
+  font-size: ${getRem(11)};
   line-height: 150%;
 `;
 

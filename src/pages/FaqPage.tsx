@@ -55,13 +55,13 @@ export default FaqPage;
 
 const Layout = styled.div``;
 const LTop = styled.div`
-  padding: 20px 20px;
+  padding: ${getRem(20, 20)};
 `;
 const LMiddle = styled.div`
   padding-bottom: 5rem;
 `;
 const LBody = styled.div`
-  padding: 0 50px;
+  padding: ${getRem(0, 50)};
   margin-top: ${getRem(12)};
   row-gap: ${getRem(21)};
 `;
