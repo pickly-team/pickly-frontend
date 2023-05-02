@@ -71,6 +71,7 @@ const MainPage = () => {
         {!isLoading && bookMarkList?.pages.length && (
           <>
             {!isEditMode &&
+              bookMarkList.pages[0].contents[0]?.bookmarkId &&
               bookMarkList.pages.map((page) => (
                 <BookmarkList
                   key={page.contents[0].bookmarkId}
@@ -86,9 +87,10 @@ const MainPage = () => {
                 />
               ))}
             {isEditMode &&
-              bookMarkList.pages.map((page) => (
+              bookMarkList.pages[0].contents[0].bookmarkId &&
+              bookMarkList?.pages.map((page) => (
                 <BookmarkList
-                  key={page.contents[0].bookmarkId}
+                  key={page.contents[0]?.bookmarkId}
                   bookmarkList={page.contents?.filter(
                     (item) => item.readByUser === isReadMode,
                   )}
