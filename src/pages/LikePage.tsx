@@ -36,7 +36,7 @@ export default LikePage;
 
 const Layout = styled.div``;
 const LBody = styled.div`
-  padding: 0 20px;
+  padding: ${getRem(0, 20)};
   margin-top: ${getRem(12)};
   row-gap: ${getRem(21)};
 `;

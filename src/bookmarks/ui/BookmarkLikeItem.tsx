@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
 import { ClientBookMarkItem } from '../api/bookmark';
 import BookMarkLikeButton from '@/bookmarks/ui/BookMarkLikeButton';
+import getRem from "@/utils/getRem";
 
 const BookmarkLikeItem = ({ title, url }: ClientBookMarkItem) => {
   return (
@@ -29,9 +30,9 @@ export default BookmarkLikeItem;
 
 const LinkWrapper = styled(NavLink)`
   display: block;
-  border-radius: 1rem;
-  padding: 10px 0px;
-  margin-bottom: 1rem;
+  border-radius: ${getRem(16)};
+  padding: ${getRem(10, 0)};
+  margin-bottom: ${getRem(16)};
   transition: background-color 0.1s ease-in-out, opacity 0.1s ease-in-out;
 
   &:active {
@@ -50,7 +51,7 @@ const ItemWrapper = styled.div`
 const UnderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 0.4rem;
+  margin-top: ${getRem(7)};
 `;
 
 const ItemUpperLeft = styled.div`

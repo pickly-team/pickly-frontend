@@ -4,6 +4,7 @@ import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
 import { ClientBookMarkItem } from '../api/bookmark';
+import getRem from '@/utils/getRem';
 
 const BookmarkItem = ({
   title,
@@ -48,7 +49,7 @@ export default BookmarkItem;
 const LinkWrapper = styled(NavLink)`
   display: block;
   border-radius: 1rem;
-  padding: 10px 20px;
+  padding: ${getRem(10, 20)};
   margin-bottom: 1rem;
   transition: background-color 0.1s ease-in-out, opacity 0.1s ease-in-out;
 
