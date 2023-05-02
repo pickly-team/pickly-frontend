@@ -37,9 +37,9 @@ const BookmarkEditItem = ({
               <EllipsisText fontSize={1.2} weight="bold">
                 {title}
               </EllipsisText>
-              <Text.Span fontSize={1} color="lightPrimary">
+              <EllipsisText fontSize={1} color="lightPrimary">
                 {url}
-              </Text.Span>
+              </EllipsisText>
             </ItemUpperLeft>
             <ItemUpperRight>
               <Thumbnail src={previewImageUrl} />
@@ -73,9 +73,9 @@ const Box = styled.div`
     padding: 10px 20px;
     margin-bottom: 1rem;
     border-radius: 1rem;
-    transition: background-color 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
     &:active {
-      background-color: ${theme.colors.grey600};
+      background-color: ${theme.colors.grey800};
       opacity: 0.5;
     }
   }
