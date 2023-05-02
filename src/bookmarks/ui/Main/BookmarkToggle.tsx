@@ -1,6 +1,7 @@
 import Button from '@/common-ui/Button';
 import Select from '@/common-ui/Select/Select';
 import Text from '@/common-ui/Text';
+import { TOGGLE_BUTTON_Z_INDEX } from '@/constants/zIndex';
 import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
@@ -125,6 +126,7 @@ const ToggleWrapper = styled.div`
   padding: ${getRem(20)};
   border-radius: 0.8rem;
   justify-content: space-between;
+  z-index: ${TOGGLE_BUTTON_Z_INDEX};
 `;
 
 const ButtonWrapper = styled.div`
