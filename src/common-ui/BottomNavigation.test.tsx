@@ -1,11 +1,22 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@/test/utils';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { BrowserRouter } from 'react-router-dom';
 import BottomNavigation from './BottomNavigation';
 
 describe('BottomNavigation test', () => {
   beforeEach(() => {
-    render(<BottomNavigation />, { wrapper: BrowserRouter });
+    const queryClient = new QueryClient();
+    render(<BottomNavigation />, {
+      wrapper: ({ children }) => (
+        <>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>{children}</BrowserRouter>
+          </QueryClientProvider>
+        </>
+      ),
+    });
   });
   test('BottomNavigation 컴포넌트는 4개의 아이템을 렌더링한다.', () => {
     // then

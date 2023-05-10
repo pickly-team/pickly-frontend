@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 3000",
     "build": "tsc && vite build",
+    "postinstall": "patch-package",
     "preview": "vite preview",
     "test": "jest --watch",
     "converage": "jest --converage",
@@ -19,6 +20,9 @@
     "@tanstack/react-query": "^4.22.0",
     "@tanstack/react-query-devtools": "^4.26.1",
     "axios": "^1.3.4",
+    "emoji-picker-react": "^4.4.8",
+    "patch-package": "^6.5.1",
+    "postinstall-postinstall": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.2",

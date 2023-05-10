@@ -1,0 +1,143 @@
+diff --git a/node_modules/emoji-picker-react/dist/emoji-picker-react.cjs.development.js b/node_modules/emoji-picker-react/dist/emoji-picker-react.cjs.development.js
+index a4673ae..8fe860c 100644
+--- a/node_modules/emoji-picker-react/dist/emoji-picker-react.cjs.development.js
++++ b/node_modules/emoji-picker-react/dist/emoji-picker-react.cjs.development.js
+@@ -16729,31 +16729,31 @@ var SuggestedRecent = {
+ };
+ var configByCategory = (_configByCategory = {}, _configByCategory[exports.Categories.SUGGESTED] = {
+   category: exports.Categories.SUGGESTED,
+-  name: 'Frequently Used'
++  name: '최근 사용'
+ }, _configByCategory[exports.Categories.SMILEYS_PEOPLE] = {
+   category: exports.Categories.SMILEYS_PEOPLE,
+-  name: 'Smileys & People'
++  name: '스마일리 및 사람'
+ }, _configByCategory[exports.Categories.ANIMALS_NATURE] = {
+   category: exports.Categories.ANIMALS_NATURE,
+-  name: 'Animals & Nature'
++  name: '동물 및 자연'
+ }, _configByCategory[exports.Categories.FOOD_DRINK] = {
+   category: exports.Categories.FOOD_DRINK,
+-  name: 'Food & Drink'
++  name: '음식 및 음료'
+ }, _configByCategory[exports.Categories.TRAVEL_PLACES] = {
+   category: exports.Categories.TRAVEL_PLACES,
+-  name: 'Travel & Places'
++  name: '여행 및 장소'
+ }, _configByCategory[exports.Categories.ACTIVITIES] = {
+   category: exports.Categories.ACTIVITIES,
+-  name: 'Activities'
++  name: '활동'
+ }, _configByCategory[exports.Categories.OBJECTS] = {
+   category: exports.Categories.OBJECTS,
+-  name: 'Objects'
++  name: '사물'
+ }, _configByCategory[exports.Categories.SYMBOLS] = {
+   category: exports.Categories.SYMBOLS,
+-  name: 'Symbols'
++  name: '기호'
+ }, _configByCategory[exports.Categories.FLAGS] = {
+   category: exports.Categories.FLAGS,
+-  name: 'Flags'
++  name: '깃발'
+ }, _configByCategory);
+ function baseCategoriesConfig(modifiers) {
+   return categoriesOrdered.map(function (category) {
+diff --git a/node_modules/emoji-picker-react/dist/emoji-picker-react.esm.js b/node_modules/emoji-picker-react/dist/emoji-picker-react.esm.js
+index 1ef7dc3..4ae3a36 100644
+--- a/node_modules/emoji-picker-react/dist/emoji-picker-react.esm.js
++++ b/node_modules/emoji-picker-react/dist/emoji-picker-react.esm.js
+@@ -16735,31 +16735,31 @@ var SuggestedRecent = {
+ };
+ var configByCategory = (_configByCategory = {}, _configByCategory[Categories.SUGGESTED] = {
+   category: Categories.SUGGESTED,
+-  name: 'Frequently Used'
++  name: '최근 사용'
+ }, _configByCategory[Categories.SMILEYS_PEOPLE] = {
+   category: Categories.SMILEYS_PEOPLE,
+-  name: 'Smileys & People'
++  name: '스마일리 및 사람'
+ }, _configByCategory[Categories.ANIMALS_NATURE] = {
+   category: Categories.ANIMALS_NATURE,
+-  name: 'Animals & Nature'
++  name: '동물 및 자연'
+ }, _configByCategory[Categories.FOOD_DRINK] = {
+   category: Categories.FOOD_DRINK,
+-  name: 'Food & Drink'
++  name: '음식 및 음료'
+ }, _configByCategory[Categories.TRAVEL_PLACES] = {
+   category: Categories.TRAVEL_PLACES,
+-  name: 'Travel & Places'
++  name: '여행 및 장소'
+ }, _configByCategory[Categories.ACTIVITIES] = {
+   category: Categories.ACTIVITIES,
+-  name: 'Activities'
++  name: '활동'
+ }, _configByCategory[Categories.OBJECTS] = {
+   category: Categories.OBJECTS,
+-  name: 'Objects'
++  name: '사물'
+ }, _configByCategory[Categories.SYMBOLS] = {
+   category: Categories.SYMBOLS,
+-  name: 'Symbols'
++  name: '기호'
+ }, _configByCategory[Categories.FLAGS] = {
+   category: Categories.FLAGS,
+-  name: 'Flags'
++  name: '깃발'
+ }, _configByCategory);
+ function baseCategoriesConfig(modifiers) {
+   return categoriesOrdered.map(function (category) {
+diff --git a/node_modules/emoji-picker-react/src/config/categoryConfig.ts b/node_modules/emoji-picker-react/src/config/categoryConfig.ts
+index efe01c1..3e9fe69 100644
+--- a/node_modules/emoji-picker-react/src/config/categoryConfig.ts
++++ b/node_modules/emoji-picker-react/src/config/categoryConfig.ts
+@@ -22,39 +22,39 @@ export const SuggestedRecent: CategoryConfig = {
+ const configByCategory: Record<Categories, CategoryConfig> = {
+   [Categories.SUGGESTED]: {
+     category: Categories.SUGGESTED,
+-    name: 'Frequently Used'
++    name: '최근 사용'
+   },
+   [Categories.SMILEYS_PEOPLE]: {
+     category: Categories.SMILEYS_PEOPLE,
+-    name: 'Smileys & People'
++    name: '스마일리 및 사람'
+   },
+   [Categories.ANIMALS_NATURE]: {
+     category: Categories.ANIMALS_NATURE,
+-    name: 'Animals & Nature'
++    name: '동물 및 자연'
+   },
+   [Categories.FOOD_DRINK]: {
+     category: Categories.FOOD_DRINK,
+-    name: 'Food & Drink'
++    name: '음식 및 음료'
+   },
+   [Categories.TRAVEL_PLACES]: {
+     category: Categories.TRAVEL_PLACES,
+-    name: 'Travel & Places'
++    name: '여행 및 장소'
+   },
+   [Categories.ACTIVITIES]: {
+     category: Categories.ACTIVITIES,
+-    name: 'Activities'
++    name: '활동'
+   },
+   [Categories.OBJECTS]: {
+     category: Categories.OBJECTS,
+-    name: 'Objects'
++    name: '사물'
+   },
+   [Categories.SYMBOLS]: {
+     category: Categories.SYMBOLS,
+-    name: 'Symbols'
++    name: '기호'
+   },
+   [Categories.FLAGS]: {
+     category: Categories.FLAGS,
+-    name: 'Flags'
++    name: '깃발'
+   }
+ };
+ 

@@ -1,13 +1,15 @@
 // TODO : 아이콘 사이즈 논의 필요
 
 const sizeMap = {
+  xxl: 36,
+  xl: 32,
   l: 28,
   m: 24,
   s: 20,
   xs: 15,
 } as const;
 
-interface IconProps {
+export interface IconProps {
   name: IconName;
   /** l: 28, m:24, s:20, xs: 15 */
   size: keyof typeof sizeMap;
@@ -72,7 +74,8 @@ export type IconName =
   | 'close'
   | 'bookmark'
   | 'circle-pencil'
-  | 'setting'
+  | 'setting-white'
+  | 'setting-green'
   | 'check-green'
   | 'check-none-green'
   | 'arrow-right-black'

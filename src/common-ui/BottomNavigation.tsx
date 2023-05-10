@@ -2,9 +2,18 @@ import { navigatePath } from '@/constants/navigatePath';
 import { theme } from '@/styles/theme';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from './assets/Icon';
 import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
+import BookmarkAddBS from '@/bookmarks/ui/Main/BookmarkAddBS';
+import useBottomSheet from './BottomSheet/hooks/useBottomSheet';
+import checkValidateURL from '@/utils/checkValidateURL';
+import useInputUrl from '@/bookmarks/service/hooks/add/useInputUrl';
+import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
+
+import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
+import useCategoryList from '@/bookmarks/service/hooks/add/useCategoryList';
+import { useEffect } from 'react';
 
 // TODO : 네비게이터에 대한 path를 재정의 필요
 
@@ -18,12 +27,77 @@ import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
 const BottomNavigation = () => {
   const { pathname } = useLocation();
 
+  // SERVER
+  const { categoryList, setCategoryList, toggleCategory } = useCategoryList();
+  // 1. URL 입력
+  const { url, onChangeUrl } = useInputUrl();
+
+  // 2. 카테고리 선택
+  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory();
+
+  // 3. 공개 범위 선택
+  const { onClickPublishScoped, selectedPublishScoped } =
+    useSelectPublishScoped();
+
+  // 2. 카테고리 변경
+  const onClickCategory = (id: string) => {
+    // 새로운 카테고리 선택
+    setSelectedCategoryId(id);
+    // 선택된 카테고리 변경
+    setCategoryList(toggleCategory(id));
+  };
+
+  // VALIDATION
+  const isValidateUrl = checkValidateURL(url);
+  const isAllWritten = !!(
+    url &&
+    isValidateUrl &&
+    selectedCategoryId &&
+    selectedPublishScoped
+  );
+
+  const { close, isOpen, open } = useBottomSheet();
+  const onClickAddButton = () => {
+    open();
+  };
+
+  const routerLocation = useLocation().state as {
+    isCategoryAddPage: boolean;
+  };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (routerLocation?.isCategoryAddPage === true) {
+      open();
+      navigate(location.pathname, {});
+    }
+  }, []);
+
   return (
     <>
+      <BookmarkAddBS isOpen={isOpen} close={close}>
+        <BookmarkAddBS.URLInput
+          url={url}
+          onChangeUrl={onChangeUrl}
+          isValidateUrl={isValidateUrl}
+        />
+        <BookmarkAddBS.SelectCategory
+          categoryList={categoryList}
+          onClickCategory={onClickCategory}
+        />
+        <BookmarkAddBS.PublishScoped
+          selectedPublishScoped={selectedPublishScoped}
+          onClickPublishScoped={onClickPublishScoped}
+        />
+        <BookmarkAddBS.SubmitButton
+          onClick={close}
+          isAllWritten={isAllWritten}
+        />
+      </BookmarkAddBS>
       <NavigationWrapper>
-        <Link to="/" css={plusButton}>
+        <button onClick={onClickAddButton} css={plusButton}>
           <Icon name="plus" size="m" />
-        </Link>
+        </button>
         <Link to={navigatePath.MAIN} css={iconStyle}>
           {pathname === `${navigatePath.MAIN}` && (
             <Icon size="l" name="list-green" />
@@ -66,6 +140,8 @@ const NavigationWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   position: fixed;
+  max-width: 480px;
+  margin: 0 auto;
   bottom: 0;
   left: 0;
   right: 0;
