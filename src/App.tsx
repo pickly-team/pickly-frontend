@@ -14,7 +14,6 @@ import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryAddPage';
 import ProfilePage from '@/pages/ProfilePage';
 
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
