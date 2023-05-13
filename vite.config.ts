@@ -5,7 +5,6 @@ import * as path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
-
   return {
     esbuild: {
       target: 'ESNext',
@@ -25,18 +24,6 @@ export default defineConfig(({ mode }) => {
       //TODO: alias 패턴 변경
       alias: {
         '@': path.resolve(__dirname, './src'),
-      },
-    },
-    server: {
-      proxy: {
-        '/v1': {
-          target:
-            mode === 'production' ? env.VITE_SERVER_URI : env.VITE_SERVER_URI,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/v1/, ''),
-          secure: false,
-          ws: true,
-        },
       },
     },
     define: {
