@@ -1,3 +1,4 @@
+import client from '@/common/service/client';
 import { navigatePath } from '@/constants/navigatePath';
 
 import {
@@ -60,8 +61,8 @@ interface GETBookMarkListRequest {
 const GETBookMarkList = {
   API: async (params: GETBookMarkListRequest) => {
     await sleep(1000);
-    const { data } = await axios.get<SeverBookMarkItem>(
-      '/v1/members/1/bookmarks',
+    const { data } = await client.get<SeverBookMarkItem>(
+      '/members/1/bookmarks',
       {
         params: {
           categoryId: params.categoryId,
