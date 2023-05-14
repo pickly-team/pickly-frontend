@@ -3,3 +3,5 @@ export interface CategoryItem {
   emoji: string;
   categoryName: string;
 }
+
+export type Mode = 'NORMAL' | 'EDIT' | 'DELETE' | 'ORDER';
