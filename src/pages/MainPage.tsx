@@ -11,16 +11,18 @@ import useCategory from '@/bookmarks/service/hooks/home/useCategory';
 import useBookmarkList from '@/bookmarks/service/hooks/home/useBookmarkList';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
-import { useCallback, useRef } from 'react';
-import useIntersection from '@/common/service/hooks/useIntersection';
 import getRem from '@/utils/getRem';
+import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 
 const MainPage = () => {
   const { category, categoryOptions, onChangeCategory } = useCategory();
+
   const { isReadMode, onClickReadMode } = useReadList();
 
   const { bookMarkList, isLoading, fetchNextPage, isFetchingNextPage } =
     useBookmarkList({ readByUser: isReadMode });
+  const { bottom } = useBottomIntersection({ fetchNextPage });
+
   const {
     isEditMode: isEdit,
     isDeleteBookmarkOpen,
@@ -30,22 +32,6 @@ const MainPage = () => {
   } = useDeleteBookmarkList();
 
   const isEditMode = !isLoading && bookMarkList?.pages.length !== 0 && isEdit;
-
-  const bottom = useRef(null);
-
-  const onIntersect = useCallback(
-    ([entry]: IntersectionObserverEntry[]) => {
-      if (entry.isIntersecting) {
-        fetchNextPage();
-      }
-    },
-    [fetchNextPage],
-  );
-
-  useIntersection({
-    onIntersect,
-    target: bottom,
-  });
 
   return (
     <>
