@@ -4,7 +4,7 @@ import { theme } from '@/styles/theme';
 import getRem, { calculateRem } from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
-import IconButton from '../IconButton';
+import IconButton from '../../../common/ui/IconButton';
 import type { CategoryItem } from '@/category';
 
 type StrictPropsWithChildren<P = unknown> = P & { children: ReactNode };

@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 const SHOW_BOTTOM_NAVIGATION_URL: NavigatePath[] = [
   navigatePath.MAIN,
   navigatePath.FRIEND,
-  navigatePath.ALARM,
+  navigatePath.NOTIFICATION,
   navigatePath.PROFILE,
 ];
 
