@@ -11,10 +11,7 @@ import useCategory from '@/bookmarks/service/hooks/home/useCategory';
 import useBookmarkList from '@/bookmarks/service/hooks/home/useBookmarkList';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
-import getRem from '@/utils/getRem';
 import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
-import { useCallback, useRef } from 'react';
-import useIntersection from '@/common/service/hooks/useIntersection';
 import getRem from '@/utils/getRem';
 
 const MainPage = () => {
