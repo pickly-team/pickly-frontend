@@ -14,6 +14,7 @@ import CategoryAddPage from './pages/CategoryAddPage';
 import ReportPage from './pages/ReportPage';
 import ProfilePage from '@/pages/ProfilePage';
 import ToastList from './common-ui/Toast/ToastList';
+import NotificationPage from '@/pages/NotificationPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,6 +44,10 @@ const App = () => {
               <Route
                 path={navigatePath.USER}
                 element={<UserCreatePage mode="CREATE" />}
+              />
+              <Route
+                path={navigatePath.NOTIFICATION}
+                element={<NotificationPage />}
               />
               <Route
                 path={navigatePath.USER_EDIT}
