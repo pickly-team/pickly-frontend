@@ -14,9 +14,6 @@ import CategoryAddPage from './pages/CategoryManagePage';
 import ReportPage from './pages/ReportPage';
 import ProfilePage from '@/pages/ProfilePage';
 import CategoryListPage from './pages/CategoryListPage';
-import CategoryAddPage from './pages/CategoryAddPage';
-import ReportPage from './pages/ReportPage';
-import ProfilePage from '@/pages/ProfilePage';
 import ToastList from './common-ui/Toast/ToastList';
 import NotificationPage from '@/pages/NotificationPage';
 
