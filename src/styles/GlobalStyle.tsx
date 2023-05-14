@@ -114,7 +114,7 @@ const GlobalStyle = () => (
         scrollbar-width: none !important; /* Firefox */
         overflow: hidden;
       }
-
+      li,
       ol,
       ul {
         list-style: none;
