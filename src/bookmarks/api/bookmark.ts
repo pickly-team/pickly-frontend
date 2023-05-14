@@ -9,8 +9,6 @@ import {
 } from '@tanstack/react-query';
 
 import axios from 'axios';
-
-import { v4 as uuid } from 'uuid';
 const BASE_URL = 'http://localhost:8080/api/members';
 
 const DOMAIN = 'BOOKMARK';
