@@ -1,35 +1,73 @@
 import Text from '@/common-ui/Text';
 import ListItem from '@/common/ui/ListItem';
-import { CategoryItem, useGETCategoryListQuery } from '../api/category';
+import {
+  ClientCategoryItem,
+  GET_CATEGORY_LIST,
+  useGETCategoryListQuery,
+} from '../api/category';
 import Icon from '@/common-ui/assets/Icon';
-import { Mode } from '..';
-import { useEffect, useState } from 'react';
+import { CategoryItem, Mode } from '..';
+import { Dispatch, useEffect } from 'react';
 import DragAndDrop from '@/common/ui/DragAndDrop';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 import CheckBox from '@/common-ui/CheckBox';
 import { useNavigate } from 'react-router-dom';
+import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
+import SkeletonCategoryList from './SkeletonCategoryList';
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 
 interface CategoryListProps {
   mode: Mode;
+  clientCategoryList: CategoryItem[];
+  setClientCategoryList: Dispatch<React.SetStateAction<CategoryItem[]>>;
+  deleteCategoryList: string[];
+  setDeleteCategoryList: Dispatch<React.SetStateAction<string[]>>;
 }
 
-const CategoryList = ({ mode }: CategoryListProps) => {
-  const navigate = useNavigate();
-  const USER_ID = '1';
-  const { data } = useGETCategoryListQuery({ userId: USER_ID });
+type InfiniteCategory =
+  | InfiniteData<{
+      contents: ClientCategoryItem[];
+      hasNext: boolean;
+    }>
+  | undefined;
 
-  const [clientCategoryList, setClientCategoryList] = useState<CategoryItem[]>(
-    [],
-  );
+const CategoryList = ({
+  mode,
+  clientCategoryList,
+  setClientCategoryList,
+  deleteCategoryList,
+  setDeleteCategoryList,
+}: CategoryListProps) => {
+  const navigate = useNavigate();
+  const USER_ID = 1;
+  const {
+    data: categoryList,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGETCategoryListQuery({
+    memberId: USER_ID,
+    pageRequest: {
+      pageSize: 15,
+    },
+  });
 
   useEffect(() => {
-    if (data) {
-      setClientCategoryList(data);
+    if (categoryList) {
+      const item = categoryList.pages.flatMap((page) => page.contents);
+      setClientCategoryList(
+        item.map((category) => ({
+          ...category,
+          categoryName: category.name,
+          isChecked: false,
+        })),
+      );
     }
-  }, [data]);
+  }, [categoryList]);
 
-  const [deleteCategoryList, setDeleteCategoryList] = useState<string[]>([]);
+  const { bottom } = useBottomIntersection({ fetchNextPage });
+
+  const queryClient = useQueryClient();
 
   const onClickCategory = (categoryId: string) => {
     if (mode === 'NORMAL') {
@@ -41,63 +79,77 @@ const CategoryList = ({ mode }: CategoryListProps) => {
     }
 
     if (mode === 'DELETE') {
-      if (deleteCategoryList.includes(categoryId)) {
+      if (deleteCategoryList.includes(categoryId))
         setDeleteCategoryList(
           deleteCategoryList.filter((id) => id !== categoryId),
         );
-        setClientCategoryList((prev) =>
-          prev.map((category) =>
-            category.id === categoryId
-              ? { ...category, isChecked: false }
-              : category,
-          ),
-        );
-      } else {
-        setDeleteCategoryList([...deleteCategoryList, categoryId]);
-        setClientCategoryList((prev) =>
-          prev.map((category) =>
-            category.id === categoryId
-              ? { ...category, isChecked: true }
-              : category,
-          ),
-        );
-      }
+      else setDeleteCategoryList([...deleteCategoryList, categoryId]);
+
+      queryClient.setQueryData<InfiniteCategory>(
+        GET_CATEGORY_LIST(USER_ID),
+        (prev) => {
+          if (!prev) return undefined;
+          return {
+            ...prev,
+            pages: prev.pages.map((page) => ({
+              ...page,
+              contents: page.contents.map((category) =>
+                category.categoryId === categoryId
+                  ? {
+                      ...category,
+                      isChecked: !deleteCategoryList.includes(categoryId),
+                    }
+                  : category,
+              ),
+            })),
+          };
+        },
+      );
     }
   };
 
   return (
     <>
-      {mode !== 'ORDER' &&
-        clientCategoryList?.map((category) => (
-          <ListItem
-            key={category.id}
-            onClick={() => onClickCategory(category.id)}
-          >
-            <ListItem.Left
-              left={
-                mode === 'DELETE' && (
-                  <Box>
-                    <CheckBox
-                      isChecked={category.isChecked}
-                      onChange={() => onClickCategory(category.id)}
-                    />
-                  </Box>
-                )
-              }
-              middle={<Text.P>{category.emoji}</Text.P>}
-              right={<Text.P>{category.name}</Text.P>}
-            />
-
-            <ListItem.Right>
-              {mode === 'EDIT' && <Text.P>편집</Text.P>}
-            </ListItem.Right>
-          </ListItem>
-        ))}
+      {mode !== 'ORDER' && (
+        <>
+          {categoryList?.pages[0].contents[0].categoryId &&
+            categoryList.pages.map((categoryPage) =>
+              categoryPage.contents.map((category) => (
+                <ListItem
+                  key={category.categoryId}
+                  onClick={() => onClickCategory(category.categoryId)}
+                >
+                  <ListItem.Left
+                    left={
+                      mode === 'DELETE' && (
+                        <Box>
+                          <CheckBox
+                            isChecked={category.isChecked}
+                            onChange={() =>
+                              onClickCategory(category.categoryId)
+                            }
+                          />
+                        </Box>
+                      )
+                    }
+                    middle={<Text.P>{category.emoji}</Text.P>}
+                    right={<Text.P>{category.name}</Text.P>}
+                  />
+                  <ListItem.Right>
+                    {mode === 'EDIT' && <Text.P>편집</Text.P>}
+                  </ListItem.Right>
+                </ListItem>
+              )),
+            )}
+          <div ref={bottom} />
+          {isFetchingNextPage && <SkeletonCategoryList count={10} />}
+        </>
+      )}
       {mode === 'ORDER' && (
         <DragAndDrop
           itemList={clientCategoryList}
           renderDragItem={(item) => (
-            <ListItem key={item.id}>
+            <ListItem key={item.categoryId}>
               <ListItem.Left
                 middle={<Text.P>{item.emoji}</Text.P>}
                 right={<Text.P>{item.name}</Text.P>}
