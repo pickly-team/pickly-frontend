@@ -10,8 +10,6 @@ import {
 
 import axios from 'axios';
 
-import { v4 as uuid } from 'uuid';
-
 const BASE_URL = 'http://localhost:8080/api/members';
 
 const DOMAIN = 'BOOKMARK';
@@ -142,73 +140,51 @@ export const useDELETEBookMarkMutation = ({
 // 북마크 추가 BS
 // 북마크 카테고리 리스트 조회
 interface ServerBookmarkCategoryItem {
-  order: number;
-  id: string;
+  orderNum: number;
+  categoryId: string;
   name: string;
+  emoji: string;
 }
 
 export interface ClientBookmarkCategoryItem {
   order: number;
   id: string;
   name: string;
+  emoji: string;
   isSelected: boolean;
 }
 
-interface GETBookmarkCategoryListResponse {
-  category_list: ServerBookmarkCategoryItem[];
+interface GETBookmarkCategoryListRequest {
+  memberId: number;
 }
 
 const GETBookmarkCategoryList = {
-  API: async () => {
-    const { data } = await axios.get<GETBookmarkCategoryListResponse>(
-      `${BASE_URL}/bookmarks/category/list`,
+  API: async ({ memberId }: GETBookmarkCategoryListRequest) => {
+    const { data } = await axios.get<ServerBookmarkCategoryItem[]>(
+      `${BASE_URL}/${memberId}/categories`,
     );
-    return data;
+    return GETBookmarkCategoryList.Mapper(data);
   },
-  Mapper: ({
-    category_list,
-  }: GETBookmarkCategoryListResponse): ClientBookmarkCategoryItem[] => {
-    return category_list.map((category, idx) => ({
-      order: category.order,
-      id: category.id,
-      name: category.name,
-      isSelected: idx === 0,
-    }));
-  },
-  MockAPI: async (): Promise<ClientBookmarkCategoryItem[]> => {
-    await sleep(1000);
-    return GETBookmarkCategoryList.Mapper({
-      category_list: [
-        {
-          order: 1,
-          id: uuid(),
-          name: '😃 프론트엔드',
-        },
-        {
-          order: 2,
-          id: uuid(),
-          name: '🧐 백엔드',
-        },
-        {
-          order: 3,
-          id: uuid(),
-          name: '✅ 라이프 스타일',
-        },
-        {
-          order: 4,
-          id: uuid(),
-          name: '🥹 퇴근 라이프',
-        },
-      ],
-    });
+  Mapper: (
+    categoryList: ServerBookmarkCategoryItem[],
+  ): ClientBookmarkCategoryItem[] => {
+    return categoryList
+      .map((category, idx) => ({
+        order: category.orderNum,
+        id: category.categoryId,
+        emoji: category.emoji,
+        name: category.name,
+        isSelected: idx === 0,
+      }))
+      .sort((a, b) => a.order - b.order);
   },
 };
 
-export const GET_BOOKMARK_CATEGORY_LIST = (userId: number) => [
+export const GET_BOOKMARK_CATEGORY_LIST = (memberId: number) => [
   getKeyofObject(navigatePath, '/'),
   DOMAIN,
   'BOOKMARK_CATEGORY_LIST',
-  userId,
+  memberId,
 ];
 
 export const useGETCategoryListQuery = ({
@@ -216,7 +192,7 @@ export const useGETCategoryListQuery = ({
 }: GETBookMarkListRequest) => {
   return useQuery(
     GET_BOOKMARK_CATEGORY_LIST(memberId),
-    async () => GETBookmarkCategoryList.MockAPI(),
+    async () => GETBookmarkCategoryList.API({ memberId }),
     {
       refetchOnWindowFocus: false,
       retry: 0,
