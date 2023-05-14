@@ -11,12 +11,14 @@ interface CategoryModeProps {
   mode: Mode;
   setMode: Dispatch<SetStateAction<Mode>>;
   openDeleteCategoryBS: () => void;
+  onClickSaveOrder: () => void;
 }
 
 const useCategoryMode = ({
   mode,
   setMode,
   openDeleteCategoryBS,
+  onClickSaveOrder,
 }: CategoryModeProps) => {
   const router = useNavigate();
   const navigateToCategoryAddPage = () => {
@@ -83,7 +85,7 @@ const useCategoryMode = ({
           <TextButton onClick={setNormalMode}>
             <Text.Span>취소</Text.Span>
           </TextButton>
-          <TextButton onClick={setNormalMode}>
+          <TextButton onClick={onClickSaveOrder}>
             <Text.Span>저장</Text.Span>
           </TextButton>
         </RightButtonWrapper>
