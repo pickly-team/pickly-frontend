@@ -16,7 +16,6 @@ import ProfilePage from '@/pages/ProfilePage';
 import CategoryListPage from './pages/CategoryListPage';
 import ToastList from './common-ui/Toast/ToastList';
 import NotificationPage from '@/pages/NotificationPage';
-import CategoryListPage from './pages/CategoryListPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
