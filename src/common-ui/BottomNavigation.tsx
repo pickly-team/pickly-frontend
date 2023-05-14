@@ -66,10 +66,13 @@ const BottomNavigation = () => {
   };
 
   const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     if (routerLocation?.isCategoryAddPage === true) {
       open();
-      navigate(location.pathname, {});
+      navigate(location.pathname, {
+        state: { fromPath: location.pathname },
+      });
     }
   }, []);
 
