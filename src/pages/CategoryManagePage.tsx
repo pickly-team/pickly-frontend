@@ -11,19 +11,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Emoji from '@/common/ui/Emoji';
 import CategoryName from '@/category/ui/Add/CategoryName';
 import Divider from '@/category/ui/Divider';
-
-// TODO : 이모지 라이브러리 찾아서 연동
+import { usePOSTCategoryMutation } from '@/category/api/add';
 
 interface CategoryAddPageProps {
   mode: 'ADD' | 'EDIT';
 }
 
 const CategoryAddPage = ({ mode }: CategoryAddPageProps) => {
+  // TODO : 인증 로직 추가
+  const USER_ID = 1;
   const router = useNavigate();
   const location = useLocation();
   const fromPath = location.state?.fromPath ?? '/';
-
-  console.log(fromPath);
 
   // BUSINESS LOGIC
   const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen } =
@@ -48,7 +47,16 @@ const CategoryAddPage = ({ mode }: CategoryAddPageProps) => {
   };
 
   // 2. 저장 버튼 > 저장
-  const onClickSave = () => router(-1);
+  const { mutate } = usePOSTCategoryMutation({ memberId: USER_ID });
+  const onClickSave = () => {
+    mutate({
+      memberId: USER_ID,
+      postData: categoryList.map((category) => ({
+        emoji: category.emoji,
+        name: category.name,
+      })),
+    });
+  };
 
   const initializeCategoryNameAndEmoji = () => {
     onChangeCategoryName('');
@@ -66,11 +74,11 @@ const CategoryAddPage = ({ mode }: CategoryAddPageProps) => {
 
   const setSelectedCategory = (id: string) => {
     const selectedCategory = categoryList.find(
-      (category) => category.id === id,
+      (category) => category.categoryId === id,
     );
     if (selectedCategory) {
       onChangeEmoji(selectedCategory.emoji);
-      onChangeCategoryName(selectedCategory.categoryName);
+      onChangeCategoryName(selectedCategory.name);
     }
   };
 
