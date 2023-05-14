@@ -99,6 +99,10 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
     return moveX < 0;
   };
 
+  if (!optionWrapperWidth) {
+    return null;
+  }
+
   return (
     <SlideWrapper
       ref={wrapperRef}
@@ -133,6 +137,7 @@ const useGetDivWrapperWidth = () => {
   const [width, setWidth] = useState(5000);
 
   useEffect(() => {
+    initializeData();
     function initializeData() {
       const width = ref?.current?.clientWidth;
       if (width) {
@@ -176,5 +181,5 @@ const MainItemWrapper = styled.div`
 const OptionItemWrapper = styled.div`
   width: fit-content;
   height: 100%;
-  background-color: ${theme.colors.primary};
+  background-color: ${theme.colors.lightPrimary};
 `;
