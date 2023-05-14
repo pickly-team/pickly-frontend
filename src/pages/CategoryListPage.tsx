@@ -1,4 +1,6 @@
-import { Mode } from '@/category';
+import { CategoryItem, Mode } from '@/category';
+import { useDeleteCategoryMutation } from '@/category/api/delete';
+import { usePATCHCategoryOrderMutation } from '@/category/api/order';
 import useCategoryMode from '@/category/service/hooks/useCategoryMode';
 import CategoryList from '@/category/ui/CategoryList';
 import SkeletonCategoryList from '@/category/ui/SkeletonCategoryList';
@@ -8,19 +10,46 @@ import BSConfirmation from '@/common/ui/BSConfirmation';
 import { Suspense, useState } from 'react';
 
 const CategoryListPage = () => {
+  // TODO : 로그인 유저 ID 연동
+  const USER_ID = 1;
   const [mode, setMode] = useState<Mode>('NORMAL');
 
   const { close, isOpen, open } = useBottomSheet();
+
+  const [deleteCategoryList, setDeleteCategoryList] = useState<string[]>([]);
+  const { mutate: mutateDeleteCategory } = useDeleteCategoryMutation({
+    memberId: USER_ID,
+  });
+  const onClickDelete = () => {
+    mutateDeleteCategory({
+      categoryId: deleteCategoryList,
+      memberId: USER_ID,
+    });
+    close();
+  };
+  const [clientCategoryList, setClientCategoryList] = useState<CategoryItem[]>(
+    [],
+  );
+
+  const { mutateAsync: mutatePatchOrder } = usePATCHCategoryOrderMutation({
+    memberId: USER_ID,
+  });
+  const onClickSaveOrder = async () => {
+    const orderData = clientCategoryList.map((category, index) => ({
+      categoryId: category.categoryId,
+      orderNum: index + 1,
+    }));
+    console.log(orderData);
+    await mutatePatchOrder(orderData);
+    setMode('NORMAL');
+  };
 
   const { headerRight } = useCategoryMode({
     mode,
     setMode,
     openDeleteCategoryBS: open,
+    onClickSaveOrder,
   });
-
-  // TODO : 카테고리 리스트 API 연동
-  // TODO : 카테고리 삭제 API 연동
-  // TODO : 카테고리 순서 변경 API 연동
 
   return (
     <>
@@ -30,7 +59,13 @@ const CategoryListPage = () => {
         rightButton={headerRight()}
       />
       <Suspense fallback={<SkeletonCategoryList />}>
-        <CategoryList mode={mode} />
+        <CategoryList
+          mode={mode}
+          clientCategoryList={clientCategoryList}
+          setClientCategoryList={setClientCategoryList}
+          deleteCategoryList={deleteCategoryList}
+          setDeleteCategoryList={setDeleteCategoryList}
+        />
       </Suspense>
       <BSConfirmation
         title="정말로 삭제 할까요?"
@@ -38,7 +73,7 @@ const CategoryListPage = () => {
         open={isOpen}
         onCancel={close}
         onClose={close}
-        onConfirm={close}
+        onConfirm={onClickDelete}
       />
     </>
   );
