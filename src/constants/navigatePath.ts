@@ -7,6 +7,8 @@ const navigatePath = {
   USER: '/user/:id',
   USER_EDIT: '/user/:id/edit',
   CATEGORY_ADD: '/category/add',
+  CATEGORY_EDIT: '/category/edit/:id',
+  CATEGORY_LIST: '/category/list',
   REPORT: '/bookmark/:id/report',
 } as const;
 
