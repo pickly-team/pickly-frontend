@@ -13,12 +13,17 @@ const BASE_URL = 'http://localhost:8080/api/members';
 
 const DOMAIN = 'BOOKMARK';
 
-export const GET_BOOKMARK_LIST = (userId: number, readByUser: boolean) => [
+export const GET_BOOKMARK_LIST = (
+  userId: number,
+  readByUser: boolean,
+  categoryId: number,
+) => [
   getKeyofObject(navigatePath, '/'),
   DOMAIN,
   'BOOKMARK_LIST',
   userId,
   readByUser,
+  categoryId,
 ];
 
 ///////////////////////////////////
@@ -58,8 +63,9 @@ interface GETBookMarkListRequest {
 const GETBookMarkList = {
   API: async (params: GETBookMarkListRequest) => {
     await sleep(1000);
+    console.log('GETBookMarkList.API', params);
     const { data } = await client.get<SeverBookMarkItem>(
-      '/members/1/bookmarks',
+      `/members/${params.memberId}/bookmarks`,
       {
         params: {
           categoryId: params.categoryId,
@@ -77,7 +83,11 @@ const GETBookMarkList = {
 
 export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
   return useInfiniteQuery(
-    GET_BOOKMARK_LIST(params.memberId, params.readByUser ?? false),
+    GET_BOOKMARK_LIST(
+      params.memberId,
+      params.readByUser ?? false,
+      params.categoryId ?? 0,
+    ),
     async ({ pageParam = null }) => {
       const { contents, hasNext } = await GETBookMarkList.API({
         ...params,
@@ -121,16 +131,22 @@ const DELETEBookMark = {
 
 interface DELETEBookMarkMutation {
   userId: number;
+  categoryId?: number;
 }
 
 export const useDELETEBookMarkMutation = ({
   userId,
+  categoryId,
 }: DELETEBookMarkMutation) => {
   const queryClient = useQueryClient();
   return useMutation(DELETEBookMark.API, {
     onSuccess: () => {
-      queryClient.refetchQueries(GET_BOOKMARK_LIST(userId, false));
-      queryClient.refetchQueries(GET_BOOKMARK_LIST(userId, true));
+      queryClient.refetchQueries(
+        GET_BOOKMARK_LIST(userId, false, categoryId ?? 0),
+      );
+      queryClient.refetchQueries(
+        GET_BOOKMARK_LIST(userId, true, categoryId ?? 0),
+      );
     },
   });
 };
@@ -186,9 +202,13 @@ export const GET_BOOKMARK_CATEGORY_LIST = (memberId: number) => [
   memberId,
 ];
 
+interface GETBookMarkCategoryListRequest {
+  memberId: number;
+}
+
 export const useGETCategoryListQuery = ({
   memberId,
-}: GETBookMarkListRequest) => {
+}: GETBookMarkCategoryListRequest) => {
   return useQuery(
     GET_BOOKMARK_CATEGORY_LIST(memberId),
     async () => GETBookmarkCategoryList.API({ memberId }),

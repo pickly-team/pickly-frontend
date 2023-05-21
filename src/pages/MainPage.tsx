@@ -15,12 +15,15 @@ import useBottomIntersection from '@/common/service/hooks/useBottomIntersection'
 import getRem from '@/utils/getRem';
 
 const MainPage = () => {
-  const { category, categoryOptions, onChangeCategory } = useCategory();
+  const USER_ID = 1;
+  const { selectedCategory, categoryOptions, onChangeCategory } = useCategory({
+    memberId: USER_ID,
+  });
 
   const { isReadMode, onClickReadMode } = useReadList();
 
   const { bookMarkList, isLoading, fetchNextPage, isFetchingNextPage } =
-    useBookmarkList({ readByUser: isReadMode });
+    useBookmarkList({ readByUser: isReadMode, categoryId: selectedCategory });
   const { bottom } = useBottomIntersection({ fetchNextPage });
 
   const {
@@ -29,7 +32,7 @@ const MainPage = () => {
     onClickBookmarkItemInEdit,
     onClickDelete,
     onClickEdit,
-  } = useDeleteBookmarkList();
+  } = useDeleteBookmarkList({ categoryId: selectedCategory });
 
   const isEditMode = !isLoading && bookMarkList?.pages.length !== 0 && isEdit;
 
@@ -40,7 +43,7 @@ const MainPage = () => {
       </LTop>
       <BookmarkToggle>
         <BookmarkToggle.SelectCategory
-          category={category}
+          selectedCategory={String(selectedCategory)}
           categoryOptions={categoryOptions}
           setCategoryId={onChangeCategory}
         />
