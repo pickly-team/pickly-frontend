@@ -1,6 +1,7 @@
 import Select from '@/common-ui/Select/Select';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useState } from 'react';
+import Button from '../Button';
 
 export default {
   title: 'Select',
@@ -35,14 +36,17 @@ const Template: ComponentStory<typeof Select> = (args) => {
 export const Default = Template.bind({});
 Default.args = {
   value: undefined,
+  trigger: <Button>버튼</Button>,
 };
 
 export const Search = Template.bind({});
 Search.args = {
   isSearchActive: true,
+  trigger: <Button>버튼</Button>,
 };
 
 export const WithValue = Template.bind({});
 WithValue.args = {
   value: '1',
+  trigger: <Button>버튼</Button>,
 };

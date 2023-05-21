@@ -1,16 +1,8 @@
-import { ClientBookMarkItem } from '@/bookmarks/api/bookmark';
+import { useDELETEBookMarkMutation } from '@/bookmarks/api/bookmark';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import { useState } from 'react';
 
-interface DeleteBookmarkListProps {
-  bookMarkList: ClientBookMarkItem[] | undefined;
-  onChangeBookmarkList: (bookmarkList: ClientBookMarkItem[]) => void;
-}
-
-const useDeleteBookmarkList = ({
-  bookMarkList,
-  onChangeBookmarkList,
-}: DeleteBookmarkListProps) => {
+const useDeleteBookmarkList = () => {
   const [isEditMode, setEditMode] = useState(false);
 
   const {
@@ -19,9 +11,9 @@ const useDeleteBookmarkList = ({
     open: deleteBookmarkOpen,
   } = useBottomSheet();
 
-  const [deleteBookmarkList, setDeleteBookmarkList] = useState<string[]>([]);
+  const [deleteBookmarkList, setDeleteBookmarkList] = useState<number[]>([]);
 
-  const onClickBookmarkItemInEdit = (id: string) => {
+  const onClickBookmarkItemInEdit = (id: number) => {
     if (deleteBookmarkList.includes(id)) {
       setDeleteBookmarkList(deleteBookmarkList.filter((item) => item !== id));
     } else {
@@ -38,13 +30,10 @@ const useDeleteBookmarkList = ({
   };
 
   // BS에 대한 이벤트 처리
+  const { mutate } = useDELETEBookMarkMutation({ userId: 1 });
   const onClickDelete = () => {
     // 1. 북마크 삭제
-    // TODO : 북마크 삭제 API 연동
-    bookMarkList &&
-      onChangeBookmarkList(
-        bookMarkList.filter((item) => !deleteBookmarkList.includes(item.id)),
-      );
+    mutate({ bookmarkIds: deleteBookmarkList });
     // 2. 북마크 리스트 초기화
     setDeleteBookmarkList([]);
     // 3. 편집모드 종료

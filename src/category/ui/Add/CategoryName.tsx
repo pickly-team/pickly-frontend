@@ -10,7 +10,7 @@ interface NameProps {
 
 const CategoryName = ({ categoryName, onChangeCategoryName }: NameProps) => {
   return (
-    <>
+    <Wrapper>
       <Text.Header level="h3" weight="bold" fontSize={getRem(16)}>
         카테고리 이름
       </Text.Header>
@@ -18,9 +18,13 @@ const CategoryName = ({ categoryName, onChangeCategoryName }: NameProps) => {
         value={categoryName}
         onChange={(e) => onChangeCategoryName(e.target.value)}
       />
-    </>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  margin-top: ${getRem(20)};
+`;
 
 const CategoryNameInput = styled(Input)`
   margin-top: ${getRem(20)};

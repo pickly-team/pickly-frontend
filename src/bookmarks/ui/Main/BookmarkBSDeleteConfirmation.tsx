@@ -6,14 +6,16 @@ import styled from '@emotion/styled';
 interface BSDeleteConfirmationProps {
   open: boolean;
   onClose: () => void;
+  onDelete: () => void;
 }
 
 const BookmarkBSDeleteConfirmation = ({
   open,
   onClose,
+  onDelete,
 }: BSDeleteConfirmationProps) => {
   return (
-    <BottomSheet open={open} maxHeight={20} onClose={onClose}>
+    <BottomSheet open={open} maxHeight={30} onClose={onClose}>
       <BSWrapper>
         <Text.Span style={{ margin: '1rem 0' }} weight="bold" fontSize={1.4}>
           정말로 삭제 할까요?
@@ -23,6 +25,7 @@ const BookmarkBSDeleteConfirmation = ({
           style={{
             marginBottom: '1rem',
           }}
+          fontSize={0.9}
         >
           삭제하면 다시 복구할 수 없습니다. 삭제하시겠습니까?
         </Text.Span>
@@ -40,7 +43,7 @@ const BookmarkBSDeleteConfirmation = ({
             style={{
               width: '45%',
             }}
-            onClick={onClose}
+            onClick={onDelete}
           >
             삭제
           </Button>
