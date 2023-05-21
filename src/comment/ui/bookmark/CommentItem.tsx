@@ -3,7 +3,7 @@ import { theme } from '@/styles/theme';
 import Text from '@/common-ui/Text';
 import Icon from '@/common-ui/assets/Icon';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
-import CommentBottomSheet from '@/comment/ui/CommetBottomSheet';
+import CommentBottomSheet from '@/comment/ui/bookmark/CommetBottomSheet';
 import getRem from '@/utils/getRem';
 
 interface CommentProps {
