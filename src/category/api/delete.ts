@@ -16,14 +16,7 @@ const DeleteCategory = {
       },
       paramsSerializer: (params) => {
         return Object.keys(params)
-          .map((key) => {
-            const value = params[key];
-            if (Array.isArray(value)) {
-              return `${key}=${value.join(',')}`;
-            } else {
-              return `${key}=${value}`;
-            }
-          })
+          .map((key) => params[key].map((v: string) => `${key}=${v}`).join('&'))
           .join('&');
       },
     });
