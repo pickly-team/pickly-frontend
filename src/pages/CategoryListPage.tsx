@@ -17,14 +17,15 @@ const CategoryListPage = () => {
   const { close, isOpen, open } = useBottomSheet();
 
   const [deleteCategoryList, setDeleteCategoryList] = useState<string[]>([]);
-  const { mutate: mutateDeleteCategory } = useDeleteCategoryMutation({
+  const { mutateAsync: mutateDeleteCategory } = useDeleteCategoryMutation({
     memberId: USER_ID,
   });
-  const onClickDelete = () => {
-    mutateDeleteCategory({
+  const onClickDelete = async () => {
+    await mutateDeleteCategory({
       categoryId: deleteCategoryList,
       memberId: USER_ID,
     });
+    setMode('NORMAL');
     close();
   };
   const [clientCategoryList, setClientCategoryList] = useState<CategoryItem[]>(
@@ -39,7 +40,6 @@ const CategoryListPage = () => {
       categoryId: category.categoryId,
       orderNum: index + 1,
     }));
-    console.log(orderData);
     await mutatePatchOrder(orderData);
     setMode('NORMAL');
   };
