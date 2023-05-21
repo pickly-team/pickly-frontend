@@ -10,6 +10,7 @@ const navigatePath = {
   CATEGORY_EDIT: '/category/edit/:id',
   CATEGORY_LIST: '/category/list',
   REPORT: '/bookmark/:id/report',
+  COMMENT: '/comment',
 } as const;
 
 type NavigatePath = (typeof navigatePath)[keyof typeof navigatePath];
