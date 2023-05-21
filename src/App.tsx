@@ -64,6 +64,7 @@ const App = () => {
                 path={navigatePath.CATEGORY_ADD}
                 element={<CategoryAddPage mode="ADD" />}
               />
+              <Route path={navigatePath.COMMENT} element={<CommentPage />} />
               <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
             </Routes>
           </Layout>

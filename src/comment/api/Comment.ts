@@ -1,6 +1,6 @@
-import { navigatePath } from '@/constants/navigatePath';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { navigatePath } from '../../constants/navigatePath';
 
 const BASE_URL = 'http://52.79.54.119:8080/api';
 
