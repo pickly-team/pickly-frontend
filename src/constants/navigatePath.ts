@@ -4,6 +4,7 @@ const navigatePath = {
   NOTIFICATION: '/notification',
   PROFILE: '/profile',
   BOOKMARK_DETAIL: '/bookmark/:id',
+  FAQ: '/faq',
   USER: '/user/:id',
   USER_EDIT: '/user/:id/edit',
   CATEGORY_ADD: '/category/add',

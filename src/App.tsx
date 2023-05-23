@@ -8,6 +8,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import { navigatePath } from '@/constants/navigatePath';
 import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
+import FaqPage from '@/pages/FaqPage';
 import RNListener from '@/RNListener';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryManagePage';
@@ -42,6 +43,7 @@ const App = () => {
                 path={navigatePath.BOOKMARK_DETAIL}
                 element={<BookMarkDetailPage />}
               />
+              <Route path={navigatePath.FAQ} element={<FaqPage />} />
               <Route path={navigatePath.REPORT} element={<ReportPage />} />
               <Route
                 path={navigatePath.USER}
