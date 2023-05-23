@@ -5,7 +5,7 @@ import type { FunctionComponent, HTMLAttributes, ReactNode } from 'react';
 
 type StrictPropsWithChildren<P = unknown> = P & { children: string };
 
-type TextProps = {
+export type TextProps = {
   weight?: 'bold' | 'regular';
   fontSize?: string | number;
   color?: ColorType;

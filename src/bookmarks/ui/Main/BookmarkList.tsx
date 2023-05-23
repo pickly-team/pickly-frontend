@@ -1,8 +1,8 @@
-import { ClientBookMarkItem } from '@/bookmarks/api/bookmark';
+import { BookmarkItem } from '@/bookmarks/api/bookmark';
 
 interface BookmarkListProps {
-  bookmarkList: ClientBookMarkItem[];
-  renderItem: (item: ClientBookMarkItem) => JSX.Element;
+  bookmarkList: BookmarkItem[];
+  renderItem: (item: BookmarkItem) => JSX.Element;
 }
 
 const BookmarkList = ({ bookmarkList, renderItem }: BookmarkListProps) => {
