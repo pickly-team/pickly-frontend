@@ -33,7 +33,7 @@ const StatsBox = ({
           </StatItemContainer>
         </Link>
         <Divider />
-        <Link to="/categories">
+        <Link to="/category/list">
           <StatItemContainer>
             <IconLabelContainer>
               <Icon name={'folder'} size={'s'} />

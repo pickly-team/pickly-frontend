@@ -1,13 +1,16 @@
 const navigatePath = {
   MAIN: '/',
   FRIEND: '/friend',
-  ALARM: '/alarm',
+  NOTIFICATION: '/notification',
   PROFILE: '/profile',
   BOOKMARK_DETAIL: '/bookmark/:id',
   FAQ: '/faq',
   USER: '/user/:id',
   USER_EDIT: '/user/:id/edit',
   CATEGORY_ADD: '/category/add',
+  CATEGORY_EDIT: '/category/edit/:id',
+  CATEGORY_LIST: '/category/list',
+  REPORT: '/bookmark/:id/report',
 } as const;
 
 type NavigatePath = (typeof navigatePath)[keyof typeof navigatePath];

@@ -3,6 +3,7 @@ import { render } from '@/test/utils';
 import Select from '@/common-ui/Select/Select';
 import { useState } from 'react';
 import userEvent from '@testing-library/user-event';
+import Button from '../Button';
 
 const OPTIONS = [
   { value: '1', label: '1 라벨' },
@@ -13,7 +14,7 @@ const RenderUsage = () => {
   const [value, setValue] = useState('1');
 
   return (
-    <Select value={value} onChange={setValue}>
+    <Select trigger={<Button>테스트</Button>} value={value} onChange={setValue}>
       {OPTIONS.map((option) => (
         <option value={option.value} key={option.value}>
           {option.label}
@@ -73,7 +74,13 @@ describe('Select test', () => {
     beforeEach(() => {
       //when
       render(
-        <Select value={'1'} onChange={() => {}} isSearchActive>
+        <Select
+          trigger={<Button>테스트</Button>}
+          value={'1'}
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          onChange={() => {}}
+          isSearchActive
+        >
           {OPTIONS.map((option) => (
             <option value={option.value} key={option.value}>
               {option.label}
