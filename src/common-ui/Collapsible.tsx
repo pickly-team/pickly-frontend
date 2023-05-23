@@ -9,24 +9,19 @@ interface Props {
 }
 
 const Collapsible = ({ summary, detail }: Props) => {
-  const [toggle, setToggle] = useState<boolean | null>(false);
-  const toggleBtn = () => {
-    if (toggle !== !toggle) {
-      setToggle(!toggle);
-    }
-  };
+  const [toggle, setToggle] = useState<boolean>(false);
+  const toggleBtn = () => setToggle(!toggle);
+
   return (
     <ToggleCard>
       <button onClick={toggleBtn}>
-        <IconSection>
-          <Icon name={toggle ? 'arrow-down' : 'arrow-right'} size="xs" />
+        <IconSection open={toggle}>
+          <Icon name={toggle ? 'arrow-right' : 'arrow-right'} size="xs" />
         </IconSection>
         {summary}
       </button>
       <br />
-      <ToogleBody style={toggle ? { display: 'block' } : { display: 'none' }}>
-        {detail}
-      </ToogleBody>
+      <ToggleBody open={toggle}>{detail}</ToggleBody>
     </ToggleCard>
   );
 };
@@ -34,27 +29,39 @@ const Collapsible = ({ summary, detail }: Props) => {
 export default Collapsible;
 
 const ToggleCard = styled.div`
-  margin-bottom: 15px;
+  margin-bottom: ${getRem(10)};
 `;
 
-const ToogleBody = styled.div`
+const IconSection = styled.div<{ open: boolean }>`
+  margin-right: 15px;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  transform: rotate(${(props) => (props.open ? '90deg' : '0deg')});
+`;
+
+const ToggleBody = styled.div<{ open: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: ${getRem(0)};
+
+  max-height: ${(props) => (props.open ? getRem(200) : '0')};
+  opacity: ${(props) => (props.open ? '1' : '0')};
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+
   gap: ${getRem(10)};
   background: #313131;
+  padding: ${(props) =>
+    props.open
+      ? `${getRem(10)}`
+      : `${getRem(0)} ${getRem(10)} ${getRem(0)} ${getRem(10)}`};
   border-radius: ${getRem(8)};
-  padding: ${getRem(10)};
   margin-left: ${getRem(30)};
-
   font-family: 'NanumSquareRound';
   font-style: normal;
   font-weight: ${getRem(700)};
   font-size: ${getRem(11)};
   line-height: 150%;
-`;
-
-const IconSection = styled.div`
-  margin-right: 15px;
+  white-space: pre-wrap;
+  margin-bottom: ${getRem(30)};
 `;
