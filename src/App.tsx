@@ -18,6 +18,7 @@ import ProfilePage from '@/pages/ProfilePage';
 import CategoryListPage from './pages/CategoryListPage';
 import ToastList from './common-ui/Toast/ToastList';
 import NotificationPage from '@/pages/NotificationPage';
+import { Analytics } from '@vercel/analytics/react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -76,6 +77,7 @@ const App = () => {
           </Layout>
         </BrowserRouter>
       </QueryClientProvider>
+      <Analytics />
     </ThemeProvider>
   );
 };
