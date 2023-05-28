@@ -105,16 +105,6 @@ const GlobalStyle = () => (
         vertical-align: baseline;
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
-
-        /* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)*/
-        @media all and (min-width: 480px) and (max-width: 767px) {
-          font-size: 0.85rem;
-        }
-
-        /* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/
-        @media all and (max-width: 479px) {
-          font-size: 0.85rem;
-        }
       }
       html {
         background-color: ${theme.colors.black};
@@ -122,8 +112,9 @@ const GlobalStyle = () => (
       body {
         -ms-overflow-style: none !important; /* IE and Edge */
         scrollbar-width: none !important; /* Firefox */
+        overflow: hidden;
       }
-
+      li,
       ol,
       ul {
         list-style: none;

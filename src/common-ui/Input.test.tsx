@@ -62,7 +62,7 @@ describe('Input Test', () => {
     //then
     const input = screen.getByRole('textbox');
     expect(input).toHaveStyle('border: 3px solid #212121 ');
-    expect(input).toHaveStyle('border-radius: 10px');
+    expect(input).toHaveStyle('border-radius: 10rem');
   });
   it('Input focus 테스트', () => {
     //given

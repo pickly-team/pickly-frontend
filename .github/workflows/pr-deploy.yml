@@ -21,6 +21,12 @@ jobs:
         with:
           node-version: '16'
 
+      - name: Create .env file
+        run: |
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+
       - name: Install Yarn
         run: npm i -g yarn
 
@@ -32,3 +38,4 @@ jobs:
 
       - name: Build
         run: yarn build
+    

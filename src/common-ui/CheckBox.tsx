@@ -3,6 +3,7 @@ import {
   ComponentPropsWithoutRef,
   forwardRef,
   ForwardRefRenderFunction,
+  useEffect,
   useState,
 } from 'react';
 
@@ -14,11 +15,15 @@ type CheckBoxProps = {
   isChecked: boolean;
 } & Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'onChange' | 'checked'>;
 
-const CheckBox: ForwardRefRenderFunction<HTMLInputElement, CheckBoxProps> = (
-  { id, onChange, isChecked, children, ...restProps },
-  ref,
-) => {
+export const CheckBox: ForwardRefRenderFunction<
+  HTMLInputElement,
+  CheckBoxProps
+> = ({ id, onChange, isChecked, children, ...restProps }, ref) => {
   const [checked, setChecked] = useState<boolean>(isChecked);
+
+  useEffect(() => {
+    setChecked(isChecked);
+  }, [isChecked]);
 
   const _onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const { checked } = event.target;
@@ -37,9 +42,9 @@ const CheckBox: ForwardRefRenderFunction<HTMLInputElement, CheckBoxProps> = (
         ref={ref}
       />
       {checked ? (
-        <Icon name="check" size="s" />
+        <Icon name="check-green" size="s" />
       ) : (
-        <Icon name="check-none" size="s" />
+        <Icon name="check-none-green" size="s" />
       )}
       {children}
     </StyledLabel>
