@@ -3,12 +3,8 @@ import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
-<<<<<<< HEAD:src/bookmarks/ui/BookmarkItem.tsx
-import { ClientBookMarkItem } from '../api/bookmark';
 import getRem from '@/utils/getRem';
-=======
 import type { BookmarkItem } from '../../api/bookmark';
->>>>>>> develop:src/bookmarks/ui/Main/BookmarkItem.tsx
 
 const BookmarkItem = ({
   bookmarkId,
