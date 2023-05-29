@@ -8,9 +8,6 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-const BASE_URL = 'http://localhost:8080/api/members';
-
 const DOMAIN = 'BOOKMARK';
 
 export const GET_BOOKMARK_LIST = (
@@ -122,8 +119,15 @@ interface DELETEBookMarkRequest {
 
 const DELETEBookMark = {
   API: async (params: DELETEBookMarkRequest) => {
-    const { data } = await axios.put('/v1/bookmarks/list', {
-      bookmarkIds: params.bookmarkIds,
+    const { data } = await client.delete('/bookmarks/list', {
+      params: {
+        bookmarkId: params.bookmarkIds,
+      },
+      paramsSerializer: (params) => {
+        return Object.keys(params)
+          .map((key) => params[key].map((v: string) => `${key}=${v}`).join('&'))
+          .join('&');
+      },
     });
     return data;
   },
@@ -175,8 +179,8 @@ interface GETBookmarkCategoryListRequest {
 
 const GETBookmarkCategoryList = {
   API: async ({ memberId }: GETBookmarkCategoryListRequest) => {
-    const { data } = await axios.get<ServerBookmarkCategoryItem[]>(
-      `${BASE_URL}/${memberId}/categories`,
+    const { data } = await client.get<ServerBookmarkCategoryItem[]>(
+      `${memberId}/categories`,
     );
     return GETBookmarkCategoryList.Mapper(data);
   },
