@@ -39,7 +39,7 @@ const BookmarkLikeList = () => {
             onClickLikeBtn={onClickLike}
           />
         ))}
-      {isFetchingNextPage && <SkeletonBookmarkLikeList count={5} />}
+      {isFetchingNextPage && <SkeletonBookmarkLikeList count={15} />}
       <div ref={bottom} />
     </>
   );
