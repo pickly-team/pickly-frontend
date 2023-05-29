@@ -11,41 +11,30 @@ import useCategory from '@/bookmarks/service/hooks/home/useCategory';
 import useBookmarkList from '@/bookmarks/service/hooks/home/useBookmarkList';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
-import { useCallback, useRef } from 'react';
-import useIntersection from '@/common/service/hooks/useIntersection';
+import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import getRem from '@/utils/getRem';
 
 const MainPage = () => {
-  const { category, categoryOptions, onChangeCategory } = useCategory();
+  const USER_ID = 1;
+  const { selectedCategory, categoryOptions, onChangeCategory } = useCategory({
+    memberId: USER_ID,
+  });
+
   const { isReadMode, onClickReadMode } = useReadList();
 
   const { bookMarkList, isLoading, fetchNextPage, isFetchingNextPage } =
-    useBookmarkList({ readByUser: isReadMode });
+    useBookmarkList({ readByUser: isReadMode, categoryId: selectedCategory });
+  const { bottom } = useBottomIntersection({ fetchNextPage });
+
   const {
     isEditMode: isEdit,
     isDeleteBookmarkOpen,
     onClickBookmarkItemInEdit,
     onClickDelete,
     onClickEdit,
-  } = useDeleteBookmarkList();
+  } = useDeleteBookmarkList({ categoryId: selectedCategory });
 
   const isEditMode = !isLoading && bookMarkList?.pages.length !== 0 && isEdit;
-
-  const bottom = useRef(null);
-
-  const onIntersect = useCallback(
-    ([entry]: IntersectionObserverEntry[]) => {
-      if (entry.isIntersecting) {
-        fetchNextPage();
-      }
-    },
-    [fetchNextPage],
-  );
-
-  useIntersection({
-    onIntersect,
-    target: bottom,
-  });
 
   return (
     <>
@@ -54,7 +43,7 @@ const MainPage = () => {
       </LTop>
       <BookmarkToggle>
         <BookmarkToggle.SelectCategory
-          category={category}
+          selectedCategory={String(selectedCategory)}
           categoryOptions={categoryOptions}
           setCategoryId={onChangeCategory}
         />

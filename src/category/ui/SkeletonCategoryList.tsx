@@ -5,10 +5,14 @@ import getRem from '@/utils/getRem';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
-const SkeletonCategoryList = () => {
+interface Props {
+  count?: number;
+}
+
+const SkeletonCategoryList = ({ count = 5 }: Props) => {
   return (
     <>
-      {[...Array(5)].map((_, index) => (
+      {[...Array(count)].map((_, index) => (
         <SkeletonCategoryItem key={index} />
       ))}
     </>

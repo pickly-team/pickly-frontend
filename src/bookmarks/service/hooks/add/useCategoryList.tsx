@@ -11,9 +11,6 @@ const useCategoryList = () => {
   // SERVER
   const { data: categoryList } = useGETCategoryListQuery({
     memberId: USER_ID,
-    pageRequest: {
-      pageSize: 15,
-    },
   });
 
   const queryClient = useQueryClient();

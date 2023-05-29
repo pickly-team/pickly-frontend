@@ -59,7 +59,7 @@ describe('BottomNavigation test', () => {
       act(() => alarmBtn.click());
 
       // then
-      expect(window.location.pathname).toBe('/alarm');
+      expect(window.location.pathname).toBe('/notification');
     });
     it('프로필 아이템을 클릭하면 > /profile로 이동한다.', () => {
       // given
