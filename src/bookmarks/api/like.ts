@@ -54,15 +54,21 @@ export const useGETLikeBookmarkListQuery = (
         ...params,
         pageRequest: {
           cursorId: pageParam,
-          pageSize: 15,
+          pageSize: params.pageRequest.pageSize,
         },
       });
       return {
-        data: contents,
-        nextPage: hasNext ? contents[contents.length - 1].bookmarkId : null,
+        contents,
+        hasNext,
       };
     },
     {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.hasNext) {
+          return lastPage.contents[lastPage.contents.length - 1].bookmarkId;
+        }
+        return undefined;
+      },
       suspense: true,
     },
   );
