@@ -73,20 +73,38 @@ const followFriend = async (memberId: string, followingId: string) => {
   return client.post(`/members/${memberId}/following/${followingId}`);
 };
 
-export const useFollowMutation = (
-  memberId: string,
-  followingId: string,
-): UseMutationResult => {
-  return useMutation(() => followFriend(memberId, followingId));
+type FollowMutationArgs = {
+  variables: {
+    memberId: string;
+    followingId: string;
+  };
+  onSuccess: () => void;
+};
+export const useFollowMutation = ({
+  variables: { memberId, followingId },
+  onSuccess,
+}: FollowMutationArgs): UseMutationResult => {
+  return useMutation(() => followFriend(memberId, followingId), {
+    onSuccess: onSuccess,
+  });
 };
 
 const unfollowFriend = async (memberId: string, followingId: string) => {
   return client.delete(`/members/${memberId}/following/${followingId}`);
 };
 
-export const useUnFollowMutation = (
-  memberId: string,
-  followingId: string,
-): UseMutationResult => {
-  return useMutation(() => unfollowFriend(memberId, followingId));
+type UnFollowMutationArgs = {
+  variables: {
+    memberId: string;
+    followingId: string;
+  };
+  onSuccess: () => void;
+};
+export const useUnFollowMutation = ({
+  variables: { memberId, followingId },
+  onSuccess,
+}: UnFollowMutationArgs): UseMutationResult => {
+  return useMutation(() => unfollowFriend(memberId, followingId), {
+    onSuccess: onSuccess,
+  });
 };

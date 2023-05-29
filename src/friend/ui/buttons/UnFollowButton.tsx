@@ -3,12 +3,26 @@ import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
 import { useUnFollowMutation } from '@/friend/api/friends';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 
 interface UnFollowButtonProps {
   userId: string;
 }
 const UnFollowButton = ({ userId }: UnFollowButtonProps) => {
-  const { mutate } = useUnFollowMutation('1', '3');
+  const { fireToast } = useToast();
+  //TODO: 하드코딩 개선
+  const { mutate } = useUnFollowMutation({
+    variables: {
+      memberId: '1',
+      followingId: '3',
+    },
+    onSuccess: () => {
+      fireToast({
+        message: '팔로잉 중인 친구의 알림만 받을 수 있습니다',
+        mode: 'SUCCESS',
+      });
+    },
+  });
   const onClick = () => {
     mutate();
   };
