@@ -70,33 +70,40 @@ export const useGetFollowings = (): UseQueryResult<Friends[], Error> => {
 };
 
 type FollowMutationArgs = {
-  variables: {
-    memberId: string;
-    followingId: string;
-  };
   onSuccess: () => void;
 };
 export const useFollowMutation = ({
-  variables: { memberId, followingId },
   onSuccess,
 }: FollowMutationArgs): UseMutationResult => {
-  return useMutation(() => api.followFriend(memberId, followingId), {
+  return useMutation({
+    mutationFn: ({
+      memberId,
+      followingId,
+    }: {
+      memberId: string;
+      followingId: string;
+    }) => {
+      return api.followFriend(memberId, followingId);
+    },
     onSuccess: onSuccess,
   });
 };
 
-type UnFollowMutationArgs = {
-  variables: {
-    memberId: string;
-    followingId: string;
-  };
-  onSuccess: () => void;
-};
 export const useUnFollowMutation = ({
-  variables: { memberId, followingId },
   onSuccess,
-}: UnFollowMutationArgs): UseMutationResult => {
-  return useMutation(() => api.unfollowFriend(memberId, followingId), {
+}: {
+  onSuccess: () => void;
+}): UseMutationResult => {
+  return useMutation({
+    mutationFn: ({
+      memberId,
+      followingId,
+    }: {
+      memberId: string;
+      followingId: string;
+    }) => {
+      return api.unfollowFriend(memberId, followingId);
+    },
     onSuccess: onSuccess,
   });
 };

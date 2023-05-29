@@ -10,12 +10,7 @@ interface UnFollowButtonProps {
 }
 const UnFollowButton = ({ userId }: UnFollowButtonProps) => {
   const { fireToast } = useToast();
-  //TODO: 하드코딩 개선
   const { mutate } = useUnFollowMutation({
-    variables: {
-      memberId: '1',
-      followingId: '3',
-    },
     onSuccess: () => {
       fireToast({
         message: '팔로잉 중인 친구의 알림만 받을 수 있습니다',
@@ -23,8 +18,10 @@ const UnFollowButton = ({ userId }: UnFollowButtonProps) => {
       });
     },
   });
+
+  //TODO: 하드코딩 개선
   const onClick = () => {
-    mutate();
+    mutate({ memberId: '1', followingId: '3' });
   };
   return (
     <StyledButton onClick={onClick} buttonColor={'black'}>
