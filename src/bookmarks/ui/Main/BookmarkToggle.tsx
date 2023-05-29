@@ -1,7 +1,9 @@
 import Button from '@/common-ui/Button';
 import Select from '@/common-ui/Select/Select';
 import Text from '@/common-ui/Text';
+import { TOGGLE_BUTTON_Z_INDEX } from '@/constants/zIndex';
 import { theme } from '@/styles/theme';
+import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 
 export type CategoryType = {
@@ -33,11 +35,18 @@ const SelectCategory = ({
   return (
     <ButtonWrapper>
       <Select
-        buttonStyle={{
-          border: `2px solid ${theme.colors.lightPrimary}`,
-          borderRadius: '0.8rem',
-          width: '100%',
-        }}
+        trigger={
+          <Button
+            buttonColor="black"
+            height={2.5}
+            style={{
+              border: `2px solid ${theme.colors.lightPrimary}`,
+              borderRadius: '0.8rem',
+            }}
+          >
+            <Text.Span color="lightPrimary">전체</Text.Span>
+          </Button>
+        }
         value={category}
         onChange={setCategoryId}
         isSearchActive
@@ -108,8 +117,16 @@ export default BookmarkToggle;
 
 const ToggleWrapper = styled.div`
   display: flex;
-  margin-top: 2rem;
+  position: sticky;
+  top: -1px;
+  padding-top: 20px;
+  align-self: flex-start;
+  background-color: ${theme.colors.black};
+  height: ${getRem(80)};
+  padding: ${getRem(20)};
+  border-radius: 0.8rem;
   justify-content: space-between;
+  z-index: ${TOGGLE_BUTTON_Z_INDEX};
 `;
 
 const ButtonWrapper = styled.div`

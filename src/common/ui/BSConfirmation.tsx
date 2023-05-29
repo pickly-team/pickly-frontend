@@ -3,31 +3,49 @@ import Button from '@/common-ui/Button';
 import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
 
-interface BSDeleteConfirmationProps {
+interface ConfirmationProps {
   open: boolean;
+  title: string;
+  description: string;
   onClose: () => void;
-  onDelete: () => void;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
-const BookmarkBSDeleteConfirmation = ({
+/**
+ *
+ * @example
+    <BSConfirmation
+      title="정말로 삭제 할까요?"
+      description="삭제된 카테고리는 복구할 수 없습니다."
+      open={open}
+      onCancel={onCancel}
+      onClose={onClose}
+      onConfirm={onConfirm}
+    />
+ */
+
+const BSConfirmation = ({
   open,
+  title,
+  description,
   onClose,
-  onDelete,
-}: BSDeleteConfirmationProps) => {
+  onConfirm,
+  onCancel,
+}: ConfirmationProps) => {
   return (
-    <BottomSheet open={open} maxHeight={30} onClose={onClose}>
+    <BottomSheet open={open} onClose={onClose}>
       <BSWrapper>
         <Text.Span style={{ margin: '1rem 0' }} weight="bold" fontSize={1.4}>
-          정말로 삭제 할까요?
+          {title}
         </Text.Span>
 
         <Text.Span
           style={{
             marginBottom: '1rem',
           }}
-          fontSize={0.9}
         >
-          삭제하면 다시 복구할 수 없습니다. 삭제하시겠습니까?
+          {description}
         </Text.Span>
         <ButtonWrapper>
           <Button
@@ -35,7 +53,7 @@ const BookmarkBSDeleteConfirmation = ({
               width: '45%',
             }}
             buttonColor="grey800"
-            onClick={onClose}
+            onClick={onCancel}
           >
             아니요
           </Button>
@@ -43,7 +61,7 @@ const BookmarkBSDeleteConfirmation = ({
             style={{
               width: '45%',
             }}
-            onClick={onDelete}
+            onClick={onConfirm}
           >
             삭제
           </Button>
@@ -53,7 +71,7 @@ const BookmarkBSDeleteConfirmation = ({
   );
 };
 
-export default BookmarkBSDeleteConfirmation;
+export default BSConfirmation;
 
 const BSWrapper = styled.div`
   display: flex;

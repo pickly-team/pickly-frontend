@@ -1,111 +1,141 @@
+import client from '@/common/service/client';
 import { navigatePath } from '@/constants/navigatePath';
-import { useQuery } from '@tanstack/react-query';
+
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+
 import axios from 'axios';
+
 import { v4 as uuid } from 'uuid';
-const BASE_URL = '';
+
+const BASE_URL = 'http://localhost:8080/api/members';
 
 const DOMAIN = 'BOOKMARK';
 
-export const GET_BOOKMARK_LIST = (userId: string) => [
+export const GET_BOOKMARK_LIST = (userId: number, readByUser: boolean) => [
   getKeyofObject(navigatePath, '/'),
   DOMAIN,
   'BOOKMARK_LIST',
   userId,
+  readByUser,
 ];
 
 ///////////////////////////////////
 // 북마크 메인 페이지
 // 북마크 리스트 조회
-
 /** API call 결과 */
 interface SeverBookMarkItem {
-  id: string;
-  is_read: boolean;
-  title: string;
-  img_src: string;
-  is_liked: boolean;
-  is_bookmarked: boolean;
-  is_message: boolean;
-  date: string;
-  url: string;
+  hasNext: boolean;
+  contents: BookmarkItem[];
 }
 
-export interface ClientBookMarkItem {
-  id: string;
-  isRead: boolean;
+export interface BookmarkItem {
+  bookmarkId: number;
   title: string;
-  imgSrc: string;
-  isLiked: boolean;
-  isBookmarked: boolean;
-  isMessage: boolean;
-  date: string;
   url: string;
-}
-
-interface bookmarkGETBookMarkListResponse {
-  bookmark_list: SeverBookMarkItem[];
+  previewImageUrl: string;
+  isUserLike: boolean;
+  readByUser: boolean;
+  commentCnt: number;
+  createdDate: string;
 }
 
 /** mapping 결과 */
-export type bookmarkGETBookMarkList = ClientBookMarkItem[];
+export type bookmarkGETBookMarkList = BookmarkItem[];
+
+interface GETBookMarkListRequest {
+  memberId: number;
+  categoryId?: number;
+  readByUser?: boolean;
+  visibility?: 'SCOPE_PUBLIC' | 'SCOPE_PRIVATE';
+  pageRequest: {
+    cursorId?: number;
+    pageSize: number;
+  };
+}
 
 const GETBookMarkList = {
-  API: async () => {
-    const { data } = await axios.get<bookmarkGETBookMarkListResponse>(
-      `${BASE_URL}/bookmarks/list`,
+  API: async (params: GETBookMarkListRequest) => {
+    await sleep(1000);
+    const { data } = await client.get<SeverBookMarkItem>(
+      '/members/1/bookmarks',
+      {
+        params: {
+          categoryId: params.categoryId,
+          readByUser: params.readByUser,
+          visibility: params.visibility,
+          cursorId: params.pageRequest.cursorId,
+          pageSize: params.pageRequest.pageSize,
+        },
+      },
     );
+
     return data;
-  },
-  Mapper: ({
-    bookmark_list,
-  }: bookmarkGETBookMarkListResponse): bookmarkGETBookMarkList => {
-    return bookmark_list.map((bookmark) => ({
-      id: bookmark.id,
-      isRead: bookmark.is_read,
-      title: bookmark.title,
-      imgSrc: bookmark.img_src,
-      isLiked: bookmark.is_liked,
-      isBookmarked: bookmark.is_bookmarked,
-      isMessage: bookmark.is_message,
-      date: bookmark.date,
-      url: bookmark.url,
-    }));
-  },
-  MockAPI: async (): Promise<bookmarkGETBookMarkList> => {
-    await sleep(1500);
-    return GETBookMarkList.Mapper({
-      bookmark_list: range(0, Math.floor(Math.random() * 21) + 1).map(
-        (): SeverBookMarkItem => ({
-          id: uuid(),
-          title: '발가락으로 만드는 CRUD 게시판 발가락으로 만드는 CRUD 게시판',
-          img_src:
-            'https://user-images.githubusercontent.com/54137044/222977918-198a3ce1-d139-4755-b5d5-6f3152dcbbb3.png',
-          is_liked: randomBoolean(),
-          is_bookmarked: randomBoolean(),
-          is_message: randomBoolean(),
-          date: '2021-08-01',
-          url: 'https://naver.com',
-          is_read: randomBoolean(),
-        }),
-      ),
-    });
   },
 };
 
-export interface GETBookMarkListRequest {
-  userId: string;
-}
-
-export const useGETBookMarkListQuery = ({ userId }: GETBookMarkListRequest) => {
-  return useQuery(
-    GET_BOOKMARK_LIST(userId),
-    async () => GETBookMarkList.MockAPI(),
+export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
+  return useInfiniteQuery(
+    GET_BOOKMARK_LIST(params.memberId, params.readByUser ?? false),
+    async ({ pageParam = null }) => {
+      const { contents, hasNext } = await GETBookMarkList.API({
+        ...params,
+        pageRequest: {
+          cursorId: pageParam,
+          pageSize: 10,
+        },
+      });
+      return {
+        contents,
+        hasNext,
+      };
+    },
     {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.hasNext) {
+          return lastPage.contents[lastPage.contents.length - 1].bookmarkId;
+        }
+        return undefined;
+      },
       refetchOnWindowFocus: false,
-      retry: 0,
-      enabled: !!userId,
+      cacheTime: 1000 * 60 * 5,
+      staleTime: 1000 * 60 * 5,
     },
   );
+};
+
+// 북마크 삭제
+interface DELETEBookMarkRequest {
+  bookmarkIds: number[];
+}
+
+const DELETEBookMark = {
+  API: async (params: DELETEBookMarkRequest) => {
+    const { data } = await axios.put('/v1/bookmarks/list', {
+      bookmarkIds: params.bookmarkIds,
+    });
+    return data;
+  },
+};
+
+interface DELETEBookMarkMutation {
+  userId: number;
+}
+
+export const useDELETEBookMarkMutation = ({
+  userId,
+}: DELETEBookMarkMutation) => {
+  const queryClient = useQueryClient();
+  return useMutation(DELETEBookMark.API, {
+    onSuccess: () => {
+      queryClient.refetchQueries(GET_BOOKMARK_LIST(userId, false));
+      queryClient.refetchQueries(GET_BOOKMARK_LIST(userId, true));
+    },
+  });
 };
 
 ///////////////////////////////////
@@ -174,40 +204,30 @@ const GETBookmarkCategoryList = {
   },
 };
 
-export const GET_BOOKMARK_CATEGORY_LIST = (userId: string) => [
+export const GET_BOOKMARK_CATEGORY_LIST = (userId: number) => [
   getKeyofObject(navigatePath, '/'),
   DOMAIN,
   'BOOKMARK_CATEGORY_LIST',
   userId,
 ];
 
-export const useGETCategoryListQuery = ({ userId }: GETBookMarkListRequest) => {
+export const useGETCategoryListQuery = ({
+  memberId,
+}: GETBookMarkListRequest) => {
   return useQuery(
-    GET_BOOKMARK_CATEGORY_LIST(userId),
+    GET_BOOKMARK_CATEGORY_LIST(memberId),
     async () => GETBookmarkCategoryList.MockAPI(),
     {
       refetchOnWindowFocus: false,
       retry: 0,
-      enabled: !!userId,
+      enabled: !!memberId,
     },
   );
-};
-
-// SERVER 연동 후 삭제
-const range = (start: number, end: number) => {
-  const array = [];
-  for (let i = start; i < end; i += 1) {
-    array.push(i);
-  }
-  return array;
 };
 
 /** 의도적 지연 함수 : 로딩용 */
 // eslint-disable-next-line no-promise-executor-return
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-/** 랜덤 Boolean 생성 함수 */
-const randomBoolean = () => Math.random() >= 0.5;
 
 export default {
   useGETBookMarkListQuery,
