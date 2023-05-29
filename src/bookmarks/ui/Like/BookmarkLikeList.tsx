@@ -4,10 +4,15 @@ import {
 } from '@/bookmarks/api/like';
 import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import BookmarkLikeItem from './BookmarkLikeItem';
+import SkeletonBookmarkLikeList from './SkeletonBookmarkLikeList';
 
 const BookmarkLikeList = () => {
   const USER_ID = 1;
-  const { data: bookmarkList, fetchNextPage } = useGETLikeBookmarkListQuery({
+  const {
+    data: bookmarkList,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGETLikeBookmarkListQuery({
     memberId: USER_ID,
     pageRequest: {
       cursorId: null,
@@ -21,7 +26,7 @@ const BookmarkLikeList = () => {
     mutate(bookmarkId);
   };
 
-  const bookmarkItems = bookmarkList?.pages.flatMap((page) => page.data);
+  const bookmarkItems = bookmarkList?.pages.flatMap((page) => page.contents);
 
   const { bottom } = useBottomIntersection({ fetchNextPage });
   return (
@@ -34,6 +39,7 @@ const BookmarkLikeList = () => {
             onClickLikeBtn={onClickLike}
           />
         ))}
+      {isFetchingNextPage && <SkeletonBookmarkLikeList count={5} />}
       <div ref={bottom} />
     </>
   );
