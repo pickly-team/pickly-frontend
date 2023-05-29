@@ -15,6 +15,7 @@ import ReportPage from './pages/ReportPage';
 import ProfilePage from '@/pages/ProfilePage';
 import ToastList from './common-ui/Toast/ToastList';
 import NotificationPage from '@/pages/NotificationPage';
+import FriendPage from '@/pages/FriendPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,6 +59,7 @@ const App = () => {
                 element={<CategoryAddPage />}
               />
               <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
+              <Route path={navigatePath.FRIEND} element={<FriendPage />} />
             </Routes>
           </Layout>
         </BrowserRouter>
