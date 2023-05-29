@@ -60,7 +60,6 @@ interface GETBookMarkListRequest {
 const GETBookMarkList = {
   API: async (params: GETBookMarkListRequest) => {
     await sleep(1000);
-    console.log('GETBookMarkList.API', params);
     const { data } = await client.get<SeverBookMarkItem>(
       `/members/${params.memberId}/bookmarks`,
       {
@@ -180,7 +179,7 @@ interface GETBookmarkCategoryListRequest {
 const GETBookmarkCategoryList = {
   API: async ({ memberId }: GETBookmarkCategoryListRequest) => {
     const { data } = await client.get<ServerBookmarkCategoryItem[]>(
-      `${memberId}/categories`,
+      `/members/${memberId}/categories`,
     );
     return GETBookmarkCategoryList.Mapper(data);
   },
