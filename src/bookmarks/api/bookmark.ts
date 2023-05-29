@@ -222,10 +222,6 @@ export const useGETCategoryListQuery = ({
   );
 };
 
-/** 의도적 지연 함수 : 로딩용 */
-// eslint-disable-next-line no-promise-executor-return
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export default {
   useGETBookMarkListQuery,
 };
