@@ -59,7 +59,6 @@ interface GETBookMarkListRequest {
 
 const GETBookMarkList = {
   API: async (params: GETBookMarkListRequest) => {
-    await sleep(1000);
     const { data } = await client.get<SeverBookMarkItem>(
       `/members/${params.memberId}/bookmarks`,
       {
