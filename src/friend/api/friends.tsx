@@ -8,8 +8,6 @@ import QUERY_KEYS from '@/constants/queryKeys';
 import resolveAfterDelay from '@/utils/resolveAfterDelay';
 import client from '@/common/service/client';
 
-const MEMBER_ID = '1';
-const FRIEND_ID = '3';
 type Friends = {
   id: string;
   name: string;
@@ -71,20 +69,24 @@ export const useGetFollowings = (): UseQueryResult<Friends[], Error> => {
   });
 };
 
-//TODO: 파라미터 하드 코딩 수정
-const followFriend = async () => {
-  return client.post(`/members/${MEMBER_ID}/following/${FRIEND_ID}`);
+const followFriend = async (memberId: string, followingId: string) => {
+  return client.post(`/members/${memberId}/following/${followingId}`);
 };
 
-export const useFollowMutation = (): UseMutationResult => {
-  return useMutation(followFriend);
+export const useFollowMutation = (
+  memberId: string,
+  followingId: string,
+): UseMutationResult => {
+  return useMutation(() => followFriend(memberId, followingId));
 };
 
-//TODO: 파라미터 하드 코딩 수정
-const unfollowFriend = async (id: string) => {
-  return client.delete(`/members/${MEMBER_ID}/following/${FRIEND_ID}`);
+const unfollowFriend = async (memberId: string, followingId: string) => {
+  return client.delete(`/members/${memberId}/following/${followingId}`);
 };
 
-export const useUnFollowMutation = (): UseMutationResult => {
-  return useMutation(unfollowFriend);
+export const useUnFollowMutation = (
+  memberId: string,
+  followingId: string,
+): UseMutationResult => {
+  return useMutation(() => unfollowFriend(memberId, followingId));
 };

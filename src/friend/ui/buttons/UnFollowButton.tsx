@@ -8,9 +8,9 @@ interface UnFollowButtonProps {
   userId: string;
 }
 const UnFollowButton = ({ userId }: UnFollowButtonProps) => {
-  const { mutate } = useUnFollowMutation();
+  const { mutate } = useUnFollowMutation('1', '3');
   const onClick = () => {
-    mutate({ userId });
+    mutate();
   };
   return (
     <StyledButton onClick={onClick} buttonColor={'black'}>
