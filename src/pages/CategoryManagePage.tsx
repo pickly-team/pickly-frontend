@@ -11,19 +11,23 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Emoji from '@/common/ui/Emoji';
 import CategoryName from '@/category/ui/Add/CategoryName';
 import Divider from '@/category/ui/Divider';
+import { usePOSTCategoryMutation } from '@/category/api/add';
+import { useGETCategoryAPI } from '@/category/api/category';
+import { useEffect } from 'react';
+import { usePUTCategoryMutation } from '@/category/api/edit';
 
-// TODO : 이모지 라이브러리 찾아서 연동
-
-interface CategoryAddPageProps {
+interface CategoryManagePageProps {
   mode: 'ADD' | 'EDIT';
 }
 
-const CategoryAddPage = ({ mode }: CategoryAddPageProps) => {
+const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
+  // TODO : 인증 로직 추가
+  const USER_ID = 1;
   const router = useNavigate();
   const location = useLocation();
   const fromPath = location.state?.fromPath ?? '/';
 
-  console.log(fromPath);
+  const categoryId = location.pathname.split('/').pop();
 
   // BUSINESS LOGIC
   const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen } =
@@ -32,6 +36,18 @@ const CategoryAddPage = ({ mode }: CategoryAddPageProps) => {
   const { categoryList, addCategory, deleteCategory } =
     useAddAndDeleteCategory();
 
+  const { data: categoryData } = useGETCategoryAPI({
+    categoryId: categoryId ?? '',
+    memberId: USER_ID,
+    mode,
+  });
+  useEffect(() => {
+    if (mode === 'EDIT' && categoryData) {
+      onChangeCategoryName(categoryData.name);
+      onChangeEmoji(categoryData.emoji);
+    }
+  }, [categoryData]);
+
   // INTERACTION
   // 1. 뒤로가기 버튼 > 뒤로가기
   const onClickBack = () => {
@@ -39,7 +55,7 @@ const CategoryAddPage = ({ mode }: CategoryAddPageProps) => {
       router('/', {
         preventScrollReset: true,
         state: {
-          isCategoryAddPage: true,
+          isCategoryManagePage: true,
         },
       });
       return;
@@ -48,16 +64,40 @@ const CategoryAddPage = ({ mode }: CategoryAddPageProps) => {
   };
 
   // 2. 저장 버튼 > 저장
-  const onClickSave = () => router(-1);
-
-  const initializeCategoryNameAndEmoji = () => {
-    onChangeCategoryName('');
-    onChangeEmoji('😎');
+  const { mutate: postCategory } = usePOSTCategoryMutation({
+    memberId: USER_ID,
+  });
+  const { mutate: putCategory } = usePUTCategoryMutation({
+    memberId: USER_ID,
+    categoryId: categoryId ?? '',
+  });
+  const onClickSave = () => {
+    if (mode === 'EDIT') {
+      putCategory({
+        categoryId: categoryId ?? '',
+        memberId: USER_ID,
+        postData: {
+          name: categoryName,
+          emoji,
+        },
+      });
+      return;
+    }
+    if (mode === 'ADD') {
+      postCategory({
+        memberId: USER_ID,
+        postData: categoryList.map((category) => ({
+          emoji: category.emoji,
+          name: category.name,
+        })),
+      });
+    }
   };
 
   const onClickAddCategory = (emoji: string, categoryName: string) => {
     addCategory(emoji, categoryName);
-    initializeCategoryNameAndEmoji();
+    onChangeCategoryName('');
+    onChangeEmoji('😎');
   };
 
   const onClickDeleteCategory = (id: string) => {
@@ -66,11 +106,11 @@ const CategoryAddPage = ({ mode }: CategoryAddPageProps) => {
 
   const setSelectedCategory = (id: string) => {
     const selectedCategory = categoryList.find(
-      (category) => category.id === id,
+      (category) => category.categoryId === id,
     );
     if (selectedCategory) {
       onChangeEmoji(selectedCategory.emoji);
-      onChangeCategoryName(selectedCategory.categoryName);
+      onChangeCategoryName(selectedCategory.name);
     }
   };
 
@@ -124,7 +164,7 @@ const CategoryAddPage = ({ mode }: CategoryAddPageProps) => {
   );
 };
 
-export default CategoryAddPage;
+export default CategoryManagePage;
 
 const MarginDivider = styled.div`
   margin: ${getRem(40)} 0;

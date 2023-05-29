@@ -106,16 +106,16 @@ const CategoryList = ({
         <CategoryItem
           onClick={(e) => {
             e.stopPropagation();
-            onClickEditCategory(category.id);
+            onClickEditCategory(category.categoryId);
           }}
-          key={category.id}
+          key={category.categoryId}
         >
           <Text.P fontSize={calculateRem(16)}>{category.emoji}</Text.P>
-          <Text.P fontSize={calculateRem(16)}>{category.categoryName}</Text.P>
+          <Text.P fontSize={calculateRem(16)}>{category.name}</Text.P>
           <IconButton
             onClick={(e) => {
               e.stopPropagation();
-              onClickDeleteCategory(category.id);
+              onClickDeleteCategory(category.categoryId);
             }}
             name="close"
             size="xs"

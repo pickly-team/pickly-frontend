@@ -22,41 +22,53 @@ const BookmarkToggle = ({ children }: ToggleHandlerProps) => {
 };
 
 interface SelectCategoryProps {
-  category: string;
+  selectedCategory: string;
   setCategoryId: (category: string) => void;
   categoryOptions: CategoryType[];
 }
 
 const SelectCategory = ({
-  category,
+  selectedCategory,
   categoryOptions,
   setCategoryId,
 }: SelectCategoryProps) => {
   return (
     <ButtonWrapper>
-      <Select
-        trigger={
-          <Button
-            buttonColor="black"
-            height={2.5}
-            style={{
-              border: `2px solid ${theme.colors.lightPrimary}`,
-              borderRadius: '0.8rem',
-            }}
-          >
-            <Text.Span color="lightPrimary">전체</Text.Span>
-          </Button>
-        }
-        value={category}
-        onChange={setCategoryId}
-        isSearchActive
-      >
-        {categoryOptions.map((option) => (
-          <option value={option.value} key={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </Select>
+      {categoryOptions.length && (
+        <Select
+          trigger={
+            <Button
+              buttonColor="black"
+              height={2.5}
+              style={{
+                border: `2px solid ${theme.colors.lightPrimary}`,
+                borderRadius: '0.8rem',
+              }}
+            >
+              <Text.Span
+                color="lightPrimary"
+                style={{
+                  width: '100%',
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                  padding: `0 ${getRem(10)}`,
+                }}
+              >
+                전체
+              </Text.Span>
+            </Button>
+          }
+          value={selectedCategory}
+          onChange={setCategoryId}
+          isSearchActive
+        >
+          {categoryOptions.map((option) => (
+            <option value={option.value} key={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </Select>
+      )}
     </ButtonWrapper>
   );
 };

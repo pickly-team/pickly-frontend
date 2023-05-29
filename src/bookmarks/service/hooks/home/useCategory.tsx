@@ -1,22 +1,37 @@
-import { useState } from 'react';
+import { useGETCategoryListQuery } from '@/bookmarks/api/bookmark';
+import { useEffect, useState } from 'react';
 
 export type CategoryType = {
   value: string;
   label: string;
 };
 
-const useCategory = () => {
-  const categoryOptions: CategoryType[] = [
-    { value: '백엔드', label: '백엔드' },
-    { value: '프론트엔드', label: '프론트엔드' },
-  ];
-  const [category, setCategory] = useState<string>('');
+interface Category {
+  memberId: number;
+}
+
+const useCategory = ({ memberId }: Category) => {
+  const { data: categoryList } = useGETCategoryListQuery({ memberId });
+
+  const [categoryOptions, setCategoryOptions] = useState<CategoryType[]>([]);
+
+  useEffect(() => {
+    if (categoryList) {
+      const categoryOptions = categoryList.map((category) => ({
+        value: `${category.id}`,
+        label: `${category.emoji} ${category.name}`,
+      }));
+      setCategoryOptions(categoryOptions);
+    }
+  }, [categoryList]);
+
+  const [selectedCategory, setSelectedCategory] = useState<number>();
 
   const onChangeCategory = (category: string) => {
-    setCategory(category);
+    setSelectedCategory(Number(category));
   };
 
-  return { categoryOptions, category, onChangeCategory };
+  return { categoryOptions, selectedCategory, onChangeCategory };
 };
 
 export default useCategory;

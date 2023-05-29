@@ -47,7 +47,7 @@ const TagBox = ({ tag, onClickCategory }: TagBoxProps) => {
           ? theme.colors.lightPrimary
           : theme.colors.grey700};
         color: ${tag.isSelected ? theme.colors.black : theme.colors.white};
-        padding: ${getRem(7)} ${getRem(20)};
+        padding: ${getRem(5)} ${getRem(10)};
         border-radius: ${getRem(10)};
         transition: background-color 0.3s ease-in-out;
         height: ${getRem(50)};
@@ -58,10 +58,10 @@ const TagBox = ({ tag, onClickCategory }: TagBoxProps) => {
     >
       <Text.Span
         color={tag.isSelected ? 'black' : 'white'}
-        fontSize={calculateRem(15)}
+        fontSize={calculateRem(13)}
         weight="bold"
       >
-        {tag.name}
+        {`${tag.emoji} ${tag.name}`}
       </Text.Span>
     </button>
   );
