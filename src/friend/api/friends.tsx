@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
 import resolveAfterDelay from '@/utils/resolveAfterDelay';
-import client from '@/common/service/client';
+import { api } from '@/common/service/client';
 
 type Friends = {
   id: string;
@@ -69,10 +69,6 @@ export const useGetFollowings = (): UseQueryResult<Friends[], Error> => {
   });
 };
 
-const followFriend = async (memberId: string, followingId: string) => {
-  return client.post(`/members/${memberId}/following/${followingId}`);
-};
-
 type FollowMutationArgs = {
   variables: {
     memberId: string;
@@ -84,13 +80,9 @@ export const useFollowMutation = ({
   variables: { memberId, followingId },
   onSuccess,
 }: FollowMutationArgs): UseMutationResult => {
-  return useMutation(() => followFriend(memberId, followingId), {
+  return useMutation(() => api.followFriend(memberId, followingId), {
     onSuccess: onSuccess,
   });
-};
-
-const unfollowFriend = async (memberId: string, followingId: string) => {
-  return client.delete(`/members/${memberId}/following/${followingId}`);
 };
 
 type UnFollowMutationArgs = {
@@ -104,7 +96,7 @@ export const useUnFollowMutation = ({
   variables: { memberId, followingId },
   onSuccess,
 }: UnFollowMutationArgs): UseMutationResult => {
-  return useMutation(() => unfollowFriend(memberId, followingId), {
+  return useMutation(() => api.unfollowFriend(memberId, followingId), {
     onSuccess: onSuccess,
   });
 };

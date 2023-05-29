@@ -5,3 +5,12 @@ const client = axios.create({
 });
 
 export default client;
+
+export const api = {
+  unfollowFriend: (memberId: string, followingId: string) => {
+    return client.delete(`/members/${memberId}/following/${followingId}`);
+  },
+  followFriend: (memberId: string, followingId: string) => {
+    return client.post(`/members/${memberId}/following/${followingId}`);
+  },
+};
