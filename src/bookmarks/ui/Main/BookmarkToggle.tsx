@@ -34,7 +34,29 @@ const SelectCategory = ({
 }: SelectCategoryProps) => {
   return (
     <ButtonWrapper>
-      {categoryOptions.length && (
+      {!categoryOptions.length && (
+        <Button
+          buttonColor="black"
+          height={2.5}
+          style={{
+            border: `2px solid ${theme.colors.lightPrimary}`,
+            borderRadius: '0.8rem',
+          }}
+        >
+          <Text.Span
+            color="lightPrimary"
+            style={{
+              width: '100%',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              padding: `0 ${getRem(10)}`,
+            }}
+          >
+            전체
+          </Text.Span>
+        </Button>
+      )}
+      {!!categoryOptions.length && (
         <Select
           trigger={
             <Button
