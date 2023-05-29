@@ -1,19 +1,31 @@
 import decodeEmojiBase64 from '@/utils/decodeEmojiBase64';
 import UnFollowButton from '@/friend/ui/buttons/UnFollowButton';
 import FriendItemLayout from '@/friend/ui/friend/layout/FriendItemLayout';
-import { FriendItemRendererProps } from '@/friend/ui/friend/FriendList';
+import FollowButton from '@/friend/ui/buttons/FollowButton';
 
-type FriendFollowingProps = FriendItemRendererProps;
+type FriendFollowingProps = {
+  id: string;
+  name: string;
+  profileEmoji: string | undefined;
+  isFollowing: boolean;
+};
 const FriendFollowingItem = ({
   id,
   name,
   profileEmoji,
+  isFollowing,
 }: FriendFollowingProps) => {
   return (
     <FriendItemLayout
       name={name}
       emoji={profileEmoji && decodeEmojiBase64(profileEmoji)}
-      button={<UnFollowButton>팔로잉</UnFollowButton>}
+      button={
+        isFollowing ? (
+          <UnFollowButton userId={id} />
+        ) : (
+          <FollowButton userId={id} />
+        )
+      }
     />
   );
 };

@@ -1,16 +1,20 @@
 import Button from '@/common-ui/Button';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
-import { PropsWithChildren } from 'react';
 import { theme } from '@/styles/theme';
+import { useUnFollowMutation } from '@/friend/api/friends';
 
-const UnFollowButton = ({ children }: PropsWithChildren<object>) => {
+interface UnFollowButtonProps {
+  userId: string;
+}
+const UnFollowButton = ({ userId }: UnFollowButtonProps) => {
+  const { mutate } = useUnFollowMutation();
   const onClick = () => {
-    //TODO: 언팔로우 API 연동
+    mutate({ userId });
   };
   return (
     <StyledButton onClick={onClick} buttonColor={'black'}>
-      {children}
+      언팔로우
     </StyledButton>
   );
 };
