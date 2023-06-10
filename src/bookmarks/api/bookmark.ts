@@ -59,8 +59,6 @@ interface GETBookMarkListRequest {
 
 const GETBookMarkList = {
   API: async (params: GETBookMarkListRequest) => {
-    await sleep(1000);
-    console.log('GETBookMarkList.API', params);
     const { data } = await client.get<SeverBookMarkItem>(
       `/members/${params.memberId}/bookmarks`,
       {
@@ -180,7 +178,7 @@ interface GETBookmarkCategoryListRequest {
 const GETBookmarkCategoryList = {
   API: async ({ memberId }: GETBookmarkCategoryListRequest) => {
     const { data } = await client.get<ServerBookmarkCategoryItem[]>(
-      `${memberId}/categories`,
+      `/members/${memberId}/categories`,
     );
     return GETBookmarkCategoryList.Mapper(data);
   },
@@ -223,10 +221,6 @@ export const useGETCategoryListQuery = ({
     },
   );
 };
-
-/** 의도적 지연 함수 : 로딩용 */
-// eslint-disable-next-line no-promise-executor-return
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default {
   useGETBookMarkListQuery,
