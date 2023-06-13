@@ -1,3 +1,4 @@
+import useToast from '@/common-ui/Toast/hooks/useToast';
 import client from '@/common/service/client';
 import { navigatePath } from '@/constants/navigatePath';
 
@@ -9,6 +10,8 @@ import {
 } from '@tanstack/react-query';
 
 const DOMAIN = 'BOOKMARK';
+
+export type Visibility = 'SCOPE_PUBLIC' | 'SCOPE_PRIVATE' | 'SCOPE_FRIEND';
 
 export const GET_BOOKMARK_LIST = (
   userId: number,
@@ -50,7 +53,7 @@ interface GETBookMarkListRequest {
   memberId: number;
   categoryId?: number;
   readByUser?: boolean;
-  visibility?: 'SCOPE_PUBLIC' | 'SCOPE_PRIVATE';
+  visibility?: Visibility;
   pageRequest: {
     cursorId?: number;
     pageSize: number;
@@ -158,14 +161,14 @@ export const useDELETEBookMarkMutation = ({
 // 북마크 카테고리 리스트 조회
 interface ServerBookmarkCategoryItem {
   orderNum: number;
-  categoryId: string;
+  categoryId: number;
   name: string;
   emoji: string;
 }
 
 export interface ClientBookmarkCategoryItem {
   order: number;
-  id: string;
+  id: number;
   name: string;
   emoji: string;
   isSelected: boolean;
@@ -186,12 +189,12 @@ const GETBookmarkCategoryList = {
     categoryList: ServerBookmarkCategoryItem[],
   ): ClientBookmarkCategoryItem[] => {
     return categoryList
-      .map((category, idx) => ({
+      .map((category) => ({
         order: category.orderNum,
         id: category.categoryId,
         emoji: category.emoji,
         name: category.name,
-        isSelected: idx === 0,
+        isSelected: false,
       }))
       .sort((a, b) => a.order - b.order);
   },
@@ -222,8 +225,89 @@ export const useGETCategoryListQuery = ({
   );
 };
 
-export default {
-  useGETBookMarkListQuery,
+//////////////////////////////////////
+// 북마크 제목 조회
+
+type GETBookmarkTitleResponse = string;
+
+interface RequestInterface {
+  url: string;
+  setTitle?: (title: string) => void;
+}
+
+const getAPI = async ({ url }: RequestInterface) => {
+  const { data } = await client<GETBookmarkTitleResponse>({
+    method: 'get',
+    url: '/bookmark/title',
+    params: { url },
+    data: {},
+  });
+  return data;
+};
+
+const GET_BOOKMARK_TITLE = (url: string) => ['GET_BOOKMARK_TITLE', url];
+
+export const useGETBookmarkTitleQuery = ({
+  url,
+  setTitle,
+}: RequestInterface) => {
+  const { fireToast } = useToast();
+  return useQuery(GET_BOOKMARK_TITLE(url), () => getAPI({ url }), {
+    enabled: !!url,
+    retry: 0,
+    onSuccess: (data) => {
+      setTitle && setTitle(data);
+    },
+    onError: () => {
+      fireToast({ message: '앗! 유효하지 않은 주소에요', mode: 'DELETE' });
+    },
+  });
+};
+
+interface POSTBookmarkRequest {
+  memberId: number;
+  categoryId: number;
+  url: string;
+  title: string;
+  visibility: Visibility;
+}
+
+const postBookmark = async (data: POSTBookmarkRequest) => {
+  await client.post('/bookmarks', data);
+};
+
+interface POSTBookmarkMutation {
+  memberId: number;
+  categoryId: number;
+  resetAll: {
+    resetAllInputs: () => void;
+    resetCategory: () => void;
+    resetVisibility: () => void;
+  };
+}
+
+export const usePOSTBookmarkMutation = ({
+  memberId,
+  categoryId,
+  resetAll,
+}: POSTBookmarkMutation) => {
+  const queryClient = useQueryClient();
+  const { fireToast } = useToast();
+  return useMutation(postBookmark, {
+    onSuccess: () => {
+      resetAll.resetAllInputs();
+      resetAll.resetCategory();
+      resetAll.resetVisibility();
+      queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, false, 0));
+      queryClient.refetchQueries(
+        GET_BOOKMARK_LIST(memberId, false, categoryId),
+      );
+      queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, true, categoryId));
+    },
+    onError: () => {
+      fireToast({ message: '앗! 추가할 수 없는 북마크에요', mode: 'DELETE' });
+    },
+  });
 };
 
 // TODO : 추후 테스트 코드 작성
