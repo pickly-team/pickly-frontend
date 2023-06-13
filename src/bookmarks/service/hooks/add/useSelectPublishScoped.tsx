@@ -1,12 +1,11 @@
+import { Visibility } from '@/bookmarks/api/bookmark';
 import { useCallback, useState } from 'react';
-
-export type PublishScopedType = 'PUBLIC' | 'PRIVATE' | 'FRIENDS';
 
 const useSelectPublishScoped = () => {
   const [selectedPublishScoped, setPublishScoped] =
-    useState<PublishScopedType>('PUBLIC');
+    useState<Visibility>('SCOPE_PUBLIC');
 
-  const onClickPublishScoped = useCallback((type: PublishScopedType) => {
+  const onClickPublishScoped = useCallback((type: Visibility) => {
     setPublishScoped(type);
   }, []);
 
