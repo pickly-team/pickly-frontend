@@ -5,9 +5,11 @@ import Text from '@/common-ui/Text';
 import getRem, { calculateRem } from '@/utils/getRem';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ClientBookmarkCategoryItem } from '../../api/bookmark';
-import { PublishScopedType } from '../../service/hooks/add/useSelectPublishScoped';
+import { ClientBookmarkCategoryItem, Visibility } from '../../api/bookmark';
 import TagBoxList from '../BookmarkTagList';
+import Icon from '@/common-ui/assets/Icon';
+import { KeyboardEvent } from 'react';
+import IconButton from '@/common/ui/IconButton';
 
 interface BookmarkAddBSProps {
   isOpen: boolean;
@@ -27,24 +29,74 @@ const BookmarkAddBS = ({ isOpen, close, children }: BookmarkAddBSProps) => {
 
 interface URLInputProps {
   url: string;
-  onChangeUrl: (url: string) => void;
+  title: string;
   isValidateUrl: boolean;
+  onChangeUrl: (url: string) => void;
+  onChangeTitle: (title: string) => void;
+  handleKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
+  onDeleteInput: (type: 'url' | 'title') => void;
 }
 
-const URLInput = ({ url, onChangeUrl, isValidateUrl }: URLInputProps) => {
+const URLInput = ({
+  url,
+  title,
+  isValidateUrl,
+  onChangeUrl,
+  onChangeTitle,
+  handleKeyDown,
+  onDeleteInput,
+}: URLInputProps) => {
   return (
     <>
       <HeadingText>Step 1. URL 입력</HeadingText>
       <StyledInputWrapper>
-        <StyledInput
-          border={{
-            color: isValidateUrl ? 'lightPrimary' : 'grey700',
-            borderWidth: calculateRem(30),
-            borderRadius: calculateRem(10),
-          }}
-          value={url}
-          onChange={(e) => onChangeUrl(e.target.value)}
-        />
+        <StyleIconWrapper>
+          <Icon name="bookmark" size="m" />
+          <StyledInputCloseWrapper>
+            <StyledInput
+              border={{
+                color: isValidateUrl ? 'lightPrimary' : 'grey700',
+                borderWidth: calculateRem(30),
+                borderRadius: calculateRem(10),
+              }}
+              value={url}
+              onKeyDown={handleKeyDown}
+              onChange={(e) => onChangeUrl(e.target.value)}
+            />
+            <FixedIconWrapper>
+              {!!url.length && (
+                <IconButton
+                  onClick={() => onDeleteInput('url')}
+                  name="close"
+                  size="xs"
+                />
+              )}
+            </FixedIconWrapper>
+          </StyledInputCloseWrapper>
+        </StyleIconWrapper>
+        <StyleIconWrapper>
+          <Icon name="pencil" size="m" />
+          <StyledInputCloseWrapper>
+            <StyledInput
+              border={{
+                color: title.length ? 'lightPrimary' : 'grey700',
+                borderWidth: calculateRem(30),
+                borderRadius: calculateRem(10),
+              }}
+              value={title}
+              onChange={(e) => onChangeTitle(e.target.value)}
+            />
+            <FixedIconWrapper>
+              {!!title.length && (
+                <IconButton
+                  onClick={() => onDeleteInput('title')}
+                  name="close"
+                  size="xs"
+                />
+              )}
+            </FixedIconWrapper>
+          </StyledInputCloseWrapper>
+        </StyleIconWrapper>
       </StyledInputWrapper>
     </>
   );
@@ -52,7 +104,7 @@ const URLInput = ({ url, onChangeUrl, isValidateUrl }: URLInputProps) => {
 
 interface SelectCategoryProps {
   categoryList: ClientBookmarkCategoryItem[] | undefined;
-  onClickCategory: (category: string) => void;
+  onClickCategory: (category: number) => void;
 }
 
 const SelectCategory = ({
@@ -70,8 +122,8 @@ const SelectCategory = ({
 };
 
 interface DisclosureScopeProps {
-  selectedPublishScoped: PublishScopedType;
-  onClickPublishScoped: (type: PublishScopedType) => void;
+  selectedPublishScoped: Visibility;
+  onClickPublishScoped: (type: Visibility) => void;
 }
 
 const PublishScoped = ({
@@ -91,39 +143,47 @@ const PublishScoped = ({
       >
         <Button
           buttonColor={
-            selectedPublishScoped === 'PUBLIC' ? 'lightPrimary' : 'grey700'
+            selectedPublishScoped === 'SCOPE_PUBLIC'
+              ? 'lightPrimary'
+              : 'grey700'
           }
-          onClick={() => onClickPublishScoped('PUBLIC')}
+          onClick={() => onClickPublishScoped('SCOPE_PUBLIC')}
         >
           <Text.Span
             weight="bold"
-            color={selectedPublishScoped === 'PUBLIC' ? 'black' : 'white'}
+            color={selectedPublishScoped === 'SCOPE_PUBLIC' ? 'black' : 'white'}
           >
             전체 공개
           </Text.Span>
         </Button>
         <Button
           buttonColor={
-            selectedPublishScoped === 'FRIENDS' ? 'lightPrimary' : 'grey700'
+            selectedPublishScoped === 'SCOPE_FRIEND'
+              ? 'lightPrimary'
+              : 'grey700'
           }
-          onClick={() => onClickPublishScoped('FRIENDS')}
+          onClick={() => onClickPublishScoped('SCOPE_FRIEND')}
         >
           <Text.Span
             weight="bold"
-            color={selectedPublishScoped === 'FRIENDS' ? 'black' : 'white'}
+            color={selectedPublishScoped === 'SCOPE_FRIEND' ? 'black' : 'white'}
           >
             친구 공개
           </Text.Span>
         </Button>
         <Button
           buttonColor={
-            selectedPublishScoped === 'PRIVATE' ? 'lightPrimary' : 'grey700'
+            selectedPublishScoped === 'SCOPE_PRIVATE'
+              ? 'lightPrimary'
+              : 'grey700'
           }
-          onClick={() => onClickPublishScoped('PRIVATE')}
+          onClick={() => onClickPublishScoped('SCOPE_PRIVATE')}
         >
           <Text.Span
             weight="bold"
-            color={selectedPublishScoped === 'PRIVATE' ? 'black' : 'white'}
+            color={
+              selectedPublishScoped === 'SCOPE_PRIVATE' ? 'black' : 'white'
+            }
           >
             비공개
           </Text.Span>
@@ -186,11 +246,34 @@ const StyledBSWrapper = styled.div`
 
 const StyledInputWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  row-gap: ${getRem(20)};
 `;
 
-const StyledInput = styled(Input)``;
+const StyleIconWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: ${getRem(10)};
+  width: 100%;
+`;
+
+const StyledInputCloseWrapper = styled.div`
+  width: 100%;
+  position: relative;
+`;
+
+const FixedIconWrapper = styled.div`
+  position: absolute;
+  top: ${getRem(0)};
+  right: ${getRem(12)};
+`;
+
+const StyledInput = styled(Input)`
+  padding-right: ${getRem(40)};
+`;
 
 const StyledMarginSpanText = styled.div`
   margin-top: ${getRem(25)};
