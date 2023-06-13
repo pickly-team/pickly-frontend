@@ -22,7 +22,7 @@ const useCategoryList = () => {
     );
   };
 
-  const toggleCategory = (categoryId: string): ClientBookmarkCategoryItem[] => {
+  const toggleCategory = (categoryId: number): ClientBookmarkCategoryItem[] => {
     return (
       categoryList?.map((item) =>
         item.id === categoryId

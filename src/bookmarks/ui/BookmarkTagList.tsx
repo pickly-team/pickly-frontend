@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 interface TagBoxListProps {
   tags: ClientBookmarkCategoryItem[];
-  onClickCategory: (id: string) => void;
+  onClickCategory: (id: number) => void;
 }
 
 const TagBoxList = ({ tags, onClickCategory }: TagBoxListProps) => {
@@ -35,7 +35,7 @@ const StyledListWrapper = styled.div`
 
 interface TagBoxProps {
   tag: ClientBookmarkCategoryItem;
-  onClickCategory: (id: string) => void;
+  onClickCategory: (id: number) => void;
 }
 
 const TagBox = ({ tag, onClickCategory }: TagBoxProps) => {
