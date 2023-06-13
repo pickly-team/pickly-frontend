@@ -98,4 +98,6 @@ const ItemUpperRight = styled.div`
 const Thumbnail = styled.img`
   width: 7rem;
   height: 5rem;
+  border-radius: 0.5rem;
+  margin-left: 1rem;
 `;
