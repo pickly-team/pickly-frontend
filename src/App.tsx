@@ -19,6 +19,7 @@ import CategoryListPage from './pages/CategoryListPage';
 import ToastList from './common-ui/Toast/ToastList';
 import NotificationPage from '@/pages/NotificationPage';
 import { Analytics } from '@vercel/analytics/react';
+import FriendPage from '@/pages/FriendPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -73,6 +74,7 @@ const App = () => {
               />
               <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
               <Route path={navigatePath.LIKE_PAGE} element={<LikePage />} />
+              <Route path={navigatePath.FRIEND} element={<FriendPage />} />
             </Routes>
           </Layout>
         </BrowserRouter>
