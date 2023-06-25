@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { api } from '@/common/service/client';
+import { AxiosResponse } from 'axios';
 
 type Friends = {
   memberId: string;
@@ -68,7 +69,12 @@ type FollowMutationArgs = {
 };
 export const useFollowMutation = ({
   onSuccess,
-}: FollowMutationArgs): UseMutationResult => {
+}: FollowMutationArgs): UseMutationResult<
+  AxiosResponse<any, any>,
+  unknown,
+  { memberId: string; followingId: string },
+  unknown
+> => {
   return useMutation({
     mutationFn: ({
       memberId,
@@ -87,7 +93,12 @@ export const useUnFollowMutation = ({
   onSuccess,
 }: {
   onSuccess: () => void;
-}): UseMutationResult => {
+}): UseMutationResult<
+  AxiosResponse<any, any>,
+  unknown,
+  { memberId: string; followingId: string },
+  unknown
+> => {
   return useMutation({
     mutationFn: ({
       memberId,
