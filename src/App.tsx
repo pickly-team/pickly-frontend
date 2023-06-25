@@ -4,10 +4,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import IconLoader from './common-ui/assets/IconLoader';
 import MainPage from './pages/MainPage';
+import LikePage from './pages/LikePage';
 import GlobalStyle from './styles/GlobalStyle';
 import { navigatePath } from '@/constants/navigatePath';
 import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
+import FaqPage from '@/pages/FaqPage';
 import RNListener from '@/RNListener';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryManagePage';
@@ -17,6 +19,8 @@ import ProfilePage from '@/pages/ProfilePage';
 import CategoryListPage from './pages/CategoryListPage';
 import ToastList from './common-ui/Toast/ToastList';
 import NotificationPage from '@/pages/NotificationPage';
+import { Analytics } from '@vercel/analytics/react';
+import FriendPage from '@/pages/FriendPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,6 +47,7 @@ const App = () => {
                 path={navigatePath.BOOKMARK_DETAIL}
                 element={<BookMarkDetailPage />}
               />
+              <Route path={navigatePath.FAQ} element={<FaqPage />} />
               <Route path={navigatePath.REPORT} element={<ReportPage />} />
               <Route
                 path={navigatePath.USER}
@@ -66,10 +71,13 @@ const App = () => {
               />
               <Route path={navigatePath.COMMENT} element={<CommentPage />} />
               <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
+              <Route path={navigatePath.LIKE_PAGE} element={<LikePage />} />
+              <Route path={navigatePath.FRIEND} element={<FriendPage />} />
             </Routes>
           </Layout>
         </BrowserRouter>
       </QueryClientProvider>
+      <Analytics />
     </ThemeProvider>
   );
 };

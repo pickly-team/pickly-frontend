@@ -11,9 +11,6 @@ const useCategoryList = () => {
   // SERVER
   const { data: categoryList } = useGETCategoryListQuery({
     memberId: USER_ID,
-    pageRequest: {
-      pageSize: 15,
-    },
   });
 
   const queryClient = useQueryClient();
@@ -25,7 +22,7 @@ const useCategoryList = () => {
     );
   };
 
-  const toggleCategory = (categoryId: string): ClientBookmarkCategoryItem[] => {
+  const toggleCategory = (categoryId: number): ClientBookmarkCategoryItem[] => {
     return (
       categoryList?.map((item) =>
         item.id === categoryId

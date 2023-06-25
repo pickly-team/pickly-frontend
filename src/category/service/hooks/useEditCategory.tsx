@@ -15,13 +15,13 @@ const useEditCategory = ({
 }: EditCategory) => {
   const onClickEditCategory = (categoryId: string) => {
     const category = categoryList.find(
-      (category) => category.id === categoryId,
+      (category) => category.categoryId === categoryId,
     );
     if (category) {
       onChangeEmoji(category.emoji);
-      onChangeCategoryName(category.categoryName);
+      onChangeCategoryName(category.name);
       onChangeCategoryList(
-        categoryList.filter((category) => category.id !== categoryId),
+        categoryList.filter((category) => category.categoryId !== categoryId),
       );
     }
   };
