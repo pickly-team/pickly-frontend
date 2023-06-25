@@ -1,7 +1,7 @@
 export interface CategoryItem {
-  id: string;
+  categoryId: string;
   emoji: string;
-  categoryName: string;
+  name: string;
 }
 
 export type Mode = 'NORMAL' | 'EDIT' | 'DELETE' | 'ORDER';

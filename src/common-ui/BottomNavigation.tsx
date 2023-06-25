@@ -7,13 +7,14 @@ import Icon from './assets/Icon';
 import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
 import BookmarkAddBS from '@/bookmarks/ui/Main/BookmarkAddBS';
 import useBottomSheet from './BottomSheet/hooks/useBottomSheet';
-import checkValidateURL from '@/utils/checkValidateURL';
 import useInputUrl from '@/bookmarks/service/hooks/add/useInputUrl';
 import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
-
 import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
 import useCategoryList from '@/bookmarks/service/hooks/add/useCategoryList';
 import { useEffect } from 'react';
+import { usePOSTBookmarkMutation } from '@/bookmarks/api/bookmark';
+import checkValidateURL from '@/utils/checkValidateURL';
+import ToastList from './Toast/ToastList';
 
 // TODO : 네비게이터에 대한 path를 재정의 필요
 
@@ -29,8 +30,16 @@ const BottomNavigation = () => {
 
   // SERVER
   const { categoryList, setCategoryList, toggleCategory } = useCategoryList();
-  // 1. URL 입력
-  const { url, onChangeUrl } = useInputUrl();
+  // 1. URL & 북마크 Title 입력
+  const {
+    url,
+    title,
+    onChangeUrl,
+    onChangeTitle,
+    handleKeyDown,
+    onDeleteInput,
+    resetAllInputs,
+  } = useInputUrl();
 
   // 2. 카테고리 선택
   const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory();
@@ -40,7 +49,7 @@ const BottomNavigation = () => {
     useSelectPublishScoped();
 
   // 2. 카테고리 변경
-  const onClickCategory = (id: string) => {
+  const onClickCategory = (id: number) => {
     // 새로운 카테고리 선택
     setSelectedCategoryId(id);
     // 선택된 카테고리 변경
@@ -56,7 +65,7 @@ const BottomNavigation = () => {
     selectedPublishScoped
   );
 
-  const { close, isOpen, open } = useBottomSheet();
+  const { isOpen, close, open } = useBottomSheet();
   const onClickAddButton = () => {
     open();
   };
@@ -76,13 +85,43 @@ const BottomNavigation = () => {
     }
   }, []);
 
+  const MEMBER_ID = 1; // TODO : 로그인 기능 구현 후 수정 필요
+  const { mutate: postBookmark } = usePOSTBookmarkMutation({
+    resetAll: {
+      resetAllInputs,
+      resetCategory: () => {
+        setSelectedCategoryId(0);
+        setCategoryList(toggleCategory(0));
+      },
+      resetVisibility: () => onClickPublishScoped('SCOPE_PUBLIC'),
+    },
+    memberId: MEMBER_ID,
+    categoryId: Number(selectedCategoryId),
+  });
+
+  const onClickSubmitButton = () => {
+    postBookmark({
+      url,
+      title,
+      categoryId: Number(selectedCategoryId),
+      visibility: selectedPublishScoped,
+      memberId: MEMBER_ID,
+    });
+    close();
+  };
+
   return (
     <>
       <BookmarkAddBS isOpen={isOpen} close={close}>
+        <ToastList />
         <BookmarkAddBS.URLInput
           url={url}
-          onChangeUrl={onChangeUrl}
+          title={title}
           isValidateUrl={isValidateUrl}
+          onChangeUrl={onChangeUrl}
+          onChangeTitle={onChangeTitle}
+          handleKeyDown={handleKeyDown}
+          onDeleteInput={onDeleteInput}
         />
         <BookmarkAddBS.SelectCategory
           categoryList={categoryList}
@@ -93,7 +132,7 @@ const BottomNavigation = () => {
           onClickPublishScoped={onClickPublishScoped}
         />
         <BookmarkAddBS.SubmitButton
-          onClick={close}
+          onClick={onClickSubmitButton}
           isAllWritten={isAllWritten}
         />
       </BookmarkAddBS>

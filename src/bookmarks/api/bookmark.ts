@@ -1,3 +1,4 @@
+import useToast from '@/common-ui/Toast/hooks/useToast';
 import client from '@/common/service/client';
 import { navigatePath } from '@/constants/navigatePath';
 
@@ -8,20 +9,21 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-
-import { v4 as uuid } from 'uuid';
-
-const BASE_URL = 'http://localhost:8080/api/members';
-
 const DOMAIN = 'BOOKMARK';
 
-export const GET_BOOKMARK_LIST = (userId: number, readByUser: boolean) => [
+export type Visibility = 'SCOPE_PUBLIC' | 'SCOPE_PRIVATE' | 'SCOPE_FRIEND';
+
+export const GET_BOOKMARK_LIST = (
+  userId: number,
+  readByUser: boolean,
+  categoryId: number,
+) => [
   getKeyofObject(navigatePath, '/'),
   DOMAIN,
   'BOOKMARK_LIST',
   userId,
   readByUser,
+  categoryId,
 ];
 
 ///////////////////////////////////
@@ -51,7 +53,7 @@ interface GETBookMarkListRequest {
   memberId: number;
   categoryId?: number;
   readByUser?: boolean;
-  visibility?: 'SCOPE_PUBLIC' | 'SCOPE_PRIVATE';
+  visibility?: Visibility;
   pageRequest: {
     cursorId?: number;
     pageSize: number;
@@ -60,9 +62,8 @@ interface GETBookMarkListRequest {
 
 const GETBookMarkList = {
   API: async (params: GETBookMarkListRequest) => {
-    await sleep(1000);
     const { data } = await client.get<SeverBookMarkItem>(
-      '/members/1/bookmarks',
+      `/members/${params.memberId}/bookmarks`,
       {
         params: {
           categoryId: params.categoryId,
@@ -80,7 +81,11 @@ const GETBookMarkList = {
 
 export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
   return useInfiniteQuery(
-    GET_BOOKMARK_LIST(params.memberId, params.readByUser ?? false),
+    GET_BOOKMARK_LIST(
+      params.memberId,
+      params.readByUser ?? false,
+      params.categoryId ?? 0,
+    ),
     async ({ pageParam = null }) => {
       const { contents, hasNext } = await GETBookMarkList.API({
         ...params,
@@ -115,8 +120,15 @@ interface DELETEBookMarkRequest {
 
 const DELETEBookMark = {
   API: async (params: DELETEBookMarkRequest) => {
-    const { data } = await axios.put('/v1/bookmarks/list', {
-      bookmarkIds: params.bookmarkIds,
+    const { data } = await client.delete('/bookmarks/list', {
+      params: {
+        bookmarkId: params.bookmarkIds,
+      },
+      paramsSerializer: (params) => {
+        return Object.keys(params)
+          .map((key) => params[key].map((v: string) => `${key}=${v}`).join('&'))
+          .join('&');
+      },
     });
     return data;
   },
@@ -124,16 +136,22 @@ const DELETEBookMark = {
 
 interface DELETEBookMarkMutation {
   userId: number;
+  categoryId?: number;
 }
 
 export const useDELETEBookMarkMutation = ({
   userId,
+  categoryId,
 }: DELETEBookMarkMutation) => {
   const queryClient = useQueryClient();
   return useMutation(DELETEBookMark.API, {
     onSuccess: () => {
-      queryClient.refetchQueries(GET_BOOKMARK_LIST(userId, false));
-      queryClient.refetchQueries(GET_BOOKMARK_LIST(userId, true));
+      queryClient.refetchQueries(
+        GET_BOOKMARK_LIST(userId, false, categoryId ?? 0),
+      );
+      queryClient.refetchQueries(
+        GET_BOOKMARK_LIST(userId, true, categoryId ?? 0),
+      );
     },
   });
 };
@@ -142,81 +160,63 @@ export const useDELETEBookMarkMutation = ({
 // 북마크 추가 BS
 // 북마크 카테고리 리스트 조회
 interface ServerBookmarkCategoryItem {
-  order: number;
-  id: string;
+  orderNum: number;
+  categoryId: number;
   name: string;
+  emoji: string;
 }
 
 export interface ClientBookmarkCategoryItem {
   order: number;
-  id: string;
+  id: number;
   name: string;
+  emoji: string;
   isSelected: boolean;
 }
 
-interface GETBookmarkCategoryListResponse {
-  category_list: ServerBookmarkCategoryItem[];
+interface GETBookmarkCategoryListRequest {
+  memberId: number;
 }
 
 const GETBookmarkCategoryList = {
-  API: async () => {
-    const { data } = await axios.get<GETBookmarkCategoryListResponse>(
-      `${BASE_URL}/bookmarks/category/list`,
+  API: async ({ memberId }: GETBookmarkCategoryListRequest) => {
+    const { data } = await client.get<ServerBookmarkCategoryItem[]>(
+      `/members/${memberId}/categories`,
     );
-    return data;
+    return GETBookmarkCategoryList.Mapper(data);
   },
-  Mapper: ({
-    category_list,
-  }: GETBookmarkCategoryListResponse): ClientBookmarkCategoryItem[] => {
-    return category_list.map((category, idx) => ({
-      order: category.order,
-      id: category.id,
-      name: category.name,
-      isSelected: idx === 0,
-    }));
-  },
-  MockAPI: async (): Promise<ClientBookmarkCategoryItem[]> => {
-    await sleep(1000);
-    return GETBookmarkCategoryList.Mapper({
-      category_list: [
-        {
-          order: 1,
-          id: uuid(),
-          name: '😃 프론트엔드',
-        },
-        {
-          order: 2,
-          id: uuid(),
-          name: '🧐 백엔드',
-        },
-        {
-          order: 3,
-          id: uuid(),
-          name: '✅ 라이프 스타일',
-        },
-        {
-          order: 4,
-          id: uuid(),
-          name: '🥹 퇴근 라이프',
-        },
-      ],
-    });
+  Mapper: (
+    categoryList: ServerBookmarkCategoryItem[],
+  ): ClientBookmarkCategoryItem[] => {
+    return categoryList
+      .map((category) => ({
+        order: category.orderNum,
+        id: category.categoryId,
+        emoji: category.emoji,
+        name: category.name,
+        isSelected: false,
+      }))
+      .sort((a, b) => a.order - b.order);
   },
 };
 
-export const GET_BOOKMARK_CATEGORY_LIST = (userId: number) => [
+export const GET_BOOKMARK_CATEGORY_LIST = (memberId: number) => [
   getKeyofObject(navigatePath, '/'),
   DOMAIN,
   'BOOKMARK_CATEGORY_LIST',
-  userId,
+  memberId,
 ];
+
+interface GETBookMarkCategoryListRequest {
+  memberId: number;
+}
 
 export const useGETCategoryListQuery = ({
   memberId,
-}: GETBookMarkListRequest) => {
+}: GETBookMarkCategoryListRequest) => {
   return useQuery(
     GET_BOOKMARK_CATEGORY_LIST(memberId),
-    async () => GETBookmarkCategoryList.MockAPI(),
+    async () => GETBookmarkCategoryList.API({ memberId }),
     {
       refetchOnWindowFocus: false,
       retry: 0,
@@ -225,12 +225,89 @@ export const useGETCategoryListQuery = ({
   );
 };
 
-/** 의도적 지연 함수 : 로딩용 */
-// eslint-disable-next-line no-promise-executor-return
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+//////////////////////////////////////
+// 북마크 제목 조회
 
-export default {
-  useGETBookMarkListQuery,
+type GETBookmarkTitleResponse = string;
+
+interface RequestInterface {
+  url: string;
+  setTitle?: (title: string) => void;
+}
+
+const getAPI = async ({ url }: RequestInterface) => {
+  const { data } = await client<GETBookmarkTitleResponse>({
+    method: 'get',
+    url: '/bookmark/title',
+    params: { url },
+    data: {},
+  });
+  return data;
+};
+
+const GET_BOOKMARK_TITLE = (url: string) => ['GET_BOOKMARK_TITLE', url];
+
+export const useGETBookmarkTitleQuery = ({
+  url,
+  setTitle,
+}: RequestInterface) => {
+  const { fireToast } = useToast();
+  return useQuery(GET_BOOKMARK_TITLE(url), () => getAPI({ url }), {
+    enabled: !!url,
+    retry: 0,
+    onSuccess: (data) => {
+      setTitle && setTitle(data);
+    },
+    onError: () => {
+      fireToast({ message: '앗! 유효하지 않은 주소에요', mode: 'DELETE' });
+    },
+  });
+};
+
+interface POSTBookmarkRequest {
+  memberId: number;
+  categoryId: number;
+  url: string;
+  title: string;
+  visibility: Visibility;
+}
+
+const postBookmark = async (data: POSTBookmarkRequest) => {
+  await client.post('/bookmarks', data);
+};
+
+interface POSTBookmarkMutation {
+  memberId: number;
+  categoryId: number;
+  resetAll: {
+    resetAllInputs: () => void;
+    resetCategory: () => void;
+    resetVisibility: () => void;
+  };
+}
+
+export const usePOSTBookmarkMutation = ({
+  memberId,
+  categoryId,
+  resetAll,
+}: POSTBookmarkMutation) => {
+  const queryClient = useQueryClient();
+  const { fireToast } = useToast();
+  return useMutation(postBookmark, {
+    onSuccess: () => {
+      resetAll.resetAllInputs();
+      resetAll.resetCategory();
+      resetAll.resetVisibility();
+      queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, false, 0));
+      queryClient.refetchQueries(
+        GET_BOOKMARK_LIST(memberId, false, categoryId),
+      );
+      queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, true, categoryId));
+    },
+    onError: () => {
+      fireToast({ message: '앗! 추가할 수 없는 북마크에요', mode: 'DELETE' });
+    },
+  });
 };
 
 // TODO : 추후 테스트 코드 작성

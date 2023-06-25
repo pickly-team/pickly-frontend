@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 const useSelectCategory = () => {
-  const [selectedCategoryId, setCategoryId] = useState('');
+  const [selectedCategoryId, setCategoryId] = useState(0);
 
-  const setSelectedCategoryId = (id: string) => {
+  const setSelectedCategoryId = (id: number) => {
     setCategoryId(id);
   };
 
