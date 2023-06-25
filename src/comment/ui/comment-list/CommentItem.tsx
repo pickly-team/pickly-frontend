@@ -12,7 +12,7 @@ interface CommentListProps {
   category: string;
 }
 
-const CommentList = ({
+const CommentItem = ({
   title,
   nickName,
   content,
@@ -49,7 +49,7 @@ const CommentList = ({
   );
 };
 
-export default CommentList;
+export default CommentItem;
 
 const Container = styled.div`
   display: grid;
