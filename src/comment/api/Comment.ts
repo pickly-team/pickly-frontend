@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import client from '@/common/service/client';
 import { navigatePath } from '../../constants/navigatePath';
-
-const BASE_URL = 'http://52.79.54.119:8080/api';
 
 const DOMAIN = 'COMMENT';
 
@@ -27,8 +25,8 @@ export interface GETCommentListRequest {
 }
 
 const CommentAPI = async ({ userId }: GETCommentListRequest) => {
-  const { data } = await axios.get<ServerCommentItem[]>(
-    `${BASE_URL}/members/${userId}/comments`,
+  const { data } = await client.get<ServerCommentItem[]>(
+    `/members/${userId}/comments`,
   );
   return data;
 };
