@@ -5,66 +5,60 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import resolveAfterDelay from '@/utils/resolveAfterDelay';
 import { api } from '@/common/service/client';
 
 type Friends = {
-  id: string;
-  name: string;
+  memberId: string;
+  loginId: string;
   profileEmoji?: string;
   isFollowing: boolean;
 };
 
-const fetchFollowers = async (): Promise<Friends[]> => {
-  //TODO: API 호출로 변경
-  const mockData: Friends[] = [
-    {
-      id: '1',
-      name: 'seoyeon',
-      profileEmoji: '8J+YgQ==',
-      isFollowing: false,
-    },
-    {
-      id: '2',
-      name: 'seoyeon',
-      profileEmoji: '8J+YgQ==',
-      isFollowing: true,
-    },
-  ];
-
-  return resolveAfterDelay(mockData, 1000);
+type GetFollowersArgs = {
+  memberId: string;
+  cursorId?: string;
+  pageSize?: number;
 };
 
-const fetchFollowings = async (): Promise<Friends[]> => {
-  //TODO: API 호출로 변경
-  const mockData: Friends[] = [
-    {
-      id: '1',
-      name: 'seoyeon',
-      profileEmoji: '8J+YgQ==',
-      isFollowing: true,
-    },
-    {
-      id: '2',
-      name: 'seoyeon',
-      profileEmoji: '8J+YgQ==',
-      isFollowing: false,
-    },
-  ];
-
-  return resolveAfterDelay(mockData, 1000);
+type GetFollowersResult = {
+  hasNext: boolean;
+  contents: Friends[];
 };
-export const useGetFollowers = (): UseQueryResult<Friends[], Error> => {
+export const useGetFollowers = ({
+  memberId,
+  pageSize,
+  cursorId,
+}: GetFollowersArgs): UseQueryResult<GetFollowersResult, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.FOLLOWERS],
-    queryFn: fetchFollowers,
+    queryFn: async () => {
+      const { data } = await api.getFollowers(memberId, cursorId, pageSize);
+      return data;
+    },
     suspense: true,
   });
 };
-export const useGetFollowings = (): UseQueryResult<Friends[], Error> => {
+
+type GetFollowingsArgs = {
+  memberId: string;
+  cursorId?: string;
+  pageSize?: number;
+};
+type GetFollowingsResult = {
+  hasNext: boolean;
+  contents: Friends[];
+};
+export const useGetFollowings = ({
+  memberId,
+  pageSize,
+  cursorId,
+}: GetFollowingsArgs): UseQueryResult<GetFollowingsResult, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.FOLLOWINGS],
-    queryFn: fetchFollowings,
+    queryFn: async () => {
+      const { data } = await api.getFollowings(memberId, cursorId, pageSize);
+      return data;
+    },
     suspense: true,
   });
 };
@@ -83,7 +77,7 @@ export const useFollowMutation = ({
       memberId: string;
       followingId: string;
     }) => {
-      return api.followFriend(memberId, followingId);
+      return api.postFollowFriend(memberId, followingId);
     },
     onSuccess: onSuccess,
   });
@@ -102,7 +96,7 @@ export const useUnFollowMutation = ({
       memberId: string;
       followingId: string;
     }) => {
-      return api.unfollowFriend(memberId, followingId);
+      return api.deleteUnfollowFriend(memberId, followingId);
     },
     onSuccess: onSuccess,
   });

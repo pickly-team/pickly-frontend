@@ -7,15 +7,18 @@ import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
 
 const Friends = () => {
-  const { data: followers } = useGetFollowers();
-  const { data: followings } = useGetFollowings();
+  //FIXME: 하드코딩 개선
+  const { data: followerData } = useGetFollowers({ memberId: '1' });
+  const { data: followingData } = useGetFollowings({ memberId: '1' });
 
   const [selectedType, setSelectedType] = useState<FriendType>(
     FriendType.Follower,
   );
 
-  const followerTotalCount = followers?.length ?? 0;
-  const followingTotalCount = followings?.length ?? 0;
+  const followers = followerData?.contents ?? [];
+  const followings = followingData?.contents ?? [];
+  const followerTotalCount = followers.length;
+  const followingTotalCount = followings.length;
 
   return (
     <div>
@@ -29,9 +32,9 @@ const Friends = () => {
         {selectedType === FriendType.Following &&
           followers?.map((info) => (
             <FriendFollowingItem
-              key={info.id}
-              id={info.id}
-              name={info.name}
+              key={info.memberId}
+              id={info.memberId}
+              name={info.loginId}
               profileEmoji={info.profileEmoji}
               isFollowing={info.isFollowing}
             />
@@ -39,9 +42,9 @@ const Friends = () => {
         {selectedType === FriendType.Follower &&
           followers?.map((info) => (
             <FriendFollowerItem
-              key={info.id}
-              id={info.id}
-              name={info.name}
+              key={info.memberId}
+              id={info.memberId}
+              name={info.loginId}
               profileEmoji={info.profileEmoji}
               isFollowing={info.isFollowing}
             />
