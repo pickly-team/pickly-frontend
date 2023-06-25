@@ -124,10 +124,14 @@ const DELETEBookMark = {
       params: {
         bookmarkId: params.bookmarkIds,
       },
-      paramsSerializer: (params) => {
-        return Object.keys(params)
-          .map((key) => params[key].map((v: string) => `${key}=${v}`).join('&'))
-          .join('&');
+      paramsSerializer: {
+        encode: (params) => {
+          return Object.keys(params)
+            .map((key) =>
+              params[key].map((v: string) => `${key}=${v}`).join('&'),
+            )
+            .join('&');
+        },
       },
     });
     return data;
