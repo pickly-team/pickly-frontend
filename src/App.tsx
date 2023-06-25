@@ -14,6 +14,7 @@ import RNListener from '@/RNListener';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryManagePage';
 import ReportPage from './pages/ReportPage';
+import CommentPage from './pages/CommentPage';
 import ProfilePage from '@/pages/ProfilePage';
 import CategoryListPage from './pages/CategoryListPage';
 import ToastList from './common-ui/Toast/ToastList';
@@ -68,10 +69,7 @@ const App = () => {
                 path={navigatePath.CATEGORY_ADD}
                 element={<CategoryAddPage mode="ADD" />}
               />
-              <Route
-                path={navigatePath.CATEGORY_EDIT}
-                element={<CategoryAddPage mode="EDIT" />}
-              />
+              <Route path={navigatePath.COMMENT} element={<CommentPage />} />
               <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
               <Route path={navigatePath.LIKE_PAGE} element={<LikePage />} />
               <Route path={navigatePath.FRIEND} element={<FriendPage />} />
