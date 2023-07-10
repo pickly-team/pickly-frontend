@@ -12,6 +12,7 @@ const navigatePath = {
   CATEGORY_EDIT: '/category/edit/:id',
   CATEGORY_LIST: '/category/list',
   REPORT: '/bookmark/:id/report',
+  COMMENT: '/comment',
   LIKE_PAGE: '/likes',
 } as const;
 
