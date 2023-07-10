@@ -1,4 +1,6 @@
 import useAuthStore from '@/store/auth';
+import useMessageListener from './common/service/hooks/useBridgeCallback';
+import { useGETUserProfile } from './auth/api/profile';
 
 declare global {
   interface Window {
@@ -6,39 +8,16 @@ declare global {
   }
 }
 
-type MessageType = 'login';
-
-type Message = {
-  id: string;
-  type: MessageType;
-  content: string;
-};
-
 const RNListener = () => {
-  const login = useAuthStore((state) => state.login);
+  const { memberId, login, setUserInfo } = useAuthStore();
 
-  //TODO: type 지정
-  const listener = (event: any) => {
-    const message = JSON.parse(event.data);
-    handleMessage(message);
-  };
-
-  const handleMessage = (message: Message) => {
-    switch (message.type) {
-      case 'login':
-        login(JSON.parse(message.content).refreshToken);
-        break;
-      default:
-        break;
+  useMessageListener(({ message, params }) => {
+    if (message === 'login') {
+      login(params?.token ?? '', params?.memberId ?? 0);
     }
-  };
+  });
 
-  if (window.isInWebview) {
-    /** android */
-    document.addEventListener('message', listener);
-    /** ios */
-    window.addEventListener('message', listener);
-  }
+  useGETUserProfile({ loginId: memberId }, setUserInfo);
 
   return null;
 };
