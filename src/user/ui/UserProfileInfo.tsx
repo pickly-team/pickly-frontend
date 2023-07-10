@@ -14,6 +14,7 @@ interface UserProfileInfoProps {
   nickname: string;
   isEmojiBSOpen: boolean;
   buttonDisabled: boolean;
+  mode: Mode;
   setEmojiBSOpen: () => void;
   onChangeEmoji: (emoji: string) => void;
   onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -28,6 +29,7 @@ const UserProfileInfo = ({
   nickname,
   isEmojiBSOpen,
   buttonDisabled,
+  mode,
   setEmojiBSOpen,
   onChangeEmoji,
   onChangeName,
@@ -36,10 +38,10 @@ const UserProfileInfo = ({
 }: UserProfileInfoProps) => {
   return (
     <Form onSubmit={onSubmit}>
-      <Header showBackButton />
+      <Header showBackButton={mode === 'EDIT'} />
       <Emoji emoji={emoji} onClickEmoji={setEmojiBSOpen} />
       <StyleEditBox>
-        <EditBox name="이메일" value={email} onChange={onChangeName} disabled />
+        {/* <EditBox name="이메일" value={email} onChange={onChangeName} disabled /> */}
         <EditBox name="이름" value={name} onChange={onChangeName} isEssential />
         <EditBox
           name="닉네임"
@@ -54,7 +56,7 @@ const UserProfileInfo = ({
         type="submit"
         disabled={buttonDisabled}
       >
-        저장
+        {mode === 'CREATE' ? '회원가입' : '수정하기'}
       </BottomFixedButton>
       {isEmojiBSOpen && <EmojiSelect onChangeEmoji={onChangeEmoji} />}
     </Form>
