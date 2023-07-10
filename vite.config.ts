@@ -27,7 +27,6 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      global: {},
       'process.env': env,
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.VITE_SERVER_URI': JSON.stringify(env.VITE_SERVER_URI),
