@@ -1,5 +1,5 @@
 import useAuthStore from '@/store/auth';
-import useMessageListener from './common/service/hooks/useBridgeCallback';
+import useBridgeCallback from './common/service/hooks/useBridgeCallback';
 import { useGETUserProfile } from './auth/api/profile';
 
 declare global {
@@ -11,7 +11,7 @@ declare global {
 const RNListener = () => {
   const { memberId, login, setUserInfo } = useAuthStore();
 
-  useMessageListener(({ message, params }) => {
+  useBridgeCallback(({ message, params }) => {
     if (message === 'login') {
       login(params?.token ?? '', params?.memberId ?? 0);
     }
