@@ -1,17 +1,16 @@
-import { useNavigate } from 'react-router-dom';
 import UserProfileInfo from '@/user/ui/UserProfileInfo';
 import useChangeEmoji from '@/common/service/useChangeEmoji';
 import useHandleInput from '@/common/service/useHandleInput';
-import { useGETUserInfoQuery } from '@/user/api/user';
 import { FormEventHandler, useEffect, useState } from 'react';
+import useAuthStore from '@/store/auth';
+import { usePutUserInfoQuery } from '@/user/api/user';
 
 interface UserCreatePageProps {
   mode: Mode;
 }
 
 const UserInfoPage = ({ mode }: UserCreatePageProps) => {
-  const router = useNavigate();
-  const { data: userInfoData } = useGETUserInfoQuery({ userId: '1', mode });
+  const { userInfo, memberId } = useAuthStore();
 
   const [name, onChangeElementName, onChangeName] = useHandleInput();
   const [nickname, onChangeElementNickname, onChangeNickname] =
@@ -30,14 +29,14 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    if (userInfoData) {
-      const { name, nickname, emoji } = userInfoData;
+    if (userInfo) {
+      const { name, nickname, profileEmoji } = userInfo;
       onChangeName(name);
       onChangeNickname(nickname);
-      onChangeEmoji(emoji);
-      setInitialValues({ name, nickname, emoji });
+      onChangeEmoji(profileEmoji);
+      setInitialValues({ name, nickname, emoji: profileEmoji });
     }
-  }, [userInfoData]);
+  }, [userInfo]);
 
   useEffect(() => {
     const {
@@ -56,9 +55,18 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
     setDisabled(false);
   }, [name, nickname, emoji, initialValues]);
 
+  const { mutate } = usePutUserInfoQuery({ mode, memberId });
+
   const onSubmitUserInfo: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    router(-1);
+    mutate({
+      putData: {
+        name,
+        nickname,
+        profileEmoji: emoji,
+      },
+      memberId,
+    });
   };
 
   // TODO : FIREBASE 연동 후 수정
@@ -72,6 +80,7 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
       nickname={nickname}
       isEmojiBSOpen={isEmojiBSOpen}
       buttonDisabled={disabled}
+      mode={mode}
       onChangeEmoji={onChangeEmoji}
       setEmojiBSOpen={setEmojiBSOpen}
       onChangeName={onChangeElementName}
