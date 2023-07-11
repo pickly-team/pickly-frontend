@@ -37,7 +37,7 @@ export const useGETUserProfile = (
   return useQuery(GET_USER_PROFILE(params), () => getUserProfile(params), {
     enabled: !!params.loginId,
     onSuccess: (data) => {
-      setUserInfo(data);
+      setUserInfo({ ...data, profileEmoji: data.profileEmoji || '🐶' });
       if (data.nickname === '') router(navigatePath.USER);
     },
     onError: (e) => console.log(e),
