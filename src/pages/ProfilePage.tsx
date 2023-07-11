@@ -1,57 +1,84 @@
 import styled from '@emotion/styled';
 
-import BottomNavigation from '@/common-ui/BottomNavigation';
 import BasicInfoBox from '@/members/ui/BasicInfoBox';
 import StatsBox from '@/members/ui/StatsBox';
 import SettingsBox from '@/members/ui/SettingsBox';
 import NotificationSettingBox from '@/members/ui/NotificationSettingBox';
 import getRem from '@/utils/getRem';
 import CustomerFeedbackBox from '@/members/ui/CustomerFeedbackBox';
-import { NotificationSetting } from '@/notification/api/notification';
+import useAuthStore from '@/store/auth';
+import {
+  useGETCommentCntQuery,
+  useGETLikeCountQuery,
+  useGETNotificationSettingDayQuery,
+  useGETNotificationStandardsQuery,
+  useGetCategoryCntQuery,
+} from '@/members/api/member';
 
 const ProfilePage = () => {
-  const dummyNotificationSetting: NotificationSetting = {
-    time: {
-      hour: 10,
-      minute: 0,
-    },
-  };
+  // FIRST RENDER
+  // 1. 유저 정보 조회
+  const { userInfo } = useAuthStore();
+
+  // 2. 좋아요, 카테고리, 댓글 수 조회
+  const { data: likeCount } = useGETLikeCountQuery({
+    memberId: userInfo.id,
+  });
+  const { data: categoryCount } = useGetCategoryCntQuery({
+    memberId: userInfo.id,
+  });
+  const { data: commentCount } = useGETCommentCntQuery({
+    memberId: userInfo.id,
+  });
+
+  // 3. 알림 기준 일자 조회
+  const { data: notificationSettingDay } = useGETNotificationSettingDayQuery({
+    loginId: userInfo.id,
+  });
+
+  // 4. 알림 시간 조회
+  const { data: notificationSetting } = useGETNotificationStandardsQuery({
+    loginId: userInfo.id,
+  });
 
   return (
     <Layout>
-      <BasicInfoBox
-        memberId={1}
-        profileEmoji="🥱"
-        nickname="피클리마스터"
-        bookmarksCount={0}
-        followersCount={1001}
-        followeesCount={127}
-      />
+      <BasicInfoBox memberId={1} {...userInfo} />
       <LBody>
+        {/** 좋아요, 카테고리, 댓글 수 */}
         <StatsBox
-          numberOfLikes={10}
-          numberOfCategories={230}
-          numberOfComments={1234}
+          numberOfLikes={likeCount || 0}
+          numberOfCategories={categoryCount || 0}
+          numberOfComments={commentCount || 0}
         />
-        <SettingsBox />
+        {/** 알림 기준 일자 설정 */}
+        <SettingsBox serverRemindInDays={notificationSettingDay || 7} />
+        {/** 알림 시간 설정 */}
         <NotificationSettingBox
-          notificationSetting={dummyNotificationSetting}
+          notificationSetting={{
+            time: {
+              hour: Number(
+                notificationSetting?.notifyDailyAt.split(':')[0] || 9,
+              ),
+              minute: Number(
+                notificationSetting?.notifyDailyAt.split(':')[1] || 0,
+              ),
+            },
+          }}
         />
         <CustomerFeedbackBox />
       </LBody>
-      <LBottom>
-        <BottomNavigation />
-      </LBottom>
     </Layout>
   );
 };
 
 export default ProfilePage;
 
-const Layout = styled.div``;
+const Layout = styled.div`
+  height: calc(100lvh - 5rem);
+  overflow-y: scroll;
+`;
 const LBody = styled.div`
   padding: 0 ${getRem(20)};
-  margin-top: ${getRem(12)};
-  row-gap: ${getRem(21)};
+  margin: ${getRem(12)} 0;
 `;
-const LBottom = styled.div``;
