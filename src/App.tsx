@@ -10,7 +10,6 @@ import { navigatePath } from '@/constants/navigatePath';
 import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
 import Layout from '@/common-ui/Layout';
 import FaqPage from '@/pages/FaqPage';
-import RNListener from '@/RNListener';
 import UserCreatePage from './pages/UserInfoPage';
 import CategoryAddPage from './pages/CategoryManagePage';
 import ReportPage from './pages/ReportPage';
@@ -21,6 +20,8 @@ import ToastList from './common-ui/Toast/ToastList';
 import NotificationPage from '@/pages/NotificationPage';
 import { Analytics } from '@vercel/analytics/react';
 import FriendPage from '@/pages/FriendPage';
+import RNListener from './RNListener';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,7 +40,6 @@ const App = () => {
           <GlobalStyle />
           <ToastList />
           <RNListener />
-          <ToastList />
           <Layout>
             <Routes>
               <Route path={navigatePath.MAIN} element={<MainPage />} />
@@ -76,6 +76,7 @@ const App = () => {
             </Routes>
           </Layout>
         </BrowserRouter>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
       <Analytics />
     </ThemeProvider>
