@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import Text from '@/common-ui/Text';
@@ -6,17 +6,40 @@ import Icon from '@/common-ui/assets/Icon';
 import RoundedBox from '@/members/ui/RoundedBox';
 import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
+import { usePATCHNotificationDayQuery } from '../api/member';
+import useAuthStore from '@/store/auth';
 
-const SettingsBox = () => {
+interface SettingsBoxProps {
+  serverRemindInDays: number;
+}
+
+const SettingsBox = ({ serverRemindInDays }: SettingsBoxProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [remindInDays, setRemindInDays] = useState(3);
 
+  const { memberId } = useAuthStore();
+
+  const { mutate } = usePATCHNotificationDayQuery({ loginId: memberId });
+
+  useEffect(() => {
+    setRemindInDays(serverRemindInDays);
+  }, [serverRemindInDays]);
+
   const toggleIsEditing = () => {
+    if (isEditing) {
+      mutate({
+        patchData: {
+          notifyStandardDay: remindInDays,
+        },
+        loginId: memberId,
+      });
+    }
     setIsEditing(!isEditing);
   };
 
   const onChangeRemainingDays = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    if (Number(value) > 99) return;
     setRemindInDays(Number(value));
   };
 
@@ -80,7 +103,6 @@ const RemindingDescription = ({
             <RemindingLine>
               {isEditing ? (
                 <StyledInput
-                  type="number"
                   value={remindInDays}
                   onChange={onChangeRemainingDays}
                   max={MAX_DAYS}
