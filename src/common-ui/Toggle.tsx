@@ -70,9 +70,9 @@ const ToggleUIWrapper = styled.div`
   position: sticky;
   display: flex;
   width: 100%;
-  height: 3rem;
   border-radius: 10px;
   background-color: ${theme.colors.white};
+  padding: 0.38rem 0;
 `;
 
 const StyledButton = styled.button`
@@ -95,20 +95,21 @@ const AnimatedLabel = styled.label`
           will-change: transition;
           width: 50%;
           border-top-left-radius: 0px;
-          border-top-right-radius: 10px;
+          border-top-right-radius: 0.5rem;
           border-bottom-left-radius: 0px;
-          border-bottom-right-radius: 10px;
+          border-bottom-right-radius: 0.5rem;
         `
       : css`
           transition: 500ms;
           will-change: transition;
           width: 50%;
-          border-top-left-radius: 10px;
+          border-top-left-radius: 0.5rem;
           border-top-right-radius: 0px;
-          border-bottom-left-radius: 10px;
+          border-bottom-left-radius: 0.5rem;
           border-bottom-right-radius: 0px;
         `}
-  height: 3rem;
+  height: 100%;
+  top: 0;
   content: '';
   position: absolute;
   background-color: ${theme.colors.primary};
