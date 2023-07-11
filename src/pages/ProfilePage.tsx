@@ -43,6 +43,7 @@ const ProfilePage = () => {
 
   return (
     <Layout>
+      {/** 유저 정보 */}
       <BasicInfoBox memberId={1} {...userInfo} />
       <LBody>
         {/** 좋아요, 카테고리, 댓글 수 */}
