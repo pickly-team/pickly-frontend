@@ -13,7 +13,8 @@ const RNListener = () => {
 
   useBridgeCallback(({ message, params }) => {
     if (message === 'login') {
-      login(params?.token ?? '', params?.memberId ?? 0);
+      if (params?.memberId && params?.token)
+        login({ token: params.token, memberId: params.memberId });
     }
   });
 
