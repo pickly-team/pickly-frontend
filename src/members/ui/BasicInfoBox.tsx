@@ -67,21 +67,21 @@ const BasicInfoBox = ({
             <Text.Span fontSize={3}>{profileEmoji}</Text.Span>
           </ProfileImage>
           <ProfileStatsColumn>
-            <Link to={'/bookmarks'}>
+            <Link to={'/'}>
               <ProfileStatColumn>
                 <Text.Span>{numberFormatter.format(bookmarksCount)}</Text.Span>
                 <Text.Span>북마크</Text.Span>
               </ProfileStatColumn>
             </Link>
 
-            <Link to={'/friends'}>
+            <Link to={'/friend'}>
               <ProfileStatColumn>
                 <Text.Span>{numberFormatter.format(followersCount)}</Text.Span>
                 <Text.Span>팔로워</Text.Span>
               </ProfileStatColumn>
             </Link>
 
-            <Link to={'/friends'}>
+            <Link to={'/friend'}>
               <ProfileStatColumn>
                 <Text.Span>{numberFormatter.format(followeesCount)}</Text.Span>
                 <Text.Span>팔로잉</Text.Span>
