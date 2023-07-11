@@ -20,7 +20,6 @@ const getLikeCountAPI = async ({
     data: {},
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  console.log(data);
   return data;
 };
 
