@@ -34,9 +34,10 @@ export const usePutUserInfoQuery = ({ mode, memberId }: PutAPIRequest) => {
   const queryClient = useQueryClient();
   return useMutation(putUserInfo, {
     onSuccess: () => {
-      if (mode === 'CREATE') router(navigatePath.USER);
+      if (mode === 'CREATE') router(navigatePath.PROFILE);
       if (mode === 'EDIT') router(navigatePath.PROFILE);
       queryClient.invalidateQueries(GET_USER_PROFILE({ loginId: memberId }));
     },
+    onError: (e) => console.log(e),
   });
 };
