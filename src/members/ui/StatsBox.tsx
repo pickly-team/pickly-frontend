@@ -49,7 +49,7 @@ const StatsBox = ({
           </StatItemContainer>
         </Link>
         <Divider />
-        <Link to="/comments">
+        <Link to="/comment">
           <StatItemContainer>
             <IconLabelContainer>
               <Icon name={'message'} size={'s'} />
