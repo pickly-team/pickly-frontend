@@ -2,7 +2,7 @@ import client from '@/common/service/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GET_CATEGORY_LIST } from './category';
 import { GET_BOOKMARK_CATEGORY_LIST } from '@/bookmarks/api/bookmark';
-
+import qs from 'qs';
 interface DeleteCategoryRequest {
   memberId: number;
   categoryId: string[];
@@ -14,15 +14,8 @@ const DeleteCategory = {
       params: {
         categoryId: params.categoryId,
       },
-      paramsSerializer: {
-        encode: (params) => {
-          return Object.keys(params)
-            .map((key) =>
-              params[key].map((v: string) => `${key}=${v}`).join('&'),
-            )
-            .join('&');
-        },
-      },
+      paramsSerializer: (params) =>
+        qs.stringify(params, { arrayFormat: 'repeat' }),
     });
     return data;
   },

@@ -1,7 +1,7 @@
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import client from '@/common/service/client';
 import { navigatePath } from '@/constants/navigatePath';
-
+import qs from 'qs';
 import {
   useInfiniteQuery,
   useMutation,
@@ -124,15 +124,8 @@ const DELETEBookMark = {
       params: {
         bookmarkId: params.bookmarkIds,
       },
-      paramsSerializer: {
-        encode: (params) => {
-          return Object.keys(params)
-            .map((key) =>
-              params[key].map((v: string) => `${key}=${v}`).join('&'),
-            )
-            .join('&');
-        },
-      },
+      paramsSerializer: (params) =>
+        qs.stringify(params, { arrayFormat: 'repeat' }),
     });
     return data;
   },
