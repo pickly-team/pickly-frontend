@@ -1,5 +1,7 @@
+import useToast from '@/common-ui/Toast/hooks/useToast';
 import client from '@/common/service/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 type Count = number;
 
@@ -288,4 +290,86 @@ export const usePATCHNotificationDayQuery = ({
       );
     },
   });
+};
+
+// 특정 유저 차단 API
+interface PostBlockMemberParams {
+  blockerId: number;
+  blockeeId: number;
+  token?: string;
+}
+
+const postBlockMemberAPI = async ({
+  blockerId,
+  blockeeId,
+  token,
+}: PostBlockMemberParams) => {
+  const { data } = await client({
+    method: 'post',
+    url: `/member/${blockerId}/block/${blockeeId}`,
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export const usePOSTBlockMemberQuery = () => {
+  const router = useNavigate();
+  const { fireToast } = useToast();
+  return useMutation(postBlockMemberAPI, {
+    onSuccess: () => {
+      fireToast({ message: '차단 되었습니다' });
+      router(-1);
+    },
+  });
+};
+
+// 친구 프로필 조회 API
+export interface MemberProfile {
+  id: number;
+  name: string;
+  nickname: string;
+  profileEmoji: string;
+  isFollowing: boolean;
+}
+
+interface GETMemberProfileParams {
+  memberId: number;
+  loginId: number;
+  token?: string;
+}
+
+const getFriendProfileAPI = async ({
+  memberId,
+  loginId,
+  token,
+}: GETMemberProfileParams) => {
+  const { data } = await client<MemberProfile>({
+    method: 'get',
+    url: `/members/${memberId}`,
+    params: { memberId, loginId },
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface GETFriendProfileQueryParams {
+  memberId: number;
+  loginId: number;
+  token?: string;
+}
+
+export const GET_FRIEND_PROFILE = (params: GETFriendProfileQueryParams) => [
+  'GET_FRIEND_PROFILE',
+  params.memberId,
+  params.loginId,
+];
+
+export const useGETFriendProfileQuery = (
+  params: GETFriendProfileQueryParams,
+) => {
+  return useQuery(GET_FRIEND_PROFILE(params), async () =>
+    getFriendProfileAPI(params),
+  );
 };
