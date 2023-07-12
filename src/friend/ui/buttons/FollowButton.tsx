@@ -4,6 +4,7 @@ import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
 import { useFollowMutation } from '@/friend/api/friends';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import type { MouseEvent } from 'react';
 
 interface FollowButtonProps {
   userId: string;
@@ -19,7 +20,8 @@ const FollowButton = ({ userId }: FollowButtonProps) => {
     },
   });
   //TODO: 하드 코딩 개선
-  const onClick = () => {
+  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     mutate({ memberId: '1', followingId: '3' });
   };
   return (
