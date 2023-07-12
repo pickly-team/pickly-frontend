@@ -1,4 +1,6 @@
 import Text from '@/common-ui/Text';
+import FollowButton from '@/friend/ui/buttons/FollowButton';
+import UnFollowButton from '@/friend/ui/buttons/UnFollowButton';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 
@@ -7,18 +9,38 @@ import styled from '@emotion/styled';
 interface BookmarkUserInfoProps {
   userEmoji: string;
   userName: string;
+  isFriendPage?: {
+    isFollowing: boolean;
+  };
 }
 
-const BookmarkUserInfo = ({ userEmoji, userName }: BookmarkUserInfoProps) => {
+const BookmarkUserInfo = ({
+  userEmoji,
+  userName,
+  isFriendPage,
+}: BookmarkUserInfoProps) => {
   return (
     <StyleWrapper>
-      <UserBox>
-        <Text.Span fontSize={2}>{userEmoji}</Text.Span>
-      </UserBox>
-      <Text.Span
-        fontSize={1.3}
-        weight="bold"
-      >{`👋 안녕하세요, ${userName}님!`}</Text.Span>
+      <TextWrapper>
+        <UserBox>
+          <Text.Span fontSize={2}>{userEmoji}</Text.Span>
+        </UserBox>
+        {!!isFriendPage && (
+          <Text.Span fontSize={1.125}>{`${userName}님의 Pickly`}</Text.Span>
+        )}
+        {!isFriendPage && (
+          <Text.Span
+            fontSize={1.375}
+            weight="bold"
+          >{`👋 안녕하세요, ${userName}님!`}</Text.Span>
+        )}
+      </TextWrapper>
+      {!!isFriendPage && (
+        <>
+          {!!isFriendPage?.isFollowing && <UnFollowButton userId={'1'} />}
+          {!isFriendPage?.isFollowing && <FollowButton userId={'1'} />}
+        </>
+      )}
     </StyleWrapper>
   );
 };
@@ -28,6 +50,7 @@ export default BookmarkUserInfo;
 const StyleWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const UserBox = styled.div`
@@ -39,4 +62,10 @@ const UserBox = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 0.8rem;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: 0.8rem;
 `;
