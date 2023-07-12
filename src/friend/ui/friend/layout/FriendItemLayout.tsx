@@ -1,15 +1,27 @@
 import { ReactNode } from 'react';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
+import { useNavigate } from 'react-router-dom';
+import { navigatePath } from '@/constants/navigatePath';
 
 interface FriendItemLayoutProps {
   emoji: ReactNode;
   name: ReactNode;
   button: ReactNode;
+  id: string;
 }
-const FriendItemLayout = ({ emoji, name, button }: FriendItemLayoutProps) => {
+const FriendItemLayout = ({
+  emoji,
+  name,
+  button,
+  id,
+}: FriendItemLayoutProps) => {
+  const navigate = useNavigate();
+
   return (
-    <Container>
+    <Container
+      onClick={() => navigate(navigatePath.FRIEND_BOOKMARK.replace(':id', id))}
+    >
       <EmojiAndNameWrapper>
         <span>{emoji}</span>
         <span>{name}</span>
