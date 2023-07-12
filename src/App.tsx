@@ -22,12 +22,15 @@ import { Analytics } from '@vercel/analytics/react';
 import FriendPage from '@/pages/FriendPage';
 import RNListener from './RNListener';
 import FriendBookmarkPage from './pages/FriendBookmarkPage';
+import ApiErrorBoundary from './common-ui/Error/ApiErrorBoundary';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: false,
+      suspense: false,
+      useErrorBoundary: true,
     },
   },
 });
@@ -36,50 +39,52 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
+        <GlobalStyle />
+        <IconLoader />
+        <ToastList />
         <BrowserRouter>
-          <IconLoader />
-          <GlobalStyle />
-          <ToastList />
-          <RNListener />
-          <Layout>
-            <Routes>
-              <Route path={navigatePath.MAIN} element={<MainPage />} />
-              <Route
-                path={navigatePath.BOOKMARK_DETAIL}
-                element={<BookMarkDetailPage />}
-              />
-              <Route path={navigatePath.FAQ} element={<FaqPage />} />
-              <Route path={navigatePath.REPORT} element={<ReportPage />} />
-              <Route
-                path={navigatePath.USER}
-                element={<UserCreatePage mode="CREATE" />}
-              />
-              <Route
-                path={navigatePath.NOTIFICATION}
-                element={<NotificationPage />}
-              />
-              <Route
-                path={navigatePath.USER_EDIT}
-                element={<UserCreatePage mode="EDIT" />}
-              />
-              <Route
-                path={navigatePath.CATEGORY_LIST}
-                element={<CategoryListPage />}
-              />
-              <Route
-                path={navigatePath.CATEGORY_ADD}
-                element={<CategoryAddPage mode="ADD" />}
-              />
-              <Route path={navigatePath.COMMENT} element={<CommentPage />} />
-              <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
-              <Route path={navigatePath.LIKE_PAGE} element={<LikePage />} />
-              <Route path={navigatePath.FRIEND} element={<FriendPage />} />
-              <Route
-                path={navigatePath.FRIEND_BOOKMARK}
-                element={<FriendBookmarkPage />}
-              />
-            </Routes>
-          </Layout>
+          <ApiErrorBoundary>
+            <RNListener />
+            <Layout>
+              <Routes>
+                <Route path={navigatePath.MAIN} element={<MainPage />} />
+                <Route
+                  path={navigatePath.BOOKMARK_DETAIL}
+                  element={<BookMarkDetailPage />}
+                />
+                <Route path={navigatePath.FAQ} element={<FaqPage />} />
+                <Route path={navigatePath.REPORT} element={<ReportPage />} />
+                <Route
+                  path={navigatePath.USER}
+                  element={<UserCreatePage mode="CREATE" />}
+                />
+                <Route
+                  path={navigatePath.NOTIFICATION}
+                  element={<NotificationPage />}
+                />
+                <Route
+                  path={navigatePath.USER_EDIT}
+                  element={<UserCreatePage mode="EDIT" />}
+                />
+                <Route
+                  path={navigatePath.CATEGORY_LIST}
+                  element={<CategoryListPage />}
+                />
+                <Route
+                  path={navigatePath.CATEGORY_ADD}
+                  element={<CategoryAddPage mode="ADD" />}
+                />
+                <Route path={navigatePath.COMMENT} element={<CommentPage />} />
+                <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
+                <Route path={navigatePath.LIKE_PAGE} element={<LikePage />} />
+                <Route path={navigatePath.FRIEND} element={<FriendPage />} />
+                <Route
+                  path={navigatePath.FRIEND_BOOKMARK}
+                  element={<FriendBookmarkPage />}
+                />
+              </Routes>
+            </Layout>
+          </ApiErrorBoundary>
         </BrowserRouter>
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
