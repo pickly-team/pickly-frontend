@@ -23,7 +23,10 @@ const RoundToggle = ({
   return (
     <Container
       style={style}
-      onClick={isOn ? setOff : setOn}
+      onClick={(e) => {
+        e.stopPropagation();
+        isOn ? setOff() : setOn();
+      }}
       isOn={isOn}
       transitionMs={transitionMs}
     >

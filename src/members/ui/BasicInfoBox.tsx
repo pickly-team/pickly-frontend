@@ -1,12 +1,13 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import Icon from '@/common-ui/assets/Icon';
 import getRem from '@/utils/getRem';
-import MoreButtonBottomSheet from '@/members/ui/MoreButtonBottomSheet';
-import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
+import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
+import IconButton from '@/common/ui/IconButton';
+import { navigatePath } from '@/constants/navigatePath';
 
 const BasicInfoBox = ({
   memberId,
@@ -23,8 +24,16 @@ const BasicInfoBox = ({
   followersCount: number;
   followeesCount: number;
 }) => {
-  const { isOpen, open, close } = useBottomSheet();
   const numberFormatter = new Intl.NumberFormat('en', { notation: 'compact' });
+
+  const router = useNavigate();
+
+  const onClickUserEdit = () => {
+    router(navigatePath.USER_EDIT);
+  };
+  const onClickUserBlock = () => {
+    router(navigatePath.FRIEND);
+  };
 
   return (
     <>
@@ -36,8 +45,21 @@ const BasicInfoBox = ({
               <Icon name={'circle-pencil'} size={'l'} />
             </LinkContainer>
           </NicknameColumn>
-          <MoreButtonContainer onClick={open}>
-            <Icon name={'more'} size={'s'} />
+          <MoreButtonContainer>
+            <TriggerBottomSheet>
+              <TriggerBottomSheet.Trigger
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                as={<IconButton onClick={() => {}} name="more" size="s" />}
+              />
+              <TriggerBottomSheet.BottomSheet>
+                <TriggerBottomSheet.Item onClick={onClickUserEdit}>
+                  내 정보 수정
+                </TriggerBottomSheet.Item>
+                <TriggerBottomSheet.Item onClick={onClickUserBlock}>
+                  차단한 사용자
+                </TriggerBottomSheet.Item>
+              </TriggerBottomSheet.BottomSheet>
+            </TriggerBottomSheet>
           </MoreButtonContainer>
         </ProfileNameRow>
         <ProfileInfoRow>
@@ -45,21 +67,21 @@ const BasicInfoBox = ({
             <Text.Span fontSize={3}>{profileEmoji}</Text.Span>
           </ProfileImage>
           <ProfileStatsColumn>
-            <Link to={'/bookmarks'}>
+            <Link to={'/'}>
               <ProfileStatColumn>
                 <Text.Span>{numberFormatter.format(bookmarksCount)}</Text.Span>
                 <Text.Span>북마크</Text.Span>
               </ProfileStatColumn>
             </Link>
 
-            <Link to={'/friends'}>
+            <Link to={'/friend'}>
               <ProfileStatColumn>
                 <Text.Span>{numberFormatter.format(followersCount)}</Text.Span>
                 <Text.Span>팔로워</Text.Span>
               </ProfileStatColumn>
             </Link>
 
-            <Link to={'/friends'}>
+            <Link to={'/friend'}>
               <ProfileStatColumn>
                 <Text.Span>{numberFormatter.format(followeesCount)}</Text.Span>
                 <Text.Span>팔로잉</Text.Span>
@@ -68,12 +90,6 @@ const BasicInfoBox = ({
           </ProfileStatsColumn>
         </ProfileInfoRow>
       </Container>
-
-      <MoreButtonBottomSheet
-        open={isOpen}
-        onClose={close}
-        memberId={memberId}
-      />
     </>
   );
 };

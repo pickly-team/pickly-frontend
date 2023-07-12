@@ -9,11 +9,13 @@ const RoundedBox = ({
   style,
   backgroundColor = 'white',
   borderColor,
+  onClick,
 }: {
   children: React.ReactNode;
   style?: React.CSSProperties;
   backgroundColor?: ColorType;
   borderColor?: ColorType;
+  onClick?: () => void;
 }) => {
   return (
     <StyledRoundedBox
@@ -22,6 +24,7 @@ const RoundedBox = ({
       style={{
         ...style,
       }}
+      onClick={onClick}
     >
       {children}
     </StyledRoundedBox>

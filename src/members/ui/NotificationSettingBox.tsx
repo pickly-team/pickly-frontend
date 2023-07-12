@@ -28,16 +28,10 @@ const NotificationSettingBox = ({
           paddingTop: `${getRem(30)}`,
           paddingBottom: `${getRem(30)}`,
         }}
+        onClick={() => isNotificationOn && open()}
         borderColor="lightPrimary"
       >
-        <Text.Span
-          color={'grey900'}
-          fontSize={1.25}
-          onClick={() => isNotificationOn && open()}
-          style={{
-            cursor: isNotificationOn ? 'pointer' : 'default',
-          }}
-        >
+        <Text.Span color={'grey900'} fontSize={1.25}>
           {`🔔 ${toReadableTime(notificationSetting.time)}`}
         </Text.Span>
         <RoundToggle
