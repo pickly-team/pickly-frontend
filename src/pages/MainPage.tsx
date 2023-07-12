@@ -13,17 +13,22 @@ import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
 import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import getRem from '@/utils/getRem';
+import useAuthStore from '@/store/auth';
 
 const MainPage = () => {
-  const USER_ID = 1;
+  const { memberId } = useAuthStore();
   const { selectedCategory, categoryOptions, onChangeCategory } = useCategory({
-    memberId: USER_ID,
+    memberId,
   });
 
   const { isReadMode, onClickReadMode } = useReadList();
 
   const { bookMarkList, isLoading, fetchNextPage, isFetchingNextPage } =
-    useBookmarkList({ readByUser: isReadMode, categoryId: selectedCategory });
+    useBookmarkList({
+      readByUser: isReadMode,
+      categoryId: selectedCategory,
+      memberId,
+    });
   const { bottom } = useBottomIntersection({ fetchNextPage });
 
   const {
