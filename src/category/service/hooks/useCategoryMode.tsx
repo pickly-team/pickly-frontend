@@ -44,7 +44,7 @@ const useCategoryMode = ({
           <TriggerBottomSheet>
             <TriggerBottomSheet.Trigger
               // eslint-disable-next-line @typescript-eslint/no-empty-function
-              as={<IconButton onClick={() => {}} name="more" size="l" />}
+              as={<IconButton onClick={() => {}} name="more" size="s" />}
             />
             <TriggerBottomSheet.BottomSheet onClose={setNormalMode}>
               <TriggerBottomSheet.Item onClick={setDeleteMode}>
