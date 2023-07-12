@@ -160,7 +160,7 @@ const ToggleWrapper = styled.div`
   padding: ${getRem(20)};
   border-radius: 0.8rem;
   justify-content: space-between;
-  z-index: ${TOGGLE_BUTTON_Z_INDEX};
+  /* z-index: ${TOGGLE_BUTTON_Z_INDEX}; */
 `;
 
 const ButtonWrapper = styled.div`

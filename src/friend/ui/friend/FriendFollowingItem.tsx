@@ -19,6 +19,7 @@ const FriendFollowingItem = ({
     <FriendItemLayout
       name={name}
       emoji={profileEmoji && decodeEmojiBase64(profileEmoji)}
+      id={id}
       button={
         isFollowing ? (
           <UnFollowButton userId={id} />

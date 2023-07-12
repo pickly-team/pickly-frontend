@@ -17,6 +17,7 @@ const FriendFollowerItem = ({
 }: FriendFollowerProps) => {
   return (
     <FriendItemLayout
+      id={id}
       name={name}
       emoji={profileEmoji && decodeEmojiBase64(profileEmoji)}
       button={

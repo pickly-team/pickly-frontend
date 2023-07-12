@@ -4,6 +4,7 @@ import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
 import { useUnFollowMutation } from '@/friend/api/friends';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import type { MouseEvent } from 'react';
 
 interface UnFollowButtonProps {
   userId: string;
@@ -20,7 +21,8 @@ const UnFollowButton = ({ userId }: UnFollowButtonProps) => {
   });
 
   //TODO: 하드코딩 개선
-  const onClick = () => {
+  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     mutate({ memberId: '1', followingId: '3' });
   };
   return (
