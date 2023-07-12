@@ -21,7 +21,7 @@ import NotificationPage from '@/pages/NotificationPage';
 import { Analytics } from '@vercel/analytics/react';
 import FriendPage from '@/pages/FriendPage';
 import RNListener from './RNListener';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import FriendBookmarkPage from './pages/FriendBookmarkPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,10 +74,14 @@ const App = () => {
               <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
               <Route path={navigatePath.LIKE_PAGE} element={<LikePage />} />
               <Route path={navigatePath.FRIEND} element={<FriendPage />} />
+              <Route
+                path={navigatePath.FRIEND_BOOKMARK}
+                element={<FriendBookmarkPage />}
+              />
             </Routes>
           </Layout>
         </BrowserRouter>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
       <Analytics />
     </ThemeProvider>
