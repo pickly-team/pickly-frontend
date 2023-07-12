@@ -3,13 +3,16 @@ import { useEffect } from 'react';
 
 interface BookmarkListProps {
   readByUser: boolean;
+  memberId: number;
   categoryId?: number;
 }
 
-const useBookmarkList = ({ readByUser, categoryId }: BookmarkListProps) => {
+const useBookmarkList = ({
+  readByUser,
+  memberId,
+  categoryId,
+}: BookmarkListProps) => {
   // SERVER
-  // TODO : firebase auth 연동 후 userId 변경
-  const USER_ID = 1;
   // 1. 북마크 리스트 조회
   const {
     data: bookMarkList,
@@ -20,7 +23,7 @@ const useBookmarkList = ({ readByUser, categoryId }: BookmarkListProps) => {
   } = useGETBookMarkListQuery({
     readByUser,
     categoryId,
-    memberId: USER_ID,
+    memberId,
     pageRequest: {
       pageSize: 15,
     },
