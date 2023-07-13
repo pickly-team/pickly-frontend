@@ -99,8 +99,26 @@ const Select = ({
     onClick: toggleSelect,
   });
 
+  // Container 밖을 클릭하면 Select가 닫히도록 하는 로직
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const clickOutsideHandler = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        closeSelect();
+      }
+    };
+
+    if (isOpen) document.addEventListener('click', clickOutsideHandler);
+
+    return () => document.removeEventListener('click', clickOutsideHandler);
+  }, [isOpen, closeSelect, containerRef]);
+
   return (
-    <Container>
+    <Container ref={containerRef}>
       {clonedTrigger}
       <select ref={ref} style={{ display: 'none' }}>
         {children}
