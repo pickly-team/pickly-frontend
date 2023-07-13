@@ -14,6 +14,7 @@ import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookm
 import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import getRem from '@/utils/getRem';
 import useAuthStore from '@/store/auth';
+import BlankItem from '@/common-ui/BlankItem';
 
 const MainPage = () => {
   const { memberId } = useAuthStore();
@@ -61,9 +62,17 @@ const MainPage = () => {
 
       <LMiddle>
         {!!isLoading &&
-          [1, 2, 3, 4, 5, 6].map((item) => <BookmarkSkeletonItem key={item} />)}
+          Array.from({ length: 5 }).map((_, index) => (
+            <BookmarkSkeletonItem key={index} />
+          ))}
         {!isLoading && bookMarkList?.pages.length && (
           <>
+            {bookMarkList.pages[0].contents.length === 0 && (
+              <>
+                {!!isReadMode && <BlankItem page="BOOKMARK" />}
+                {!isReadMode && <BlankItem page="BOOKMARK_READ" />}
+              </>
+            )}
             {!isEditMode &&
               bookMarkList.pages[0].contents[0]?.bookmarkId &&
               bookMarkList.pages.map((page) => (
@@ -101,7 +110,9 @@ const MainPage = () => {
         )}
         <div ref={bottom} />
         {isFetchingNextPage &&
-          [1, 2, 3, 4, 5, 6].map((item) => <BookmarkSkeletonItem key={item} />)}
+          Array.from({ length: 5 }).map((_, index) => (
+            <BookmarkSkeletonItem key={index} />
+          ))}
       </LMiddle>
       {/** 북마크 삭제 확인 */}
       <BookmarkBSDeleteConfirmation

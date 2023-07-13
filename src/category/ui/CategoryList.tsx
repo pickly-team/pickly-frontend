@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import SkeletonCategoryList from './SkeletonCategoryList';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
+import BlankItem from '@/common-ui/BlankItem';
 
 interface CategoryListProps {
   mode: Mode;
@@ -107,6 +108,10 @@ const CategoryList = ({
       );
     }
   };
+
+  if (categoryList?.pages[0].contents.length === 0) {
+    return <BlankItem page="CATEGORY" />;
+  }
 
   return (
     <>

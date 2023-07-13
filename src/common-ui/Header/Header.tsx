@@ -9,15 +9,18 @@ interface HeaderProps {
   showBackButton?: boolean;
   title?: string;
   rightButton?: ReactNode;
+  backButtonCallback?: () => void;
 }
 
 const Header = ({
   showBackButton = false,
   title,
   rightButton,
+  backButtonCallback,
 }: HeaderProps) => {
   const onClickBackButton = () => {
     window.history.back();
+    backButtonCallback && backButtonCallback();
   };
   return (
     <HeaderContainer>
