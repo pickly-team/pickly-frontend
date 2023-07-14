@@ -1,64 +1,97 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import Header from '@/common-ui/Header/Header';
-import Icon from '@/common-ui/assets/Icon';
-import CommentCountInfo from '@/comment/ui/bookmark/CommentCountInfo';
-import CommentItem from '@/comment/ui/bookmark/CommentItem';
 import CommentUploadInput from '@/comment/ui/bookmark/CommentUploadInput';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
 import BookmarkArticle from '@/bookmarks/ui/BookmarkArticle';
-import BookmarkLikeButton from '@/bookmarks/ui/Like/BookmarkLikeButton';
+import { Suspense } from 'react';
+import CommentList from '@/comment/ui/bookmark/CommentList';
+import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
+import IconButton from '@/common/ui/IconButton';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  refetchAllBookmarkQuery,
+  useDELETEBookmarkQuery,
+} from '@/bookmarks/api/bookmark';
+import BSConfirmation from '@/common/ui/BSConfirmation';
+import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
+import useAuthStore from '@/store/auth';
+import { useQueryClient } from '@tanstack/react-query';
 
 const BookMarkDetailPage = () => {
+  // FIRST RENDER
+  const router = useNavigate();
+  const { memberId } = useAuthStore();
+  const { id } = useParams() as { id: string };
+  const queryClient = useQueryClient();
+
+  // USER INTERACTION
+  // 1. 북마크 삭제
+  const { mutate: deleteBookmark } = useDELETEBookmarkQuery({
+    memberId: memberId ?? 0,
+    bookmarkId: id,
+  });
+  const {
+    isOpen: deleteBookmarkBS,
+    open: openDeleteBookmarkBS,
+    close: closeDeleteBookmarkBS,
+  } = useBottomSheet();
+  const onClickDeleteBookmark = () => {
+    deleteBookmark({ bookmarkId: Number(id) });
+    closeDeleteBookmarkBS();
+    router('/');
+  };
+
+  const onClickBackCallback = () => {
+    refetchAllBookmarkQuery({
+      queryClient,
+      memberId: memberId ?? 0,
+      bookmarkId: id,
+    });
+  };
+
   return (
     <>
       <Header
         rightButton={
-          <button>
-            <Icon name="more" size="m" />
-          </button>
+          <TriggerBottomSheet>
+            <TriggerBottomSheet.Trigger
+              as={<IconButton onClick={() => {}} name="more" size="s" />}
+            />
+            <TriggerBottomSheet.BottomSheet>
+              <TriggerBottomSheet.Item>수정하기</TriggerBottomSheet.Item>
+              <TriggerBottomSheet.Item onClick={openDeleteBookmarkBS}>
+                삭제하기
+              </TriggerBottomSheet.Item>
+            </TriggerBottomSheet.BottomSheet>
+          </TriggerBottomSheet>
         }
         showBackButton
+        backButtonCallback={onClickBackCallback}
       />
       <Body>
-        <BookmarkArticle
-          title="발가락으로 만드는 CRUD 게시판"
-          previewImgSrc="https://mblogthumb-phinf.pstatic.net/20160526_126/emo-art_1464269073322MHPQj_JPEG/zLNFIBtisESk634049407784855842.jpg?type=w800"
-          category="프론트엔드"
-          createdAt="2023/01/25 23:40:08"
-          bookMarkUrl="https://velog.io/@aeong98"
-          likeButton={<BookmarkLikeButton isLike={false} />}
-          messageInfo={<CommentCountInfo commentCount={2} />}
-        />
-        <CommentListWrapper>
-          <CommentItem
-            nickname="피클리 마스터"
-            content="야무진 맛도리 글 👍 자기전에 봐야징"
-            updatedAt="2023/01/31 01:23:11"
-            isWriter={true}
-          />
-          <CommentItem
-            nickname="피클리 마스터"
-            content="야무진 맛도리 글 👍 자기전에 봐야징"
-            updatedAt="2023/01/31 01:23:11"
-            isWriter={false}
-          />
-          <CommentItem
-            nickname="피클리 마스터"
-            content="야무진 맛도리 글 👍 자기전에 봐야징"
-            updatedAt="2023/01/31 01:23:11"
-            isWriter={false}
-          />
-          <CommentItem
-            nickname="피클리 마스터"
-            content="야무진 맛도리 글 👍 자기전에 봐야징"
-            updatedAt="2023/01/31 01:23:11"
-            isWriter={false}
-          />
-        </CommentListWrapper>
+        {/** 북마크 정보 영역 */}
+        <Suspense>
+          <BookmarkArticle />
+        </Suspense>
+        {/** 댓글 리스트 영역 */}
+        <Suspense>
+          <CommentList />
+        </Suspense>
       </Body>
+      {/** 댓글 입력 영역 */}
       <CommentUploadInputBottomBar>
         <CommentUploadInput />
       </CommentUploadInputBottomBar>
+      {/** 북마크 삭제 BS */}
+      <BSConfirmation
+        open={deleteBookmarkBS}
+        onCancel={closeDeleteBookmarkBS}
+        onClose={closeDeleteBookmarkBS}
+        title="정말로 삭제하시겠습니까?"
+        description="삭제된 북마크는 복구할 수 없습니다."
+        onConfirm={onClickDeleteBookmark}
+      />
     </>
   );
 };
@@ -69,14 +102,8 @@ const Body = styled.div`
   padding: ${getRem(0, 20)};
 `;
 
-const CommentListWrapper = styled.div`
-  > * + * {
-    margin-bottom: ${getRem(16)};
-  }
-`;
-
 const CommentUploadInputBottomBar = styled.div`
-  position: sticky;
+  position: fixed;
   width: 100%;
   left: 0;
   bottom: 0;
