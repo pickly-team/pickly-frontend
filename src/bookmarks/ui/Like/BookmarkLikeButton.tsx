@@ -31,7 +31,7 @@ const BookmarkLikeButton = ({
 export default BookmarkLikeButton;
 
 const LikeButton = styled.button`
-  width: ${getRem(60)};
+  width: ${getRem(40)};
   height: 100%;
   &:active {
     opacity: 0.5;
