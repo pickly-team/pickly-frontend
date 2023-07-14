@@ -13,6 +13,12 @@ import {
 const DOMAIN = 'BOOKMARK';
 
 export type Visibility = 'SCOPE_PUBLIC' | 'SCOPE_PRIVATE' | 'SCOPE_FRIEND';
+export type ClientVisibility = '전체 공개' | '나만 보기' | '친구만 보기';
+export const TEMP_VISIBILITY: Record<ClientVisibility, Visibility> = {
+  '전체 공개': 'SCOPE_PUBLIC',
+  '나만 보기': 'SCOPE_PRIVATE',
+  '친구만 보기': 'SCOPE_FRIEND',
+};
 
 export const GET_BOOKMARK_LIST = (
   userId: number,
@@ -318,7 +324,7 @@ export interface BookmarkDetail {
   previewImageUrl: string;
   isUserLike: boolean;
   readByUser: boolean;
-  visibility: string;
+  visibility: ClientVisibility;
 }
 
 interface GETBookmarkDetailParams {
@@ -347,6 +353,7 @@ interface ClientBookmarkDetail {
   isUserLike: boolean;
   readByUser: boolean;
   createdAt: number;
+  visibility: Visibility;
 }
 
 const getBookmarkDetailMapper = (
@@ -361,6 +368,7 @@ const getBookmarkDetailMapper = (
     isUserLike: data.isUserLike,
     readByUser: data.readByUser,
     createdAt: 1689278498,
+    visibility: TEMP_VISIBILITY[data.visibility],
   };
 };
 
@@ -613,6 +621,52 @@ export const refetchAllBookmarkQuery = ({
   queryClient.refetchQueries(
     GET_BOOKMARK_LIST(memberId, true, categoryId ?? 0),
   );
+};
+
+// 북마크 수정
+
+interface PUTBookmarkRequest {
+  bookmarkId: string;
+  putData: {
+    categoryId: string;
+    title: string;
+    readByUser: boolean;
+    visibility: Visibility;
+  };
+
+  token?: string;
+}
+
+const putBookmarkAPI = async ({
+  bookmarkId,
+  putData,
+  token,
+}: PUTBookmarkRequest) => {
+  const { data } = await client({
+    method: 'put',
+    url: `/bookmarks/${bookmarkId}`,
+    params: { bookmarkId },
+    data: putData,
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface PUTBookmarkQueryRequest {
+  bookmarkId: string;
+  memberId: number;
+}
+export const usePUTBookmarkQuery = ({
+  bookmarkId,
+  memberId,
+}: PUTBookmarkQueryRequest) => {
+  const queryClient = useQueryClient();
+  return useMutation(putBookmarkAPI, {
+    onSuccess: () => {
+      refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
+      queryClient.refetchQueries(GET_BOOKMARK_DETAIL({ bookmarkId }));
+    },
+  });
 };
 
 // TODO : 추후 테스트 코드 작성
