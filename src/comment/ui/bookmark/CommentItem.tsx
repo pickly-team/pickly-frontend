@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 import Text from '@/common-ui/Text';
 import Icon from '@/common-ui/assets/Icon';
-import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
-import CommentBottomSheet from '@/comment/ui/bookmark/CommetBottomSheet';
 import getRem from '@/utils/getRem';
+import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
+import IconButton from '@/common/ui/IconButton';
 
 interface CommentProps {
   nickname: string;
   content: string;
   updatedAt: string;
   isWriter: boolean;
+  onClickDelete?: () => void;
+  onClickEdit?: () => void;
+  onClickReport?: () => void;
 }
 
 const CommentItem = ({
@@ -18,30 +22,47 @@ const CommentItem = ({
   content,
   updatedAt,
   isWriter,
+  onClickDelete,
+  onClickEdit,
+  onClickReport,
 }: CommentProps) => {
-  const { isOpen, open, close } = useBottomSheet();
   return (
-    <>
-      <Container>
-        <CommentHeader>
-          <NicknameTextAndIconWrapper>
-            <NicknameText fontSize={1.2} weight={'bold'}>
-              {nickname}
-            </NicknameText>
-            {isWriter && <Icon name="badge-green" size={'s'} />}
-          </NicknameTextAndIconWrapper>
-          <button onClick={open}>
-            <Icon name="more" size="m" />
-          </button>
-        </CommentHeader>
-        <ContentText>{content}</ContentText>
-        <IconAndTextWrapper>
-          <Icon name="timeline" size={'s'} />
-          <UpdatedAtText>{updatedAt}</UpdatedAtText>
-        </IconAndTextWrapper>
-      </Container>
-      <CommentBottomSheet open={isOpen} onClose={close} />
-    </>
+    <Container>
+      <CommentHeader>
+        <NicknameTextAndIconWrapper>
+          <NicknameText fontSize={1} weight={'bold'}>
+            {nickname}
+          </NicknameText>
+          {isWriter && <Icon name="badge-green" size={'s'} />}
+        </NicknameTextAndIconWrapper>
+        <div />
+        <div />
+        <TriggerBottomSheet>
+          <TriggerBottomSheet.Trigger
+            as={<IconButton onClick={() => {}} name="more" size="s" />}
+          />
+          <TriggerBottomSheet.BottomSheet>
+            {isWriter ? (
+              <MoreContent
+                type="writer"
+                onClickDelete={onClickDelete ?? (() => {})}
+                onClickEdit={onClickEdit ?? (() => {})}
+              />
+            ) : (
+              <MoreContent
+                type="notWriter"
+                onClickReport={onClickReport ?? (() => {})}
+              />
+            )}
+          </TriggerBottomSheet.BottomSheet>
+        </TriggerBottomSheet>
+      </CommentHeader>
+      <ContentText fontSize={0.8}>{content}</ContentText>
+      <IconAndTextWrapper>
+        <Icon name="timeline" size={'xs'} />
+        <UpdatedAtText fontSize={0.625}>{updatedAt}</UpdatedAtText>
+      </IconAndTextWrapper>
+    </Container>
   );
 };
 
@@ -49,23 +70,29 @@ export default CommentItem;
 
 const Container = styled.div`
   display: grid;
-  row-gap: ${getRem(10)};
-  width: 100%;
+  flex-direction: column;
+  row-gap: 0.8rem;
   padding: ${getRem(15, 20)};
   border-radius: ${getRem(7)};
   background-color: ${theme.colors.grey800};
+  margin-bottom: 1rem;
+  :nth-last-of-type(1) {
+    margin-bottom: 5rem;
+  }
 `;
 
 const CommentHeader = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
+  height: 1.5rem;
 `;
 
 const NicknameTextAndIconWrapper = styled.div`
   display: flex;
   align-items: center;
   column-gap: ${getRem(8)};
+  margin-right: auto; // 추가
 `;
 
 const NicknameText = styled(Text.Span)``;
@@ -76,3 +103,50 @@ const IconAndTextWrapper = styled.div`
   align-items: center;
   column-gap: ${getRem(8)};
 `;
+
+type Writer = {
+  type: 'writer';
+  onClickDelete?: () => void;
+  onClickEdit?: () => void;
+};
+
+type NotWriter = {
+  type: 'notWriter';
+  onClickReport?: () => void;
+};
+
+type UserActions =
+  | {
+      type: 'writer';
+      onClickDelete: () => void;
+      onClickEdit: () => void;
+    }
+  | {
+      type: 'notWriter';
+      onClickReport: () => void;
+    };
+
+const MoreContent = ({ type, ...actions }: UserActions) => {
+  if (type === 'writer') {
+    const { onClickDelete, onClickEdit } = actions as Writer;
+    return (
+      <>
+        <TriggerBottomSheet.Item onClick={onClickEdit}>
+          수정하기
+        </TriggerBottomSheet.Item>
+        <TriggerBottomSheet.Item onClick={onClickDelete}>
+          삭제하기
+        </TriggerBottomSheet.Item>
+      </>
+    );
+  } else {
+    const { onClickReport } = actions as NotWriter;
+    return (
+      <>
+        <TriggerBottomSheet.Item onClick={onClickReport}>
+          신고하기
+        </TriggerBottomSheet.Item>
+      </>
+    );
+  }
+};
