@@ -39,14 +39,14 @@ const BottomNavigation = () => {
     handleKeyDown,
     onDeleteInput,
     resetAllInputs,
-  } = useInputUrl();
+  } = useInputUrl({});
 
   // 2. 카테고리 선택
-  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory();
+  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory({});
 
   // 3. 공개 범위 선택
   const { onClickPublishScoped, selectedPublishScoped } =
-    useSelectPublishScoped();
+    useSelectPublishScoped({});
 
   // 2. 카테고리 변경
   const onClickCategory = (id: number) => {

@@ -86,4 +86,6 @@ export type IconName =
   | 'hamburger'
   | 'trash'
   | 'check-green-reverse'
-  | 'arrow-down';
+  | 'arrow-down'
+  | 'check-circle'
+  | 'close-circle';
