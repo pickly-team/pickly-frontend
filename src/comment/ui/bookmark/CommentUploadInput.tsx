@@ -1,28 +1,79 @@
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, MouseEvent } from 'react';
 import Input from '@/common-ui/Input';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
-import Icon from '@/common-ui/assets/Icon';
 import getRem from '@/utils/getRem';
+import useCommentStore from '@/store/comment';
+import IconButton from '@/common/ui/IconButton';
+import { usePOSTCommentQuery, usePUTCommentQuery } from '@/comment/api/Comment';
+import { useParams } from 'react-router-dom';
+import useAuthStore from '@/store/auth';
 
 const CommentUploadInput = () => {
-  const [comment, setComment] = useState<string>('');
+  const { memberId } = useAuthStore();
+  const { id } = useParams() as { id: string };
+  const { mode, comment, setComment, initComment } = useCommentStore();
 
   const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const { value } = event.target;
     setComment(value);
   };
+
+  const onCloseCommentEdit = () => {
+    initComment();
+  };
+
+  const { mutate: postComment } = usePOSTCommentQuery({
+    memberId,
+    initComment,
+  });
+  const { mutate: editComment } = usePUTCommentQuery({ memberId, initComment });
+
+  const onSubmit = (
+    event: React.FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.preventDefault();
+    if (mode === 'CREATE') {
+      postComment({
+        bookmarkId: Number(id),
+        memberId: memberId,
+        postData: {
+          content: comment.content,
+        },
+      });
+    }
+    if (mode === 'EDIT' && comment.id) {
+      editComment({
+        commentId: comment.id,
+        putData: {
+          content: comment.content,
+        },
+      });
+    }
+  };
+
   return (
-    <Container>
+    <Container onSubmit={onSubmit}>
       <StyledInput
-        value={comment}
+        value={comment.content}
         onChange={onChange}
         backgroundColor={'black'}
         placeholder="댓글을 입력하세요"
       />
-      <button>
-        <Icon name="send" size={'l'} />
-      </button>
+      {mode === 'CREATE' && (
+        <IconButton name="check-circle" size="l" type="submit" />
+      )}
+      {mode === 'EDIT' && (
+        <>
+          <IconButton
+            name="close-circle"
+            onClick={onCloseCommentEdit}
+            size="l"
+            type="button"
+          />
+          <IconButton name="check-circle" size="l" onClick={onSubmit} />
+        </>
+      )}
     </Container>
   );
 };
