@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 const IconLoader = () => (
   <svg
     id="sprite-svgs"
@@ -422,6 +423,23 @@ const IconLoader = () => (
             <path fill="#fff" d="M0 0h24v24H0z" />
           </clipPath>
         </defs>
+      </symbol>
+      <svg
+        id="close-circle"
+        viewBox="0 0 512 512"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <path
+          fill="#D84432"
+          d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48Zm75.31 260.69a16 16 0 1 1-22.62 22.62L256 278.63l-52.69 52.68a16 16 0 0 1-22.62-22.62L233.37 256l-52.68-52.69a16 16 0 0 1 22.62-22.62L256 233.37l52.69-52.68a16 16 0 0 1 22.62 22.62L278.63 256Z"
+        />
+      </svg>
+
+      <symbol id="check-circle" fill="none" viewBox="0 0 24 24">
+        <path
+          fill="#11CA61"
+          d="M10.5 0C4.98 0 .5 4.48.5 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10Zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8Zm4.59-12.42L8.5 12.17 5.91 9.59 4.5 11l4 4 8-8-1.41-1.42Z"
+        />
       </symbol>
     </defs>
   </svg>
