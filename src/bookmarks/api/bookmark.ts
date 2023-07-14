@@ -3,6 +3,7 @@ import client from '@/common/service/client';
 import { navigatePath } from '@/constants/navigatePath';
 import qs from 'qs';
 import {
+  InfiniteData,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -114,12 +115,12 @@ export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
 };
 
 // 북마크 삭제
-interface DELETEBookMarkRequest {
+interface DELETEBookMarkListRequest {
   bookmarkIds: number[];
 }
 
-const DELETEBookMark = {
-  API: async (params: DELETEBookMarkRequest) => {
+const DELETEBookMarkList = {
+  API: async (params: DELETEBookMarkListRequest) => {
     const { data } = await client.delete('/bookmarks/list', {
       params: {
         bookmarkId: params.bookmarkIds,
@@ -131,7 +132,7 @@ const DELETEBookMark = {
   },
 };
 
-interface DELETEBookMarkMutation {
+interface DELETEBookMarkListMutation {
   userId: number;
   categoryId?: number;
 }
@@ -139,9 +140,9 @@ interface DELETEBookMarkMutation {
 export const useDELETEBookMarkMutation = ({
   userId,
   categoryId,
-}: DELETEBookMarkMutation) => {
+}: DELETEBookMarkListMutation) => {
   const queryClient = useQueryClient();
-  return useMutation(DELETEBookMark.API, {
+  return useMutation(DELETEBookMarkList.API, {
     onSuccess: () => {
       queryClient.refetchQueries(
         GET_BOOKMARK_LIST(userId, false, categoryId ?? 0),
@@ -227,12 +228,12 @@ export const useGETCategoryListQuery = ({
 
 type GETBookmarkTitleResponse = string;
 
-interface RequestInterface {
+interface GetBookmarkTitleRequest {
   url: string;
   setTitle?: (title: string) => void;
 }
 
-const getAPI = async ({ url }: RequestInterface) => {
+const getBookmarkTitleAPI = async ({ url }: GetBookmarkTitleRequest) => {
   const { data } = await client<GETBookmarkTitleResponse>({
     method: 'get',
     url: '/bookmark/title',
@@ -247,9 +248,9 @@ const GET_BOOKMARK_TITLE = (url: string) => ['GET_BOOKMARK_TITLE', url];
 export const useGETBookmarkTitleQuery = ({
   url,
   setTitle,
-}: RequestInterface) => {
+}: GetBookmarkTitleRequest) => {
   const { fireToast } = useToast();
-  return useQuery(GET_BOOKMARK_TITLE(url), () => getAPI({ url }), {
+  return useQuery(GET_BOOKMARK_TITLE(url), () => getBookmarkTitleAPI({ url }), {
     enabled: !!url,
     retry: 0,
     onSuccess: (data) => {
@@ -305,6 +306,313 @@ export const usePOSTBookmarkMutation = ({
       fireToast({ message: '앗! 추가할 수 없는 북마크에요', mode: 'DELETE' });
     },
   });
+};
+
+// 북마크 상세 조회
+export interface BookmarkDetail {
+  id: number;
+  categoryId: number;
+  memberId: number;
+  url: string;
+  title: string;
+  previewImageUrl: string;
+  isUserLike: boolean;
+  readByUser: boolean;
+  visibility: string;
+}
+
+interface GETBookmarkDetailParams {
+  bookmarkId: string;
+  token?: string;
+}
+
+const getBookmarkDetailAPI = async ({
+  bookmarkId,
+  token,
+}: GETBookmarkDetailParams) => {
+  const { data } = await client<BookmarkDetail>({
+    method: 'get',
+    url: `/bookmarks/${bookmarkId}`,
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return getBookmarkDetailMapper(data);
+};
+
+interface ClientBookmarkDetail {
+  categoryId: number;
+  categoryName: string;
+  url: string;
+  title: string;
+  previewImageUrl: string;
+  isUserLike: boolean;
+  readByUser: boolean;
+  createdAt: number;
+}
+
+const getBookmarkDetailMapper = (
+  data: BookmarkDetail,
+): ClientBookmarkDetail => {
+  return {
+    categoryId: data.categoryId,
+    categoryName: '프론트엔드',
+    url: data.url,
+    title: data.title,
+    previewImageUrl: data.previewImageUrl ?? '',
+    isUserLike: data.isUserLike,
+    readByUser: data.readByUser,
+    createdAt: 1689278498,
+  };
+};
+
+export interface GetBookmarkDetailRequest {
+  bookmarkId: string;
+  token?: string;
+}
+
+const GET_BOOKMARK_DETAIL = (params: GetBookmarkDetailRequest) => [
+  'GET_BOOKMARK_DETAIL',
+  params.bookmarkId,
+];
+
+export const useGETBookmarkDetailQuery = (params: GetBookmarkDetailRequest) => {
+  return useQuery(
+    GET_BOOKMARK_DETAIL(params),
+    async () => getBookmarkDetailAPI(params),
+    {
+      suspense: true,
+    },
+  );
+};
+
+// 북마크 댓글 조회
+export interface BookmarkCommentItem {
+  id: number;
+  member: string;
+  bookmark: string;
+  category: string;
+  isOwnerComment: boolean;
+  content: string;
+  createdTimestamp: number;
+}
+
+interface GETBookmarkCommentRequest {
+  memberId: number;
+  token?: string;
+}
+
+const getBookmarkCommentListAPI = async ({
+  memberId,
+  token,
+}: GETBookmarkCommentRequest) => {
+  const { data } = await client<BookmarkCommentItem[]>({
+    method: 'get',
+    url: `/members/${memberId}/comments`,
+    params: { memberId },
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface GetAPIRequest {
+  memberId: number;
+  token?: string;
+  setCommentCount?: (count: number) => void;
+}
+
+export const GET_BOOKMARK_COMMENT = (params: GetAPIRequest) => [
+  'GET_BOOKMARK_COMMENT',
+  params.memberId,
+];
+
+export const useGETBookmarkCommentListQuery = (params: GetAPIRequest) => {
+  return useQuery(
+    GET_BOOKMARK_COMMENT(params),
+    async () => getBookmarkCommentListAPI(params),
+    {
+      suspense: true,
+      onSuccess: (data) => {
+        params.setCommentCount && params.setCommentCount(data.length);
+      },
+    },
+  );
+};
+
+// 북마크 좋아요
+interface POSTBookmarkLikeRequest {
+  bookmarkId: string;
+  token?: string;
+}
+
+const postBookmarkLikeAPI = async ({
+  bookmarkId,
+  token,
+}: POSTBookmarkLikeRequest) => {
+  const { data } = await client({
+    method: 'post',
+    url: `/bookmarks/${bookmarkId}/like`,
+    params: { bookmarkId },
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface PostAPIRequest {
+  bookmarkId: string;
+  token?: string;
+}
+export const usePOSTBookmarkLikeQuery = ({ bookmarkId }: PostAPIRequest) => {
+  const queryClient = useQueryClient();
+  return useMutation(postBookmarkLikeAPI, {
+    onSuccess: () => {
+      queryClient.setQueryData<ClientBookmarkDetail>(
+        GET_BOOKMARK_DETAIL({ bookmarkId }),
+        (prev) => {
+          if (prev) {
+            return {
+              ...prev,
+              isUserLike: true,
+            };
+          }
+          return prev;
+        },
+      );
+    },
+  });
+};
+
+interface DELETEBookmarkLikeRequest {
+  bookmarkId: string;
+  token?: string;
+}
+
+const deleteBookmarkLikeAPI = async ({
+  bookmarkId,
+  token,
+}: DELETEBookmarkLikeRequest) => {
+  const { data } = await client({
+    method: 'delete',
+    url: `/bookmarks/${bookmarkId}/like`,
+    params: { bookmarkId },
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface DELETEBookmarkLikeQueryRequest {
+  bookmarkId: string;
+  token?: string;
+}
+export const useDELETEBookmarkLikeQuery = ({
+  bookmarkId,
+}: DELETEBookmarkLikeQueryRequest) => {
+  const queryClient = useQueryClient();
+  return useMutation(deleteBookmarkLikeAPI, {
+    onSuccess: () => {
+      queryClient.setQueryData<ClientBookmarkDetail>(
+        GET_BOOKMARK_DETAIL({ bookmarkId }),
+        (prev) => {
+          if (prev) {
+            return {
+              ...prev,
+              isUserLike: false,
+            };
+          }
+          return prev;
+        },
+      );
+    },
+  });
+};
+
+// 북마크 삭제
+export interface DeleteBookmarkResponse {
+  isDeleted: boolean;
+}
+
+interface DELETEBookmarkRequest {
+  bookmarkId: number;
+  token?: string;
+}
+
+const deleteBookmarkAPI = async ({
+  bookmarkId,
+  token,
+}: DELETEBookmarkRequest) => {
+  const { data } = await client<DeleteBookmarkResponse>({
+    method: 'delete',
+    url: `/bookmarks/${bookmarkId}`,
+    params: { bookmarkId },
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface DeleteAPIRequest {
+  memberId: number;
+  bookmarkId: string;
+}
+export const useDELETEBookmarkQuery = ({
+  memberId,
+  bookmarkId,
+}: DeleteAPIRequest) => {
+  const queryClient = useQueryClient();
+  return useMutation(deleteBookmarkAPI, {
+    onSuccess: () => {
+      refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
+    },
+  });
+};
+
+interface RefetchAllBookmark {
+  queryClient: ReturnType<typeof useQueryClient>;
+  memberId: number;
+  bookmarkId: string;
+}
+
+export const refetchAllBookmarkQuery = ({
+  queryClient,
+  memberId,
+  bookmarkId,
+}: RefetchAllBookmark) => {
+  const bookmark = queryClient.getQueryData<ClientBookmarkDetail>(
+    GET_BOOKMARK_DETAIL({ bookmarkId }),
+  );
+  const categoryId = bookmark?.categoryId ?? 0;
+  // NOTE : 왜 도대체 뒤로 가기 시에는 refetch가 되지 않는지 모르겠음
+  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
+    GET_BOOKMARK_LIST(memberId, false, 0),
+    (prev) => {
+      if (prev) {
+        if (!prev) return undefined;
+        return {
+          ...prev,
+          pages: prev.pages.map((page) => ({
+            ...page,
+            contents: page.contents.map((bookmark) => {
+              if (bookmark.bookmarkId === Number(bookmarkId)) {
+                return {
+                  ...bookmark,
+                  readByUser: true,
+                };
+              }
+              return bookmark;
+            }),
+          })),
+        };
+      }
+      return prev;
+    },
+  );
+  queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, true, 0));
+  queryClient.refetchQueries(
+    GET_BOOKMARK_LIST(memberId, false, categoryId ?? 0),
+  );
+  queryClient.refetchQueries(
+    GET_BOOKMARK_LIST(memberId, true, categoryId ?? 0),
+  );
 };
 
 // TODO : 추후 테스트 코드 작성
