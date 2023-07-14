@@ -41,13 +41,22 @@ const BookMarkDetailPage = () => {
     closeDeleteBookmarkBS();
     router('/');
   };
-
+  // 2. 뒤로가기
   const onClickBackCallback = () => {
     refetchAllBookmarkQuery({
       queryClient,
       memberId: memberId ?? 0,
       bookmarkId: id,
     });
+  };
+  // 3. 북마크 수정
+  const {
+    isOpen: editBookmarkBS,
+    close: closeEditBookmarkBS,
+    open: openEditBookmarkBS,
+  } = useBottomSheet();
+  const onClickEditBookmark = () => {
+    openEditBookmarkBS();
   };
 
   return (
@@ -59,7 +68,9 @@ const BookMarkDetailPage = () => {
               as={<IconButton onClick={() => {}} name="more" size="s" />}
             />
             <TriggerBottomSheet.BottomSheet>
-              <TriggerBottomSheet.Item>수정하기</TriggerBottomSheet.Item>
+              <TriggerBottomSheet.Item onClick={onClickEditBookmark}>
+                수정하기
+              </TriggerBottomSheet.Item>
               <TriggerBottomSheet.Item onClick={openDeleteBookmarkBS}>
                 삭제하기
               </TriggerBottomSheet.Item>
@@ -72,7 +83,10 @@ const BookMarkDetailPage = () => {
       <Body>
         {/** 북마크 정보 영역 */}
         <Suspense>
-          <BookmarkArticle />
+          <BookmarkArticle
+            editBookmarkBS={editBookmarkBS}
+            closeEditBookmarkBS={closeEditBookmarkBS}
+          />
         </Suspense>
         {/** 댓글 리스트 영역 */}
         <Suspense>

@@ -3,7 +3,7 @@ import Button from '@/common-ui/Button';
 import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
-import { ReactNode, SyntheticEvent } from 'react';
+import { ReactNode, SyntheticEvent, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import BookmarkLikeButton from './Like/BookmarkLikeButton';
@@ -11,17 +11,35 @@ import {
   useDELETEBookmarkLikeQuery,
   useGETBookmarkDetailQuery,
   usePOSTBookmarkLikeQuery,
+  usePUTBookmarkQuery,
 } from '../api/bookmark';
 import { timeStampToDate } from '@/utils/date/timeConverter';
 import CommentCountInfo from '@/comment/ui/bookmark/CommentCountInfo';
 import useCommentStore from '@/store/comment';
+import BookmarkAddBS from './Main/BookmarkAddBS';
+import ToastList from '@/common-ui/Toast/ToastList';
+import useInputUrl from '../service/hooks/add/useInputUrl';
+import useSelectCategory from '../service/hooks/add/useSelectCategory';
+import useSelectPublishScoped from '../service/hooks/add/useSelectPublishScoped';
+import useCategoryList from '../service/hooks/add/useCategoryList';
+import checkValidateURL from '@/utils/checkValidateURL';
+import useAuthStore from '@/store/auth';
 
-const BookMarkArticle = () => {
+interface BookMarkArticleProps {
+  editBookmarkBS: boolean;
+  closeEditBookmarkBS: () => void;
+}
+
+const BookMarkArticle = ({
+  editBookmarkBS,
+  closeEditBookmarkBS,
+}: BookMarkArticleProps) => {
   const { id: bookmarkId } = useParams<{ id: string }>();
   const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
     bookmarkId: bookmarkId ?? '',
   });
   const { commentCount } = useCommentStore();
+  const { memberId } = useAuthStore();
 
   const onErrorImage = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/images/main.png';
@@ -43,57 +61,153 @@ const BookMarkArticle = () => {
     postBookmarkDislike({ bookmarkId: bookmarkId ?? '' });
   };
 
+  // SERVER
+  const { categoryList, setCategoryList, toggleCategory } = useCategoryList();
+  // 1. URL & 북마크 Title 입력
+  const {
+    url,
+    title,
+    onChangeUrl,
+    onChangeTitle,
+    handleKeyDown,
+    onDeleteInput,
+  } = useInputUrl({
+    defaultUrl: bookmarkDetail?.url ?? '',
+    defaultTitle: bookmarkDetail?.title ?? '',
+  });
+
+  // 2. 카테고리 선택
+  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory({
+    defaultCategoryId: bookmarkDetail?.categoryId ?? 0,
+  });
+
+  // 3. 공개 범위 선택
+  const { onClickPublishScoped, selectedPublishScoped } =
+    useSelectPublishScoped({
+      defaultPublishScoped: bookmarkDetail?.visibility ?? 'SCOPE_PUBLIC',
+    });
+
+  // 2. 카테고리 변경
+  useEffect(() => {
+    if (!bookmarkDetail?.categoryId) return;
+    categoryList && setCategoryList(toggleCategory(bookmarkDetail.categoryId));
+    categoryList && setSelectedCategoryId(bookmarkDetail.categoryId);
+  }, [bookmarkDetail?.categoryId, categoryList]);
+
+  const onClickCategory = (id: number) => {
+    // 새로운 카테고리 선택
+    setSelectedCategoryId(id);
+    // 선택된 카테고리 변경
+    setCategoryList(toggleCategory(id));
+  };
+
+  // VALIDATION
+  const isValidateUrl = checkValidateURL(url);
+  const isAllWritten = !!(
+    url &&
+    isValidateUrl &&
+    selectedCategoryId &&
+    selectedPublishScoped
+  );
+
+  const { mutate: putBookmark } = usePUTBookmarkQuery({
+    bookmarkId: bookmarkId ?? '',
+    memberId,
+  });
+
+  const onSubmitBookmark = () => {
+    putBookmark({
+      bookmarkId: bookmarkId ?? '',
+      putData: {
+        categoryId: String(selectedCategoryId) ?? 0,
+        title: title,
+        readByUser: true,
+        visibility: selectedPublishScoped,
+      },
+    });
+    closeEditBookmarkBS();
+  };
+
   return (
-    <Container>
-      <BookMarkImage
-        src={bookmarkDetail?.previewImageUrl ?? ''}
-        onError={onErrorImage}
-      />
-      <BookMarkTitle level="h1" fontSize={1.5} weight="bold">
-        {bookmarkDetail?.title ?? ''}
-      </BookMarkTitle>
-      <CategoryAndIconsWrapper>
-        <CategoryButtonWrapper>
-          <CategoryButton height={2.5} buttonColor="lightPrimary">
-            <Text.Span color="black" weight="bold">
-              {bookmarkDetail?.categoryName ?? ''}
-            </Text.Span>
-          </CategoryButton>
-        </CategoryButtonWrapper>
-        <LikeAndMessageIconWrapper>
-          <BookmarkLikeButton
-            isLike={bookmarkDetail?.isUserLike ?? false}
-            onClickLike={onClickLike}
-            onClickDislike={onClickDislike}
+    <>
+      <Container>
+        <BookMarkImage
+          src={bookmarkDetail?.previewImageUrl ?? ''}
+          onError={onErrorImage}
+        />
+        <BookMarkTitle level="h1" fontSize={1.5} weight="bold">
+          {bookmarkDetail?.title ?? ''}
+        </BookMarkTitle>
+        <CategoryAndIconsWrapper>
+          <CategoryButtonWrapper>
+            <CategoryButton height={2.5} buttonColor="lightPrimary">
+              <Text.Span color="black" weight="bold">
+                {bookmarkDetail?.categoryName ?? ''}
+              </Text.Span>
+            </CategoryButton>
+          </CategoryButtonWrapper>
+          <LikeAndMessageIconWrapper>
+            <BookmarkLikeButton
+              isLike={bookmarkDetail?.isUserLike ?? false}
+              onClickLike={onClickLike}
+              onClickDislike={onClickDislike}
+            />
+            <CommentCountInfo commentCount={commentCount ?? 0} />
+          </LikeAndMessageIconWrapper>
+        </CategoryAndIconsWrapper>
+        <BookMarkInfoWrapper>
+          <BookMarkInfo
+            description="등록일자"
+            icon={<Icon name="calendar-plus" size="s" />}
+            content={
+              <Text.Span fontSize={0.75}>
+                {timeStampToDate(bookmarkDetail?.createdAt ?? 0)}
+              </Text.Span>
+            }
           />
-          <CommentCountInfo commentCount={commentCount ?? 0} />
-        </LikeAndMessageIconWrapper>
-      </CategoryAndIconsWrapper>
-      <BookMarkInfoWrapper>
-        <BookMarkInfo
-          description="등록일자"
-          icon={<Icon name="calendar-plus" size="s" />}
-          content={
-            <Text.Span fontSize={0.75}>
-              {timeStampToDate(bookmarkDetail?.createdAt ?? 0)}
-            </Text.Span>
-          }
+          <BookMarkInfo
+            description="원본 URL"
+            icon={<Icon name="location" size="s" />}
+            content={
+              <BookmarkUrl
+                to={bookmarkDetail?.url ?? ''}
+                target={'_blank'}
+                rel={'noreferrer'}
+              >
+                <Text.Span fontSize={0.75}>
+                  {bookmarkDetail?.url ?? ''}
+                </Text.Span>
+              </BookmarkUrl>
+            }
+          />
+        </BookMarkInfoWrapper>
+      </Container>
+      {/** 북마크 수정 BS */}
+      <BookmarkAddBS isOpen={editBookmarkBS} close={closeEditBookmarkBS}>
+        <ToastList />
+        <BookmarkAddBS.URLInput
+          url={url}
+          title={title}
+          isValidateUrl={isValidateUrl}
+          onChangeUrl={onChangeUrl}
+          onChangeTitle={onChangeTitle}
+          handleKeyDown={handleKeyDown}
+          onDeleteInput={onDeleteInput}
         />
-        <BookMarkInfo
-          description="원본 URL"
-          icon={<Icon name="location" size="s" />}
-          content={
-            <BookmarkUrl
-              to={bookmarkDetail?.url ?? ''}
-              target={'_blank'}
-              rel={'noreferrer'}
-            >
-              <Text.Span fontSize={0.75}>{bookmarkDetail?.url ?? ''}</Text.Span>
-            </BookmarkUrl>
-          }
+        <BookmarkAddBS.SelectCategory
+          categoryList={categoryList}
+          onClickCategory={onClickCategory}
         />
-      </BookMarkInfoWrapper>
-    </Container>
+        <BookmarkAddBS.PublishScoped
+          selectedPublishScoped={selectedPublishScoped}
+          onClickPublishScoped={onClickPublishScoped}
+        />
+        <BookmarkAddBS.SubmitButton
+          onClick={onSubmitBookmark}
+          isAllWritten={isAllWritten}
+        />
+      </BookmarkAddBS>
+    </>
   );
 };
 

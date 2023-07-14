@@ -1,7 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const useSelectCategory = () => {
+interface SelectCategory {
+  defaultCategoryId?: number;
+}
+
+const useSelectCategory = ({ defaultCategoryId }: SelectCategory) => {
   const [selectedCategoryId, setCategoryId] = useState(0);
+
+  useEffect(() => {
+    if (defaultCategoryId) {
+      setCategoryId(defaultCategoryId);
+    }
+  }, [defaultCategoryId]);
 
   const setSelectedCategoryId = (id: number) => {
     setCategoryId(id);

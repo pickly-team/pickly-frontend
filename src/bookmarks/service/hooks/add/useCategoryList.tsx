@@ -3,21 +3,22 @@ import {
   GET_BOOKMARK_CATEGORY_LIST,
   useGETCategoryListQuery,
 } from '@/bookmarks/api/bookmark';
+import useAuthStore from '@/store/auth';
 import { useQueryClient } from '@tanstack/react-query';
 
 const useCategoryList = () => {
   // TODO : 추후 FIREBASE AUTH 연동 후 USER_ID 변경
-  const USER_ID = 1;
+  const { memberId } = useAuthStore();
   // SERVER
   const { data: categoryList } = useGETCategoryListQuery({
-    memberId: USER_ID,
+    memberId,
   });
 
   const queryClient = useQueryClient();
 
   const setCategoryList = (categoryList: ClientBookmarkCategoryItem[]) => {
     queryClient.setQueryData<ClientBookmarkCategoryItem[]>(
-      GET_BOOKMARK_CATEGORY_LIST(USER_ID),
+      GET_BOOKMARK_CATEGORY_LIST(memberId),
       categoryList,
     );
   };
