@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
-import Icon from '@/common-ui/assets/Icon';
 import getRem from '@/utils/getRem';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
@@ -41,9 +40,9 @@ const BasicInfoBox = ({
         <ProfileNameRow>
           <NicknameColumn>
             <Text.Span fontSize={1.5}>{nickname}</Text.Span>
-            <LinkContainer to={`/user/${memberId}/edit`}>
+            {/* <LinkContainer to={`/user/${memberId}/edit`}>
               <Icon name={'circle-pencil'} size={'l'} />
-            </LinkContainer>
+            </LinkContainer> */}
           </NicknameColumn>
           <MoreButtonContainer>
             <TriggerBottomSheet>
