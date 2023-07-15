@@ -30,7 +30,7 @@ const useBookmarkList = ({
   });
 
   useEffect(() => {
-    refetch();
+    if (categoryId) refetch();
   }, [categoryId]);
 
   return {
