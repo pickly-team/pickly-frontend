@@ -25,7 +25,7 @@ export interface GetAPIRequest {
 }
 
 export const GET_USER_PROFILE = (params: GetAPIRequest) => [
-  'get',
+  'GET_USER_PROFILE',
   params.loginId,
 ];
 
@@ -35,7 +35,7 @@ export const useGETUserProfile = (
 ) => {
   const router = useNavigate();
   return useQuery(GET_USER_PROFILE(params), () => getUserProfile(params), {
-    enabled: !!params.loginId,
+    enabled: params.loginId !== 0,
     onSuccess: (data) => {
       setUserInfo({ ...data, profileEmoji: data.profileEmoji || '🐶' });
       if (data.nickname === '') router(navigatePath.USER);
