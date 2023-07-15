@@ -100,4 +100,6 @@ const Thumbnail = styled.img`
   height: 5rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
+  object-fit: contain;
+  border: 1px solid ${theme.colors.grey400};
 `;

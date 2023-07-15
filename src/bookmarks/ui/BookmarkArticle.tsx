@@ -239,8 +239,8 @@ const Container = styled.article``;
 const BookMarkImage = styled.img`
   width: 100%;
   height: ${getRem(247)};
-  object-fit: cover;
   border-radius: ${getRem(0, 0, 32, 32)};
+  object-fit: contain;
 `;
 
 const BookMarkTitle = styled(Text.Header)`
