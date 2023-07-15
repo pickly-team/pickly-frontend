@@ -4,10 +4,10 @@ import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
 import Text from '@/common-ui/Text';
 import Icon from '@/common-ui/assets/Icon';
-import formatDateByStartAndEnd from '@/utils/date/formatDateByStartAndEnd';
 import { Link } from 'react-router-dom';
 import { navigatePath } from '@/constants/navigatePath';
 import getRandomElementFromArray from '@/utils/getRandomElementFromArray';
+import { timeStampToDate } from '@/utils/date/timeConverter';
 
 const NOTIFICATION_TITLES = [
   '읽지 않은 북마크가 있어요!',
@@ -19,34 +19,43 @@ const NOTIFICATION_TITLES = [
 interface NotificationSlideItemProps {
   bookMarkInfo: {
     id: string;
-    title: string;
+    content: string;
   };
-  createdAt: string;
+  createdAt: number;
   isRead: boolean;
+  title: string;
+  toggleReadNotification: () => void;
+  deleteNotification: () => void;
 }
 const NotificationSlideItem = ({
   bookMarkInfo,
   createdAt,
   isRead,
+  title = getRandomElementFromArray(NOTIFICATION_TITLES),
+  toggleReadNotification,
+  deleteNotification,
 }: NotificationSlideItemProps) => {
-  const { id, title } = bookMarkInfo;
+  const { id, content } = bookMarkInfo;
 
   const showEllipse = !isRead;
 
   return (
     <SlideItem
       main={
-        <NotificationInfoWrapper isRead={isRead}>
+        <NotificationInfoWrapper
+          isRead={isRead}
+          onClick={toggleReadNotification}
+        >
           <Text.Span fontSize={getRem(16)} weight={'bold'}>
-            {getRandomElementFromArray(NOTIFICATION_TITLES)}
+            {title}
           </Text.Span>
           <NotificationContentWrapper>
             <TitleAndCreatedAtLink
               to={`${navigatePath.BOOKMARK_DETAIL.replace(':id', id)}`}
             >
-              <TitleText fontSize={getRem(12)}>{title}</TitleText>
+              <TitleText fontSize={getRem(12)}>{content}</TitleText>
               <CreatedAtText fontSize={getRem(8)}>
-                {getFormattedCreatedAtByToday(createdAt)}
+                {timeStampToDate(createdAt)}
               </CreatedAtText>
             </TitleAndCreatedAtLink>
             <EllipseWrapper>
@@ -56,7 +65,7 @@ const NotificationSlideItem = ({
         </NotificationInfoWrapper>
       }
       option={
-        <DeleteWrapper>
+        <DeleteWrapper onClick={deleteNotification}>
           <DeleteIconAndTextWrapper>
             <Icon name={'trash'} size={'s'} />
             <Text.Span>삭제</Text.Span>
@@ -68,12 +77,6 @@ const NotificationSlideItem = ({
 };
 
 export default NotificationSlideItem;
-
-const getFormattedCreatedAtByToday = (createdAt: string) => {
-  const createdAtDate = new Date(createdAt);
-  const todayDate = new Date();
-  return formatDateByStartAndEnd(createdAtDate, todayDate);
-};
 
 const NotificationInfoWrapper = styled.div<{ isRead: boolean }>`
   height: ${getRem(80)};
