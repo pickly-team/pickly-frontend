@@ -82,7 +82,22 @@ const GETBookMarkList = {
       },
     );
 
-    return data;
+    return {
+      hasNext: data.hasNext,
+      contents: GETBookMarkList.Mapper(data.contents),
+    };
+  },
+  Mapper: (bookmarkList: BookmarkItem[]): bookmarkGETBookMarkList => {
+    return bookmarkList.map((bookmark) => ({
+      bookmarkId: bookmark.bookmarkId,
+      title: bookmark.title,
+      url: bookmark.url,
+      previewImageUrl: bookmark.previewImageUrl ?? '/images/main.png',
+      isUserLike: bookmark.isUserLike,
+      readByUser: bookmark.readByUser,
+      commentCnt: bookmark.commentCnt,
+      createdDate: bookmark.createdDate,
+    }));
   },
 };
 
@@ -116,6 +131,7 @@ export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
       refetchOnWindowFocus: false,
       cacheTime: 1000 * 60 * 5,
       staleTime: 1000 * 60 * 5,
+      enabled: params.memberId !== 0,
     },
   );
 };
@@ -224,7 +240,7 @@ export const useGETCategoryListQuery = ({
     {
       refetchOnWindowFocus: false,
       retry: 0,
-      enabled: !!memberId,
+      enabled: memberId !== 0,
     },
   );
 };
@@ -364,7 +380,7 @@ const getBookmarkDetailMapper = (
     categoryName: '프론트엔드',
     url: data.url,
     title: data.title,
-    previewImageUrl: data.previewImageUrl ?? '',
+    previewImageUrl: data.previewImageUrl ?? '/images/main.png',
     isUserLike: data.isUserLike,
     readByUser: data.readByUser,
     createdAt: 1689278498,
