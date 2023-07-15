@@ -31,6 +31,8 @@ class ApiErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: AxiosError, errorInfo: ErrorInfo) {
+    console.log(error, errorInfo);
+
     // TODO: Sentry에 에러 로그를 남기는 로직을 추가해야 합니다.
   }
 
@@ -43,7 +45,7 @@ class ApiErrorBoundary extends Component<Props, State> {
       return <NetworkError />;
     }
 
-    return <NetworkError />;
+    return this.props.children;
   }
 }
 
