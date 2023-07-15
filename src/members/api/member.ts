@@ -246,8 +246,13 @@ const GET_NOTIFICATION_SETTING_DAY_KEY = (
 export const useGETNotificationSettingDayQuery = (
   params: GETNotificationSettingQueryParams,
 ) => {
-  return useQuery(GET_NOTIFICATION_SETTING_DAY_KEY(params), async () =>
-    getNotificationSettingDayAPI(params),
+  return useQuery(
+    GET_NOTIFICATION_SETTING_DAY_KEY(params),
+    async () => getNotificationSettingDayAPI(params),
+    {
+      enabled: !!params.loginId,
+      onError: (e) => console.log(e),
+    },
   );
 };
 
@@ -372,4 +377,34 @@ export const useGETFriendProfileQuery = (
   return useQuery(GET_FRIEND_PROFILE(params), async () =>
     getFriendProfileAPI(params),
   );
+};
+
+// 알림 기준 생성 API
+// NOTE : Backend API가 수정되면 삭제
+interface POSTNotificationStandardsParams {
+  loginId: number;
+  postData: {
+    isActive: boolean;
+    notifyDailyAt: string;
+  };
+  token?: string;
+}
+
+const postAPI = async ({
+  loginId,
+  postData,
+  token,
+}: POSTNotificationStandardsParams) => {
+  const { data } = await client({
+    method: 'post',
+    url: '/notification-standards',
+    params: { loginId },
+    data: postData,
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export const usePOSTNotificationStandardQuery = () => {
+  return useMutation(postAPI);
 };
