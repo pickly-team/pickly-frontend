@@ -104,10 +104,7 @@ const Container = styled.div`
   border-bottom-left-radius: 2.125rem;
   border-bottom-right-radius: 2.125rem;
 `;
-const LinkContainer = styled(Link)`
-  display: flex;
-  justify-content: center;
-`;
+
 const NicknameColumn = styled.div`
   display: flex;
   align-items: center;
