@@ -17,7 +17,7 @@ import useAuthStore from '@/store/auth';
 import BlankItem from '@/common-ui/BlankItem';
 
 const MainPage = () => {
-  const { memberId } = useAuthStore();
+  const { memberId, userInfo } = useAuthStore();
   const { selectedCategory, categoryOptions, onChangeCategory } = useCategory({
     memberId,
   });
@@ -45,7 +45,10 @@ const MainPage = () => {
   return (
     <>
       <LTop>
-        <BookmarkUserInfo userEmoji="😑" userName="까루" />
+        <BookmarkUserInfo
+          userEmoji={userInfo.profileEmoji}
+          userName={userInfo.nickname}
+        />
       </LTop>
       <BookmarkToggle>
         <BookmarkToggle.SelectCategory
