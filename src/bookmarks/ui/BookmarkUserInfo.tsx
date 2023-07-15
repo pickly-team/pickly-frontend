@@ -30,7 +30,7 @@ const BookmarkUserInfo = ({
         )}
         {!isFriendPage && (
           <Text.Span
-            fontSize={1.375}
+            fontSize={1.2}
             weight="bold"
           >{`👋 안녕하세요, ${userName}님!`}</Text.Span>
         )}
@@ -61,11 +61,10 @@ const UserBox = styled.div`
   background-color: ${theme.colors.grey800};
   justify-content: center;
   align-items: center;
-  margin-right: 0.8rem;
 `;
 
 const TextWrapper = styled.div`
   display: flex;
   align-items: center;
-  column-gap: 0.8rem;
+  column-gap: 0.5rem;
 `;
