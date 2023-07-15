@@ -43,8 +43,8 @@ const App = () => {
         <IconLoader />
         <ToastList />
         <BrowserRouter>
+          <RNListener />
           <ApiErrorBoundary>
-            <RNListener />
             <Layout>
               <Routes>
                 <Route path={navigatePath.MAIN} element={<MainPage />} />
