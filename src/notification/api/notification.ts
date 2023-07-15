@@ -1,6 +1,6 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import resolveAfterDelay from '@/utils/resolveAfterDelay';
-import QUERY_KEYS from '@/constants/queryKeys';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import client from '@/common/service/client';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 
 interface Time {
   hour: number;
@@ -19,48 +19,140 @@ export const toReadableTime = (time: Time): string => {
   return `${isAm ? '오전' : '오후'} ${hour}:${minute}`;
 };
 
-interface Notification {
-  id: string;
+// 알림 내역 조회
+export interface NotificationItem {
+  id: number;
   title: string;
-  createdAt: string;
-  isRead: boolean;
+  content: string;
+  bookmarkId: number;
+  isChecked: boolean;
 }
 
-const fetchNotifications = async (): Promise<Notification[]> => {
-  //TODO: API 호출로 변경
-  const mockData: Notification[] = [
-    {
-      id: '1',
-      title:
-        'React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.',
-      createdAt: '2023-04-23 12:00:00',
-      isRead: false,
-    },
-    {
-      id: '2',
-      title: 'React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.',
-      createdAt: '2023-04-23 12:00:00',
-      isRead: true,
-    },
-    {
-      id: '3',
-      title:
-        'React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.React 다뤄보기를 하는 줄 알았지만 사실 스프링이엇던.',
-      createdAt: '2023-04-23 12:00:00',
-      isRead: true,
-    },
-  ];
+interface ClientNotificationItem {
+  id: number;
+  title: string;
+  content: string;
+  bookmarkId: number;
+  isChecked: boolean;
+  createdAt: number;
+}
 
-  return resolveAfterDelay(mockData, 1000);
+interface GETNotificationQuery {
+  memberId: number;
+  token?: string;
+}
+
+const getNotificationListAPI = async ({
+  memberId,
+  token,
+}: GETNotificationQuery) => {
+  const { data } = await client<NotificationItem[]>({
+    method: 'get',
+    url: `/members/${memberId}/notifications`,
+    params: { memberId },
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data.map(convertNotificationItem);
 };
 
-export const useGetNotifications = (): UseQueryResult<
-  Notification[],
-  Error
-> => {
-  return useQuery({
-    queryKey: [QUERY_KEYS.NOTIFICATIONS],
-    queryFn: fetchNotifications,
-    suspense: true,
+const convertNotificationItem = (
+  notificationItem: NotificationItem,
+): ClientNotificationItem => {
+  return {
+    id: notificationItem.id,
+    title: notificationItem.title,
+    content: notificationItem.content,
+    bookmarkId: notificationItem.bookmarkId,
+    isChecked: notificationItem.isChecked,
+    createdAt: 1689278498,
+  };
+};
+
+export interface GetAPIRequest {
+  memberId: number;
+  token?: string;
+}
+
+const GET_NOTIFICATION_LIST_KEY = (params: GetAPIRequest) => [
+  'GET_NOTIFICATION_LIST',
+  params.memberId,
+];
+
+export const useGETNotificationListQuery = (params: GetAPIRequest) => {
+  return useQuery(GET_NOTIFICATION_LIST_KEY(params), async () =>
+    getNotificationListAPI(params),
+  );
+};
+
+interface PATCHNotificationReadRequest {
+  notificationId: number;
+  token?: string;
+}
+
+const patchNotificationReadAPI = async ({
+  notificationId,
+  token,
+}: PATCHNotificationReadRequest) => {
+  const { data } = await client({
+    method: 'patch',
+    url: `/notifications/${notificationId}`,
+    params: { notificationId },
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface PATCHNotificationReadQueryRequest {
+  memberId: number;
+}
+export const usePATCHNotificationReadQuery = ({
+  memberId,
+}: PATCHNotificationReadQueryRequest) => {
+  const queryClient = useQueryClient();
+  return useMutation(patchNotificationReadAPI, {
+    onSuccess: () => {
+      queryClient.refetchQueries(GET_NOTIFICATION_LIST_KEY({ memberId }));
+    },
+  });
+};
+
+interface DELETENotificationRequest {
+  notificationId: number;
+  token?: string;
+}
+
+const deleteNotificationAPI = async ({
+  notificationId,
+  token,
+}: DELETENotificationRequest) => {
+  const { data } = await client({
+    method: 'delete',
+    url: `/notifications/${notificationId}`,
+    params: { notificationId },
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface DELETENotificationQueryRequest {
+  memberId: number;
+  token?: string;
+}
+export const useDELETENotificationQuery = ({
+  memberId,
+}: DELETENotificationQueryRequest) => {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+  return useMutation(deleteNotificationAPI, {
+    onSuccess: () => {
+      queryClient.refetchQueries(GET_NOTIFICATION_LIST_KEY({ memberId }));
+      toast.fireToast({
+        message: '삭제 되었습니다',
+        mode: 'DELETE',
+      });
+    },
   });
 };
