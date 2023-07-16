@@ -4,13 +4,15 @@ import FollowButton from '@/friend/ui/buttons/FollowButton';
 import UnFollowButton from '@/friend/ui/buttons/UnFollowButton';
 
 type FriendFollowerProps = {
-  id: string;
+  id: number;
+  memberId: number;
   name: string;
   profileEmoji: string | undefined;
   isFollowing: boolean;
 };
 const FriendFollowerItem = ({
   id,
+  memberId,
   name,
   profileEmoji,
   isFollowing,
@@ -22,9 +24,9 @@ const FriendFollowerItem = ({
       emoji={profileEmoji && decodeEmojiBase64(profileEmoji)}
       button={
         isFollowing ? (
-          <UnFollowButton userId={id} />
+          <UnFollowButton followerId={memberId} memberId={id} />
         ) : (
-          <FollowButton userId={id} />
+          <FollowButton followerId={memberId} memberId={id} />
         )
       }
     />

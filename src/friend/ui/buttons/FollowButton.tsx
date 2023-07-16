@@ -2,27 +2,24 @@ import Button from '@/common-ui/Button';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
-import { useFollowMutation } from '@/friend/api/friends';
-import useToast from '@/common-ui/Toast/hooks/useToast';
-import type { MouseEvent } from 'react';
+
+import { type MouseEvent } from 'react';
+import { usePOSTFollowUserQuery } from '@/friend/api/friends';
+import useSearchStore from '@/store/search';
 
 interface FollowButtonProps {
-  userId: string;
+  memberId: number;
+  followerId: number;
 }
-const FollowButton = ({ userId }: FollowButtonProps) => {
-  const { fireToast } = useToast();
-  const { mutate } = useFollowMutation({
-    onSuccess: () => {
-      fireToast({
-        message: '팔로잉 중인 친구의 알림만 받을 수 있습니다',
-        mode: 'SUCCESS',
-      });
-    },
-  });
+const FollowButton = ({ memberId, followerId }: FollowButtonProps) => {
+  const { setSelectedMemberId } = useSearchStore();
+  const { mutate } = usePOSTFollowUserQuery({ memberId: followerId });
+
   //TODO: 하드 코딩 개선
   const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    mutate({ memberId: '1', followingId: '3' });
+    setSelectedMemberId(memberId);
+    mutate({ memberId, followerId });
   };
   return (
     <StyledButton onClick={onClick} buttonColor={'black'}>
