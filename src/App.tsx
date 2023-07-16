@@ -20,9 +20,10 @@ import ToastList from './common-ui/Toast/ToastList';
 import NotificationPage from '@/pages/NotificationPage';
 import { Analytics } from '@vercel/analytics/react';
 import FriendPage from '@/pages/FriendPage';
-import RNListener from './RNListener';
 import FriendBookmarkPage from './pages/FriendBookmarkPage';
 import ApiErrorBoundary from './common-ui/Error/ApiErrorBoundary';
+import FriendSearchPage from './pages/FriendSearchPage';
+import RNListener from './RNListener';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,6 +79,10 @@ const App = () => {
                 <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
                 <Route path={navigatePath.LIKE_PAGE} element={<LikePage />} />
                 <Route path={navigatePath.FRIEND} element={<FriendPage />} />
+                <Route
+                  path={navigatePath.FRIEND_SEARCH}
+                  element={<FriendSearchPage />}
+                />
                 <Route
                   path={navigatePath.FRIEND_BOOKMARK}
                   element={<FriendBookmarkPage />}
