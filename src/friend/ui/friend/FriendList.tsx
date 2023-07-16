@@ -36,7 +36,8 @@ const FriendList = ({ keyword }: FriendListProps) => {
         {flatSearchList.map((info) => (
           <FriendFollowerItem
             key={info.memberId}
-            id={String(info.memberId)}
+            id={info.memberId}
+            memberId={memberId}
             name={info.nickname}
             profileEmoji={info.profileImageUrl}
             isFollowing={Boolean(info.isFollowing)}
