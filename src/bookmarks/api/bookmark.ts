@@ -164,6 +164,7 @@ export const useDELETEBookMarkMutation = ({
   categoryId,
 }: DELETEBookMarkListMutation) => {
   const queryClient = useQueryClient();
+  const toast = useToast();
   return useMutation(DELETEBookMarkList.API, {
     onSuccess: () => {
       queryClient.refetchQueries(
@@ -172,6 +173,10 @@ export const useDELETEBookMarkMutation = ({
       queryClient.refetchQueries(
         GET_BOOKMARK_LIST(userId, true, categoryId ?? 0),
       );
+      toast.fireToast({
+        message: '삭제 되었습니다',
+        mode: 'DELETE',
+      });
     },
   });
 };
@@ -532,6 +537,7 @@ export const useDELETEBookmarkLikeQuery = ({
   bookmarkId,
 }: DELETEBookmarkLikeQueryRequest) => {
   const queryClient = useQueryClient();
+  const toast = useToast();
   return useMutation(deleteBookmarkLikeAPI, {
     onSuccess: () => {
       queryClient.setQueryData<ClientBookmarkDetail>(
@@ -546,6 +552,10 @@ export const useDELETEBookmarkLikeQuery = ({
           return prev;
         },
       );
+      toast.fireToast({
+        message: '삭제 되었습니다',
+        mode: 'DELETE',
+      });
     },
   });
 };
