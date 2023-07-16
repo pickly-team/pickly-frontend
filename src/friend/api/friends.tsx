@@ -8,6 +8,7 @@ import {
 import client from '@/common/service/client';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import useSearchStore from '@/store/search';
+import { GET_FRIEND_PROFILE } from '@/members/api/member';
 
 // 팔로우 리스트 API
 export interface GETFollowingListResponse {
@@ -214,6 +215,12 @@ export const usePOSTFollowUserQuery = ({
           return 1;
         },
       );
+      queryClient.invalidateQueries(
+        GET_FRIEND_PROFILE({
+          loginId: memberId,
+          memberId: selectedMemberId,
+        }),
+      );
       if (keyword && selectedMemberId) {
         queryClient.setQueryData<InfiniteSearchList>(
           GET_SEARCH_LIST_KEY({ memberId, keyword }),
@@ -280,7 +287,12 @@ export const useDELETEUnFollowQuery = ({
       });
       queryClient.invalidateQueries(GET_FOLLOWER_LIST_KEY({ memberId }));
       queryClient.invalidateQueries(GET_FOLLOWING_LIST_KEY({ memberId }));
-      queryClient.invalidateQueries;
+      queryClient.invalidateQueries(
+        GET_FRIEND_PROFILE({
+          loginId: memberId,
+          memberId: selectedMemberId,
+        }),
+      );
       queryClient.setQueryData<FollowingCount>(
         GET_FOLLOWING_COUNT_KEY({ memberId }),
         (followingCount) => {

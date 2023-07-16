@@ -89,7 +89,11 @@ const FriendBookmarkPage = () => {
         <BookmarkUserInfo
           userEmoji={profileInfo?.profileEmoji || ''}
           userName={profileInfo?.nickname || ''}
-          isFriendPage={{ isFollowing: profileInfo?.isFollowing || false }}
+          isFriendPage={{
+            isFollowing: profileInfo?.isFollowing || false,
+            friendId: Number(friendId),
+            memberId,
+          }}
         />
       </LTop>
       <BookmarkToggle>
