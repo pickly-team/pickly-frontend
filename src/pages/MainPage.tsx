@@ -30,7 +30,10 @@ const MainPage = () => {
       categoryId: selectedCategory,
       memberId,
     });
-  const { bottom } = useBottomIntersection({ fetchNextPage });
+  const { bottom } = useBottomIntersection({
+    fetchNextPage,
+    enabled: !isFetchingNextPage,
+  });
 
   const {
     isEditMode: isEdit,

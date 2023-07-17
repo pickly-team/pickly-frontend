@@ -1,6 +1,11 @@
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import client from '@/common/service/client';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 type Count = number;
@@ -407,4 +412,108 @@ const postAPI = async ({
 
 export const usePOSTNotificationStandardQuery = () => {
   return useMutation(postAPI);
+};
+
+interface MemberItem {
+  hasNext: boolean;
+  contents: Member[];
+}
+
+interface Member {
+  id: number;
+  name: string;
+  profileEmoji: string;
+}
+
+interface GetBlockMemberListParams {
+  memberId: number;
+  cursorId?: number;
+  pageSize?: number;
+}
+
+// NOTE : Backend API가 수정되면 삭제
+const GETBlockMemberList = {
+  API: async (params: GetBlockMemberListParams) => {
+    const { data } = await client<MemberItem>({
+      method: 'get',
+      url: `/members/${params.memberId}/block`,
+      params: {
+        cursorId: params.cursorId,
+        pageSize: params.pageSize,
+      },
+      data: {},
+    });
+    return data;
+  },
+  Dummy: async (): Promise<MemberItem> => {
+    return {
+      hasNext: true,
+      contents: Array.from({ length: 10 }).map((_, index) => ({
+        id: index,
+        name: '까루',
+        profileEmoji: '🐶',
+      })),
+    };
+  },
+};
+
+const GET_BLOCK_MEMBER_LIST_KEY = (params: GetBlockMemberListParams) => [
+  'GET_BLOCK_MEMBER_LIST',
+  params.memberId,
+  params.cursorId,
+  params.pageSize,
+];
+
+export const useGETBlockMemberListQuery = (
+  params: GetBlockMemberListParams,
+) => {
+  return useInfiniteQuery(
+    GET_BLOCK_MEMBER_LIST_KEY(params),
+    () => GETBlockMemberList.Dummy(),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.hasNext ? lastPage.contents.length : undefined;
+      },
+      enabled: !!params.memberId,
+      suspense: true,
+    },
+  );
+};
+
+// 차단 해제 API
+interface DELETEBlockMemberParams {
+  blockerId: number;
+  blockeeId: number;
+  token?: string;
+}
+
+const unblockUserAPI = async ({
+  blockerId,
+  blockeeId,
+  token,
+}: DELETEBlockMemberParams) => {
+  const { data } = await client({
+    method: 'delete',
+    url: `/member/${blockerId}/block/${blockeeId}`,
+    params: { blockerId, blockeeId },
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface DELETEBlockMemberQueryParams {
+  memberId: number;
+}
+export const useUnblockUserQuery = ({
+  memberId,
+}: DELETEBlockMemberQueryParams) => {
+  const queryClient = useQueryClient();
+  const { fireToast } = useToast();
+  return useMutation(unblockUserAPI, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(GET_BLOCK_MEMBER_LIST_KEY({ memberId }));
+      fireToast({ message: '차단이 해제 되었습니다' });
+    },
+  });
 };
