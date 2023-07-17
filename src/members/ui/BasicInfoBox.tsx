@@ -31,7 +31,7 @@ const BasicInfoBox = ({
     router(navigatePath.USER_EDIT);
   };
   const onClickUserBlock = () => {
-    router(navigatePath.FRIEND);
+    router(navigatePath.BLOCK_USER);
   };
 
   return (
