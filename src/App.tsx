@@ -24,6 +24,8 @@ import FriendBookmarkPage from './pages/FriendBookmarkPage';
 import ApiErrorBoundary from './common-ui/Error/ApiErrorBoundary';
 import FriendSearchPage from './pages/FriendSearchPage';
 import RNListener from './RNListener';
+import BlockUserListPage from './pages/BlockUserListPage';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -91,11 +93,15 @@ const App = () => {
                   path={navigatePath.FRIEND_BOOKMARK}
                   element={<FriendBookmarkPage />}
                 />
+                <Route
+                  path={navigatePath.BLOCK_USER}
+                  element={<BlockUserListPage />}
+                />
               </Routes>
             </Layout>
           </ApiErrorBoundary>
         </BrowserRouter>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
       <Analytics />
     </ThemeProvider>

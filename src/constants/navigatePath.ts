@@ -4,6 +4,7 @@ const navigatePath = {
   FRIEND_SEARCH: '/friend/search',
   FRIEND_DETAIL: '/friend/:id',
   FRIEND_BOOKMARK: '/friend/:id/bookmark',
+  BLOCK_USER: '/block',
   NOTIFICATION: '/notification',
   PROFILE: '/profile',
   BOOKMARK_DETAIL: '/bookmark/:id',
