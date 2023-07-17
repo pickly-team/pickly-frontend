@@ -31,7 +31,7 @@ const FriendTypeSelect = ({
         buttonColor={'black'}
         active={value === FriendType.Follower}
       >
-        팔로어 {followerTotalCount}
+        팔로워 {followerTotalCount}
       </FriendTypeButton>
       <FriendTypeButton
         onClick={() => {

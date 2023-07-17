@@ -2,28 +2,23 @@ import Button from '@/common-ui/Button';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
-import { useUnFollowMutation } from '@/friend/api/friends';
-import useToast from '@/common-ui/Toast/hooks/useToast';
-import type { MouseEvent } from 'react';
+import { type MouseEvent } from 'react';
+import { useDELETEUnFollowQuery } from '@/friend/api/friends';
+import useSearchStore from '@/store/search';
 
 interface UnFollowButtonProps {
-  userId: string;
+  memberId: number;
+  followerId: number;
 }
-const UnFollowButton = ({ userId }: UnFollowButtonProps) => {
-  const { fireToast } = useToast();
-  const { mutate } = useUnFollowMutation({
-    onSuccess: () => {
-      fireToast({
-        message: '팔로잉 중인 친구의 알림만 받을 수 있습니다',
-        mode: 'SUCCESS',
-      });
-    },
-  });
+const UnFollowButton = ({ memberId, followerId }: UnFollowButtonProps) => {
+  const { setSelectedMemberId } = useSearchStore();
+  const { mutate } = useDELETEUnFollowQuery({ memberId: followerId });
 
   //TODO: 하드코딩 개선
   const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    mutate({ memberId: '1', followingId: '3' });
+    setSelectedMemberId(memberId);
+    mutate({ memberId, followerId });
   };
   return (
     <StyledButton onClick={onClick} buttonColor={'black'}>

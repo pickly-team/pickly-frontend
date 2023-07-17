@@ -11,6 +11,8 @@ interface BookmarkUserInfoProps {
   userName: string;
   isFriendPage?: {
     isFollowing: boolean;
+    friendId: number;
+    memberId: number;
   };
 }
 
@@ -37,8 +39,18 @@ const BookmarkUserInfo = ({
       </TextWrapper>
       {!!isFriendPage && (
         <>
-          {!!isFriendPage?.isFollowing && <UnFollowButton userId={'1'} />}
-          {!isFriendPage?.isFollowing && <FollowButton userId={'1'} />}
+          {!!isFriendPage?.isFollowing && (
+            <UnFollowButton
+              followerId={isFriendPage.memberId}
+              memberId={isFriendPage.friendId}
+            />
+          )}
+          {!isFriendPage?.isFollowing && (
+            <FollowButton
+              followerId={isFriendPage.memberId}
+              memberId={isFriendPage.friendId}
+            />
+          )}
         </>
       )}
     </StyleWrapper>

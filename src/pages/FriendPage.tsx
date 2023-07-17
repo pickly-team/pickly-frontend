@@ -21,7 +21,7 @@ const FriendPage = () => {
         }
       />
       <Suspense
-        fallback={[1, 2, 3].map((item) => (
+        fallback={Array.from({ length: 5 }, (_, item) => (
           <FriendSkeletonItem key={item} />
         ))}
       >

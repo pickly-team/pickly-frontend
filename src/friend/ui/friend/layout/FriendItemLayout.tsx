@@ -8,7 +8,7 @@ interface FriendItemLayoutProps {
   emoji: ReactNode;
   name: ReactNode;
   button: ReactNode;
-  id: string;
+  id: number;
 }
 const FriendItemLayout = ({
   emoji,
@@ -20,7 +20,9 @@ const FriendItemLayout = ({
 
   return (
     <Container
-      onClick={() => navigate(navigatePath.FRIEND_BOOKMARK.replace(':id', id))}
+      onClick={() =>
+        navigate(navigatePath.FRIEND_BOOKMARK.replace(':id', String(id)))
+      }
     >
       <EmojiAndNameWrapper>
         <span>{emoji}</span>
