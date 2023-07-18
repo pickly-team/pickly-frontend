@@ -9,6 +9,8 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 const DOMAIN = 'BOOKMARK';
 
@@ -365,9 +367,10 @@ const getBookmarkDetailAPI = async ({
   return getBookmarkDetailMapper(data);
 };
 
-interface ClientBookmarkDetail {
+export interface ClientBookmarkDetail {
   categoryId: number;
   categoryName: string;
+  memberId: number;
   url: string;
   title: string;
   previewImageUrl: string;
@@ -383,6 +386,7 @@ const getBookmarkDetailMapper = (
   return {
     categoryId: data.categoryId,
     categoryName: '프론트엔드',
+    memberId: data.memberId,
     url: data.url,
     title: data.title,
     previewImageUrl: data.previewImageUrl ?? '/images/main.png',
@@ -398,14 +402,14 @@ export interface GetBookmarkDetailRequest {
   token?: string;
 }
 
-const GET_BOOKMARK_DETAIL = (params: GetBookmarkDetailRequest) => [
-  'GET_BOOKMARK_DETAIL',
+export const GET_BOOKMARK_DETAIL_KEY = (params: GetBookmarkDetailRequest) => [
+  'GET_BOOKMARK_DETAIL_KEY',
   params.bookmarkId,
 ];
 
 export const useGETBookmarkDetailQuery = (params: GetBookmarkDetailRequest) => {
   return useQuery(
-    GET_BOOKMARK_DETAIL(params),
+    GET_BOOKMARK_DETAIL_KEY(params),
     async () => getBookmarkDetailAPI(params),
     {
       suspense: true,
@@ -495,7 +499,7 @@ export const usePOSTBookmarkLikeQuery = ({ bookmarkId }: PostAPIRequest) => {
   return useMutation(postBookmarkLikeAPI, {
     onSuccess: () => {
       queryClient.setQueryData<ClientBookmarkDetail>(
-        GET_BOOKMARK_DETAIL({ bookmarkId }),
+        GET_BOOKMARK_DETAIL_KEY({ bookmarkId }),
         (prev) => {
           if (prev) {
             return {
@@ -541,7 +545,7 @@ export const useDELETEBookmarkLikeQuery = ({
   return useMutation(deleteBookmarkLikeAPI, {
     onSuccess: () => {
       queryClient.setQueryData<ClientBookmarkDetail>(
-        GET_BOOKMARK_DETAIL({ bookmarkId }),
+        GET_BOOKMARK_DETAIL_KEY({ bookmarkId }),
         (prev) => {
           if (prev) {
             return {
@@ -612,7 +616,7 @@ export const refetchAllBookmarkQuery = ({
   bookmarkId,
 }: RefetchAllBookmark) => {
   const bookmark = queryClient.getQueryData<ClientBookmarkDetail>(
-    GET_BOOKMARK_DETAIL({ bookmarkId }),
+    GET_BOOKMARK_DETAIL_KEY({ bookmarkId }),
   );
   const categoryId = bookmark?.categoryId ?? 0;
   // NOTE : 왜 도대체 뒤로 가기 시에는 refetch가 되지 않는지 모르겠음
@@ -690,7 +694,57 @@ export const usePUTBookmarkQuery = ({
   return useMutation(putBookmarkAPI, {
     onSuccess: () => {
       refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
-      queryClient.refetchQueries(GET_BOOKMARK_DETAIL({ bookmarkId }));
+      queryClient.refetchQueries(GET_BOOKMARK_DETAIL_KEY({ bookmarkId }));
+    },
+  });
+};
+
+// 북마크 신고
+interface POSTBookmarkReportRequest {
+  reporterId: number;
+  reportedId: number;
+  content: string;
+}
+
+const postBookmarkReportAPI = async (params: POSTBookmarkReportRequest) => {
+  const { data } = await client({
+    method: 'post',
+    url: '/reports/bookmarks',
+    data: params,
+  });
+
+  return data;
+};
+
+export interface POSTBookmarkReportMutation {
+  reporterId: number;
+}
+
+export const usePOSTBookmarkReportMutation = ({
+  reporterId,
+}: POSTBookmarkReportMutation) => {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+  const router = useNavigate();
+  return useMutation(postBookmarkReportAPI, {
+    onSuccess: () => {
+      queryClient.refetchQueries(GET_BOOKMARK_LIST(reporterId, false, 0));
+      queryClient.refetchQueries(GET_BOOKMARK_LIST(reporterId, true, 0));
+      toast.fireToast({
+        message: '신고 되었습니다',
+        mode: 'SUCCESS',
+      });
+      router(-1);
+    },
+    onError: (e: AxiosError) => {
+      const errorCode = e.response?.status;
+      if (errorCode && errorCode === 500) {
+        toast.fireToast({
+          message: '이미 신고한 북마크에요',
+          mode: 'DELETE',
+        });
+        router(-1);
+      }
     },
   });
 };
