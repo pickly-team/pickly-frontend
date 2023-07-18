@@ -155,10 +155,10 @@ const NotificationSettingsBottomSheet = ({
   useEffect(() => {
     if (defaultTime) {
       const [hour, minute] = defaultTime.split(':');
-      setTime({
-        hour: Number(hour),
-        minute: Number(minute),
-      });
+      const transformHour =
+        Number(hour) > 12 ? Number(hour) - 12 : Number(hour);
+      setTime({ hour: transformHour, minute: Number(minute) });
+      setIsPm(Number(hour) > 12);
     }
   }, [defaultTime]);
 
