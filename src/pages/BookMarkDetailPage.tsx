@@ -8,56 +8,22 @@ import { Suspense } from 'react';
 import CommentList from '@/comment/ui/bookmark/CommentList';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
-import { useNavigate, useParams } from 'react-router-dom';
-import {
-  refetchAllBookmarkQuery,
-  useDELETEBookmarkQuery,
-} from '@/bookmarks/api/bookmark';
 import BSConfirmation from '@/common/ui/BSConfirmation';
-import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
-import useAuthStore from '@/store/auth';
-import { useQueryClient } from '@tanstack/react-query';
+import useHandleBookmarkDetailMore from '@/bookmarks/service/hooks/detail/useHandleBookmarkDetailMore';
 
 const BookMarkDetailPage = () => {
-  // FIRST RENDER
-  const router = useNavigate();
-  const { memberId } = useAuthStore();
-  const { id } = useParams() as { id: string };
-  const queryClient = useQueryClient();
-
-  // USER INTERACTION
-  // 1. 북마크 삭제
-  const { mutate: deleteBookmark } = useDELETEBookmarkQuery({
-    memberId: memberId ?? 0,
-    bookmarkId: id,
-  });
   const {
-    isOpen: deleteBookmarkBS,
-    open: openDeleteBookmarkBS,
-    close: closeDeleteBookmarkBS,
-  } = useBottomSheet();
-  const onClickDeleteBookmark = () => {
-    deleteBookmark({ bookmarkId: Number(id) });
-    closeDeleteBookmarkBS();
-    router('/');
-  };
-  // 2. 뒤로가기
-  const onClickBackCallback = () => {
-    refetchAllBookmarkQuery({
-      queryClient,
-      memberId: memberId ?? 0,
-      bookmarkId: id,
-    });
-  };
-  // 3. 북마크 수정
-  const {
-    isOpen: editBookmarkBS,
-    close: closeEditBookmarkBS,
-    open: openEditBookmarkBS,
-  } = useBottomSheet();
-  const onClickEditBookmark = () => {
-    openEditBookmarkBS();
-  };
+    deleteBookmarkBS,
+    editBookmarkBS,
+    isMyBookmark,
+    closeDeleteBookmarkBS,
+    closeEditBookmarkBS,
+    onClickBackCallback,
+    onClickDeleteBookmark,
+    onClickEditBookmark,
+    openDeleteBookmarkBS,
+    onClickReportBookmark,
+  } = useHandleBookmarkDetailMore();
 
   return (
     <>
@@ -68,12 +34,21 @@ const BookMarkDetailPage = () => {
               as={<IconButton onClick={() => {}} name="more" size="s" />}
             />
             <TriggerBottomSheet.BottomSheet>
-              <TriggerBottomSheet.Item onClick={onClickEditBookmark}>
-                수정하기
-              </TriggerBottomSheet.Item>
-              <TriggerBottomSheet.Item onClick={openDeleteBookmarkBS}>
-                삭제하기
-              </TriggerBottomSheet.Item>
+              {!!isMyBookmark && (
+                <>
+                  <TriggerBottomSheet.Item onClick={onClickEditBookmark}>
+                    수정하기
+                  </TriggerBottomSheet.Item>
+                  <TriggerBottomSheet.Item onClick={openDeleteBookmarkBS}>
+                    삭제하기
+                  </TriggerBottomSheet.Item>
+                </>
+              )}
+              {!isMyBookmark && (
+                <TriggerBottomSheet.Item onClick={onClickReportBookmark}>
+                  신고하기
+                </TriggerBottomSheet.Item>
+              )}
             </TriggerBottomSheet.BottomSheet>
           </TriggerBottomSheet>
         }
