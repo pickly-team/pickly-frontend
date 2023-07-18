@@ -7,7 +7,6 @@ import useAuthStore from '@/store/auth';
 import { useQueryClient } from '@tanstack/react-query';
 
 const useCategoryList = () => {
-  // TODO : 추후 FIREBASE AUTH 연동 후 USER_ID 변경
   const { memberId } = useAuthStore();
   // SERVER
   const { data: categoryList } = useGETCategoryListQuery({

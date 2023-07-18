@@ -15,6 +15,7 @@ import { usePOSTCategoryMutation } from '@/category/api/add';
 import { useGETCategoryAPI } from '@/category/api/category';
 import { useEffect } from 'react';
 import { usePUTCategoryMutation } from '@/category/api/edit';
+import useAuthStore from '@/store/auth';
 
 interface CategoryManagePageProps {
   mode: 'ADD' | 'EDIT';
@@ -22,7 +23,7 @@ interface CategoryManagePageProps {
 
 const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   // TODO : 인증 로직 추가
-  const USER_ID = 1;
+  const { memberId } = useAuthStore();
   const router = useNavigate();
   const location = useLocation();
   const fromPath = location.state?.fromPath ?? '/';
@@ -38,7 +39,7 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
 
   const { data: categoryData } = useGETCategoryAPI({
     categoryId: categoryId ?? '',
-    memberId: USER_ID,
+    memberId,
     mode,
   });
   useEffect(() => {
@@ -65,17 +66,17 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
 
   // 2. 저장 버튼 > 저장
   const { mutate: postCategory } = usePOSTCategoryMutation({
-    memberId: USER_ID,
+    memberId,
   });
   const { mutate: putCategory } = usePUTCategoryMutation({
-    memberId: USER_ID,
+    memberId,
     categoryId: categoryId ?? '',
   });
   const onClickSave = () => {
     if (mode === 'EDIT') {
       putCategory({
         categoryId: categoryId ?? '',
-        memberId: USER_ID,
+        memberId,
         postData: {
           name: categoryName,
           emoji,
@@ -85,7 +86,7 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
     }
     if (mode === 'ADD') {
       postCategory({
-        memberId: USER_ID,
+        memberId,
         postData: categoryList.map((category) => ({
           emoji: category.emoji,
           name: category.name,
