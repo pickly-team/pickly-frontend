@@ -7,23 +7,23 @@ import SkeletonCategoryList from '@/category/ui/SkeletonCategoryList';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import Header from '@/common-ui/Header/Header';
 import BSConfirmation from '@/common/ui/BSConfirmation';
+import useAuthStore from '@/store/auth';
 import { Suspense, useState } from 'react';
 
 const CategoryListPage = () => {
-  // TODO : 로그인 유저 ID 연동
-  const USER_ID = 1;
+  const { memberId } = useAuthStore();
   const [mode, setMode] = useState<Mode>('NORMAL');
 
   const { close, isOpen, open } = useBottomSheet();
 
   const [deleteCategoryList, setDeleteCategoryList] = useState<string[]>([]);
   const { mutateAsync: mutateDeleteCategory } = useDeleteCategoryMutation({
-    memberId: USER_ID,
+    memberId,
   });
   const onClickDelete = async () => {
     await mutateDeleteCategory({
       categoryId: deleteCategoryList,
-      memberId: USER_ID,
+      memberId,
     });
     setMode('NORMAL');
     close();
@@ -33,7 +33,7 @@ const CategoryListPage = () => {
   );
 
   const { mutateAsync: mutatePatchOrder } = usePATCHCategoryOrderMutation({
-    memberId: USER_ID,
+    memberId,
   });
   const onClickSaveOrder = async () => {
     const orderData = clientCategoryList.map((category, index) => ({

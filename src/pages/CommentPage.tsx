@@ -3,11 +3,12 @@ import styled from '@emotion/styled';
 import CommentItem from '@/comment/ui/comment-list/CommentItem';
 import getRem from '@/utils/getRem';
 import { useGETCommentListQuery } from '@/comment/api/Comment';
+import useAuthStore from '@/store/auth';
 
 const CommentPage = () => {
-  const USER_ID = 1;
+  const { memberId } = useAuthStore();
   const { data: commentList } = useGETCommentListQuery({
-    userId: USER_ID,
+    userId: memberId,
   });
 
   return (
