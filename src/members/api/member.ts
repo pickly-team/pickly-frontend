@@ -384,36 +384,6 @@ export const useGETFriendProfileQuery = (
   );
 };
 
-// 알림 기준 생성 API
-// NOTE : Backend API가 수정되면 삭제
-interface POSTNotificationStandardsParams {
-  loginId: number;
-  postData: {
-    isActive: boolean;
-    notifyDailyAt: string;
-  };
-  token?: string;
-}
-
-const postAPI = async ({
-  loginId,
-  postData,
-  token,
-}: POSTNotificationStandardsParams) => {
-  const { data } = await client({
-    method: 'post',
-    url: '/notification-standards',
-    params: { loginId },
-    data: postData,
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  });
-  return data;
-};
-
-export const usePOSTNotificationStandardQuery = () => {
-  return useMutation(postAPI);
-};
-
 interface MemberItem {
   hasNext: boolean;
   contents: Member[];
