@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import { usePOSTBookmarkMutation } from '@/bookmarks/api/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
 import ToastList from './Toast/ToastList';
+import useAuthStore from '@/store/auth';
 
 // TODO : 네비게이터에 대한 path를 재정의 필요
 
@@ -85,7 +86,7 @@ const BottomNavigation = () => {
     }
   }, []);
 
-  const MEMBER_ID = 1; // TODO : 로그인 기능 구현 후 수정 필요
+  const { memberId } = useAuthStore();
   const { mutate: postBookmark } = usePOSTBookmarkMutation({
     resetAll: {
       resetAllInputs,
@@ -95,7 +96,7 @@ const BottomNavigation = () => {
       },
       resetVisibility: () => onClickPublishScoped('SCOPE_PUBLIC'),
     },
-    memberId: MEMBER_ID,
+    memberId,
     categoryId: Number(selectedCategoryId),
   });
 
@@ -105,7 +106,7 @@ const BottomNavigation = () => {
       title,
       categoryId: Number(selectedCategoryId),
       visibility: selectedPublishScoped,
-      memberId: MEMBER_ID,
+      memberId,
     });
     close();
   };

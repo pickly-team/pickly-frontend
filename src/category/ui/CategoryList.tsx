@@ -17,6 +17,7 @@ import useBottomIntersection from '@/common/service/hooks/useBottomIntersection'
 import SkeletonCategoryList from './SkeletonCategoryList';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import BlankItem from '@/common-ui/BlankItem';
+import useAuthStore from '@/store/auth';
 
 interface CategoryListProps {
   mode: Mode;
@@ -41,13 +42,13 @@ const CategoryList = ({
   setDeleteCategoryList,
 }: CategoryListProps) => {
   const navigate = useNavigate();
-  const USER_ID = 1;
+  const { memberId } = useAuthStore();
   const {
     data: categoryList,
     fetchNextPage,
     isFetchingNextPage,
   } = useGETCategoryListQuery({
-    memberId: USER_ID,
+    memberId,
     pageRequest: {
       pageSize: 15,
     },
@@ -87,7 +88,7 @@ const CategoryList = ({
       else setDeleteCategoryList([...deleteCategoryList, categoryId]);
 
       queryClient.setQueryData<InfiniteCategory>(
-        GET_CATEGORY_LIST(USER_ID),
+        GET_CATEGORY_LIST(memberId),
         (prev) => {
           if (!prev) return undefined;
           return {

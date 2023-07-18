@@ -5,22 +5,23 @@ import {
 import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import BookmarkLikeItem from './BookmarkLikeItem';
 import SkeletonBookmarkLikeList from './SkeletonBookmarkLikeList';
+import useAuthStore from '@/store/auth';
 
 const BookmarkLikeList = () => {
-  const USER_ID = 1;
+  const { memberId } = useAuthStore();
   const {
     data: bookmarkList,
     fetchNextPage,
     isFetchingNextPage,
   } = useGETLikeBookmarkListQuery({
-    memberId: USER_ID,
+    memberId,
     pageRequest: {
       cursorId: null,
       pageSize: 15,
     },
   });
 
-  const { mutate } = usePUTLikeBookmarkMutation({ memberId: USER_ID });
+  const { mutate } = usePUTLikeBookmarkMutation({ memberId });
 
   const onClickLike = (bookmarkId: number) => {
     mutate(bookmarkId);
