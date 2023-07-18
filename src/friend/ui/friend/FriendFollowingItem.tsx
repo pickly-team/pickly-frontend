@@ -7,7 +7,7 @@ type FriendFollowingProps = {
   id: number;
   memberId: number;
   name: string;
-  profileEmoji: string | undefined;
+  profileEmoji: string;
   isFollowing: boolean;
 };
 const FriendFollowingItem = ({

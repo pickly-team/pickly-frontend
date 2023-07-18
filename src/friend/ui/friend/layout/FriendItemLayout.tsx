@@ -44,4 +44,5 @@ const Container = styled.div`
 const EmojiAndNameWrapper = styled.div`
   display: flex;
   column-gap: ${getRem(10)};
+  align-items: center;
 `;
