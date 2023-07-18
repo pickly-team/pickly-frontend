@@ -27,6 +27,10 @@ const SettingsBox = ({ serverRemindInDays }: SettingsBoxProps) => {
 
   const toggleIsEditing = () => {
     if (isEditing) {
+      if (remindInDays === serverRemindInDays) {
+        setIsEditing(!isEditing);
+        return;
+      }
       mutate({
         patchData: {
           notifyStandardDay: remindInDays,
@@ -59,7 +63,8 @@ const SettingsBox = ({ serverRemindInDays }: SettingsBoxProps) => {
           onChangeRemainingDays={onChangeRemainingDays}
         />
         <SettingsButton onClick={toggleIsEditing}>
-          <Icon name={'setting-green'} size={'xxl'} />
+          {!isEditing && <Icon name={'setting-green'} size={'xxl'} />}
+          {!!isEditing && <Icon name={'check-green-reverse'} size={'xxl'} />}
         </SettingsButton>
       </RoundedBox>
     </>
@@ -72,6 +77,9 @@ const SettingsButton = styled.button`
   position: absolute;
   top: calc(50% - ${getRem(18)});
   right: ${getRem(20)};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const RemindingDescription = ({
@@ -103,6 +111,7 @@ const RemindingDescription = ({
             <RemindingLine>
               {isEditing ? (
                 <StyledInput
+                  height={1.2}
                   value={remindInDays}
                   onChange={onChangeRemainingDays}
                   max={MAX_DAYS}
@@ -146,7 +155,8 @@ const RemindingLine = styled.div`
 `;
 const StyledInput = styled.input`
   width: ${getRem(40)};
-  padding: ${getRem(3)} ${getRem(7)} ${getRem(3)} ${getRem(7)};
+  padding: ${getRem(2.5)} ${getRem(10)};
+
   color: ${theme.colors.white};
   background-color: ${theme.colors.darkGrey};
   border-radius: ${getRem(8)};

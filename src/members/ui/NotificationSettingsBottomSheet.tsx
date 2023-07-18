@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { KeyboardEvent, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import BottomSheet, {
   BottomSheetProps,
@@ -8,10 +8,7 @@ import Text from '@/common-ui/Text';
 import Toggle from '@/common-ui/Toggle';
 import { theme } from '@/styles/theme';
 import Button from '@/common-ui/Button';
-import {
-  useGETNotificationStandardsQuery,
-  usePUTNotificationStandardsQuery,
-} from '../api/member';
+import { usePUTNotificationStandardsQuery } from '../api/member';
 import useAuthStore from '@/store/auth';
 
 const HourInput = ({
@@ -19,31 +16,34 @@ const HourInput = ({
   onChange,
   isPm,
 }: {
-  value: string;
-  onChange: (val: string) => void;
+  value: number;
+  onChange: (val: number) => void;
   isPm: boolean;
 }) => {
-  const handleHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value;
-    if (Number(val) <= 12) val = val.slice(-2);
-    else if (Number(val) > 12) val = val.slice(-1);
-
-    if (Number(val) < 10 && val.length > 1) val = val.slice(-1);
-
-    if (isPm) {
-      if (parseInt(val) >= 1 && parseInt(val) <= 12) {
-        onChange(val);
-      }
-    } else {
-      if (parseInt(val) >= 0 && parseInt(val) <= 11) {
-        onChange(val);
-      }
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+      e.preventDefault();
     }
   };
 
+  const handleHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value;
+    // 2자리 숫자까지만 입력 가능하도록 함
+    if (val.length > 2) val = val.slice(0, 2);
+    onChange(Number(val));
+  };
+
+  useEffect(() => {
+    // 입력 완료 후에 범위 확인
+    if (value < 0 || value > 12) {
+      onChange(12);
+    }
+  }, [value]);
+
   return (
     <StyledNumberInput
-      value={value.split(':')[0]}
+      value={value}
+      onKeyDown={handleKeyPress}
       onChange={handleHourChange}
       min={isPm ? 1 : 0}
       max={isPm ? 12 : 11}
@@ -55,21 +55,34 @@ const MinuteInput = ({
   value,
   onChange,
 }: {
-  value: string;
-  onChange: (val: string) => void;
+  value: number;
+  onChange: (val: number) => void;
 }) => {
-  const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value;
-    if (val.length > 2) val = val.slice(-1);
-
-    if (parseInt(val) >= 0 && parseInt(val) <= 59) {
-      onChange(val);
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+      e.preventDefault();
     }
   };
 
+  const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value;
+    // 2자리 숫자까지만 입력 가능하도록 함
+    if (val.length > 2) val = val.slice(0, 2);
+
+    onChange(Number(val));
+  };
+
+  useEffect(() => {
+    // 입력 완료 후에 범위 확인
+    if (value < 0 || value > 59) {
+      onChange(59);
+    }
+  }, [value]);
+
   return (
     <StyledNumberInput
-      value={value.split(':')[1]}
+      value={value}
+      onKeyDown={handleKeyPress}
       onChange={handleMinuteChange}
       min={0}
       max={59}
@@ -86,10 +99,14 @@ const StyledNumberInput = styled.input`
   height: 100%;
   background-color: transparent;
   color: ${theme.colors.white};
+  caret-color: ${theme.colors.white};
   font-size: ${getRem(20)};
   outline: none;
-  caret-color: transparent;
   border: none;
+
+  &:focus {
+    caret-color: ${theme.colors.white};
+  }
 
   &::-webkit-inner-spin-button {
     display: none;
@@ -107,37 +124,46 @@ const StyledNumberInput = styled.input`
     appearance: none;
     margin: ${getRem(-10)};
   }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
+interface Time {
+  hour: number;
+  minute: number;
+}
+
+type NotificationSettingsBottomSheetProps = {
+  defaultTime: string;
+} & Omit<BottomSheetProps, 'children'>;
+
 const NotificationSettingsBottomSheet = ({
+  defaultTime,
   ...props
-}: Omit<BottomSheetProps, 'children'>) => {
+}: NotificationSettingsBottomSheetProps) => {
   const { memberId } = useAuthStore();
   const [isPm, setIsPm] = useState(false);
-  const [time, setTime] = useState<string>('00:00');
-
-  const { data: defaultTime } = useGETNotificationStandardsQuery({
-    loginId: memberId,
+  const [time, setTime] = useState<Time>({
+    hour: 0,
+    minute: 0,
   });
 
   useEffect(() => {
-    if (defaultTime) setTime(defaultTime.notifyDailyAt);
+    if (defaultTime) {
+      const [hour, minute] = defaultTime.split(':');
+      const transformHour =
+        Number(hour) > 12 ? Number(hour) - 12 : Number(hour);
+      setTime({ hour: transformHour, minute: Number(minute) });
+      setIsPm(Number(hour) > 12);
+    }
   }, [defaultTime]);
 
-  useEffect(() => {
-    const hour = parseInt(time.split(':')[0]);
-    const minute = time.split(':')[1];
-    if (!isPm && hour === 12) {
-      setTime('11:59');
-      return;
-    }
-
-    const withZeroHour = hour < 10 ? `0${hour}` : hour;
-    setTime(`${withZeroHour}:${minute}`);
-  }, [isPm, time]);
-
-  const handleTimeChange = (hour: string, minute: string) => {
-    setTime(`${hour}:${minute}`);
+  const handleTimeChange = (hour: number, minute: number) => {
+    setTime({ hour, minute });
   };
 
   const { mutate } = usePUTNotificationStandardsQuery({
@@ -145,11 +171,18 @@ const NotificationSettingsBottomSheet = ({
   });
 
   const onClickSave = () => {
+    const { hour, minute } = time;
+
+    const transformHour = isPm ? hour + 12 : hour < 10 ? `0${hour}` : hour;
+    if (defaultTime === `${transformHour}:${minute}:00`) {
+      props.onClose && props.onClose();
+      return;
+    }
     mutate({
       loginId: memberId || 8,
       putData: {
         isActive: true,
-        notifyDailyAt: time,
+        notifyDailyAt: `${transformHour}:${minute}`,
       },
     });
     props.onClose && props.onClose();
@@ -178,16 +211,14 @@ const NotificationSettingsBottomSheet = ({
           />
           <Container>
             <HourInput
-              value={time}
-              onChange={(hour) => handleTimeChange(hour, time.split(':')[1])}
+              value={time.hour}
+              onChange={(hour) => handleTimeChange(hour, time.minute)}
               isPm={isPm}
             />
             <Text.Span>:</Text.Span>
             <MinuteInput
-              value={time}
-              onChange={(minute) =>
-                handleTimeChange(time.split(':')[0], minute)
-              }
+              value={time.minute}
+              onChange={(minute) => handleTimeChange(time.hour, minute)}
             />
           </Container>
         </InputContainer>
