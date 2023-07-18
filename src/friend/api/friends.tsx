@@ -18,12 +18,7 @@ export interface GETFollowingListResponse {
 export interface FollowingInfo {
   memberId: number;
   loginId: string;
-}
-
-interface ClientFollowingInfo {
-  memberId: number;
-  loginId: string;
-  profileEmoji: string;
+  emoji: string;
 }
 
 interface GETFollowingListRequest {
@@ -32,13 +27,6 @@ interface GETFollowingListRequest {
   pageSize?: number;
   token?: string;
 }
-
-const followingMapper = (following: FollowingInfo): ClientFollowingInfo => {
-  return {
-    ...following,
-    profileEmoji: '😃',
-  };
-};
 
 const getFollowingListAPI = async ({
   memberId,
@@ -53,10 +41,7 @@ const getFollowingListAPI = async ({
     data: {},
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  return {
-    ...data,
-    contents: data.contents.map(followingMapper),
-  };
+  return data;
 };
 
 export interface GETFollowingListQueryRequest {
@@ -95,13 +80,7 @@ interface FollowerInfo {
   memberId: number;
   loginId: string;
   isFollowing: boolean;
-}
-
-interface ClientFollowerInfo {
-  memberId: number;
-  loginId: string;
-  isFollowing: boolean;
-  profileEmoji: string;
+  emoji: string;
 }
 
 export interface GETFollowerListResponse {
@@ -116,13 +95,6 @@ interface GETFollowerListRequest {
   token?: string;
 }
 
-const followerMapper = (follower: FollowerInfo): ClientFollowerInfo => {
-  return {
-    ...follower,
-    profileEmoji: '😃',
-  };
-};
-
 const getFollowerListAPI = async ({
   memberId,
   cursorId,
@@ -135,10 +107,7 @@ const getFollowerListAPI = async ({
     params: { cursorId, pageSize },
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  return {
-    ...data,
-    contents: data.contents.map(followerMapper),
-  };
+  return data;
 };
 
 export interface GETFollowerListQueryRequest {
@@ -418,7 +387,7 @@ type InfiniteSearchList =
 export interface SearchList {
   memberId: number;
   nickname: string;
-  profileImageUrl: string;
+  emoji: string;
   isFollowing: boolean;
 }
 
@@ -476,6 +445,8 @@ export const useGETSearchListQuery = (params: GETSearchListQueryRequest) => {
     {
       enabled: !!params.keyword,
       suspense: true,
+      cacheTime: 10 * 1000,
+      staleTime: 10 * 1000,
       getNextPageParam: (lastPage) => {
         if (lastPage.hasNext) {
           return lastPage.contents[lastPage.contents.length - 1].memberId;

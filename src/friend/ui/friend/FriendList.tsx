@@ -39,7 +39,7 @@ const FriendList = ({ keyword }: FriendListProps) => {
             id={info.memberId}
             memberId={memberId}
             name={info.nickname}
-            profileEmoji={info.profileImageUrl}
+            profileEmoji={info.emoji}
             isFollowing={Boolean(info.isFollowing)}
           />
         ))}
@@ -52,8 +52,8 @@ const FriendList = ({ keyword }: FriendListProps) => {
 export default FriendList;
 
 const Container = styled.div`
-  padding: ${getRem(10)};
-  > * + * {
-    margin-top: ${getRem(10)};
+  padding: 0 ${getRem(20)};
+  :first-of-type {
+    padding-top: ${getRem(20)};
   }
 `;
