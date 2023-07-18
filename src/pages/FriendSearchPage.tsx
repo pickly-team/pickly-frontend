@@ -2,17 +2,23 @@ import Divider from '@/category/ui/Divider';
 import Header from '@/common-ui/Header/Header';
 import Input from '@/common-ui/Input';
 import useSearchUser from '@/friend/services/hooks/useSearchUser';
+import FriendSkeletonItem from '@/friend/ui/FriendSkeletonItem';
 import FriendList from '@/friend/ui/friend/FriendList';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
 
 const FriendSearchPage = () => {
-  const { handleChange, keyword, debounceKeyword } = useSearchUser();
+  const { keyword, debounceKeyword, handleChange, initializeKeyword } =
+    useSearchUser();
 
   return (
     <>
-      <Header title="친구 찾기" showBackButton={true} />
+      <Header
+        title="친구 찾기"
+        showBackButton={true}
+        backButtonCallback={initializeKeyword}
+      />
       <Wrapper>
         <SearchInput
           value={keyword}
@@ -27,7 +33,11 @@ const FriendSearchPage = () => {
       <DividerWrapper>
         <Divider size="s" margin="off" />
       </DividerWrapper>
-      <Suspense>
+      <Suspense
+        fallback={Array.from({ length: 5 }, (_, item) => (
+          <FriendSkeletonItem key={item} />
+        ))}
+      >
         <FriendList keyword={debounceKeyword} />
       </Suspense>
     </>
