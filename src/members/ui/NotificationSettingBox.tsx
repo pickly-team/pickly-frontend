@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Text from '@/common-ui/Text';
 import RoundedBox from '@/members/ui/RoundedBox';
@@ -10,6 +10,8 @@ import {
 import RoundToggle from '@/common-ui/RoundToggle';
 import NotificationSettingsBottomSheet from '@/members/ui/NotificationSettingsBottomSheet';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
+import { useGETNotificationStandardsQuery } from '../api/member';
+import useAuthStore from '@/store/auth';
 
 const NotificationSettingBox = ({
   notificationSetting,
@@ -18,6 +20,18 @@ const NotificationSettingBox = ({
 }) => {
   const [isNotificationOn, setIsNotificationOn] = useState(false);
   const { isOpen, open, close } = useBottomSheet();
+
+  const { memberId } = useAuthStore();
+
+  const { data: defaultTime } = useGETNotificationStandardsQuery({
+    loginId: memberId,
+  });
+
+  useEffect(() => {
+    if (defaultTime) {
+      setIsNotificationOn(defaultTime.isActive);
+    }
+  }, [defaultTime]);
 
   return (
     <>
@@ -45,7 +59,11 @@ const NotificationSettingBox = ({
           setOff={() => setIsNotificationOn(false)}
         />
       </RoundedBox>
-      <NotificationSettingsBottomSheet open={isOpen} onClose={close} />
+      <NotificationSettingsBottomSheet
+        defaultTime={defaultTime?.notifyDailyAt || '09:00'}
+        open={isOpen}
+        onClose={close}
+      />
     </>
   );
 };
