@@ -26,14 +26,6 @@ export interface NotificationItem {
   content: string;
   bookmarkId: number;
   isChecked: boolean;
-}
-
-interface ClientNotificationItem {
-  id: number;
-  title: string;
-  content: string;
-  bookmarkId: number;
-  isChecked: boolean;
   createdAt: number;
 }
 
@@ -53,20 +45,7 @@ const getNotificationListAPI = async ({
     data: {},
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  return data.map(convertNotificationItem);
-};
-
-const convertNotificationItem = (
-  notificationItem: NotificationItem,
-): ClientNotificationItem => {
-  return {
-    id: notificationItem.id,
-    title: notificationItem.title,
-    content: notificationItem.content,
-    bookmarkId: notificationItem.bookmarkId,
-    isChecked: notificationItem.isChecked,
-    createdAt: 1689278498,
-  };
+  return data;
 };
 
 export interface GetAPIRequest {
