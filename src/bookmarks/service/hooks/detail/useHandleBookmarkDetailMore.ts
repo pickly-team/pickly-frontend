@@ -3,7 +3,6 @@ import {
   GET_BOOKMARK_DETAIL_KEY,
   refetchAllBookmarkQuery,
   useDELETEBookmarkQuery,
-  usePOSTBookmarkReportMutation,
 } from '@/bookmarks/api/bookmark';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import { navigatePath } from '@/constants/navigatePath';
@@ -56,9 +55,6 @@ const useHandleBookmarkDetailMore = () => {
   );
   const writtenId = bookmarkDetail?.memberId ?? 0;
   const isMyBookmark = memberId === writtenId;
-  const { mutate: reportBookmark } = usePOSTBookmarkReportMutation({
-    reporterId: memberId,
-  });
   const onClickReportBookmark = () => {
     router(navigatePath.REPORT.replace(':id', id));
   };
