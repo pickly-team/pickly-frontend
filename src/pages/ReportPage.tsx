@@ -1,11 +1,14 @@
+import { usePOSTBookmarkReportMutation } from '@/bookmarks/api/bookmark';
 import BookmarkReportList from '@/bookmarks/ui/Report/BookmarkReportList';
 import BookmarkReportWrite from '@/bookmarks/ui/Report/BookmarkReportWrite';
 import BottomFixedButton from '@/common-ui/BottomFixedButton';
 import Header from '@/common-ui/Header/Header';
 import Text from '@/common-ui/Text';
+import useAuthStore from '@/store/auth';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export type ReportMode = 'CHECK' | 'WRITE';
 
@@ -13,15 +16,25 @@ const ReportPage = () => {
   const [mode, setMode] = useState<ReportMode>('CHECK');
   const [reportText, setReportText] = useState('');
   const [selectedReport, setSelectedReport] = useState('');
+  const { memberId } = useAuthStore();
+  const { id } = useParams() as { id: string };
 
   const onChangeReportText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReportText(e.target.value);
   };
 
   // TODO : 신고하기 버튼 클릭 시 신고 API 호출
+  const { mutate: reportBookmark } = usePOSTBookmarkReportMutation({
+    reporterId: memberId,
+  });
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(selectedReport, reportText);
+    const content = mode === 'WRITE' ? reportText : selectedReport;
+    reportBookmark({
+      reportedId: Number(id),
+      reporterId: memberId,
+      content,
+    });
   };
 
   const buttonDisabled =
