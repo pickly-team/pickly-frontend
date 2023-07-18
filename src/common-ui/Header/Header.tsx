@@ -4,6 +4,7 @@ import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import { ReactNode } from 'react';
 import getRem from '@/utils/getRem';
+import { HEADER_Z_INDEX } from '@/constants/zIndex';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -50,6 +51,7 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: ${HEADER_Z_INDEX};
 `;
 
 const BackButtonAndTitleWrapper = styled.div`

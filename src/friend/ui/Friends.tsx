@@ -47,7 +47,7 @@ const Friends = () => {
               id={info.memberId}
               memberId={memberId}
               name={info.loginId}
-              profileEmoji={info.profileEmoji}
+              profileEmoji={info.emoji}
               isFollowing={true}
             />
           ))}
@@ -58,7 +58,7 @@ const Friends = () => {
               id={info.memberId}
               memberId={memberId}
               name={info.loginId}
-              profileEmoji={info.profileEmoji}
+              profileEmoji={info.emoji}
               isFollowing={info.isFollowing}
             />
           ))}

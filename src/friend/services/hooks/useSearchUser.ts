@@ -1,25 +1,30 @@
 import useDebounce from '@/common/service/hooks/useDebounce';
 import useSearchStore from '@/store/search';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 
 const useSearchUser = () => {
-  const { setKeyword: setStoreSearchKeyword } = useSearchStore();
-  const [keyword, setKeyword] = useState('');
-  const debounceKeyword = useDebounce(keyword, 500);
+  const { setKeyword: setStoreSearchKeyword, keyword: storeKeyword } =
+    useSearchStore();
+  const debounceKeyword = useDebounce(storeKeyword, 500);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setKeyword(value);
+    setStoreSearchKeyword(value);
   };
 
   useEffect(() => {
     setStoreSearchKeyword(debounceKeyword);
   }, [debounceKeyword, setStoreSearchKeyword]);
 
+  const initializeKeyword = () => {
+    setStoreSearchKeyword('');
+  };
+
   return {
-    keyword,
+    keyword: storeKeyword,
     debounceKeyword,
     handleChange,
+    initializeKeyword,
   };
 };
 
