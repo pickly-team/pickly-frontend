@@ -5,6 +5,7 @@ import {
   usePATCHNotificationReadQuery,
 } from '@/notification/api/notification';
 import useAuthStore from '@/store/auth';
+import BlankItem from '@/common-ui/BlankItem';
 
 const Notifications = () => {
   // FIRST RENDER
@@ -33,6 +34,7 @@ const Notifications = () => {
 
   return (
     <>
+      {notificationList?.length === 0 && <BlankItem page="NOTIFICATION" />}
       {notificationList?.map((notification) => (
         <NotificationSlideItem
           key={notification.id}
