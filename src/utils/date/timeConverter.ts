@@ -1,3 +1,7 @@
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
+
 export const millToString = (time: number) => {
   let curSec = time;
   const h = Math.floor(curSec / 3600);
@@ -39,10 +43,9 @@ export const stringToMill = (time: string) => {
 
 export const timeStampToDate = (timeStamp: number) => {
   // 서버에서 10자리 timestamp 로 내려옴 (second, in GMT == UTC)
-  const NINE_HOURS_IN_SECONDS = 9 * 60 * 60;
-  const diff =
-    (Math.ceil(Date.now() / 1000) + NINE_HOURS_IN_SECONDS - timeStamp) * 1000;
-  const dataFormat = new Date(timeStamp * 1000);
+  const diff = (Math.ceil(dayjs().unix()) - timeStamp) * 1000;
+
+  // 30
 
   // 1분 미만
   if (diff < 60 * 1000) return '방금 전';
@@ -59,7 +62,8 @@ export const timeStampToDate = (timeStamp: number) => {
   if (diff >= 24 * 60 * 60 * 8 * 1000 && diff < 24 * 60 * 60 * 29 * 1000)
     return `${Math.floor(diff / (86400 * 1000 * 7))}주 전`;
   // 30일 이상
-  return `${dataFormat.getFullYear()}.${(dataFormat.getMonth() + 1)
-    .toString()
-    .padStart(2, '0')}.${dataFormat.getDate().toString().padStart(2, '0')}`;
+  if (diff >= 24 * 60 * 60 * 29 * 1000)
+    return `${Math.floor(diff / (86400 * 1000 * 30))}달 전`;
+
+  return '';
 };
