@@ -2,38 +2,26 @@ import styled from '@emotion/styled';
 
 import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
-import BookmarkList from '@/bookmarks/ui/Main/BookmarkList';
-import BookmarkItem from '@/bookmarks/ui/Main/BookmarkItem';
-import BookmarkEditItem from '@/bookmarks/ui/Main/BookmarkEditItem';
 import BookmarkBSDeleteConfirmation from '@/bookmarks/ui/Main/BookmarkBSDeleteConfirmation';
-import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
-import useBookmarkList from '@/bookmarks/service/hooks/home/useBookmarkList';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
-import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import getRem from '@/utils/getRem';
 import useAuthStore from '@/store/auth';
-import BlankItem from '@/common-ui/BlankItem';
+import BookmarkListView from '@/bookmarks/ui/Main/BookmarkListView';
+import { Suspense } from 'react';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 
 const MainPage = () => {
   const { memberId, userInfo } = useAuthStore();
-  const { selectedCategory, categoryOptions, onChangeCategory } = useCategory({
-    memberId,
-  });
+  const { selectedCategoryId, categoryOptions, onChangeCategory } = useCategory(
+    {
+      memberId,
+    },
+  );
 
   const { isReadMode, onClickReadMode } = useReadList();
-
-  const { bookMarkList, isLoading, fetchNextPage, isFetchingNextPage } =
-    useBookmarkList({
-      readByUser: isReadMode,
-      categoryId: selectedCategory,
-      memberId,
-    });
-  const { bottom } = useBottomIntersection({
-    fetchNextPage,
-    enabled: !isFetchingNextPage,
-  });
 
   const {
     isEditMode: isEdit,
@@ -41,9 +29,8 @@ const MainPage = () => {
     onClickBookmarkItemInEdit,
     onClickDelete,
     onClickEdit,
-  } = useDeleteBookmarkList({ categoryId: selectedCategory });
-
-  const isEditMode = !isLoading && bookMarkList?.pages.length !== 0 && isEdit;
+    deleteBookmarkClose,
+  } = useDeleteBookmarkList({ categoryId: selectedCategoryId });
 
   return (
     <>
@@ -55,7 +42,7 @@ const MainPage = () => {
       </LTop>
       <BookmarkToggle>
         <BookmarkToggle.SelectCategory
-          selectedCategory={String(selectedCategory)}
+          selectedCategory={String(selectedCategoryId)}
           categoryOptions={categoryOptions}
           setCategoryId={onChangeCategory}
         />
@@ -65,64 +52,28 @@ const MainPage = () => {
         />
         <BookmarkToggle.ToggleEdit isEdit={isEdit} onClickEdit={onClickEdit} />
       </BookmarkToggle>
-
       <LMiddle>
-        {!!isLoading &&
-          Array.from({ length: 5 }).map((_, index) => (
-            <BookmarkSkeletonItem key={index} />
-          ))}
-        {!isLoading && bookMarkList?.pages.length && (
-          <>
-            {bookMarkList.pages[0].contents.length === 0 && (
-              <>
-                {!!isReadMode && <BlankItem page="BOOKMARK" />}
-                {!isReadMode && <BlankItem page="BOOKMARK_READ" />}
-              </>
-            )}
-            {!isEditMode &&
-              bookMarkList.pages[0].contents[0]?.bookmarkId &&
-              bookMarkList.pages.map((page) => (
-                <BookmarkList
-                  key={page.contents[0].bookmarkId}
-                  bookmarkList={page.contents?.filter(
-                    (item) => item.readByUser === isReadMode,
-                  )}
-                  renderItem={(bookMarkList) => (
-                    <BookmarkItem
-                      key={bookMarkList.bookmarkId}
-                      {...bookMarkList}
-                    />
-                  )}
-                />
+        <Suspense
+          fallback={
+            <SkeletonWrapper>
+              {Array.from({ length: 10 }).map((_, index) => (
+                <BookmarkSkeletonItem key={index} />
               ))}
-            {isEditMode &&
-              bookMarkList.pages[0].contents[0].bookmarkId &&
-              bookMarkList?.pages.map((page) => (
-                <BookmarkList
-                  key={page.contents[0]?.bookmarkId}
-                  bookmarkList={page.contents?.filter(
-                    (item) => item.readByUser === isReadMode,
-                  )}
-                  renderItem={(bookMarkList) => (
-                    <BookmarkEditItem
-                      key={bookMarkList.bookmarkId}
-                      {...bookMarkList}
-                      onClickItem={onClickBookmarkItemInEdit}
-                    />
-                  )}
-                />
-              ))}
-          </>
-        )}
-        <div ref={bottom} />
-        {isFetchingNextPage &&
-          Array.from({ length: 5 }).map((_, index) => (
-            <BookmarkSkeletonItem key={index} />
-          ))}
+            </SkeletonWrapper>
+          }
+        >
+          <BookmarkListView
+            memberId={memberId}
+            isEditMode={isEdit}
+            isReadMode={isReadMode}
+            selectedCategory={selectedCategoryId}
+            onClickBookmarkItemInEdit={onClickBookmarkItemInEdit}
+          />
+        </Suspense>
       </LMiddle>
       {/** 북마크 삭제 확인 */}
       <BookmarkBSDeleteConfirmation
-        onClose={onClickDelete}
+        onClose={deleteBookmarkClose}
         onDelete={onClickDelete}
         open={isDeleteBookmarkOpen}
       />

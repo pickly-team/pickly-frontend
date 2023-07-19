@@ -76,7 +76,7 @@ const Box = styled.div`
     transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
     &:active {
       background-color: ${theme.colors.grey800};
-      opacity: 0.5;
+      opacity: 0.8;
     }
   }
 `;
@@ -125,4 +125,8 @@ const ItemUpperRight = styled.div`
 const Thumbnail = styled.img`
   width: 7rem;
   height: 5rem;
+  border-radius: 0.5rem;
+  margin-left: 1rem;
+  object-fit: contain;
+  border: 1px solid ${theme.colors.grey400};
 `;

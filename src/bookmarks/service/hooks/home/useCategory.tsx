@@ -1,8 +1,9 @@
 import { useGETCategoryListQuery } from '@/bookmarks/api/bookmark';
-import { useEffect, useState } from 'react';
+import useBookmarkStore from '@/store/bookmark';
+import { useEffect } from 'react';
 
 export type CategoryType = {
-  value: string;
+  value: string | undefined;
   label: string;
 };
 
@@ -13,7 +14,12 @@ interface Category {
 const useCategory = ({ memberId }: Category) => {
   const { data: categoryList } = useGETCategoryListQuery({ memberId });
 
-  const [categoryOptions, setCategoryOptions] = useState<CategoryType[]>([]);
+  const {
+    categoryOptions,
+    selectedCategoryId,
+    setCategoryOptions,
+    setSelectedCategoryId,
+  } = useBookmarkStore();
 
   useEffect(() => {
     if (categoryList) {
@@ -21,17 +27,19 @@ const useCategory = ({ memberId }: Category) => {
         value: `${category.id}`,
         label: `${category.emoji} ${category.name}`,
       }));
-      setCategoryOptions(categoryOptions);
+      setCategoryOptions([
+        { value: null, label: '🥒 전체' },
+        ...categoryOptions,
+      ]);
     }
-  }, [categoryList]);
-
-  const [selectedCategory, setSelectedCategory] = useState<number>();
+  }, [categoryList, memberId]);
 
   const onChangeCategory = (category: string) => {
-    setSelectedCategory(Number(category));
+    const isAll = Object.is(category, '🥒 전체');
+    setSelectedCategoryId(isAll ? null : Number(category));
   };
 
-  return { categoryOptions, selectedCategory, onChangeCategory };
+  return { categoryOptions, selectedCategoryId, onChangeCategory };
 };
 
 export default useCategory;

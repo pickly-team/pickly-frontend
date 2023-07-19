@@ -38,7 +38,7 @@ const Select = ({
 }: SelectProps) => {
   const ref = useRef<HTMLSelectElement>(null);
   const { searchValue, onChangeSearch } = useSearch();
-  const { options } = useOptions(ref);
+  const { options } = useOptions(ref, children);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSelect = () => {
@@ -150,14 +150,14 @@ const Select = ({
 
 export default Select;
 
-const useOptions = (ref: RefObject<HTMLSelectElement>) => {
+const useOptions = (ref: RefObject<HTMLSelectElement>, children: ReactNode) => {
   const [options, setOptions] = useState<HTMLOptionElement[]>([]);
 
   useEffect(() => {
     if (ref.current) {
       setOptions(Array.from(ref.current.querySelectorAll('option')));
     }
-  }, []);
+  }, [children]);
 
   return {
     options,
@@ -185,7 +185,7 @@ const Container = styled.div`
 const SelectUlWrapper = styled.div<{ isOpen: boolean }>`
   position: absolute;
   width: calc(100vw - ${getRem(38)});
-  border-radius: 10px;
+  border-radius: 0.5rem;
   animation: ${(p) => (p.isOpen ? showUp : showOut)} 0.3s ease-in-out;
   display: ${(p) => (p.isOpen ? 'block' : 'none')};
   background-color: ${(p) => p.theme.colors.grey900};
@@ -203,26 +203,31 @@ const showOut = keyframes`
 `;
 
 const SelectUl = styled.ul`
-  max-height: 200px;
-  overflow: scroll;
+  max-height: 30svh;
+  overflow-y: auto;
 `;
 
 const SelectLi = styled.li`
   cursor: pointer;
-  padding: 10px 0;
+  padding: 0.5rem 0;
 `;
 
 const SearchInputContainer = styled.div`
   position: relative;
-  margin-bottom: 12px;
+  margin-bottom: 0.8rem;
 `;
 
 const SearchIconWrapper = styled.div`
   position: absolute;
-  top: 10px;
-  left: 0;
+  top: 0.8rem;
+  left: 0.4rem;
 `;
 const StyledInput = styled(Input)`
   border-bottom: 1px solid ${theme.colors.white};
-  border-radius: 0;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-left: 2rem;
+  align-items: center;
 `;

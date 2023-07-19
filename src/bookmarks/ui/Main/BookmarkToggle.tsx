@@ -7,7 +7,7 @@ import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 
 export type CategoryType = {
-  value: string;
+  value: string | null;
   label: string;
 };
 
@@ -32,6 +32,7 @@ const SelectCategory = ({
   categoryOptions,
   setCategoryId,
 }: SelectCategoryProps) => {
+  console.log('categoryOptions', categoryOptions);
   return (
     <ButtonWrapper>
       {!categoryOptions.length && (
@@ -85,7 +86,7 @@ const SelectCategory = ({
           isSearchActive
         >
           {categoryOptions.map((option) => (
-            <option value={option.value} key={option.value}>
+            <option value={option.value ?? ''} key={option.value}>
               {option.label}
             </option>
           ))}
