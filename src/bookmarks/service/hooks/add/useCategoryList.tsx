@@ -5,8 +5,9 @@ import {
 } from '@/bookmarks/api/bookmark';
 import useAuthStore from '@/store/auth';
 import { useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect } from 'react';
 
-const useCategoryList = () => {
+const useCategoryList = (defaultCategoryId?: number, isOpen?: boolean) => {
   const { memberId } = useAuthStore();
   // SERVER
   const { data: categoryList } = useGETCategoryListQuery({
@@ -22,15 +23,25 @@ const useCategoryList = () => {
     );
   };
 
-  const toggleCategory = (categoryId: number): ClientBookmarkCategoryItem[] => {
-    return (
-      categoryList?.map((item) =>
-        item.id === categoryId
-          ? { ...item, isSelected: true }
-          : { ...item, isSelected: false },
-      ) || []
-    );
-  };
+  useEffect(() => {
+    isOpen && toggleCategory(defaultCategoryId ?? 0);
+  }, [defaultCategoryId, isOpen]);
+
+  const toggleCategory = useCallback(
+    (categoryId: number): ClientBookmarkCategoryItem[] => {
+      const newCategoryList =
+        categoryList?.map((item) =>
+          item.id === categoryId
+            ? { ...item, isSelected: true }
+            : { ...item, isSelected: false },
+        ) ?? ([] as ClientBookmarkCategoryItem[]);
+
+      setCategoryList(newCategoryList);
+
+      return newCategoryList;
+    },
+    [categoryList, setCategoryList],
+  );
 
   return {
     categoryList,
