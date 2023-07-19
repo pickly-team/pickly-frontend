@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import useBookmarkStore from '@/store/bookmark';
 
 const useReadList = () => {
-  const [isReadMode, setReadMode] = useState(false);
+  const { isReadMode, setIsReadMode } = useBookmarkStore();
 
   const onClickReadMode = () => {
-    setReadMode(!isReadMode);
+    setIsReadMode(!isReadMode);
   };
 
   return {
