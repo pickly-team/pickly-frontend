@@ -32,7 +32,6 @@ const SelectCategory = ({
   categoryOptions,
   setCategoryId,
 }: SelectCategoryProps) => {
-  console.log('categoryOptions', categoryOptions);
   return (
     <ButtonWrapper>
       {!categoryOptions.length && (

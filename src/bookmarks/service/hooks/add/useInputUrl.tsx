@@ -2,6 +2,7 @@ import { useGETBookmarkTitleQuery } from '@/bookmarks/api/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
 import { useEffect, useState } from 'react';
 import { debounce } from 'lodash';
+import useBookmarkStore from '@/store/bookmark';
 
 interface InputUrlProps {
   defaultUrl?: string;
@@ -9,9 +10,8 @@ interface InputUrlProps {
 }
 
 const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
-  const [url, setUrl] = useState<string>('');
+  const { url, setUrl, title, setTitle } = useBookmarkStore();
   const [debouncedUrl, setDebouncedUrl] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
 
   useEffect(() => {
     if (defaultTitle) setTitle(defaultTitle);
@@ -20,7 +20,6 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
 
   // url 입력시 0.5초 후에 url 검증
   // 추가적으로 title 불러오는 api 호출
-
   const debouncedChangeUrl = debounce((url) => setDebouncedUrl(url), 500);
 
   let isDeleting = false; // 사용자가 지우는 동작을 수행하고 있는지 여부를 저장하는 변수

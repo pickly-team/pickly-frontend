@@ -1,6 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import client from '@/common/service/client';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 interface Time {
   hour: number;
@@ -45,7 +48,10 @@ const getNotificationListAPI = async ({
     data: {},
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  return data;
+  return data.map((item) => ({
+    ...item,
+    createdAt: dayjs(item.createdAt).unix() * 1000,
+  }));
 };
 
 export interface GetAPIRequest {

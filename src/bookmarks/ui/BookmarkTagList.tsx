@@ -18,7 +18,7 @@ const TagBoxList = ({ tags, onClickCategory }: TagBoxListProps) => {
       {tags.map((tag) => (
         <TagBox key={tag.id} tag={tag} onClickCategory={onClickCategory} />
       ))}
-      <PlusBox to="category/add" />
+      <PlusBox to="/category/add" />
     </StyledListWrapper>
   );
 };

@@ -7,6 +7,7 @@ import {
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import { navigatePath } from '@/constants/navigatePath';
 import useAuthStore from '@/store/auth';
+import useBookmarkStore from '@/store/bookmark';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -15,6 +16,7 @@ const useHandleBookmarkDetailMore = () => {
   const { memberId } = useAuthStore();
   const { id } = useParams() as { id: string };
   const queryClient = useQueryClient();
+  const { setTitle, setUrl } = useBookmarkStore();
   // USER INTERACTION
   // 1. 북마크 삭제
   const { mutate: deleteBookmark } = useDELETEBookmarkQuery({
@@ -38,6 +40,8 @@ const useHandleBookmarkDetailMore = () => {
       memberId: memberId ?? 0,
       bookmarkId: id,
     });
+    setTitle('');
+    setUrl('');
   };
   // 3. 북마크 수정
   const {
