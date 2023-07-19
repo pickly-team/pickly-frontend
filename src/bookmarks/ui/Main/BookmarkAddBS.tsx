@@ -8,8 +8,10 @@ import styled from '@emotion/styled';
 import { ClientBookmarkCategoryItem, Visibility } from '../../api/bookmark';
 import TagBoxList from '../BookmarkTagList';
 import Icon from '@/common-ui/assets/Icon';
-import { KeyboardEvent } from 'react';
+import { KeyboardEvent, useEffect } from 'react';
 import IconButton from '@/common/ui/IconButton';
+import useBookmarkStore from '@/store/bookmark';
+import { useLocation } from 'react-router-dom';
 
 interface BookmarkAddBSProps {
   isOpen: boolean;
@@ -18,6 +20,11 @@ interface BookmarkAddBSProps {
 }
 
 const BookmarkAddBS = ({ isOpen, close, children }: BookmarkAddBSProps) => {
+  const location = useLocation();
+  const { setFromPath } = useBookmarkStore();
+  useEffect(() => {
+    setFromPath(location.pathname);
+  }, [location.pathname]);
   return (
     <>
       <BottomSheet open={isOpen} onClose={close}>
@@ -35,6 +42,7 @@ interface URLInputProps {
   onChangeTitle: (title: string) => void;
   handleKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
   onDeleteInput: (type: 'url' | 'title') => void;
+  disabled?: boolean;
 }
 
 const URLInput = ({
@@ -45,6 +53,7 @@ const URLInput = ({
   onChangeTitle,
   handleKeyDown,
   onDeleteInput,
+  disabled = false,
 }: URLInputProps) => {
   return (
     <>
@@ -62,9 +71,11 @@ const URLInput = ({
               value={url}
               onKeyDown={handleKeyDown}
               onChange={(e) => onChangeUrl(e.target.value)}
+              disabled={disabled}
+              autoFocus
             />
             <FixedIconWrapper>
-              {!!url.length && (
+              {!!url.length && !disabled && (
                 <IconButton
                   onClick={() => onDeleteInput('url')}
                   name="close"

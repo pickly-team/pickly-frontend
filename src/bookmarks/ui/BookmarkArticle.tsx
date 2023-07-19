@@ -4,7 +4,7 @@ import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
 import { ReactNode, SyntheticEvent, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import BookmarkLikeButton from './Like/BookmarkLikeButton';
 import {
@@ -27,11 +27,13 @@ import useAuthStore from '@/store/auth';
 
 interface BookMarkArticleProps {
   editBookmarkBS: boolean;
+  openEditBookmarkBS: () => void;
   closeEditBookmarkBS: () => void;
 }
 
 const BookMarkArticle = ({
   editBookmarkBS,
+  openEditBookmarkBS,
   closeEditBookmarkBS,
 }: BookMarkArticleProps) => {
   const { id: bookmarkId } = useParams<{ id: string }>();
@@ -62,7 +64,10 @@ const BookMarkArticle = ({
   };
 
   // SERVER
-  const { categoryList, setCategoryList, toggleCategory } = useCategoryList();
+  const { categoryList, toggleCategory } = useCategoryList(
+    bookmarkDetail?.categoryId,
+    editBookmarkBS,
+  );
   // 1. URL & 북마크 Title 입력
   const {
     url,
@@ -87,28 +92,16 @@ const BookMarkArticle = ({
       defaultPublishScoped: bookmarkDetail?.visibility ?? 'SCOPE_PUBLIC',
     });
 
-  // 2. 카테고리 변경
-  useEffect(() => {
-    if (!bookmarkDetail?.categoryId) return;
-    categoryList && setCategoryList(toggleCategory(bookmarkDetail.categoryId));
-    categoryList && setSelectedCategoryId(bookmarkDetail.categoryId);
-  }, [bookmarkDetail?.categoryId, categoryList]);
-
   const onClickCategory = (id: number) => {
     // 새로운 카테고리 선택
     setSelectedCategoryId(id);
     // 선택된 카테고리 변경
-    setCategoryList(toggleCategory(id));
+    toggleCategory(id);
   };
 
   // VALIDATION
   const isValidateUrl = checkValidateURL(url);
-  const isAllWritten = !!(
-    url &&
-    isValidateUrl &&
-    selectedCategoryId &&
-    selectedPublishScoped
-  );
+  const isAllWritten = !!(url && selectedCategoryId && selectedPublishScoped);
 
   const { mutate: putBookmark } = usePUTBookmarkQuery({
     bookmarkId: bookmarkId ?? '',
@@ -127,6 +120,16 @@ const BookMarkArticle = ({
     });
     closeEditBookmarkBS();
   };
+
+  const routerLocation = useLocation().state as {
+    isCategoryAddPage: boolean;
+  };
+
+  useEffect(() => {
+    if (routerLocation?.isCategoryAddPage === true) {
+      openEditBookmarkBS();
+    }
+  }, [routerLocation]);
 
   return (
     <>
@@ -193,6 +196,7 @@ const BookMarkArticle = ({
           onChangeTitle={onChangeTitle}
           handleKeyDown={handleKeyDown}
           onDeleteInput={onDeleteInput}
+          disabled={true}
         />
         <BookmarkAddBS.SelectCategory
           categoryList={categoryList}
