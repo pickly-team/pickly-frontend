@@ -11,6 +11,9 @@ import {
 } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 const DOMAIN = 'BOOKMARK';
 
@@ -341,6 +344,7 @@ export const usePOSTBookmarkMutation = ({
 export interface BookmarkDetail {
   id: number;
   categoryId: number;
+  categoryName: string;
   memberId: number;
   url: string;
   title: string;
@@ -348,6 +352,7 @@ export interface BookmarkDetail {
   isUserLike: boolean;
   readByUser: boolean;
   visibility: ClientVisibility;
+  createdAt: string;
 }
 
 interface GETBookmarkDetailParams {
@@ -383,16 +388,17 @@ export interface ClientBookmarkDetail {
 const getBookmarkDetailMapper = (
   data: BookmarkDetail,
 ): ClientBookmarkDetail => {
+  const dateInKST = dayjs(data.createdAt).add(9, 'hour');
   return {
     categoryId: data.categoryId,
-    categoryName: '프론트엔드',
+    categoryName: data.categoryName,
     memberId: data.memberId,
     url: data.url,
     title: data.title,
     previewImageUrl: data.previewImageUrl ?? '/images/main.png',
     isUserLike: data.isUserLike,
     readByUser: data.readByUser,
-    createdAt: 1689278498,
+    createdAt: dateInKST.unix(),
     visibility: TEMP_VISIBILITY[data.visibility],
   };
 };
