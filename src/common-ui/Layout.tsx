@@ -35,6 +35,6 @@ const LayoutContainer = styled.div`
 `;
 
 const InnerWrapper = styled.div`
-  height: 100vh;
+  height: 100dvh;
   overflow: auto;
 `;
