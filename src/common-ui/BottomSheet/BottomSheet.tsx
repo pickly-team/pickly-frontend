@@ -1,10 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   BottomSheet as SpringBottomSheet,
   BottomSheetRef,
 } from 'react-spring-bottom-sheet';
 
 import './style.module.css';
+import styled from '@emotion/styled';
 
 export interface BottomSheetProps {
   children: React.ReactNode;
@@ -34,23 +35,41 @@ const BottomSheet = ({
   maxHeight: bsMaxHeight = 90,
 }: BottomSheetProps) => {
   const ref = useRef<BottomSheetRef>(null);
+  const [showBackground, setShowBackground] = useState(false);
+
+  // 100 ms delay to remove background
+  useEffect(() => {
+    setTimeout(() => setShowBackground(open), 100);
+  }, [open]);
 
   return (
-    <div data-testid="bottom-sheet">
-      <SpringBottomSheet
-        open={open}
-        onDismiss={onClose}
-        skipInitialTransition
-        ref={ref}
-        snapPoints={({ minHeight, maxHeight }) => [
-          minHeight,
-          maxHeight * (bsMaxHeight / 100),
-        ]}
-      >
-        {children}
-      </SpringBottomSheet>
-    </div>
+    <Background onClick={(e) => e.stopPropagation()} visible={showBackground}>
+      <div data-testid="bottom-sheet">
+        <SpringBottomSheet
+          open={open}
+          onDismiss={onClose}
+          skipInitialTransition
+          ref={ref}
+          snapPoints={({ minHeight, maxHeight }) => [
+            minHeight,
+            maxHeight * (bsMaxHeight / 100),
+          ]}
+        >
+          {children}
+        </SpringBottomSheet>
+      </div>
+    </Background>
   );
 };
 
 export default BottomSheet;
+
+const Background = styled.div<{ visible: boolean }>`
+  background: transparent;
+  bottom: 0px;
+  display: ${({ visible }) => (visible ? 'block' : 'none')};
+  left: 0px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+`;

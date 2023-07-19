@@ -25,7 +25,6 @@ import ApiErrorBoundary from './common-ui/Error/ApiErrorBoundary';
 import FriendSearchPage from './pages/FriendSearchPage';
 import RNListener from './RNListener';
 import BlockUserListPage from './pages/BlockUserListPage';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -101,7 +100,7 @@ const App = () => {
             </Layout>
           </ApiErrorBoundary>
         </BrowserRouter>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
       <Analytics />
     </ThemeProvider>
