@@ -60,6 +60,7 @@ const BookMarkDetailPage = () => {
         <Suspense>
           <BookmarkArticle
             editBookmarkBS={editBookmarkBS}
+            openEditBookmarkBS={onClickEditBookmark}
             closeEditBookmarkBS={closeEditBookmarkBS}
           />
         </Suspense>

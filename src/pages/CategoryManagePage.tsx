@@ -7,7 +7,7 @@ import EmojiSelect from '@/common/ui/EmojiSelect';
 import HeaderLeftAndRight from '@/common-ui/Header/HeaderLeftAndRight';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Emoji from '@/common/ui/Emoji';
 import CategoryName from '@/category/ui/Add/CategoryName';
 import Divider from '@/category/ui/Divider';
@@ -16,6 +16,8 @@ import { useGETCategoryAPI } from '@/category/api/category';
 import { useEffect } from 'react';
 import { usePUTCategoryMutation } from '@/category/api/edit';
 import useAuthStore from '@/store/auth';
+import useBookmarkStore from '@/store/bookmark';
+import { navigatePath } from '@/constants/navigatePath';
 
 interface CategoryManagePageProps {
   mode: 'ADD' | 'EDIT';
@@ -25,8 +27,7 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   // TODO : 인증 로직 추가
   const { memberId } = useAuthStore();
   const router = useNavigate();
-  const location = useLocation();
-  const fromPath = location.state?.fromPath ?? '/';
+  const { fromPath } = useBookmarkStore();
 
   const categoryId = location.pathname.split('/').pop();
 
@@ -52,11 +53,19 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   // INTERACTION
   // 1. 뒤로가기 버튼 > 뒤로가기
   const onClickBack = () => {
-    if (fromPath === '/') {
+    if (fromPath === navigatePath.MAIN && mode === 'ADD') {
       router('/', {
         preventScrollReset: true,
         state: {
-          isCategoryManagePage: true,
+          isCategoryAddPage: true,
+        },
+      });
+      return;
+    }
+    if (fromPath.includes('bookmark') && mode === 'ADD') {
+      router(fromPath, {
+        state: {
+          isCategoryAddPage: true,
         },
       });
       return;
@@ -98,7 +107,7 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   const onClickAddCategory = (emoji: string, categoryName: string) => {
     addCategory(emoji, categoryName);
     onChangeCategoryName('');
-    onChangeEmoji('😎');
+    onChangeEmoji('📖');
   };
 
   const onClickDeleteCategory = (id: string) => {
