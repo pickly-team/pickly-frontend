@@ -32,7 +32,7 @@ const useCategory = ({ memberId }: Category) => {
         ...categoryOptions,
       ]);
     }
-  }, [categoryList]);
+  }, [categoryList, memberId]);
 
   const onChangeCategory = (category: string) => {
     const isAll = Object.is(category, '🥒 전체');
