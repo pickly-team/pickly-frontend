@@ -3,13 +3,8 @@ import styled from '@emotion/styled';
 
 import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
-import BookmarkList from '@/bookmarks/ui/Main/BookmarkList';
-import BookmarkItem from '@/bookmarks/ui/Main/BookmarkItem';
-import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
-import useBookmarkList from '@/bookmarks/service/hooks/home/useBookmarkList';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
-import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import getRem from '@/utils/getRem';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '@/common-ui/Header/Header';
@@ -21,6 +16,10 @@ import {
   usePOSTBlockMemberQuery,
 } from '@/members/api/member';
 import useAuthStore from '@/store/auth';
+import BookmarkListView from '@/bookmarks/ui/Main/BookmarkListView';
+import { Suspense } from 'react';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 
 const FriendBookmarkPage = () => {
   // FIRST RENDER
@@ -46,24 +45,14 @@ const FriendBookmarkPage = () => {
   };
 
   // 3. 카테고리 선택
-  const { selectedCategory, categoryOptions, onChangeCategory } = useCategory({
-    memberId: Number(friendId),
-  });
+  const { selectedCategoryId, categoryOptions, onChangeCategory } = useCategory(
+    {
+      memberId: Number(friendId),
+    },
+  );
 
   // 4. 읽은 북마크 선택
   const { isReadMode, onClickReadMode } = useReadList();
-
-  // SERVER
-  // 2. 북마크 리스트 조회
-  const { bookMarkList, isLoading, fetchNextPage, isFetchingNextPage } =
-    useBookmarkList({
-      readByUser: isReadMode,
-      categoryId: selectedCategory,
-      memberId: Number(friendId),
-    });
-
-  // 5. 무한 스크롤
-  const { bottom } = useBottomIntersection({ fetchNextPage });
 
   return (
     <>
@@ -98,7 +87,7 @@ const FriendBookmarkPage = () => {
       </LTop>
       <BookmarkToggle>
         <BookmarkToggle.SelectCategory
-          selectedCategory={String(selectedCategory)}
+          selectedCategory={String(selectedCategoryId)}
           categoryOptions={categoryOptions}
           setCategoryId={onChangeCategory}
         />
@@ -109,30 +98,21 @@ const FriendBookmarkPage = () => {
         <BlankView />
       </BookmarkToggle>
       <LMiddle>
-        {!!isLoading &&
-          [1, 2, 3, 4, 5, 6].map((item) => <BookmarkSkeletonItem key={item} />)}
-        {!isLoading && bookMarkList?.pages.length && (
-          <>
-            {bookMarkList.pages[0].contents[0]?.bookmarkId &&
-              bookMarkList.pages.map((page) => (
-                <BookmarkList
-                  key={page.contents[0].bookmarkId}
-                  bookmarkList={page.contents?.filter(
-                    (item) => item.readByUser === isReadMode,
-                  )}
-                  renderItem={(bookMarkList) => (
-                    <BookmarkItem
-                      key={bookMarkList.bookmarkId}
-                      {...bookMarkList}
-                    />
-                  )}
-                />
+        <Suspense
+          fallback={
+            <SkeletonWrapper>
+              {Array.from({ length: 10 }).map((_, index) => (
+                <BookmarkSkeletonItem key={index} />
               ))}
-          </>
-        )}
-        <div ref={bottom} />
-        {isFetchingNextPage &&
-          [1, 2, 3, 4, 5, 6].map((item) => <BookmarkSkeletonItem key={item} />)}
+            </SkeletonWrapper>
+          }
+        >
+          <BookmarkListView
+            memberId={friendId ? Number(friendId) : 0}
+            isEditMode={false}
+            isReadMode={isReadMode}
+          />
+        </Suspense>
       </LMiddle>
     </>
   );
