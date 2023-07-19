@@ -60,12 +60,12 @@ export type bookmarkGETBookMarkList = BookmarkItem[];
 
 interface GETBookMarkListRequest {
   memberId: number;
-  categoryId?: number;
+  categoryId?: number | null;
   readByUser?: boolean;
   visibility?: Visibility;
-  pageRequest: {
+  pageRequest?: {
     cursorId?: number;
-    pageSize: number;
+    pageSize?: number;
   };
 }
 
@@ -78,8 +78,8 @@ const GETBookMarkList = {
           categoryId: params.categoryId,
           readByUser: params.readByUser,
           visibility: params.visibility,
-          cursorId: params.pageRequest.cursorId,
-          pageSize: params.pageRequest.pageSize,
+          cursorId: params.pageRequest?.cursorId,
+          pageSize: params.pageRequest?.pageSize,
         },
       },
     );
@@ -158,7 +158,7 @@ const DELETEBookMarkList = {
 
 interface DELETEBookMarkListMutation {
   userId: number;
-  categoryId?: number;
+  categoryId?: number | null;
 }
 
 export const useDELETEBookMarkMutation = ({

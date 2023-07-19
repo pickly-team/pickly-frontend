@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 interface BookmarkListProps {
   readByUser: boolean;
   memberId: number;
-  categoryId?: number;
+  categoryId?: number | null;
 }
 
 const useBookmarkList = ({
@@ -24,9 +24,6 @@ const useBookmarkList = ({
     readByUser,
     categoryId,
     memberId,
-    pageRequest: {
-      pageSize: 15,
-    },
   });
 
   useEffect(() => {

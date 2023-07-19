@@ -3,7 +3,7 @@ import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import { useState } from 'react';
 
 interface DeleteBookmarkListProps {
-  categoryId?: number;
+  categoryId?: number | null;
 }
 
 const useDeleteBookmarkList = ({ categoryId }: DeleteBookmarkListProps) => {
@@ -54,6 +54,7 @@ const useDeleteBookmarkList = ({ categoryId }: DeleteBookmarkListProps) => {
     deleteBookmarkOpen,
     onClickEdit,
     onClickDelete,
+    deleteBookmarkClose,
   };
 };
 
