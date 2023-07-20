@@ -1,4 +1,3 @@
-import decodeEmojiBase64 from '@/utils/decodeEmojiBase64';
 import UnFollowButton from '@/friend/ui/buttons/UnFollowButton';
 import FriendItemLayout from '@/friend/ui/friend/layout/FriendItemLayout';
 import FollowButton from '@/friend/ui/buttons/FollowButton';
@@ -20,7 +19,7 @@ const FriendFollowingItem = ({
   return (
     <FriendItemLayout
       name={name}
-      emoji={profileEmoji && decodeEmojiBase64(profileEmoji)}
+      emoji={profileEmoji && profileEmoji}
       id={id}
       button={
         isFollowing ? (
