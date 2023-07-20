@@ -5,6 +5,7 @@ import Header from '@/common-ui/Header/Header';
 import { Suspense } from 'react';
 import BookmarkLikeList from '@/bookmarks/ui/Like/BookmarkLikeList';
 import SkeletonBookmarkLikeList from '@/bookmarks/ui/Like/SkeletonBookmarkLikeList';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 
 const LikePage = () => {
   const showBackButton = true;
@@ -14,7 +15,13 @@ const LikePage = () => {
     <Layout>
       <Header title={title} showBackButton={showBackButton} />
       <LBody>
-        <Suspense fallback={<SkeletonBookmarkLikeList />}>
+        <Suspense
+          fallback={
+            <SkeletonWrapper>
+              <SkeletonBookmarkLikeList />
+            </SkeletonWrapper>
+          }
+        >
           <BookmarkLikeList />
         </Suspense>
       </LBody>
