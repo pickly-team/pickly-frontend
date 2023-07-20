@@ -50,9 +50,11 @@ const BookMarkArticle = ({
 
   const { mutate: postBookmarkLike } = usePOSTBookmarkLikeQuery({
     bookmarkId: bookmarkId ?? '',
+    memberId,
   });
   const { mutate: postBookmarkDislike } = useDELETEBookmarkLikeQuery({
     bookmarkId: bookmarkId ?? '',
+    memberId,
   });
 
   const onClickLike = () => {
