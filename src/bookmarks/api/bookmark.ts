@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import { GET_LIKE_BOOKMARK_LIST } from './like';
 dayjs.locale('ko');
 
 const DOMAIN = 'BOOKMARK';
@@ -498,9 +499,13 @@ const postBookmarkLikeAPI = async ({
 
 export interface PostAPIRequest {
   bookmarkId: string;
+  memberId: number;
   token?: string;
 }
-export const usePOSTBookmarkLikeQuery = ({ bookmarkId }: PostAPIRequest) => {
+export const usePOSTBookmarkLikeQuery = ({
+  bookmarkId,
+  memberId,
+}: PostAPIRequest) => {
   const queryClient = useQueryClient();
   return useMutation(postBookmarkLikeAPI, {
     onSuccess: () => {
@@ -516,6 +521,7 @@ export const usePOSTBookmarkLikeQuery = ({ bookmarkId }: PostAPIRequest) => {
           return prev;
         },
       );
+      queryClient.refetchQueries(GET_LIKE_BOOKMARK_LIST(memberId));
     },
   });
 };
@@ -541,13 +547,14 @@ const deleteBookmarkLikeAPI = async ({
 
 export interface DELETEBookmarkLikeQueryRequest {
   bookmarkId: string;
+  memberId: number;
   token?: string;
 }
 export const useDELETEBookmarkLikeQuery = ({
   bookmarkId,
+  memberId,
 }: DELETEBookmarkLikeQueryRequest) => {
   const queryClient = useQueryClient();
-  const toast = useToast();
   return useMutation(deleteBookmarkLikeAPI, {
     onSuccess: () => {
       queryClient.setQueryData<ClientBookmarkDetail>(
@@ -562,10 +569,7 @@ export const useDELETEBookmarkLikeQuery = ({
           return prev;
         },
       );
-      toast.fireToast({
-        message: '삭제 되었습니다',
-        mode: 'DELETE',
-      });
+      queryClient.refetchQueries(GET_LIKE_BOOKMARK_LIST(memberId));
     },
   });
 };
