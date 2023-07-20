@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import client from '@/common/service/client';
 import { navigatePath } from '../../constants/navigatePath';
 import { GET_BOOKMARK_COMMENT } from '@/bookmarks/api/bookmark';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 
 const DOMAIN = 'COMMENT';
 
@@ -78,11 +79,11 @@ const postCommentAPI = async ({
 };
 
 export interface POSTCommentQueryRequest {
-  memberId: number;
+  bookmarkId: string;
   initComment: () => void;
 }
 export const usePOSTCommentQuery = ({
-  memberId,
+  bookmarkId,
   initComment,
 }: POSTCommentQueryRequest) => {
   const queryClient = useQueryClient();
@@ -90,7 +91,7 @@ export const usePOSTCommentQuery = ({
     onSuccess: () => {
       queryClient.invalidateQueries(
         GET_BOOKMARK_COMMENT({
-          memberId,
+          bookmarkId,
         }),
       );
       initComment();
@@ -133,11 +134,11 @@ const putCommentAPI = async ({
 };
 
 export interface PUTCommentQueryRequest {
-  memberId: number;
+  bookmarkId: string;
   initComment: () => void;
 }
 export const usePUTCommentQuery = ({
-  memberId,
+  bookmarkId,
   initComment,
 }: PUTCommentQueryRequest) => {
   const queryClient = useQueryClient();
@@ -145,7 +146,7 @@ export const usePUTCommentQuery = ({
     onSuccess: () => {
       queryClient.invalidateQueries(
         GET_BOOKMARK_COMMENT({
-          memberId,
+          bookmarkId,
         }),
       );
       initComment();
@@ -172,19 +173,21 @@ const deleteCommentAPI = async ({ commentId, token }: DELETECommentRequest) => {
 };
 
 export interface DELETECommentQueryRequest {
-  memberId: number;
+  bookmarkId: string;
 }
 export const useDELETECommentQuery = ({
-  memberId,
+  bookmarkId,
 }: DELETECommentQueryRequest) => {
   const queryClient = useQueryClient();
+  const { fireToast } = useToast();
   return useMutation(deleteCommentAPI, {
     onSuccess: () => {
       queryClient.invalidateQueries(
         GET_BOOKMARK_COMMENT({
-          memberId,
+          bookmarkId,
         }),
       );
+      fireToast({ message: '삭제 되었습니다', mode: 'DELETE' });
     },
   });
 };
