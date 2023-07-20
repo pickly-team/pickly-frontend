@@ -1,5 +1,4 @@
 import { useGETBookmarkCommentListQuery } from '@/bookmarks/api/bookmark';
-import useAuthStore from '@/store/auth';
 import CommentItem from './CommentItem';
 import styled from '@emotion/styled';
 import { timeStampToDate } from '@/utils/date/timeConverter';
@@ -7,14 +6,16 @@ import useCommentStore from '@/store/comment';
 import { useDELETECommentQuery } from '@/comment/api/Comment';
 import BSConfirmation from '@/common/ui/BSConfirmation';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
+import { useParams } from 'react-router-dom';
+import BlankComment from './BlankComment';
 
 const CommentList = () => {
   // FIRST RENDER
-  const { userInfo } = useAuthStore();
   const { comment, setCommentId, setCommentCount } = useCommentStore();
   // SERVER
+  const { id: bookmarkId } = useParams<{ id: string }>();
   const { data: commentList } = useGETBookmarkCommentListQuery({
-    memberId: userInfo?.id ?? '',
+    bookmarkId: bookmarkId ?? '',
     setCommentCount,
   });
 
@@ -24,7 +25,7 @@ const CommentList = () => {
 
   // 2. 댓글 삭제
   const { mutate: deleteComment } = useDELETECommentQuery({
-    memberId: userInfo?.id ?? '',
+    bookmarkId: bookmarkId ?? '',
   });
   const onClickDeleteComment = () => {
     deleteComment({ commentId: comment.id ?? 0 });
@@ -38,6 +39,7 @@ const CommentList = () => {
 
   return (
     <CommentListWrapper>
+      {!commentList?.length && <BlankComment />}
       {commentList?.map((comment) => (
         <CommentItem
           key={comment.id}

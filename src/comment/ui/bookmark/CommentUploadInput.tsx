@@ -13,6 +13,7 @@ const CommentUploadInput = () => {
   const { memberId } = useAuthStore();
   const { id } = useParams() as { id: string };
   const { mode, comment, setComment, initComment } = useCommentStore();
+  const { id: bookmarkId } = useParams<{ id: string }>();
 
   const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const { value } = event.target;
@@ -24,10 +25,13 @@ const CommentUploadInput = () => {
   };
 
   const { mutate: postComment } = usePOSTCommentQuery({
-    memberId,
+    bookmarkId: bookmarkId ?? '',
     initComment,
   });
-  const { mutate: editComment } = usePUTCommentQuery({ memberId, initComment });
+  const { mutate: editComment } = usePUTCommentQuery({
+    bookmarkId: bookmarkId ?? '',
+    initComment,
+  });
 
   const onSubmit = (
     event: React.FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>,
