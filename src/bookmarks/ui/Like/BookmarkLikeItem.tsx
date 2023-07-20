@@ -46,28 +46,27 @@ const ItemWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  padding: ${getRem(10)} ${getRem(20)};
+  column-gap: 1rem;
+  transition: background-color 0.1s ease-in-out, opacity 0.1s ease-in-out;
+  &:active {
+    background-color: ${theme.colors.grey800};
+    opacity: 0.8;
+  }
 `;
 
 const LinkWrapper = styled(Link)`
   display: flex;
   align-items: center;
-  border-radius: ${getRem(16)};
-  padding: ${getRem(15, 0)};
-  width: 100%;
-  padding-left: ${getRem(20)};
-  transition: background-color 0.1s ease-in-out, opacity 0.1s ease-in-out;
-  &:active {
-    background-color: ${theme.colors.grey800};
-    opacity: 0.5;
-  }
+  flex: 1 1 0;
+  overflow: hidden;
 `;
 
 const ItemUpperLeft = styled.div`
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   row-gap: 1rem;
-  flex: 1 1 auto;
-  min-width: 0;
 `;
 
 const EllipsisText = styled(Text.Span)`
