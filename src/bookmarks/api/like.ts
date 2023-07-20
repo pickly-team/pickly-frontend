@@ -4,6 +4,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import { refetchAllBookmarkQuery } from './bookmark';
 
 export interface ServerLikeBookmarkList {
   hasNext: boolean;
@@ -30,7 +31,6 @@ export const GET_LIKE_BOOKMARK_LIST = (userId: number) => [
 ];
 
 const GETLikeBookmarkList = async (params: GETLikeBookmarkListRequest) => {
-  await sleep(1000);
   const { data } = await client.get<ServerLikeBookmarkList>(
     `/members/${params.memberId}/bookmarks/likes`,
     {
@@ -76,6 +76,7 @@ export const useGETLikeBookmarkListQuery = (
 
 interface POSTLikeBookmarkRequest {
   memberId: number;
+  bookmarkId: number;
 }
 
 export const usePUTLikeBookmarkMutation = (params: POSTLikeBookmarkRequest) => {
@@ -87,10 +88,12 @@ export const usePUTLikeBookmarkMutation = (params: POSTLikeBookmarkRequest) => {
     {
       onSuccess: () => {
         queryClient.refetchQueries(GET_LIKE_BOOKMARK_LIST(params.memberId));
+        refetchAllBookmarkQuery({
+          queryClient,
+          memberId: params.memberId,
+          bookmarkId: String(params.bookmarkId),
+        });
       },
     },
   );
 };
-
-// eslint-disable-next-line no-promise-executor-return
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

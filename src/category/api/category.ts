@@ -92,7 +92,6 @@ const GETCategoryList = {
         ...params.pageRequest,
       },
     });
-    await sleep(1000);
     return GETCategoryList.Mapper(data);
   },
   Mapper: (categoryList: SeverCategoryList): ClientCategoryList => {
@@ -145,7 +144,3 @@ export const useGETCategoryListQuery = (params: GETCategoryListRequest) => {
     },
   );
 };
-
-/** 의도적 지연 함수 : 로딩용 */
-// eslint-disable-next-line no-promise-executor-return
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
