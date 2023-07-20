@@ -42,7 +42,7 @@ const CommentList = () => {
         <CommentItem
           key={comment.id}
           content={comment.content}
-          isWriter={comment.member === userInfo.nickname}
+          isWriter={comment.isOwnerComment}
           nickname={comment.member}
           updatedAt={timeStampToDate(comment.createdTimestamp)}
           onClickEdit={() =>
