@@ -6,11 +6,10 @@ import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import getRem from '@/utils/getRem';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Header from '@/common-ui/Header/Header';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
-import { navigatePath } from '@/constants/navigatePath';
 import {
   useGETFriendProfileQuery,
   usePOSTBlockMemberQuery,
@@ -25,7 +24,6 @@ const FriendBookmarkPage = () => {
   // FIRST RENDER
   const { memberId } = useAuthStore();
   const { id: friendId } = useParams<{ id: string }>();
-  const router = useNavigate();
 
   // SERVER
   // 1. 친구 프로필 조회
@@ -35,23 +33,20 @@ const FriendBookmarkPage = () => {
   });
 
   // USER INTERACTION
-  // 1. 상단 more > 신고하기
-  const onClick_신고하기 = () => router(navigatePath.REPORT);
-
-  // 2. 상단 more > 차단하기
+  // 1. 상단 more > 차단하기
   const { mutate: postBlockMember } = usePOSTBlockMemberQuery();
   const onClick_차단하기 = () => {
     postBlockMember({ blockeeId: Number(friendId), blockerId: memberId });
   };
 
-  // 3. 카테고리 선택
+  // 2. 카테고리 선택
   const { selectedCategoryId, categoryOptions, onChangeCategory } = useCategory(
     {
       memberId: Number(friendId),
     },
   );
 
-  // 4. 읽은 북마크 선택
+  // 3. 읽은 북마크 선택
   const { isReadMode, onClickReadMode } = useReadList();
 
   return (
@@ -64,9 +59,6 @@ const FriendBookmarkPage = () => {
               as={<IconButton onClick={() => {}} name="more" size="s" />}
             />
             <TriggerBottomSheet.BottomSheet>
-              <TriggerBottomSheet.Item onClick={onClick_신고하기}>
-                신고하기
-              </TriggerBottomSheet.Item>
               <TriggerBottomSheet.Item onClick={onClick_차단하기}>
                 차단하기
               </TriggerBottomSheet.Item>
