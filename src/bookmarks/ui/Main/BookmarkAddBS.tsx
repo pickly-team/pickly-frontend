@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 import { ClientBookmarkCategoryItem, Visibility } from '../../api/bookmark';
 import TagBoxList from '../BookmarkTagList';
 import Icon from '@/common-ui/assets/Icon';
-import { KeyboardEvent, useEffect } from 'react';
+import { KeyboardEvent, useEffect, useRef } from 'react';
 import IconButton from '@/common/ui/IconButton';
 import useBookmarkStore from '@/store/bookmark';
 import { useLocation } from 'react-router-dom';
@@ -55,6 +55,19 @@ const URLInput = ({
   onDeleteInput,
   disabled = false,
 }: URLInputProps) => {
+  const urlInputRef = useRef<HTMLInputElement>(null);
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  // NOTE : URL 입력창이 포커스 되면, 키보드가 올라오는데,
+  // 이때, 키보드가 올라오는 시간을 기다려서, 포커스를 해제한다.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (urlInputRef.current) urlInputRef.current.blur();
+      if (titleInputRef.current) titleInputRef.current.blur();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       <HeadingText>Step 1. URL 입력</HeadingText>
@@ -72,7 +85,7 @@ const URLInput = ({
               onKeyDown={handleKeyDown}
               onChange={(e) => onChangeUrl(e.target.value)}
               disabled={disabled}
-              autoFocus
+              ref={urlInputRef}
             />
             <FixedIconWrapper>
               {!!url.length && !disabled && (
@@ -96,6 +109,7 @@ const URLInput = ({
               }}
               value={title}
               onChange={(e) => onChangeTitle(e.target.value)}
+              ref={titleInputRef}
             />
             <FixedIconWrapper>
               {!!title.length && (
