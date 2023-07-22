@@ -77,7 +77,7 @@ const FriendBookmarkPage = () => {
           }}
         />
       </LTop>
-      <BookmarkToggle>
+      <BookmarkToggle isFriendPage>
         <BookmarkToggle.SelectCategory
           selectedCategory={String(selectedCategoryId)}
           categoryOptions={categoryOptions}
