@@ -7,6 +7,7 @@ import BookmarkLikeItem from './BookmarkLikeItem';
 import SkeletonBookmarkLikeList from './SkeletonBookmarkLikeList';
 import useAuthStore from '@/store/auth';
 import { useState } from 'react';
+import BlankItem from '@/common-ui/BlankItem';
 
 const BookmarkLikeList = () => {
   const { memberId } = useAuthStore();
@@ -39,6 +40,7 @@ const BookmarkLikeList = () => {
   const { bottom } = useBottomIntersection({ fetchNextPage });
   return (
     <>
+      {bookmarkItems && !bookmarkItems.length && <BlankItem page="LIKE" />}
       {bookmarkItems &&
         bookmarkItems.map((bookmark) => (
           <BookmarkLikeItem
