@@ -4,12 +4,14 @@ import styled from '@emotion/styled';
 
 interface BookMarkLikeButtonProps {
   isLike: boolean;
+  isMyPost?: boolean;
   onClickLike?: () => void;
   onClickDislike?: () => void;
 }
 
 const BookmarkLikeButton = ({
   isLike,
+  isMyPost = true,
   onClickLike,
   onClickDislike,
 }: BookMarkLikeButtonProps) => {
@@ -18,6 +20,7 @@ const BookmarkLikeButton = ({
       onClick={() => {
         isLike ? onClickDislike?.() : onClickLike?.();
       }}
+      disabled={!isMyPost}
     >
       {isLike ? (
         <Icon name="heart-fill-green" size="m" />
@@ -30,10 +33,14 @@ const BookmarkLikeButton = ({
 
 export default BookmarkLikeButton;
 
-const LikeButton = styled.button`
+interface LikeButtonProps {
+  disabled: boolean;
+}
+
+const LikeButton = styled.button<LikeButtonProps>`
   width: ${getRem(40)};
   height: 100%;
   &:active {
-    opacity: 0.5;
+    opacity: ${({ disabled }) => (disabled ? 1 : 0.5)};
   }
 `;
