@@ -25,9 +25,9 @@ const useAuthStore = create<Auth>()(
     (set) => ({
       isLogin: false,
       token: '',
-      memberId: 1,
+      memberId: 0,
       userInfo: {
-        id: 1,
+        id: 0,
         name: '',
         nickname: '',
         profileEmoji: '😃',
