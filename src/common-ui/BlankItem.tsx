@@ -7,7 +7,11 @@ type PAGE =
   | 'BOOKMARK_READ'
   | 'CATEGORY'
   | 'FRIEND'
-  | 'NOTIFICATION';
+  | 'NOTIFICATION'
+  | 'FOLLOWER'
+  | 'FOLLOWING'
+  | 'COMMENT'
+  | 'LIKE';
 
 interface BlankItemProps {
   page: PAGE;
@@ -19,6 +23,10 @@ const description: Record<BlankItemProps['page'], string> = {
   CATEGORY: '앗! 아직 카테고리가 없어요',
   FRIEND: '친구가 없어요',
   NOTIFICATION: '아직 알림을\n 받지 않았어요!',
+  FOLLOWER: '앗! 아직 팔로워가 없어요',
+  FOLLOWING: '앗! 아직 팔로잉 중인\n 친구가 없어요',
+  COMMENT: '앗! 아직 댓글이 없어요',
+  LIKE: '아직 좋아요를\n 누르지 않았어요!',
 };
 
 const height: Record<BlankItemProps['page'], string> = {
@@ -27,6 +35,10 @@ const height: Record<BlankItemProps['page'], string> = {
   CATEGORY: 'calc(100dvh - 5rem)',
   FRIEND: 'calc(100dvh - 5rem)',
   NOTIFICATION: 'calc(100dvh - 10rem)',
+  FOLLOWER: 'calc(80dvh - 5rem)',
+  FOLLOWING: 'calc(80dvh - 5rem)',
+  COMMENT: 'calc(100dvh - 10rem)',
+  LIKE: 'calc(100dvh - 10rem)',
 };
 
 const imgSrc: Record<BlankItemProps['page'], string> = {
@@ -35,6 +47,10 @@ const imgSrc: Record<BlankItemProps['page'], string> = {
   CATEGORY: '/images/empty.png',
   FRIEND: '/images/empty.png',
   NOTIFICATION: '/images/empty.png',
+  FOLLOWER: '/images/empty.png',
+  FOLLOWING: '/images/empty.png',
+  COMMENT: '/images/empty.png',
+  LIKE: '/images/empty.png',
 };
 
 const BlankItem = ({ page }: BlankItemProps) => {
@@ -42,7 +58,7 @@ const BlankItem = ({ page }: BlankItemProps) => {
     <>
       <Wrapper page={page}>
         <Image src={imgSrc[page]} />
-        <Description fontSize={1.25} weight="bold">
+        <Description fontSize={1.1} weight="bold">
           {description[page]}
         </Description>
       </Wrapper>
