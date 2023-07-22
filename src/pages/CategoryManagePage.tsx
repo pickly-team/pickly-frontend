@@ -23,6 +23,13 @@ interface CategoryManagePageProps {
   mode: 'ADD' | 'EDIT';
 }
 
+const bookmarkAddPagePaths = [
+  '',
+  '/friend',
+  '/notification',
+  '/profile',
+] as const;
+
 const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   // TODO : 인증 로직 추가
   const { memberId } = useAuthStore();
@@ -62,7 +69,10 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
       });
       return;
     }
-    if (fromPath.includes('bookmark') && mode === 'ADD') {
+    if (
+      bookmarkAddPagePaths.some((path) => path.includes(fromPath)) &&
+      mode === 'ADD'
+    ) {
       router(fromPath, {
         state: {
           isCategoryAddPage: true,
