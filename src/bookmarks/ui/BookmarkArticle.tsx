@@ -57,11 +57,15 @@ const BookMarkArticle = ({
     memberId,
   });
 
+  const isMyPost = bookmarkDetail?.memberId === memberId;
+
   const onClickLike = () => {
+    if (!isMyPost) return;
     postBookmarkLike({ bookmarkId: bookmarkId ?? '' });
   };
 
   const onClickDislike = () => {
+    if (!isMyPost) return;
     postBookmarkDislike({ bookmarkId: bookmarkId ?? '' });
   };
 
@@ -154,6 +158,7 @@ const BookMarkArticle = ({
           <LikeAndMessageIconWrapper>
             <BookmarkLikeButton
               isLike={bookmarkDetail?.isUserLike ?? false}
+              isMyPost={isMyPost}
               onClickLike={onClickLike}
               onClickDislike={onClickDislike}
             />
