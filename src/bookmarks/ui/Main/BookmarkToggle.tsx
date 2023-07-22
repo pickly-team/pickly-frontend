@@ -12,13 +12,17 @@ export type CategoryType = {
 };
 
 interface ToggleHandlerProps {
+  isFriendPage?: boolean;
   children: React.ReactNode;
 }
 
 // TODO : Select 컴포넌트 수정
 
-const BookmarkToggle = ({ children }: ToggleHandlerProps) => {
-  return <ToggleWrapper>{children}</ToggleWrapper>;
+const BookmarkToggle = ({
+  isFriendPage = false,
+  children,
+}: ToggleHandlerProps) => {
+  return <ToggleWrapper isFriendPage={isFriendPage}>{children}</ToggleWrapper>;
 };
 
 interface SelectCategoryProps {
@@ -149,18 +153,22 @@ BookmarkToggle.ToggleEdit = ToggleEdit;
 
 export default BookmarkToggle;
 
-const ToggleWrapper = styled.div`
+interface ToggleWrapperProps {
+  isFriendPage: boolean;
+}
+
+const ToggleWrapper = styled.div<ToggleWrapperProps>`
   display: flex;
   position: sticky;
   top: -1px;
-  padding-top: 20px;
   align-self: flex-start;
   background-color: ${theme.colors.black};
   height: ${getRem(80)};
-  padding: ${getRem(20)};
   border-radius: 0.8rem;
   justify-content: space-between;
-  /* z-index: ${TOGGLE_BUTTON_Z_INDEX}; */
+  padding: ${getRem(20)};
+  z-index: ${TOGGLE_BUTTON_Z_INDEX};
+  top: ${({ isFriendPage }) => (isFriendPage ? `${getRem(50)}` : 0)};
 `;
 
 const ButtonWrapper = styled.div`
