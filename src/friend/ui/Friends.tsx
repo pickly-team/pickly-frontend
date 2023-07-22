@@ -11,6 +11,7 @@ import {
   useGETFollowingCountQuery,
   useGETFollowingListQuery,
 } from '../api/friends';
+import BlankItem from '@/common-ui/BlankItem';
 
 const Friends = () => {
   const { memberId } = useAuthStore();
@@ -40,6 +41,9 @@ const Friends = () => {
         followingTotalCount={followingTotalCount ?? 0}
       />
       <Container>
+        {selectedType === FriendType.Follower && !followers.length && (
+          <BlankItem page="FOLLOWER" />
+        )}
         {selectedType === FriendType.Following &&
           followings?.map((info) => (
             <FriendFollowingItem
@@ -51,6 +55,9 @@ const Friends = () => {
               isFollowing={true}
             />
           ))}
+        {selectedType === FriendType.Following && !followings.length && (
+          <BlankItem page="FOLLOWING" />
+        )}
         {selectedType === FriendType.Follower &&
           followers?.map((info) => (
             <FriendFollowerItem

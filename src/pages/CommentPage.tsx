@@ -4,6 +4,7 @@ import CommentItem from '@/comment/ui/comment-list/CommentItem';
 import getRem from '@/utils/getRem';
 import { useGETCommentListQuery } from '@/comment/api/Comment';
 import useAuthStore from '@/store/auth';
+import BlankItem from '@/common-ui/BlankItem';
 
 const CommentPage = () => {
   const { memberId } = useAuthStore();
@@ -16,6 +17,7 @@ const CommentPage = () => {
       <Header title={'댓글 목록'} showBackButton />
       <Body>
         <CommentListWrapper>
+          {!commentList?.length && <BlankItem page="COMMENT" />}
           {commentList &&
             commentList.length > 0 &&
             commentList.map((comment) => (
