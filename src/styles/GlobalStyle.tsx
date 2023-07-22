@@ -10,6 +10,10 @@ const GlobalStyle = () => (
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
+        ::-webkit-scrollbar {
+          width: 0;
+          display: none !important;
+        }
       }
       html,
       body,
