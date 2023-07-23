@@ -1,9 +1,13 @@
 import { useEffect } from 'react';
 
-type MessageHandler<T extends keyof BridgeParams> = (data: {
+interface MessageEventData<T extends keyof BridgeParams> {
   message: T;
   params?: BridgeParams[T];
-}) => void;
+}
+
+type MessageHandler<T extends keyof BridgeParams> = (
+  data: MessageEventData<T>,
+) => void;
 
 interface BridgeParams {
   /** 웹뷰 종료 */
@@ -15,11 +19,6 @@ interface BridgeParams {
   };
 }
 
-interface MessageParse<T extends keyof BridgeParams> {
-  message: T;
-  params?: BridgeParams[T];
-}
-
 function useBridgeCallback<T extends keyof BridgeParams>(
   callback: MessageHandler<T>,
 ) {
@@ -27,7 +26,7 @@ function useBridgeCallback<T extends keyof BridgeParams>(
     const handler = (event: MessageEvent) => {
       if (event && event.data) {
         try {
-          const data = JSON.parse(event.data) as MessageParse<T>;
+          const data = JSON.parse(event.data) as MessageEventData<T>;
           const message = data.message;
           const params = data.params;
 
@@ -38,11 +37,14 @@ function useBridgeCallback<T extends keyof BridgeParams>(
       }
     };
 
-    window.addEventListener('message', handler);
-
-    return () => {
-      window.removeEventListener('message', handler);
-    };
+    if (window.ReactNativeWebView) {
+      /** android */
+      (document as any).addEventListener('message', handler);
+      /** ios */
+      window.addEventListener('message', handler);
+    } else {
+      return;
+    }
   }, [callback]);
 }
 
