@@ -9,6 +9,7 @@ import client from '@/common/service/client';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import useSearchStore from '@/store/search';
 import { GET_FRIEND_PROFILE } from '@/members/api/member';
+import { GET_USER_PROFILE } from '@/auth/api/profile';
 
 // 팔로우 리스트 API
 export interface GETFollowingListResponse {
@@ -175,8 +176,9 @@ export const usePOSTFollowUserQuery = ({
         message: '팔로잉 중인 친구의 알림만 받을 수 있습니다',
         mode: 'SUCCESS',
       });
-      queryClient.invalidateQueries(GET_FOLLOWER_LIST_KEY({ memberId }));
-      queryClient.invalidateQueries(GET_FOLLOWING_LIST_KEY({ memberId }));
+      queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
+      queryClient.refetchQueries(GET_FOLLOWER_LIST_KEY({ memberId }));
+      queryClient.refetchQueries(GET_FOLLOWING_LIST_KEY({ memberId }));
       queryClient.setQueryData<FollowingCount>(
         GET_FOLLOWING_COUNT_KEY({ memberId }),
         (followingCount) => {
@@ -184,7 +186,7 @@ export const usePOSTFollowUserQuery = ({
           return 1;
         },
       );
-      queryClient.invalidateQueries(
+      queryClient.refetchQueries(
         GET_FRIEND_PROFILE({
           loginId: memberId,
           memberId: selectedMemberId,
@@ -254,9 +256,10 @@ export const useDELETEUnFollowQuery = ({
         message: '팔로잉 중인 친구의 알림만 받을 수 있습니다',
         mode: 'SUCCESS',
       });
-      queryClient.invalidateQueries(GET_FOLLOWER_LIST_KEY({ memberId }));
-      queryClient.invalidateQueries(GET_FOLLOWING_LIST_KEY({ memberId }));
-      queryClient.invalidateQueries(
+      queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
+      queryClient.refetchQueries(GET_FOLLOWER_LIST_KEY({ memberId }));
+      queryClient.refetchQueries(GET_FOLLOWING_LIST_KEY({ memberId }));
+      queryClient.refetchQueries(
         GET_FRIEND_PROFILE({
           loginId: memberId,
           memberId: selectedMemberId,
