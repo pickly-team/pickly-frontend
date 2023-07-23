@@ -50,7 +50,7 @@ const Friends = () => {
               key={info.memberId}
               id={info.memberId}
               memberId={memberId}
-              name={info.loginId}
+              name={info.nickname}
               profileEmoji={info.emoji}
               isFollowing={true}
             />
@@ -64,7 +64,7 @@ const Friends = () => {
               key={info.memberId}
               id={info.memberId}
               memberId={memberId}
-              name={info.loginId}
+              name={info.nickname}
               profileEmoji={info.emoji}
               isFollowing={info.isFollowing}
             />
