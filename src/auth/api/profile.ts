@@ -1,6 +1,6 @@
 import client from '@/common/service/client';
 import { navigatePath } from '@/constants/navigatePath';
-import { UserInfo } from '@/store/auth';
+import useAuthStore, { UserInfo } from '@/store/auth';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,17 +29,17 @@ export const GET_USER_PROFILE = (params: GetAPIRequest) => [
   params.loginId,
 ];
 
-export const useGETUserProfile = (
-  params: GetAPIRequest,
-  setUserInfo: (userInfo: UserInfo) => void,
-) => {
+export const useGETUserProfile = (params: GetAPIRequest) => {
   const router = useNavigate();
+  const { setUserInfo } = useAuthStore();
   return useQuery(GET_USER_PROFILE(params), () => getUserProfile(params), {
     enabled: params.loginId !== 0,
     onSuccess: (data) => {
-      setUserInfo({ ...data, profileEmoji: data.profileEmoji || '🐶' });
+      setUserInfo((userInfo) => ({ ...userInfo, ...data }));
       if (data.nickname === '') router(navigatePath.USER);
     },
     onError: (e) => console.log(e),
+    cacheTime: 10 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
   });
 };

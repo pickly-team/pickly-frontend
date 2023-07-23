@@ -13,7 +13,7 @@ declare global {
 }
 
 const RNListener = () => {
-  const { memberId, login, setUserInfo } = useAuthStore();
+  const { memberId, login } = useAuthStore();
 
   useEffect(() => {
     if (window.ReactNativeWebView) {
@@ -29,7 +29,7 @@ const RNListener = () => {
     }
   });
 
-  useGETUserProfile({ loginId: memberId }, setUserInfo);
+  useGETUserProfile({ loginId: memberId });
 
   return null;
 };
