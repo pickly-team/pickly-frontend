@@ -34,7 +34,7 @@ const FriendBookmarkPage = () => {
 
   // USER INTERACTION
   // 1. 상단 more > 차단하기
-  const { mutate: postBlockMember } = usePOSTBlockMemberQuery();
+  const { mutate: postBlockMember } = usePOSTBlockMemberQuery({ memberId });
   const onClick_차단하기 = () => {
     postBlockMember({ blockeeId: Number(friendId), blockerId: memberId });
   };
