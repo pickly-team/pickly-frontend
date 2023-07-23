@@ -17,7 +17,7 @@ export interface GETFollowingListResponse {
 }
 export interface FollowingInfo {
   memberId: number;
-  loginId: string;
+  nickname: string;
   emoji: string;
 }
 
@@ -78,7 +78,7 @@ export const useGETFollowingListQuery = (
 // 팔로워 리스트 API
 interface FollowerInfo {
   memberId: number;
-  loginId: string;
+  nickname: string;
   isFollowing: boolean;
   emoji: string;
 }
