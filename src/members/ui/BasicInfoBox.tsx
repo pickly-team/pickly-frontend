@@ -7,22 +7,14 @@ import getRem from '@/utils/getRem';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
 import { navigatePath } from '@/constants/navigatePath';
+import { useGETUserProfile } from '@/auth/api/profile';
+import useAuthStore from '@/store/auth';
+import useFriendStore, { FriendType } from '@/store/friend';
 
-const BasicInfoBox = ({
-  memberId,
-  profileEmoji,
-  nickname,
-  bookmarksCount,
-  followersCount,
-  followeesCount,
-}: {
-  memberId: number;
-  profileEmoji: string;
-  nickname: string;
-  bookmarksCount: number;
-  followersCount: number;
-  followeesCount: number;
-}) => {
+const BasicInfoBox = () => {
+  const { memberId } = useAuthStore();
+  const { data: userInfo } = useGETUserProfile({ loginId: memberId });
+
   const numberFormatter = new Intl.NumberFormat('en', { notation: 'compact' });
 
   const router = useNavigate();
@@ -34,15 +26,17 @@ const BasicInfoBox = ({
     router(navigatePath.BLOCK_USER);
   };
 
+  const { setSelectedType } = useFriendStore();
+
+  const onClickFollowers = () => setSelectedType(FriendType.Follower);
+  const onClickFollowings = () => setSelectedType(FriendType.Following);
+
   return (
     <>
       <Container>
         <ProfileNameRow>
           <NicknameColumn>
-            <Text.Span fontSize={1.5}>{nickname}</Text.Span>
-            {/* <LinkContainer to={`/user/${memberId}/edit`}>
-              <Icon name={'circle-pencil'} size={'l'} />
-            </LinkContainer> */}
+            <Text.Span fontSize={1.5}>{userInfo?.nickname ?? ''}</Text.Span>
           </NicknameColumn>
           <MoreButtonContainer>
             <TriggerBottomSheet>
@@ -63,26 +57,32 @@ const BasicInfoBox = ({
         </ProfileNameRow>
         <ProfileInfoRow>
           <ProfileImage>
-            <Text.Span fontSize={3}>{profileEmoji}</Text.Span>
+            <Text.Span fontSize={3}>{userInfo?.profileEmoji ?? ''}</Text.Span>
           </ProfileImage>
           <ProfileStatsColumn>
             <Link to={'/'}>
               <ProfileStatColumn>
-                <Text.Span>{numberFormatter.format(bookmarksCount)}</Text.Span>
+                <Text.Span>
+                  {numberFormatter.format(userInfo?.bookmarksCount ?? 0)}
+                </Text.Span>
                 <Text.Span>북마크</Text.Span>
               </ProfileStatColumn>
             </Link>
 
-            <Link to={'/friend'}>
+            <Link onClick={onClickFollowers} to={'/friend'}>
               <ProfileStatColumn>
-                <Text.Span>{numberFormatter.format(followersCount)}</Text.Span>
+                <Text.Span>
+                  {numberFormatter.format(userInfo?.followersCount ?? 0)}
+                </Text.Span>
                 <Text.Span>팔로워</Text.Span>
               </ProfileStatColumn>
             </Link>
 
-            <Link to={'/friend'}>
+            <Link onClick={onClickFollowings} to={'/friend'}>
               <ProfileStatColumn>
-                <Text.Span>{numberFormatter.format(followeesCount)}</Text.Span>
+                <Text.Span>
+                  {numberFormatter.format(userInfo?.followeesCount ?? 0)}
+                </Text.Span>
                 <Text.Span>팔로잉</Text.Span>
               </ProfileStatColumn>
             </Link>

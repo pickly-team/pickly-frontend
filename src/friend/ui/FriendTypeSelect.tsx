@@ -2,11 +2,7 @@ import styled from '@emotion/styled';
 import Button from '@/common-ui/Button';
 import { css } from '@emotion/react';
 import { theme } from '@/styles/theme';
-
-export enum FriendType {
-  Follower = 'Follower',
-  Following = 'Following',
-}
+import { FriendType } from '@/store/friend';
 
 interface FriendTypeSelectProps {
   value: FriendType;
