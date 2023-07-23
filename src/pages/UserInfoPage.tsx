@@ -16,7 +16,7 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
   const [nickname, onChangeElementNickname, onChangeNickname] =
     useHandleInput();
 
-  const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen } =
+  const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen, closeEmojiBS } =
     useChangeEmoji();
 
   // TODO : 이게 최선의 방법인지 고민해보기
@@ -69,20 +69,17 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
     });
   };
 
-  // TODO : FIREBASE 연동 후 수정
-  const email = 'wshmin1234@gmail.com';
-
   return (
     <UserProfileInfo
       emoji={emoji}
       name={name}
-      email={email}
       nickname={nickname}
       isEmojiBSOpen={isEmojiBSOpen}
       buttonDisabled={disabled}
       mode={mode}
       onChangeEmoji={onChangeEmoji}
       setEmojiBSOpen={setEmojiBSOpen}
+      closeEmojiBS={closeEmojiBS}
       onChangeName={onChangeElementName}
       onChangeNickname={onChangeElementNickname}
       onSubmit={onSubmitUserInfo}

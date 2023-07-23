@@ -11,8 +11,13 @@ interface EmojiProps {
 
 const Emoji = ({ emoji, onClickEmoji }: EmojiProps) => {
   return (
-    <UserEmojiEdit onClick={onClickEmoji}>
-      <UserBox>
+    <UserEmojiEdit>
+      <UserBox
+        onClick={(e) => {
+          e.stopPropagation();
+          onClickEmoji();
+        }}
+      >
         <Text.Span fontSize={getRem(48)}>{emoji}</Text.Span>
         <EditIcon>
           <Icon name="pencil" size="xs" />

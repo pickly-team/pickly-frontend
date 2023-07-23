@@ -18,7 +18,7 @@ const useChangeEmoji = () => {
     closeEmojiBS();
   };
 
-  return { emoji, onChangeEmoji, setEmojiBSOpen, isEmojiBSOpen };
+  return { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen, closeEmojiBS };
 };
 
 export default useChangeEmoji;
