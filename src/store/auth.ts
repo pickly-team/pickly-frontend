@@ -16,7 +16,7 @@ interface Auth {
   token: string;
   memberId: number;
   userInfo: UserInfo;
-  setUserInfo: (userInfo: UserInfo) => void;
+  setUserInfo: (fn: (userInfo: UserInfo) => UserInfo) => void;
   login: ({ token, memberId }: { token: string; memberId: number }) => void;
 }
 
@@ -35,9 +35,8 @@ const useAuthStore = create<Auth>()(
         followeesCount: 0,
         bookmarksCount: 0,
       },
-      setUserInfo: (userInfo) => {
-        set({ userInfo });
-      },
+      setUserInfo: (fn: (userInfo: UserInfo) => UserInfo) =>
+        set((state) => ({ userInfo: fn(state.userInfo) })),
       login: ({ token, memberId }) => {
         set({ isLogin: true, token, memberId });
       },

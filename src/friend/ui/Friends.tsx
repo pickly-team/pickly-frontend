@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import FriendFollowingItem from '@/friend/ui/friend/FriendFollowingItem';
 import FriendFollowerItem from '@/friend/ui/friend/FriendFollowerItem';
-import FriendTypeSelect, { FriendType } from '@/friend/ui/FriendTypeSelect';
+import FriendTypeSelect from '@/friend/ui/FriendTypeSelect';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
 import useAuthStore from '@/store/auth';
@@ -12,6 +11,7 @@ import {
   useGETFollowingListQuery,
 } from '../api/friends';
 import BlankItem from '@/common-ui/BlankItem';
+import useFriendStore, { FriendType } from '@/store/friend';
 
 const Friends = () => {
   const { memberId } = useAuthStore();
@@ -24,9 +24,7 @@ const Friends = () => {
     memberId,
   });
 
-  const [selectedType, setSelectedType] = useState<FriendType>(
-    FriendType.Follower,
-  );
+  const { selectedType, setSelectedType } = useFriendStore();
 
   const followers = followerData?.pages.flatMap((page) => page.contents) ?? [];
   const followings =
