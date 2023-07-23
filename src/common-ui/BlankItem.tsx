@@ -11,7 +11,8 @@ type PAGE =
   | 'FOLLOWER'
   | 'FOLLOWING'
   | 'COMMENT'
-  | 'LIKE';
+  | 'LIKE'
+  | 'BLOCK_USER';
 
 interface BlankItemProps {
   page: PAGE;
@@ -27,6 +28,7 @@ const description: Record<BlankItemProps['page'], string> = {
   FOLLOWING: '앗! 아직 팔로잉 중인\n 친구가 없어요',
   COMMENT: '앗! 아직 댓글이 없어요',
   LIKE: '아직 좋아요를\n 누르지 않았어요!',
+  BLOCK_USER: '차단한 사용자가 없어요',
 };
 
 const height: Record<BlankItemProps['page'], string> = {
@@ -39,6 +41,7 @@ const height: Record<BlankItemProps['page'], string> = {
   FOLLOWING: 'calc(80dvh - 5rem)',
   COMMENT: 'calc(100dvh - 10rem)',
   LIKE: 'calc(100dvh - 10rem)',
+  BLOCK_USER: 'calc(100dvh - 5rem)',
 };
 
 const imgSrc: Record<BlankItemProps['page'], string> = {
@@ -51,6 +54,7 @@ const imgSrc: Record<BlankItemProps['page'], string> = {
   FOLLOWING: '/images/empty.png',
   COMMENT: '/images/empty.png',
   LIKE: '/images/empty.png',
+  BLOCK_USER: '/images/empty.png',
 };
 
 const BlankItem = ({ page }: BlankItemProps) => {
