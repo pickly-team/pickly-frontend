@@ -8,9 +8,10 @@ export type ToastMessage =
   | '앗! 추가할 수 없는 북마크에요'
   | '앗! 유효하지 않은 주소에요'
   | '신고 되었습니다'
-  | '이미 신고한 북마크에요';
+  | '이미 신고한 북마크에요'
+  | '앗! 알림 설정 기준일은 1일 이상이어야 해요';
 
-export type ToastMode = 'SUCCESS' | 'DELETE';
+export type ToastMode = 'SUCCESS' | 'DELETE' | 'ERROR';
 
 export interface Toast {
   id?: string;
