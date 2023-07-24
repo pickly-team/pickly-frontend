@@ -17,6 +17,8 @@ interface BridgeParams {
     token: string;
     memberId: number;
   };
+  /** snap 초기화 */
+  initialize: null;
 }
 
 function useBridgeCallback<T extends keyof BridgeParams>(

@@ -2,6 +2,7 @@ import useAuthStore from '@/store/auth';
 import useBridgeCallback from './common/service/hooks/useBridgeCallback';
 import { useGETUserProfile } from './auth/api/profile';
 import { useEffect } from 'react';
+import useBookmarkStore from './store/bookmark';
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ declare global {
 
 const RNListener = () => {
   const { memberId, login } = useAuthStore();
+  const { setUrl, setTitle } = useBookmarkStore();
 
   useEffect(() => {
     if (window.ReactNativeWebView) {
@@ -26,6 +28,10 @@ const RNListener = () => {
       if (params?.memberId && params?.token) {
         login({ token: params.token, memberId: params.memberId });
       }
+    }
+    if (message === 'initialize') {
+      setUrl('');
+      setTitle('');
     }
   });
 
