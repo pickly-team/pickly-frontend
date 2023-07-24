@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import Text from '../Text';
 import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
-import Icon from '../assets/Icon';
+import Icon, { IconName } from '../assets/Icon';
 import useToastStore, { ToastMessage, ToastMode } from '@/store/toast';
 
 interface ToastProps {
@@ -11,14 +11,32 @@ interface ToastProps {
   mode?: ToastMode;
 }
 
+const icon: Record<ToastMode, IconName> = {
+  SUCCESS: 'check',
+  DELETE: 'trash',
+  ERROR: 'error',
+} as const;
+
+const modeColor: Record<ToastMode, string> = {
+  SUCCESS: theme.colors.lightPrimary,
+  DELETE: theme.colors.red,
+  ERROR: theme.colors.lightYellow,
+} as const;
+
+const modeTextColor: Record<ToastMode, string> = {
+  SUCCESS: theme.colors.black,
+  DELETE: theme.colors.black,
+  ERROR: theme.colors.black,
+} as const;
+
 const Toast = ({ message, mode = 'SUCCESS' }: ToastProps) => {
   const { duration } = useToastStore();
   return (
     <StyleToast duration={duration}>
       <StyleToastMessage mode={mode}>
         <Top>
-          <Icon name={mode === 'SUCCESS' ? 'check' : 'trash'} size="m" />
-          <ToastText fontSize={getRem(16)} weight="bold" mode={mode}>
+          <Icon name={icon[mode]} size="s" />
+          <ToastText fontSize={getRem(14)} weight="bold" mode={mode}>
             {message}
           </ToastText>
         </Top>
@@ -54,8 +72,7 @@ const StyleToastMessage = styled.div<{ mode: ToastMode }>`
   height: ${getRem(52)};
   padding: 0 ${getRem(20)};
   border-radius: ${getRem(8)};
-  background: ${({ mode }) =>
-    mode === 'SUCCESS' ? theme.colors.lightPrimary : theme.colors.red};
+  background: ${({ mode }) => modeColor[mode]};
 `;
 const Top = styled.div`
   display: flex;
@@ -64,6 +81,5 @@ const Top = styled.div`
 `;
 
 const ToastText = styled(Text.Span)<{ mode: ToastMode }>`
-  color: ${({ mode }) =>
-    mode === 'SUCCESS' ? theme.colors.black : theme.colors.white};
+  color: ${({ mode }) => modeTextColor[mode]};
 `;
