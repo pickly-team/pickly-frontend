@@ -521,6 +521,7 @@ export const usePOSTBookmarkLikeQuery = ({
         },
       );
       queryClient.refetchQueries(GET_LIKE_BOOKMARK_LIST(memberId));
+      refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
     },
   });
 };
@@ -569,6 +570,7 @@ export const useDELETEBookmarkLikeQuery = ({
         },
       );
       queryClient.refetchQueries(GET_LIKE_BOOKMARK_LIST(memberId));
+      refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
     },
   });
 };
