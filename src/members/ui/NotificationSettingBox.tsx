@@ -10,7 +10,10 @@ import {
 import RoundToggle from '@/common-ui/RoundToggle';
 import NotificationSettingsBottomSheet from '@/members/ui/NotificationSettingsBottomSheet';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
-import { useGETNotificationStandardsQuery } from '../api/member';
+import {
+  useGETNotificationStandardsQuery,
+  usePUTNotificationStandardsQuery,
+} from '../api/member';
 import useAuthStore from '@/store/auth';
 
 const NotificationSettingBox = ({
@@ -32,6 +35,32 @@ const NotificationSettingBox = ({
       setIsNotificationOn(defaultTime.isActive);
     }
   }, [defaultTime]);
+
+  const { mutate } = usePUTNotificationStandardsQuery({
+    loginId: memberId,
+  });
+
+  const onActive = () => {
+    setIsNotificationOn(true);
+    mutate({
+      loginId: memberId,
+      putData: {
+        isActive: true,
+        notifyDailyAt: defaultTime?.notifyDailyAt || '09:00',
+      },
+    });
+  };
+
+  const onDeactivate = () => {
+    setIsNotificationOn(false);
+    mutate({
+      loginId: memberId,
+      putData: {
+        isActive: false,
+        notifyDailyAt: defaultTime?.notifyDailyAt || '09:00',
+      },
+    });
+  };
 
   return (
     <>
@@ -55,8 +84,8 @@ const NotificationSettingBox = ({
             top: `calc(50% - ${getRem(17)})`,
           }}
           isOn={isNotificationOn}
-          setOn={() => setIsNotificationOn(true)}
-          setOff={() => setIsNotificationOn(false)}
+          setOn={onActive}
+          setOff={onDeactivate}
         />
       </RoundedBox>
       <NotificationSettingsBottomSheet
