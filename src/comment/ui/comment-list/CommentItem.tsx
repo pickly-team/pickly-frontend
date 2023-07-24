@@ -3,12 +3,13 @@ import Text from '@/common-ui/Text';
 import Icon from '@/common-ui/assets/Icon';
 import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
+import { timeStampToDate } from '@/utils/date/timeConverter';
 
 interface CommentListProps {
   title: string;
   nickName: string;
   content: string;
-  updatedAt: string;
+  updatedAt: number;
   category: string;
 }
 
@@ -24,22 +25,26 @@ const CommentItem = ({
       <Container>
         <CommentHeader>
           <IconAndTitleWrapper>
-            {<Icon name="bookmark" size={'s'} />}
-            <TitleText fontSize={getRem(20)} weight={'bold'}>
+            <StyleIconWrapper>
+              {<StyleIcon name="bookmark" size={'s'} />}
+            </StyleIconWrapper>
+            <TitleText fontSize={getRem(18)} weight={'bold'}>
               {title}
             </TitleText>
           </IconAndTitleWrapper>
         </CommentHeader>
         <IconAndNickNameWrapper>
-          <NicknameText fontSize={getRem(16)} weight={'bold'}>
+          <NicknameText fontSize={getRem(14)} weight={'bold'}>
             {nickName}
           </NicknameText>
           {<Icon name="badge-green" size={'s'} />}
         </IconAndNickNameWrapper>
-        <ContentText fontSize={getRem(13)}>{content}</ContentText>
+        <ContentText fontSize={getRem(11)}>{content}</ContentText>
         <IconAndTimeAndCategoryWrapper>
           <Icon name="timeline" size={'s'} />
-          <UpdatedAtText fontSize={getRem(10)}>{updatedAt}</UpdatedAtText>
+          <UpdatedAtText fontSize={getRem(10)}>
+            {timeStampToDate(updatedAt)}
+          </UpdatedAtText>
           <CategoryText fontSize={getRem(10)} weight={'bold'}>
             {category}
           </CategoryText>
@@ -60,13 +65,27 @@ const Container = styled.div`
   background-color: ${theme.colors.grey800};
 `;
 
+const StyleIcon = styled(Icon)`
+  width: ${getRem(8)};
+  height: ${getRem(8)};
+`;
+
 const CommentHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const TitleText = styled(Text.Span)``;
+const TitleText = styled(Text.Span)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  font-size: ${(props) => props.fontSize};
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
 
 const NicknameText = styled(Text.Span)``;
 
@@ -92,4 +111,8 @@ const IconAndTimeAndCategoryWrapper = styled.div`
   display: flex;
   align-items: center;
   column-gap: ${getRem(8)};
+`;
+
+const StyleIconWrapper = styled.div`
+  flex-shrink: 0;
 `;
