@@ -14,6 +14,7 @@ import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { GET_LIKE_BOOKMARK_LIST } from './like';
+import { GET_USER_PROFILE } from '@/auth/api/profile';
 dayjs.locale('ko');
 
 const DOMAIN = 'BOOKMARK';
@@ -334,6 +335,7 @@ export const usePOSTBookmarkMutation = ({
         GET_BOOKMARK_LIST(memberId, false, categoryId),
       );
       queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, true, categoryId));
+      queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
     },
     onError: () => {
       fireToast({ message: '앗! 추가할 수 없는 북마크에요', mode: 'DELETE' });
@@ -611,6 +613,7 @@ export const useDELETEBookmarkQuery = ({
   return useMutation(deleteBookmarkAPI, {
     onSuccess: () => {
       refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
+      queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
     },
   });
 };
