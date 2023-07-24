@@ -4,8 +4,11 @@ import Icon from '@/common-ui/assets/Icon';
 import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
 import { timeStampToDate } from '@/utils/date/timeConverter';
+import { navigatePath } from '@/constants/navigatePath';
+import { useNavigate } from 'react-router-dom';
 
 interface CommentListProps {
+  id: number;
   title: string;
   nickName: string;
   content: string;
@@ -14,15 +17,22 @@ interface CommentListProps {
 }
 
 const CommentItem = ({
+  id,
   title,
   nickName,
   content,
   updatedAt,
   category,
 }: CommentListProps) => {
+  const navigate = useNavigate();
+
+  const navigateToBookmark = () => {
+    navigate(navigatePath.BOOKMARK_DETAIL.replace(':id', String(id)));
+  };
+
   return (
     <>
-      <Container>
+      <Container onClick={navigateToBookmark}>
         <CommentHeader>
           <IconAndTitleWrapper>
             <StyleIconWrapper>
