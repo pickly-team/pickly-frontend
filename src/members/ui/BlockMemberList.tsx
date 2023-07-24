@@ -7,6 +7,7 @@ import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
 import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import MemberSkeleton from './MemberSkeleton';
+import BlankItem from '@/common-ui/BlankItem';
 
 const BlockMemberList = () => {
   // FIRST RENDER
@@ -37,11 +38,12 @@ const BlockMemberList = () => {
 
   return (
     <Wrapper>
+      {!flatBlockMemberList.length && <BlankItem page="BLOCK_USER" />}
       {flatBlockMemberList.map((info) => (
         <Member
           key={info.id}
           emoji={info.profileEmoji}
-          name={info.name}
+          name={info.nickname}
           button={
             <StyledButton
               onClick={() => onClick(info.id)}

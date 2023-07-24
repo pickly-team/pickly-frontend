@@ -1,3 +1,4 @@
+import { GET_USER_PROFILE } from '@/auth/api/profile';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import client from '@/common/service/client';
 import {
@@ -323,13 +324,22 @@ const postBlockMemberAPI = async ({
   return data;
 };
 
-export const usePOSTBlockMemberQuery = () => {
+interface POSTBlockMemberQueryParams {
+  memberId: number;
+}
+
+export const usePOSTBlockMemberQuery = ({
+  memberId,
+}: POSTBlockMemberQueryParams) => {
   const router = useNavigate();
   const { fireToast } = useToast();
+  const queryClient = useQueryClient();
   return useMutation(postBlockMemberAPI, {
     onSuccess: () => {
       fireToast({ message: '차단 되었습니다' });
       router(-1);
+      queryClient.refetchQueries(GET_BLOCK_MEMBER_LIST_KEY({ memberId }));
+      queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
     },
   });
 };
@@ -391,7 +401,7 @@ interface MemberItem {
 
 interface Member {
   id: number;
-  name: string;
+  nickname: string;
   profileEmoji: string;
 }
 
@@ -406,32 +416,19 @@ const GETBlockMemberList = {
   API: async (params: GetBlockMemberListParams) => {
     const { data } = await client<MemberItem>({
       method: 'get',
-      url: `/members/${params.memberId}/block`,
+      url: `/member/blocks/${params.memberId}`,
       params: {
         cursorId: params.cursorId,
         pageSize: params.pageSize,
       },
-      data: {},
     });
     return data;
-  },
-  Dummy: async (): Promise<MemberItem> => {
-    return {
-      hasNext: true,
-      contents: Array.from({ length: 10 }).map((_, index) => ({
-        id: index,
-        name: '까루',
-        profileEmoji: '🐶',
-      })),
-    };
   },
 };
 
 const GET_BLOCK_MEMBER_LIST_KEY = (params: GetBlockMemberListParams) => [
   'GET_BLOCK_MEMBER_LIST',
   params.memberId,
-  params.cursorId,
-  params.pageSize,
 ];
 
 export const useGETBlockMemberListQuery = (
@@ -439,7 +436,7 @@ export const useGETBlockMemberListQuery = (
 ) => {
   return useInfiniteQuery(
     GET_BLOCK_MEMBER_LIST_KEY(params),
-    () => GETBlockMemberList.Dummy(),
+    () => GETBlockMemberList.API(params),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.hasNext ? lastPage.contents.length : undefined;
