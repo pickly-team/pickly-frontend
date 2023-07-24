@@ -23,11 +23,12 @@ const CommentPage = () => {
             commentList.map((comment) => (
               <CommentItem
                 key={comment.id} // 변경이 되었는지 안되었는지 판단 여부
+                id={comment.id}
                 title={comment.bookmark}
                 content={comment.content}
                 nickName={comment.member}
                 category={comment.category}
-                updatedAt={String(comment.createdTimestamp)}
+                updatedAt={Number(comment.createdTimestamp)}
               />
             ))}
         </CommentListWrapper>
