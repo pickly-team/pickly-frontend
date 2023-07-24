@@ -178,11 +178,12 @@ const NotificationSettingsBottomSheet = ({
       props.onClose && props.onClose();
       return;
     }
+    const transformMinute = minute < 10 ? `0${minute}` : minute;
     mutate({
       loginId: memberId || 8,
       putData: {
         isActive: true,
-        notifyDailyAt: `${transformHour}:${minute}`,
+        notifyDailyAt: `${transformHour}:${transformMinute}`,
       },
     });
     props.onClose && props.onClose();
