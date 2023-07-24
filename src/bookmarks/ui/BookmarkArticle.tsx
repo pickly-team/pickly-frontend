@@ -198,7 +198,7 @@ const BookMarkArticle = ({
         <BookmarkAddBS.URLInput
           url={url}
           title={title}
-          isValidateUrl={isValidateUrl}
+          isValidateUrl={isValidateUrl.length > 0}
           onChangeUrl={onChangeUrl}
           onChangeTitle={onChangeTitle}
           handleKeyDown={handleKeyDown}

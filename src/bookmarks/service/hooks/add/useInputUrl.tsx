@@ -50,7 +50,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   };
 
   useGETBookmarkTitleQuery({
-    url: checkValidateURL(debouncedUrl) ? debouncedUrl : '',
+    url: checkValidateURL(debouncedUrl) ? checkValidateURL(debouncedUrl) : '',
     setTitle: onChangeTitle,
   });
 
@@ -60,7 +60,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   };
 
   return {
-    url,
+    url: checkValidateURL(url) ? checkValidateURL(url) : '',
     title,
     onChangeUrl,
     onChangeTitle,
