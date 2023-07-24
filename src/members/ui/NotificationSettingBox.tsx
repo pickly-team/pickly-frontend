@@ -15,6 +15,7 @@ import {
   usePUTNotificationStandardsQuery,
 } from '../api/member';
 import useAuthStore from '@/store/auth';
+import useWebview from '@/common/service/hooks/useWebview';
 
 const NotificationSettingBox = ({
   notificationSetting,
@@ -31,14 +32,18 @@ const NotificationSettingBox = ({
   });
 
   useEffect(() => {
-    if (defaultTime) {
-      setIsNotificationOn(defaultTime.isActive);
-    }
+    if (defaultTime) setIsNotificationOn(defaultTime.isActive);
   }, [defaultTime]);
 
   const { mutate } = usePUTNotificationStandardsQuery({
     loginId: memberId,
   });
+
+  // 사용자 알림 설정 변경 시, 웹뷰에 권한 요청
+  const { postMessage } = useWebview();
+  useEffect(() => {
+    if (isNotificationOn) postMessage('notification');
+  }, [isNotificationOn]);
 
   const onActive = () => {
     setIsNotificationOn(true);

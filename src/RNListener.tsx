@@ -1,26 +1,18 @@
 import useAuthStore from '@/store/auth';
 import useBridgeCallback from './common/service/hooks/useBridgeCallback';
 import { useGETUserProfile } from './auth/api/profile';
-import { useEffect } from 'react';
 import useBookmarkStore from './store/bookmark';
-
-declare global {
-  interface Window {
-    isInWebview: boolean;
-    ReactNativeWebView: {
-      postMessage: (message: string) => void;
-    };
-  }
-}
+import useWebview from './common/service/hooks/useWebview';
+import { useEffect } from 'react';
 
 const RNListener = () => {
   const { memberId, login } = useAuthStore();
   const { setUrl, setTitle } = useBookmarkStore();
 
+  const { postMessage } = useWebview();
+
   useEffect(() => {
-    if (window.ReactNativeWebView) {
-      window.ReactNativeWebView.postMessage('login');
-    }
+    postMessage('login');
   }, []);
 
   useBridgeCallback(({ message, params }) => {
