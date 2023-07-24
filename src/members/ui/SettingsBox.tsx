@@ -8,6 +8,7 @@ import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
 import { usePATCHNotificationDayQuery } from '../api/member';
 import useAuthStore from '@/store/auth';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 
 interface SettingsBoxProps {
   serverRemindInDays: number;
@@ -25,10 +26,19 @@ const SettingsBox = ({ serverRemindInDays }: SettingsBoxProps) => {
     setRemindInDays(serverRemindInDays);
   }, [serverRemindInDays]);
 
+  const { fireToast } = useToast();
+
   const toggleIsEditing = () => {
     if (isEditing) {
       if (remindInDays === serverRemindInDays) {
         setIsEditing(!isEditing);
+        return;
+      }
+      if (remindInDays < 1) {
+        fireToast({
+          message: '앗! 알림 설정 기준일은 1일 이상이어야 해요',
+          mode: 'ERROR',
+        });
         return;
       }
       mutate({
