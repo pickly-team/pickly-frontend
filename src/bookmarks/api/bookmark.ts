@@ -360,16 +360,19 @@ export interface BookmarkDetail {
 
 interface GETBookmarkDetailParams {
   bookmarkId: string;
+  memberId: number;
   token?: string;
 }
 
 const getBookmarkDetailAPI = async ({
   bookmarkId,
+  memberId,
   token,
 }: GETBookmarkDetailParams) => {
   const { data } = await client<BookmarkDetail>({
     method: 'get',
     url: `/bookmarks/${bookmarkId}`,
+    params: { memberId },
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
   return getBookmarkDetailMapper(data);
@@ -408,6 +411,7 @@ const getBookmarkDetailMapper = (
 
 export interface GetBookmarkDetailRequest {
   bookmarkId: string;
+  memberId: number;
   token?: string;
 }
 
@@ -517,7 +521,7 @@ export const usePOSTBookmarkLikeQuery = ({
   return useMutation(postBookmarkLikeAPI, {
     onSuccess: () => {
       queryClient.setQueryData<ClientBookmarkDetail>(
-        GET_BOOKMARK_DETAIL_KEY({ bookmarkId }),
+        GET_BOOKMARK_DETAIL_KEY({ bookmarkId, memberId }),
         (prev) => {
           if (prev) {
             return {
@@ -566,7 +570,7 @@ export const useDELETEBookmarkLikeQuery = ({
   return useMutation(deleteBookmarkLikeAPI, {
     onSuccess: () => {
       queryClient.setQueryData<ClientBookmarkDetail>(
-        GET_BOOKMARK_DETAIL_KEY({ bookmarkId }),
+        GET_BOOKMARK_DETAIL_KEY({ bookmarkId, memberId }),
         (prev) => {
           if (prev) {
             return {
@@ -636,7 +640,7 @@ export const refetchAllBookmarkQuery = ({
   bookmarkId,
 }: RefetchAllBookmark) => {
   const bookmark = queryClient.getQueryData<ClientBookmarkDetail>(
-    GET_BOOKMARK_DETAIL_KEY({ bookmarkId }),
+    GET_BOOKMARK_DETAIL_KEY({ bookmarkId, memberId }),
   );
   const categoryId = bookmark?.categoryId ?? 0;
   // NOTE : 왜 도대체 뒤로 가기 시에는 refetch가 되지 않는지 모르겠음
@@ -665,6 +669,7 @@ export const refetchAllBookmarkQuery = ({
     },
   );
   queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, true, 0));
+  queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, null, 0));
   queryClient.refetchQueries(
     GET_BOOKMARK_LIST(memberId, false, categoryId ?? 0),
   );
@@ -714,7 +719,9 @@ export const usePUTBookmarkQuery = ({
   return useMutation(putBookmarkAPI, {
     onSuccess: () => {
       refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
-      queryClient.refetchQueries(GET_BOOKMARK_DETAIL_KEY({ bookmarkId }));
+      queryClient.refetchQueries(
+        GET_BOOKMARK_DETAIL_KEY({ bookmarkId, memberId }),
+      );
     },
   });
 };
