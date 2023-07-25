@@ -2,7 +2,7 @@ import { useGETBookMarkListQuery } from '@/bookmarks/api/bookmark';
 import { useEffect } from 'react';
 
 interface BookmarkListProps {
-  readByUser: boolean;
+  readByUser: boolean | null;
   memberId: number;
   categoryId?: number | null;
 }
