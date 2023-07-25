@@ -69,7 +69,7 @@ const CategoryListPage = () => {
       </Suspense>
       <BSConfirmation
         title="정말로 삭제 할까요?"
-        description="삭제된 카테고리는 복구할 수 없습니다."
+        description="카테고리에 연관된 북마크도 모두 삭제 됩니다."
         open={isOpen}
         onCancel={close}
         onClose={close}
