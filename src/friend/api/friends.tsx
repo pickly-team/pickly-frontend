@@ -20,6 +20,7 @@ export interface FollowingInfo {
   memberId: number;
   nickname: string;
   emoji: string;
+  isBlocked: boolean;
 }
 
 interface GETFollowingListRequest {
@@ -81,6 +82,7 @@ interface FollowerInfo {
   memberId: number;
   nickname: string;
   isFollowing: boolean;
+  isBlocked: boolean;
   emoji: string;
 }
 
@@ -392,6 +394,7 @@ export interface SearchList {
   nickname: string;
   emoji: string;
   isFollowing: boolean;
+  isBlocked: boolean;
 }
 
 interface GETSearchListRequest {
@@ -431,8 +434,6 @@ export const GET_SEARCH_LIST_KEY = (params: GETSearchListQueryRequest) => [
   'GET_SEARCH_LIST',
   params.memberId,
   params.keyword,
-  params.cursorId,
-  params.pageSize,
 ];
 
 export const useGETSearchListQuery = (params: GETSearchListQueryRequest) => {

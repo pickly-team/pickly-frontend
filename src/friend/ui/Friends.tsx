@@ -51,6 +51,7 @@ const Friends = () => {
               name={info.nickname}
               profileEmoji={info.emoji}
               isFollowing={true}
+              isBlocked={info.isBlocked}
             />
           ))}
         {selectedType === FriendType.Following && !followings.length && (
@@ -65,6 +66,7 @@ const Friends = () => {
               name={info.nickname}
               profileEmoji={info.emoji}
               isFollowing={info.isFollowing}
+              isBlocked={info.isBlocked}
             />
           ))}
       </Container>
