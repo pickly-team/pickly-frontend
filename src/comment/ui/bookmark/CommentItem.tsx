@@ -6,8 +6,12 @@ import Icon from '@/common-ui/assets/Icon';
 import getRem from '@/utils/getRem';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
+import { useNavigate } from 'react-router-dom';
+import { navigatePath } from '@/constants/navigatePath';
 
 interface CommentProps {
+  id: number;
+  profileEmoji: string;
   nickname: string;
   content: string;
   updatedAt: string;
@@ -18,6 +22,8 @@ interface CommentProps {
 }
 
 const CommentItem = ({
+  id,
+  profileEmoji,
   nickname,
   content,
   updatedAt,
@@ -26,14 +32,20 @@ const CommentItem = ({
   onClickEdit,
   onClickReport,
 }: CommentProps) => {
+  const navigate = useNavigate();
+  const onClickUserProfile = () => {
+    if (isWriter) return;
+    navigate(navigatePath.FRIEND_BOOKMARK.replace(':id', String(id)));
+  };
+
   return (
     <Container>
       <CommentHeader>
-        <NicknameTextAndIconWrapper>
+        <NicknameTextAndIconWrapper onClick={onClickUserProfile}>
+          <NicknameText fontSize={1}>{profileEmoji}</NicknameText>
           <NicknameText fontSize={1} weight={'bold'}>
             {nickname}
           </NicknameText>
-          {isWriter && <Icon name="badge-green" size={'s'} />}
         </NicknameTextAndIconWrapper>
         <div />
         <div />
