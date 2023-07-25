@@ -29,7 +29,7 @@ export const TEMP_VISIBILITY: Record<ClientVisibility, Visibility> = {
 
 export const GET_BOOKMARK_LIST = (
   userId: number,
-  readByUser: boolean,
+  readByUser: boolean | null,
   categoryId: number,
 ) => [
   getKeyofObject(navigatePath, '/'),
@@ -66,7 +66,7 @@ export type bookmarkGETBookMarkList = BookmarkItem[];
 interface GETBookMarkListRequest {
   memberId: number;
   categoryId?: number | null;
-  readByUser?: boolean;
+  readByUser: boolean | null;
   visibility?: Visibility;
   pageRequest?: {
     cursorId?: number;
@@ -112,7 +112,7 @@ export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
   return useInfiniteQuery(
     GET_BOOKMARK_LIST(
       params.memberId,
-      params.readByUser ?? false,
+      params.readByUser,
       params.categoryId ?? 0,
     ),
     async ({ pageParam = null }) => {
