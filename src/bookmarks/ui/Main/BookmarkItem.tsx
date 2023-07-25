@@ -5,6 +5,9 @@ import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
 import getRem from '@/utils/getRem';
 import type { BookmarkItem } from '../../api/bookmark';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import { SyntheticEvent } from 'react';
 
 const BookmarkItem = ({
   bookmarkId,
@@ -16,6 +19,11 @@ const BookmarkItem = ({
   title,
   url,
 }: BookmarkItem) => {
+  const onImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/images/main.png';
+    e.currentTarget.setAttribute('style', 'object-fit: contain');
+  };
+
   return (
     <LinkWrapper to={`/bookmark/${bookmarkId}`}>
       <ItemWrapper>
@@ -28,7 +36,11 @@ const BookmarkItem = ({
           </EllipsisText>
         </ItemUpperLeft>
         <ItemUpperRight>
-          <Thumbnail src={previewImageUrl} />
+          <Thumbnail
+            src={previewImageUrl}
+            effect="blur"
+            onError={onImageError}
+          />
         </ItemUpperRight>
       </ItemWrapper>
       <UnderWrapper>
@@ -95,11 +107,10 @@ const ItemUpperRight = styled.div`
   display: flex;
 `;
 
-const Thumbnail = styled.img`
+const Thumbnail = styled(LazyLoadImage)`
   width: 7rem;
   height: 5rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
   object-fit: contain;
-  border: 1px solid ${theme.colors.grey400};
 `;

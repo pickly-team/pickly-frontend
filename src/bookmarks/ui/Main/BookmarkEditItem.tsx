@@ -3,8 +3,10 @@ import CheckBox from '@/common-ui/CheckBox';
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { BookmarkItem } from '../../api/bookmark';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const BookmarkEditItem = ({
   bookmarkId,
@@ -22,6 +24,11 @@ const BookmarkEditItem = ({
   const onChangeCheck = () => {
     setChecked(!checked);
     onClickItem(bookmarkId);
+  };
+
+  const onImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/images/main.png';
+    e.currentTarget.setAttribute('style', 'object-fit: contain');
   };
 
   return (
@@ -42,7 +49,11 @@ const BookmarkEditItem = ({
               </EllipsisText>
             </ItemUpperLeft>
             <ItemUpperRight>
-              <Thumbnail src={previewImageUrl} />
+              <Thumbnail
+                src={previewImageUrl}
+                effect="blur"
+                onError={onImageError}
+              />
             </ItemUpperRight>
           </ItemWrapper>
           <UnderWrapper>
@@ -122,11 +133,10 @@ const ItemUpperRight = styled.div`
   display: flex;
 `;
 
-const Thumbnail = styled.img`
+const Thumbnail = styled(LazyLoadImage)`
   width: 7rem;
   height: 5rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
   object-fit: contain;
-  border: 1px solid ${theme.colors.grey400};
 `;
