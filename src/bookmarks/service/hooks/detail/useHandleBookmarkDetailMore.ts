@@ -55,7 +55,7 @@ const useHandleBookmarkDetailMore = () => {
 
   // 4. 북마크 신고
   const bookmarkDetail = queryClient.getQueryData<ClientBookmarkDetail>(
-    GET_BOOKMARK_DETAIL_KEY({ bookmarkId: id }),
+    GET_BOOKMARK_DETAIL_KEY({ bookmarkId: id, memberId }),
   );
   const writtenId = bookmarkDetail?.memberId ?? 0;
   const isMyBookmark = memberId === writtenId;

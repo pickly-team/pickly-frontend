@@ -39,11 +39,12 @@ const BookMarkArticle = ({
   closeEditBookmarkBS,
 }: BookMarkArticleProps) => {
   const { id: bookmarkId } = useParams<{ id: string }>();
+  const { memberId } = useAuthStore();
   const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
     bookmarkId: bookmarkId ?? '',
+    memberId,
   });
   const { commentCount } = useCommentStore();
-  const { memberId } = useAuthStore();
 
   const onErrorImage = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/images/main.png';
