@@ -53,6 +53,7 @@ const UserProfileInfo = ({
             value={nickname}
             onChange={onChangeNickname}
             isEssential
+            withCount
           />
         </StyleEditBox>
         <BottomFixedButton
