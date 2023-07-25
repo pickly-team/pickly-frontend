@@ -9,6 +9,7 @@ import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import { useParams } from 'react-router-dom';
 import BlankComment from './BlankComment';
 import useAuthStore from '@/store/auth';
+import getRem from '@/utils/getRem';
 
 const CommentList = () => {
   // FIRST RENDER
@@ -78,4 +79,5 @@ export default CommentList;
 
 const CommentListWrapper = styled.div`
   margin-bottom: 6rem;
+  padding: 0 ${getRem(20)};
 `;

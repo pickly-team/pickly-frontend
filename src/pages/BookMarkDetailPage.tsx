@@ -2,7 +2,6 @@
 import Header from '@/common-ui/Header/Header';
 import CommentUploadInput from '@/comment/ui/bookmark/CommentUploadInput';
 import styled from '@emotion/styled';
-import getRem from '@/utils/getRem';
 import BookmarkArticle from '@/bookmarks/ui/BookmarkArticle';
 import { Suspense } from 'react';
 import CommentList from '@/comment/ui/bookmark/CommentList';
@@ -88,9 +87,7 @@ const BookMarkDetailPage = () => {
 
 export default BookMarkDetailPage;
 
-const Body = styled.div`
-  padding: ${getRem(0, 20)};
-`;
+const Body = styled.div``;
 
 const CommentUploadInputBottomBar = styled.div`
   position: fixed;
