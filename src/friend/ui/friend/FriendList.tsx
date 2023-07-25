@@ -40,7 +40,8 @@ const FriendList = ({ keyword }: FriendListProps) => {
             memberId={memberId}
             name={info.nickname}
             profileEmoji={info.emoji}
-            isFollowing={Boolean(info.isFollowing)}
+            isFollowing={info.isFollowing}
+            isBlocked={info.isBlocked}
           />
         ))}
       </Container>

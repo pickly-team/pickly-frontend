@@ -5,18 +5,32 @@ import { theme } from '@/styles/theme';
 import { type MouseEvent } from 'react';
 import { useDELETEUnFollowQuery } from '@/friend/api/friends';
 import useSearchStore from '@/store/search';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 
 interface UnFollowButtonProps {
   memberId: number;
   followerId: number;
+  isBlocked?: boolean;
 }
-const UnFollowButton = ({ memberId, followerId }: UnFollowButtonProps) => {
+const UnFollowButton = ({
+  memberId,
+  followerId,
+  isBlocked = false,
+}: UnFollowButtonProps) => {
   const { setSelectedMemberId } = useSearchStore();
   const { mutate } = useDELETEUnFollowQuery({ memberId: followerId });
 
-  //TODO: 하드코딩 개선
+  const { fireToast } = useToast();
+
   const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    if (isBlocked) {
+      fireToast({
+        message: '차단된 사용자는 팔로우 할 수 없어요',
+        mode: 'ERROR',
+      });
+      return;
+    }
     setSelectedMemberId(memberId);
     mutate({ memberId, followerId });
   };

@@ -8,6 +8,7 @@ type FriendFollowerProps = {
   name: string;
   profileEmoji: string;
   isFollowing: boolean;
+  isBlocked: boolean;
 };
 const FriendFollowerItem = ({
   id,
@@ -15,6 +16,7 @@ const FriendFollowerItem = ({
   name,
   profileEmoji,
   isFollowing,
+  isBlocked,
 }: FriendFollowerProps) => {
   return (
     <FriendItemLayout
@@ -23,9 +25,17 @@ const FriendFollowerItem = ({
       emoji={profileEmoji}
       button={
         isFollowing ? (
-          <UnFollowButton followerId={memberId} memberId={id} />
+          <UnFollowButton
+            followerId={memberId}
+            memberId={id}
+            isBlocked={isBlocked}
+          />
         ) : (
-          <FollowButton followerId={memberId} memberId={id} />
+          <FollowButton
+            followerId={memberId}
+            memberId={id}
+            isBlocked={isBlocked}
+          />
         )
       }
     />
