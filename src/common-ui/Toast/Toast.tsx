@@ -25,7 +25,7 @@ const modeColor: Record<ToastMode, string> = {
 
 const modeTextColor: Record<ToastMode, string> = {
   SUCCESS: theme.colors.black,
-  DELETE: theme.colors.black,
+  DELETE: theme.colors.white,
   ERROR: theme.colors.black,
 } as const;
 
