@@ -11,6 +11,7 @@ interface EditBoxProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   isEssential?: boolean;
+  withCount?: boolean;
 }
 
 const EditBox = ({
@@ -19,6 +20,7 @@ const EditBox = ({
   onChange,
   disabled = false,
   isEssential = false,
+  withCount = false,
 }: EditBoxProps) => {
   return (
     <StyleEditBox>
@@ -30,7 +32,11 @@ const EditBox = ({
         value={value}
         onChange={onChange ? onChange : () => {}}
         disabled={disabled}
+        maxLength={withCount ? 7 : undefined}
       />
+      {withCount && (
+        <CountText fontSize={getRem(10)}>{`${value.length} / 7자`}</CountText>
+      )}
     </StyleEditBox>
   );
 };
@@ -53,4 +59,9 @@ const Title = styled(Text.P)`
 
 const StarText = styled(Text.P)`
   margin-left: ${getRem(3)};
+`;
+
+const CountText = styled(Text.P)`
+  text-align: right;
+  margin-top: ${getRem(10)};
 `;
