@@ -201,15 +201,15 @@ interface POSTCommentReportRequest {
   content: string;
 }
 
-const postCommentReportAPI = async (params: POSTCommentReportRequest) => {
-  const { data } = await client({
-    method: 'post',
-    url: '/reports/comments',
-    data: params,
-  });
+// const postCommentReportAPI = async (params: POSTCommentReportRequest) => {
+//   const { data } = await client({
+//     method: 'post',
+//     url: '/reports/comments',
+//     data: params,
+//   });
 
-  return data;
-};
+//   return data;
+// };
 
 const dummyCommentReportAPI = async (params: POSTCommentReportRequest) => {
   console.log(params);
