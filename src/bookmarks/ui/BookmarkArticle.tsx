@@ -24,6 +24,8 @@ import useSelectPublishScoped from '../service/hooks/add/useSelectPublishScoped'
 import useCategoryList from '../service/hooks/add/useCategoryList';
 import checkValidateURL from '@/utils/checkValidateURL';
 import useAuthStore from '@/store/auth';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 interface BookMarkArticleProps {
   editBookmarkBS: boolean;
@@ -139,11 +141,13 @@ const BookMarkArticle = ({
 
   return (
     <>
+      <BookMarkImage
+        src={bookmarkDetail?.previewImageUrl ?? ''}
+        onError={onErrorImage}
+        effect="blur"
+        width={'100%'}
+      />
       <Container>
-        <BookMarkImage
-          src={bookmarkDetail?.previewImageUrl ?? ''}
-          onError={onErrorImage}
-        />
         <BookMarkTitle level="h1" fontSize={1.5} weight="bold">
           {bookmarkDetail?.title ?? ''}
         </BookMarkTitle>
@@ -246,12 +250,14 @@ const BookMarkInfo = ({
   );
 };
 
-const Container = styled.article``;
-const BookMarkImage = styled.img`
+const Container = styled.article`
+  padding: ${getRem(0, 20)};
+`;
+const BookMarkImage = styled(LazyLoadImage)`
   width: 100%;
   height: ${getRem(247)};
   border-radius: ${getRem(0, 0, 32, 32)};
-  object-fit: contain;
+  object-fit: cover;
 `;
 
 const BookMarkTitle = styled(Text.Header)`
