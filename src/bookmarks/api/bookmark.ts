@@ -430,6 +430,8 @@ export const useGETBookmarkDetailQuery = (params: GetBookmarkDetailRequest) => {
 export interface BookmarkCommentItem {
   id: number;
   member: string;
+  memberId: number;
+  profileEmoji: string;
   bookmark: string;
   category: string;
   isOwnerComment: boolean;

@@ -43,6 +43,8 @@ const CommentList = () => {
       {commentList?.map((comment) => (
         <CommentItem
           key={comment.id}
+          id={comment.memberId}
+          profileEmoji={comment.profileEmoji}
           content={comment.content}
           isWriter={comment.isOwnerComment}
           nickname={comment.member}
