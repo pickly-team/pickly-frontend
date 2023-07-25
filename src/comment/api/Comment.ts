@@ -3,6 +3,8 @@ import client from '@/common/service/client';
 import { navigatePath } from '../../constants/navigatePath';
 import { GET_BOOKMARK_COMMENT } from '@/bookmarks/api/bookmark';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 const DOMAIN = 'COMMENT';
 
@@ -189,6 +191,60 @@ export const useDELETECommentQuery = ({
         }),
       );
       fireToast({ message: '삭제 되었습니다', mode: 'DELETE' });
+    },
+  });
+};
+
+// 댓글 신고
+interface POSTCommentReportRequest {
+  reporterId: number;
+  reportedId: number;
+  content: string;
+}
+
+const postCommentReportAPI = async (params: POSTCommentReportRequest) => {
+  const { data } = await client({
+    method: 'post',
+    url: '/reports/comments',
+    data: params,
+  });
+
+  return data;
+};
+
+const dummyCommentReportAPI = async (params: POSTCommentReportRequest) => {
+  console.log(params);
+  return new Promise((resolve) => {
+    resolve({
+      data: true,
+    });
+  });
+};
+
+export interface POSTBookmarkReportMutation {
+  reporterId: number;
+}
+
+export const usePOSTReportCommentQuery = () => {
+  const toast = useToast();
+  const router = useNavigate();
+  return useMutation(dummyCommentReportAPI, {
+    onSuccess: () => {
+      toast.fireToast({
+        message: '신고 되었습니다',
+        mode: 'SUCCESS',
+      });
+      router(-1);
+    },
+    onError: (e: AxiosError) => {
+      const errorCode = e.response?.status;
+      if (errorCode && errorCode === 500) {
+        toast.fireToast({
+          message: '이미 신고한 북마크에요',
+          mode: 'DELETE',
+        });
+        router(-1);
+      }
     },
   });
 };
