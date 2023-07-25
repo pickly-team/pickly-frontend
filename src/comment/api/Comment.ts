@@ -5,6 +5,7 @@ import { GET_BOOKMARK_COMMENT } from '@/bookmarks/api/bookmark';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import useAuthStore from '@/store/auth';
 
 const DOMAIN = 'COMMENT';
 
@@ -90,11 +91,13 @@ export const usePOSTCommentQuery = ({
   initComment,
 }: POSTCommentQueryRequest) => {
   const queryClient = useQueryClient();
+  const { memberId } = useAuthStore();
   return useMutation(postCommentAPI, {
     onSuccess: () => {
-      queryClient.invalidateQueries(
+      queryClient.refetchQueries(
         GET_BOOKMARK_COMMENT({
           bookmarkId,
+          memberId,
         }),
       );
       initComment();
@@ -114,22 +117,23 @@ export interface CommentItem {
 
 interface PUTCommentRequest {
   commentId: number;
+  memberId: number;
   putData: {
     content: string;
   };
-
   token?: string;
 }
 
 const putCommentAPI = async ({
   commentId,
+  memberId,
   putData,
   token,
 }: PUTCommentRequest) => {
   const { data } = await client<CommentItem>({
     method: 'put',
     url: `/comments/${commentId}`,
-    params: { commentId },
+    params: { memberId },
     data: putData,
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
@@ -145,11 +149,13 @@ export const usePUTCommentQuery = ({
   initComment,
 }: PUTCommentQueryRequest) => {
   const queryClient = useQueryClient();
+  const { memberId } = useAuthStore();
   return useMutation(putCommentAPI, {
     onSuccess: () => {
-      queryClient.invalidateQueries(
+      queryClient.refetchQueries(
         GET_BOOKMARK_COMMENT({
           bookmarkId,
+          memberId,
         }),
       );
       initComment();
@@ -183,11 +189,13 @@ export const useDELETECommentQuery = ({
 }: DELETECommentQueryRequest) => {
   const queryClient = useQueryClient();
   const { fireToast } = useToast();
+  const { memberId } = useAuthStore();
   return useMutation(deleteCommentAPI, {
     onSuccess: () => {
-      queryClient.invalidateQueries(
+      queryClient.refetchQueries(
         GET_BOOKMARK_COMMENT({
           bookmarkId,
+          memberId,
         }),
       );
       fireToast({ message: '삭제 되었습니다', mode: 'DELETE' });
