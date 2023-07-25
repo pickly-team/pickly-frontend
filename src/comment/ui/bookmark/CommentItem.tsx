@@ -11,6 +11,7 @@ import { navigatePath } from '@/constants/navigatePath';
 
 interface CommentProps {
   id: number;
+  memberId: number;
   profileEmoji: string;
   nickname: string;
   content: string;
@@ -18,11 +19,11 @@ interface CommentProps {
   isWriter: boolean;
   onClickDelete?: () => void;
   onClickEdit?: () => void;
-  onClickReport?: () => void;
 }
 
 const CommentItem = ({
   id,
+  memberId,
   profileEmoji,
   nickname,
   content,
@@ -30,12 +31,14 @@ const CommentItem = ({
   isWriter,
   onClickDelete,
   onClickEdit,
-  onClickReport,
 }: CommentProps) => {
   const navigate = useNavigate();
   const onClickUserProfile = () => {
     if (isWriter) return;
-    navigate(navigatePath.FRIEND_BOOKMARK.replace(':id', String(id)));
+    navigate(navigatePath.FRIEND_BOOKMARK.replace(':id', String(memberId)));
+  };
+  const onClickReport = () => {
+    navigate(navigatePath.COMMENT_REPORT.replace(':id', String(id)));
   };
 
   return (
@@ -61,10 +64,7 @@ const CommentItem = ({
                 onClickEdit={onClickEdit ?? (() => {})}
               />
             ) : (
-              <MoreContent
-                type="notWriter"
-                onClickReport={onClickReport ?? (() => {})}
-              />
+              <MoreContent type="notWriter" onClickReport={onClickReport} />
             )}
           </TriggerBottomSheet.BottomSheet>
         </TriggerBottomSheet>
