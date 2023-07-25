@@ -49,6 +49,7 @@ const CommentUploadInput = () => {
     if (mode === 'EDIT' && comment.id) {
       editComment({
         commentId: comment.id,
+        memberId,
         putData: {
           content: comment.content,
         },
