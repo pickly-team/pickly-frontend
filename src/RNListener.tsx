@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 const RNListener = () => {
   const { memberId, login } = useAuthStore();
-  const { setUrl, setTitle } = useBookmarkStore();
+  const { setUrl, setTitle, setReadOption } = useBookmarkStore();
 
   const { postMessage } = useWebview();
 
@@ -24,6 +24,7 @@ const RNListener = () => {
     if (message === 'initialize') {
       setUrl('');
       setTitle('');
+      setReadOption('📖 전체');
     }
   });
 

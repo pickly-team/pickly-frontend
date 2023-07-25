@@ -69,7 +69,7 @@ const MainPage = () => {
           <BookmarkListView
             memberId={memberId}
             isEditMode={isEdit}
-            isReadMode={READ_OPTIONS[selectedReadOption ?? '📖 읽음']}
+            isReadMode={READ_OPTIONS[selectedReadOption ?? '📖 전체']}
             selectedCategory={selectedCategoryId}
             onClickBookmarkItemInEdit={onClickBookmarkItemInEdit}
           />
