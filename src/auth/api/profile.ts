@@ -35,7 +35,11 @@ export const useGETUserProfile = (params: GetAPIRequest) => {
   return useQuery(GET_USER_PROFILE(params), () => getUserProfile(params), {
     enabled: params.loginId !== 0,
     onSuccess: (data) => {
-      setUserInfo((userInfo) => ({ ...userInfo, ...data }));
+      setUserInfo((userInfo) => ({
+        ...userInfo,
+        ...data,
+        profileEmoji: data.profileEmoji ?? '🐶',
+      }));
       if (data.nickname === '') router(navigatePath.USER);
     },
     onError: (e) => console.log(e),
