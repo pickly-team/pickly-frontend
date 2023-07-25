@@ -1,3 +1,4 @@
+import { READ_OPTION } from '@/bookmarks/service/hooks/home/useReadList';
 import Button from '@/common-ui/Button';
 import Select from '@/common-ui/Select/Select';
 import Text from '@/common-ui/Text';
@@ -6,7 +7,7 @@ import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 
-export type CategoryType = {
+export type ReadType = {
   value: string | null;
   label: string;
 };
@@ -28,7 +29,7 @@ const BookmarkToggle = ({
 interface SelectCategoryProps {
   selectedCategory: string;
   setCategoryId: (category: string) => void;
-  categoryOptions: CategoryType[];
+  categoryOptions: ReadType[];
 }
 
 const SelectCategory = ({
@@ -48,6 +49,7 @@ const SelectCategory = ({
           }}
         >
           <Text.Span
+            fontSize={0.9}
             color="lightPrimary"
             style={{
               width: '100%',
@@ -56,7 +58,7 @@ const SelectCategory = ({
               padding: `0 ${getRem(10)}`,
             }}
           >
-            전체
+            🥒 전체
           </Text.Span>
         </Button>
       )}
@@ -73,6 +75,7 @@ const SelectCategory = ({
             >
               <Text.Span
                 color="lightPrimary"
+                fontSize={0.9}
                 style={{
                   width: '100%',
                   textOverflow: 'ellipsis',
@@ -80,11 +83,11 @@ const SelectCategory = ({
                   padding: `0 ${getRem(10)}`,
                 }}
               >
-                전체
+                🥒 전체
               </Text.Span>
             </Button>
           }
-          value={selectedCategory}
+          value={selectedCategory ?? '🥒 전체'}
           onChange={setCategoryId}
           isSearchActive
         >
@@ -100,26 +103,54 @@ const SelectCategory = ({
 };
 
 interface ToggleReadProps {
-  isRead: boolean;
-  onChangeRead: () => void;
+  readOptions: ReadType[];
+  selectedReadOption: READ_OPTION | null;
+  onChangeRead: (readMode: READ_OPTION) => void;
 }
 
-const ToggleRead = ({ onChangeRead, isRead }: ToggleReadProps) => {
+const SelectReadMode = ({
+  readOptions,
+  selectedReadOption,
+  onChangeRead,
+}: ToggleReadProps) => {
   return (
     <ButtonWrapper>
-      <Button
-        buttonColor="black"
-        height={2.5}
-        style={{
-          border: `2px solid ${theme.colors.lightPrimary}`,
-          borderRadius: '0.8rem',
+      <Select
+        trigger={
+          <Button
+            buttonColor="black"
+            height={2.5}
+            style={{
+              border: `2px solid ${theme.colors.lightPrimary}`,
+              borderRadius: '0.8rem',
+            }}
+          >
+            <Text.Span
+              fontSize={0.9}
+              color="lightPrimary"
+              style={{
+                width: '100%',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                padding: `0 ${getRem(10)}`,
+              }}
+            >
+              📖 전체
+            </Text.Span>
+          </Button>
+        }
+        value={selectedReadOption ?? '📖 전체'}
+        onChange={(value) => {
+          onChangeRead(value as READ_OPTION);
         }}
-        onClick={onChangeRead}
+        isSearchActive
       >
-        <Text.Span color="lightPrimary">
-          {isRead ? '읽음' : '읽지 않음'}
-        </Text.Span>
-      </Button>
+        {readOptions.map((option) => (
+          <option value={option.value ?? ''} key={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </Select>
     </ButtonWrapper>
   );
 };
@@ -141,14 +172,16 @@ const ToggleEdit = ({ isEdit, onClickEdit }: ToggleEditProps) => {
         }}
         onClick={onClickEdit}
       >
-        <Text.Span color="lightPrimary">{isEdit ? '완료' : '편집'}</Text.Span>
+        <Text.Span fontSize={0.9} color="lightPrimary">
+          {isEdit ? '완료' : '편집'}
+        </Text.Span>
       </Button>
     </ButtonWrapper>
   );
 };
 
 BookmarkToggle.SelectCategory = SelectCategory;
-BookmarkToggle.ToggleRead = ToggleRead;
+BookmarkToggle.SelectReadMode = SelectReadMode;
 BookmarkToggle.ToggleEdit = ToggleEdit;
 
 export default BookmarkToggle;

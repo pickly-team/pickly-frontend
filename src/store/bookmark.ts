@@ -1,17 +1,18 @@
+import { READ_OPTION } from '@/bookmarks/service/hooks/home/useReadList';
 import { create } from 'zustand';
 
-interface CategoryType {
+interface OptionType {
   value: string | null;
   label: string;
 }
 
 interface BookmarkStore {
-  categoryOptions: CategoryType[];
-  setCategoryOptions: (options: CategoryType[]) => void;
+  categoryOptions: OptionType[];
+  setCategoryOptions: (options: OptionType[]) => void;
   selectedCategoryId: number | null;
   setSelectedCategoryId: (id: number | null) => void;
-  isReadMode: boolean;
-  setIsReadMode: (isReadMode: boolean) => void;
+  readOption: READ_OPTION | null;
+  setReadOption: (option: READ_OPTION) => void;
   url: string;
   setUrl: (url: string) => void;
   title: string;
@@ -29,9 +30,9 @@ const useBookmarkStore = create<BookmarkStore>((set) => ({
   setSelectedCategoryId: (id) => {
     set({ selectedCategoryId: id });
   },
-  isReadMode: false,
-  setIsReadMode: (isReadMode) => {
-    set({ isReadMode });
+  readOption: null,
+  setReadOption: (option) => {
+    set({ readOption: option });
   },
   url: '',
   setUrl: (url) => {

@@ -4,7 +4,9 @@ import styled from '@emotion/styled';
 import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
-import useReadList from '@/bookmarks/service/hooks/home/useReadList';
+import useReadList, {
+  READ_OPTIONS,
+} from '@/bookmarks/service/hooks/home/useReadList';
 import getRem from '@/utils/getRem';
 import { useParams } from 'react-router-dom';
 import Header from '@/common-ui/Header/Header';
@@ -59,7 +61,8 @@ const FriendBookmarkPage = () => {
   );
 
   // 3. 읽은 북마크 선택
-  const { isReadMode, onClickReadMode } = useReadList();
+  const { readSelectOptionsList, selectedReadOption, onClickReadMode } =
+    useReadList();
 
   return (
     <>
@@ -103,8 +106,9 @@ const FriendBookmarkPage = () => {
           categoryOptions={categoryOptions}
           setCategoryId={onChangeCategory}
         />
-        <BookmarkToggle.ToggleRead
-          isRead={isReadMode}
+        <BookmarkToggle.SelectReadMode
+          readOptions={readSelectOptionsList}
+          selectedReadOption={selectedReadOption}
           onChangeRead={onClickReadMode}
         />
         <BlankView />
@@ -122,7 +126,7 @@ const FriendBookmarkPage = () => {
           <BookmarkListView
             memberId={friendId ? Number(friendId) : 0}
             isEditMode={false}
-            isReadMode={isReadMode}
+            isReadMode={READ_OPTIONS[selectedReadOption ?? '📖 읽음']}
           />
         </Suspense>
       </LMiddle>
