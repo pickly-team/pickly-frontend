@@ -88,4 +88,5 @@ export type IconName =
   | 'check-green-reverse'
   | 'arrow-down'
   | 'check-circle'
-  | 'close-circle';
+  | 'close-circle'
+  | 'error';
