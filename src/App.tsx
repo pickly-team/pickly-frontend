@@ -55,7 +55,14 @@ const App = () => {
                   element={<BookMarkDetailPage />}
                 />
                 <Route path={navigatePath.FAQ} element={<FaqPage />} />
-                <Route path={navigatePath.REPORT} element={<ReportPage />} />
+                <Route
+                  path={navigatePath.COMMENT_REPORT}
+                  element={<ReportPage mode="COMMENT" />}
+                />
+                <Route
+                  path={navigatePath.BOOKMARK_REPORT}
+                  element={<ReportPage mode="BOOKMARK" />}
+                />
                 <Route
                   path={navigatePath.USER}
                   element={<UserCreatePage mode="CREATE" />}
