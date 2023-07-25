@@ -60,7 +60,7 @@ const useHandleBookmarkDetailMore = () => {
   const writtenId = bookmarkDetail?.memberId ?? 0;
   const isMyBookmark = memberId === writtenId;
   const onClickReportBookmark = () => {
-    router(navigatePath.REPORT.replace(':id', id));
+    router(navigatePath.BOOKMARK_REPORT.replace(':id', id));
   };
 
   return {
