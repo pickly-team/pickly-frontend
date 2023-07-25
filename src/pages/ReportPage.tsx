@@ -1,6 +1,7 @@
 import { usePOSTBookmarkReportMutation } from '@/bookmarks/api/bookmark';
 import BookmarkReportList from '@/bookmarks/ui/Report/BookmarkReportList';
 import BookmarkReportWrite from '@/bookmarks/ui/Report/BookmarkReportWrite';
+import { usePOSTReportCommentQuery } from '@/comment/api/Comment';
 import BottomFixedButton from '@/common-ui/BottomFixedButton';
 import Header from '@/common-ui/Header/Header';
 import Text from '@/common-ui/Text';
@@ -12,8 +13,12 @@ import { useParams } from 'react-router-dom';
 
 export type ReportMode = 'CHECK' | 'WRITE';
 
-const ReportPage = () => {
-  const [mode, setMode] = useState<ReportMode>('CHECK');
+interface ReportPageProps {
+  mode: 'BOOKMARK' | 'COMMENT';
+}
+
+const ReportPage = ({ mode }: ReportPageProps) => {
+  const [reportMode, setReportMode] = useState<ReportMode>('CHECK');
   const [reportText, setReportText] = useState('');
   const [selectedReport, setSelectedReport] = useState('');
   const { memberId } = useAuthStore();
@@ -27,18 +32,28 @@ const ReportPage = () => {
   const { mutate: reportBookmark } = usePOSTBookmarkReportMutation({
     reporterId: memberId,
   });
+  const { mutate: reportComment } = usePOSTReportCommentQuery();
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const content = mode === 'WRITE' ? reportText : selectedReport;
-    reportBookmark({
-      reportedId: Number(id),
-      reporterId: memberId,
-      content,
-    });
+    const content = reportMode === 'WRITE' ? reportText : selectedReport;
+    if (mode === 'BOOKMARK') {
+      reportBookmark({
+        reportedId: Number(id),
+        reporterId: memberId,
+        content,
+      });
+    }
+    if (mode === 'COMMENT') {
+      reportComment({
+        reportedId: Number(id),
+        reporterId: memberId,
+        content,
+      });
+    }
   };
 
   const buttonDisabled =
-    mode === 'WRITE' ? !reportText.length : !selectedReport.length;
+    reportMode === 'WRITE' ? !reportText.length : !selectedReport.length;
 
   return (
     <>
@@ -48,12 +63,12 @@ const ReportPage = () => {
           신고 사유를 선택해 주세요
         </MainText>
         <BookmarkReportList
-          setMode={setMode}
+          setMode={setReportMode}
           setSelectedReport={setSelectedReport}
         />
         <BookmarkReportWrite
           value={reportText}
-          isWriteMode={mode === 'WRITE'}
+          isWriteMode={reportMode === 'WRITE'}
           onChange={onChangeReportText}
         />
         <BottomFixedButton disabled={buttonDisabled} type="submit">
