@@ -1,7 +1,11 @@
 import { GET_USER_PROFILE } from '@/auth/api/profile';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import client from '@/common/service/client';
+import { GET_SEARCH_LIST_KEY, SearchList } from '@/friend/api/friends';
+import useFriendStore from '@/store/friend';
+import useSearchStore from '@/store/search';
 import {
+  InfiniteData,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -328,18 +332,53 @@ interface POSTBlockMemberQueryParams {
   memberId: number;
 }
 
+type InfiniteSearchList =
+  | InfiniteData<{
+      contents: SearchList[];
+      hasNext: boolean;
+    }>
+  | undefined;
+
 export const usePOSTBlockMemberQuery = ({
   memberId,
 }: POSTBlockMemberQueryParams) => {
   const router = useNavigate();
   const { fireToast } = useToast();
   const queryClient = useQueryClient();
+  const { keyword, selectedMemberId } = useSearchStore();
+  console.log(keyword, memberId);
   return useMutation(postBlockMemberAPI, {
     onSuccess: () => {
       fireToast({ message: '차단 되었습니다' });
       router(-1);
       queryClient.refetchQueries(GET_BLOCK_MEMBER_LIST_KEY({ memberId }));
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
+      if (keyword && selectedMemberId) {
+        queryClient.setQueryData<InfiniteSearchList>(
+          GET_SEARCH_LIST_KEY({ memberId, keyword }),
+          (searchList) => {
+            if (searchList) {
+              return {
+                ...searchList,
+                pages: searchList.pages.map((page) => ({
+                  ...page,
+                  contents: page.contents.map((content) => {
+                    if (content.memberId === selectedMemberId) {
+                      return {
+                        ...content,
+                        isFollowing: false,
+                        isBlocked: true,
+                      };
+                    }
+                    return content;
+                  }),
+                })),
+              };
+            }
+            return searchList;
+          },
+        );
+      }
     },
   });
 };
@@ -351,6 +390,7 @@ export interface MemberProfile {
   nickname: string;
   profileEmoji: string;
   isFollowing: boolean;
+  isBlocked: boolean;
 }
 
 interface GETMemberProfileParams {
@@ -411,7 +451,6 @@ interface GetBlockMemberListParams {
   pageSize?: number;
 }
 
-// NOTE : Backend API가 수정되면 삭제
 const GETBlockMemberList = {
   API: async (params: GetBlockMemberListParams) => {
     const { data } = await client<MemberItem>({
@@ -477,9 +516,13 @@ export const useUnblockUserQuery = ({
 }: DELETEBlockMemberQueryParams) => {
   const queryClient = useQueryClient();
   const { fireToast } = useToast();
+  const { friendId } = useFriendStore();
   return useMutation(unblockUserAPI, {
     onSuccess: () => {
       queryClient.invalidateQueries(GET_BLOCK_MEMBER_LIST_KEY({ memberId }));
+      queryClient.refetchQueries(
+        GET_FRIEND_PROFILE({ memberId: friendId, loginId: memberId }),
+      );
       fireToast({ message: '차단이 해제 되었습니다' });
     },
   });
