@@ -441,16 +441,19 @@ export interface BookmarkCommentItem {
 
 interface GETBookmarkCommentRequest {
   bookmarkId: string;
+  memberId: number;
   token?: string;
 }
 
 const getBookmarkCommentListAPI = async ({
   bookmarkId,
+  memberId,
   token,
 }: GETBookmarkCommentRequest) => {
   const { data } = await client<BookmarkCommentItem[]>({
     method: 'get',
     url: `/bookmarks/${bookmarkId}/comments`,
+    params: { memberId },
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
   return data;
@@ -458,6 +461,7 @@ const getBookmarkCommentListAPI = async ({
 
 export interface GetAPIRequest {
   bookmarkId: string;
+  memberId: number;
   token?: string;
   setCommentCount?: (count: number) => void;
 }

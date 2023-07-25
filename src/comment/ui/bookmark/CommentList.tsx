@@ -8,14 +8,17 @@ import BSConfirmation from '@/common/ui/BSConfirmation';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import { useParams } from 'react-router-dom';
 import BlankComment from './BlankComment';
+import useAuthStore from '@/store/auth';
 
 const CommentList = () => {
   // FIRST RENDER
   const { comment, setCommentId, setCommentCount } = useCommentStore();
   // SERVER
+  const { memberId } = useAuthStore();
   const { id: bookmarkId } = useParams<{ id: string }>();
   const { data: commentList } = useGETBookmarkCommentListQuery({
     bookmarkId: bookmarkId ?? '',
+    memberId,
     setCommentCount,
   });
 
