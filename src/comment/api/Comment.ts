@@ -17,6 +17,7 @@ export const GET_COMMENT_LIST = [getKeyofObject(navigatePath, '/'), DOMAIN];
 interface ServerCommentItem {
   id: number;
   member: string;
+  bookmarkId: number;
   bookmark: string;
   category: string;
   isOwnerComment: boolean;

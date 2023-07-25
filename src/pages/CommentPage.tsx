@@ -24,6 +24,7 @@ const CommentPage = () => {
               <CommentItem
                 key={comment.id} // 변경이 되었는지 안되었는지 판단 여부
                 id={comment.id}
+                bookmarkId={comment.bookmarkId}
                 title={comment.bookmark}
                 content={comment.content}
                 nickName={comment.member}

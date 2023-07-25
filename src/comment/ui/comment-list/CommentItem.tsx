@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface CommentListProps {
   id: number;
+  bookmarkId: number;
   title: string;
   nickName: string;
   content: string;
@@ -18,6 +19,7 @@ interface CommentListProps {
 
 const CommentItem = ({
   id,
+  bookmarkId,
   title,
   nickName,
   content,
@@ -27,7 +29,7 @@ const CommentItem = ({
   const navigate = useNavigate();
 
   const navigateToBookmark = () => {
-    navigate(navigatePath.BOOKMARK_DETAIL.replace(':id', String(id)));
+    navigate(navigatePath.BOOKMARK_DETAIL.replace(':id', String(bookmarkId)));
   };
 
   return (
