@@ -23,16 +23,18 @@ import { Suspense, useEffect } from 'react';
 import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 import useFriendStore from '@/store/friend';
+import useBookmarkStore from '@/store/bookmark';
 
 const FriendBookmarkPage = () => {
   // FIRST RENDER
   const { memberId } = useAuthStore();
   const { id: friendId } = useParams<{ id: string }>();
-
+  const { setReadOption } = useBookmarkStore();
   const { setFriendId } = useFriendStore();
 
   useEffect(() => {
     setFriendId(Number(friendId));
+    setReadOption('📖 전체');
   }, [friendId]);
 
   // SERVER
@@ -43,6 +45,11 @@ const FriendBookmarkPage = () => {
   });
 
   // USER INTERACTION
+  // 뒤로가기
+  const onClickBack = () => {
+    setReadOption('📖 전체');
+  };
+
   // 1. 상단 more > 차단하기
   const { mutate: postBlockMember } = usePOSTBlockMemberQuery({ memberId });
   const onClick_차단하기 = () => {
@@ -68,6 +75,7 @@ const FriendBookmarkPage = () => {
     <>
       <Header
         showBackButton
+        backButtonCallback={onClickBack}
         rightButton={
           <TriggerBottomSheet>
             <TriggerBottomSheet.Trigger
@@ -126,7 +134,7 @@ const FriendBookmarkPage = () => {
           <BookmarkListView
             memberId={friendId ? Number(friendId) : 0}
             isEditMode={false}
-            isReadMode={READ_OPTIONS[selectedReadOption ?? '📖 읽음']}
+            isReadMode={READ_OPTIONS[selectedReadOption ?? '📖 전체']}
           />
         </Suspense>
       </LMiddle>
