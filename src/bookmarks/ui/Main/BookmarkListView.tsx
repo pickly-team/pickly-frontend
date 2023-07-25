@@ -8,7 +8,7 @@ import BookmarkEditItem from './BookmarkEditItem';
 
 interface BookmarkListViewProps {
   memberId: number;
-  isReadMode: boolean;
+  isReadMode: boolean | null;
   isEditMode: boolean;
   selectedCategory?: number | null;
   onClickBookmarkItemInEdit?: (bookmarkId: number) => void;
@@ -44,9 +44,13 @@ const BookmarkListView = ({
       )}
       {!isEditMode && !!flatBookMarkList?.length && (
         <BookmarkList
-          bookmarkList={flatBookMarkList?.filter(
-            (bookmark) => bookmark.readByUser === isReadMode,
-          )}
+          bookmarkList={
+            isReadMode !== null
+              ? flatBookMarkList.filter(
+                  (bookmark) => bookmark.readByUser === isReadMode,
+                )
+              : flatBookMarkList
+          }
           renderItem={(bookmark) => (
             <BookmarkItem key={bookmark.bookmarkId} {...bookmark} />
           )}
@@ -54,9 +58,13 @@ const BookmarkListView = ({
       )}
       {!!isEditMode && !!flatBookMarkList?.length && (
         <BookmarkList
-          bookmarkList={flatBookMarkList.filter(
-            (bookmark) => bookmark.readByUser === isReadMode,
-          )}
+          bookmarkList={
+            isReadMode !== null
+              ? flatBookMarkList.filter(
+                  (bookmark) => bookmark.readByUser === isReadMode,
+                )
+              : flatBookMarkList
+          }
           renderItem={(bookmark) => (
             <BookmarkEditItem
               onClickItem={() =>

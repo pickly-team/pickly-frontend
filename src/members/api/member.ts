@@ -346,7 +346,6 @@ export const usePOSTBlockMemberQuery = ({
   const { fireToast } = useToast();
   const queryClient = useQueryClient();
   const { keyword, selectedMemberId } = useSearchStore();
-  console.log(keyword, memberId);
   return useMutation(postBlockMemberAPI, {
     onSuccess: () => {
       fireToast({ message: '차단 되었습니다' });

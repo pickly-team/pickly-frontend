@@ -18,7 +18,7 @@ import getRem from '@/utils/getRem';
 import { keyframes } from '@emotion/react';
 import Text, { TextProps } from '../Text';
 
-const NO_RESULT_TEST = '전체';
+const NO_RESULT_TEST = '🥒 전체';
 const NO_SEARCH_RESULT_TEXT = '검색결과가 없습니다';
 
 interface SelectProps {
@@ -179,11 +179,12 @@ const useSearch = () => {
 };
 
 const Container = styled.div`
-  position: relative;
+  position: static;
 `;
 
 const SelectUlWrapper = styled.div<{ isOpen: boolean }>`
   position: absolute;
+  left: ${getRem(20)};
   width: calc(100vw - ${getRem(38)});
   border-radius: 0.5rem;
   animation: ${(p) => (p.isOpen ? showUp : showOut)} 0.3s ease-in-out;

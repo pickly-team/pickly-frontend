@@ -4,7 +4,9 @@ import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import BookmarkBSDeleteConfirmation from '@/bookmarks/ui/Main/BookmarkBSDeleteConfirmation';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
-import useReadList from '@/bookmarks/service/hooks/home/useReadList';
+import useReadList, {
+  READ_OPTIONS,
+} from '@/bookmarks/service/hooks/home/useReadList';
 import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
 import getRem from '@/utils/getRem';
 import useAuthStore from '@/store/auth';
@@ -21,7 +23,8 @@ const MainPage = () => {
     },
   );
 
-  const { isReadMode, onClickReadMode } = useReadList();
+  const { readSelectOptionsList, selectedReadOption, onClickReadMode } =
+    useReadList();
 
   const {
     isEditMode: isEdit,
@@ -46,8 +49,9 @@ const MainPage = () => {
           categoryOptions={categoryOptions}
           setCategoryId={onChangeCategory}
         />
-        <BookmarkToggle.ToggleRead
-          isRead={isReadMode}
+        <BookmarkToggle.SelectReadMode
+          readOptions={readSelectOptionsList}
+          selectedReadOption={selectedReadOption}
           onChangeRead={onClickReadMode}
         />
         <BookmarkToggle.ToggleEdit isEdit={isEdit} onClickEdit={onClickEdit} />
@@ -65,7 +69,7 @@ const MainPage = () => {
           <BookmarkListView
             memberId={memberId}
             isEditMode={isEdit}
-            isReadMode={isReadMode}
+            isReadMode={READ_OPTIONS[selectedReadOption ?? '📖 전체']}
             selectedCategory={selectedCategoryId}
             onClickBookmarkItemInEdit={onClickBookmarkItemInEdit}
           />
