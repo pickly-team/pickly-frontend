@@ -21,10 +21,10 @@ const BookmarkLikeItem = ({
       <ItemWrapper>
         <LinkWrapper to={`/bookmark/${bookmarkId}`}>
           <ItemUpperLeft>
-            <EllipsisText fontSize={1.2} weight="bold">
+            <EllipsisText fontSize={1.1} weight="bold">
               {title}
             </EllipsisText>
-            <EllipsisText fontSize={1} color="grey400">
+            <EllipsisText fontSize={0.8} color="grey400">
               {url}
             </EllipsisText>
           </ItemUpperLeft>
@@ -66,7 +66,7 @@ const ItemUpperLeft = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  row-gap: 1rem;
+  row-gap: 0.8rem;
 `;
 
 const EllipsisText = styled(Text.Span)`
