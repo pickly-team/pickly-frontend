@@ -6,7 +6,6 @@ import styled from '@emotion/styled';
 import { SyntheticEvent, useState } from 'react';
 import { BookmarkItem } from '../../api/bookmark';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
 import {
   TbMessageCircle2Filled as MessageFillIcon,
   TbMessageCircle2 as MessageIcon,
@@ -55,7 +54,7 @@ const BookmarkEditItem = ({
             <ItemUpperRight>
               <Thumbnail
                 src={previewImageUrl}
-                effect="blur"
+                effect="opacity"
                 onError={onImageError}
               />
             </ItemUpperRight>
