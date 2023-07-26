@@ -25,6 +25,7 @@ import ApiErrorBoundary from './common-ui/Error/ApiErrorBoundary';
 import FriendSearchPage from './pages/FriendSearchPage';
 import RNListener from './RNListener';
 import BlockUserListPage from './pages/BlockUserListPage';
+import IntroducePage from './pages/IntroducePage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +50,10 @@ const App = () => {
           <ApiErrorBoundary>
             <Layout>
               <Routes>
+                <Route
+                  path={navigatePath.INTRODUCE}
+                  element={<IntroducePage />}
+                />
                 <Route path={navigatePath.MAIN} element={<MainPage />} />
                 <Route
                   path={navigatePath.BOOKMARK_DETAIL}

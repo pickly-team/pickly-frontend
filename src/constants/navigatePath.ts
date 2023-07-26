@@ -18,6 +18,7 @@ const navigatePath = {
   BOOKMARK_REPORT: '/bookmark/:id/report',
   COMMENT: '/comment',
   LIKE_PAGE: '/likes',
+  INTRODUCE: '/introduce',
 } as const;
 
 type NavigatePath = (typeof navigatePath)[keyof typeof navigatePath];
