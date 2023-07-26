@@ -1,7 +1,7 @@
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 
-type Size = 's' | 'l';
+type Size = 's' | 'm' | 'l';
 type Margin = 'on' | 'off';
 type TypeStyle = {
   height: number;
@@ -16,10 +16,12 @@ type StatusStyle = {
 const dividerTypeMap: StatusStyle = {
   on: {
     s: { height: 1, margin: 20 },
+    m: { height: 3, margin: 20 },
     l: { height: 10, margin: 20 },
   },
   off: {
     s: { height: 1, margin: 0 },
+    m: { height: 3, margin: 0 },
     l: { height: 10, margin: 0 },
   },
 };
