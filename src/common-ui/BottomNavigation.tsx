@@ -84,7 +84,7 @@ const BottomNavigation = () => {
         state: { fromPath: location.pathname },
       });
     }
-  }, []);
+  }, [routerLocation?.isCategoryAddPage]);
 
   const { memberId } = useAuthStore();
   const { mutate: postBookmark } = usePOSTBookmarkMutation({
@@ -101,7 +101,7 @@ const BottomNavigation = () => {
 
   const onClickSubmitButton = () => {
     postBookmark({
-      url: checkValidateURL(url) ? url : '',
+      url: checkValidateURL(url) ? checkValidateURL(url) : '',
       title,
       categoryId: Number(selectedCategoryId),
       visibility: selectedPublishScoped,
