@@ -7,6 +7,7 @@ import FriendFollowingItem from '@/friend/ui/friend/FriendFollowingItem';
 import SettingsBox from '@/members/ui/SettingsBox';
 import useAuthStore from '@/store/auth';
 import getRem from '@/utils/getRem';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,7 +17,7 @@ const IntroducePage = () => {
   const navigate = useNavigate();
   const onClickConfirm = () => {
     if (showIntroduce) {
-      navigate(navigatePath.MAIN);
+      navigate(navigatePath.PROFILE);
       setShowIntroduce(false);
     }
     if (!showIntroduce) navigate(-1);
@@ -42,7 +43,7 @@ const IntroducePage = () => {
         previewImageUrl="/image/"
         readByUser={false}
         title="피클리는 이런 서비스에요"
-        url="https://www.naver.com"
+        url="https://velog.io"
         disabled
       />
       <DividerWrapper paddingSize="s">
@@ -68,7 +69,11 @@ const IntroducePage = () => {
         </SubTitle>
         <Description>친구들과 북마크를 공유해 보세요!</Description>
       </BoxWrapper>
-      <PaddingWrapper>
+      <PaddingWrapper
+        css={css`
+          margin-bottom: 10rem;
+        `}
+      >
         <FriendFollowingItem
           id={1}
           name="피클리"
