@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom';
 import getRem from '@/utils/getRem';
 import type { BookmarkItem } from '../../api/bookmark';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
 import { SyntheticEvent } from 'react';
 import {
   TbMessageCircle2Filled as MessageFillIcon,
@@ -49,7 +48,7 @@ const BookmarkItem = ({
         <ItemUpperRight>
           <Thumbnail
             src={previewImageUrl}
-            effect="blur"
+            effect="opacity"
             onError={onImageError}
           />
         </ItemUpperRight>

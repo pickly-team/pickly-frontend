@@ -25,7 +25,6 @@ import useCategoryList from '../service/hooks/add/useCategoryList';
 import checkValidateURL from '@/utils/checkValidateURL';
 import useAuthStore from '@/store/auth';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
 
 interface BookMarkArticleProps {
   editBookmarkBS: boolean;
@@ -145,7 +144,7 @@ const BookMarkArticle = ({
       <BookMarkImage
         src={bookmarkDetail?.previewImageUrl ?? ''}
         onError={onErrorImage}
-        effect="blur"
+        effect="opacity"
         width={'100%'}
       />
       <Container>
