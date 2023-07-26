@@ -773,7 +773,7 @@ export const usePOSTBookmarkReportMutation = ({
     },
     onError: (e: AxiosError) => {
       const errorCode = e.response?.status;
-      if (errorCode && errorCode === 500) {
+      if (errorCode && errorCode === 409) {
         toast.fireToast({
           message: '이미 신고한 북마크에요',
           mode: 'DELETE',
