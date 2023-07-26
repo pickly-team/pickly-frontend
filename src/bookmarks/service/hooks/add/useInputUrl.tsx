@@ -60,7 +60,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   };
 
   return {
-    url: checkValidateURL(url) ? checkValidateURL(url) : '',
+    url: url,
     title,
     onChangeUrl,
     onChangeTitle,
