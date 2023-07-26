@@ -9,18 +9,21 @@ interface FriendItemLayoutProps {
   name: ReactNode;
   button: ReactNode;
   id: number;
+  disabled?: boolean;
 }
 const FriendItemLayout = ({
   emoji,
   name,
   button,
   id,
+  disabled = false,
 }: FriendItemLayoutProps) => {
   const navigate = useNavigate();
 
   return (
     <Container
       onClick={() =>
+        !disabled &&
         navigate(navigatePath.FRIEND_BOOKMARK.replace(':id', String(id)))
       }
     >
