@@ -22,11 +22,7 @@ const BookmarkLikeButton = ({
       }}
       disabled={!isMyPost}
     >
-      {isLike ? (
-        <Icon name="heart-fill-green" size="m" />
-      ) : (
-        <Icon name="heart-blank-green" size="m" />
-      )}
+      <Icon name={isLike ? 'like-green' : 'like'} size="s" />
     </LikeButton>
   );
 };
@@ -38,7 +34,7 @@ interface LikeButtonProps {
 }
 
 const LikeButton = styled.button<LikeButtonProps>`
-  width: ${getRem(40)};
+  width: ${getRem(30)};
   height: 100%;
   &:active {
     opacity: ${({ disabled }) => (disabled ? 1 : 0.5)};
