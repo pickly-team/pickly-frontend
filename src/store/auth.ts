@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
 export interface UserInfo {
   id: number;
@@ -18,10 +18,12 @@ interface Auth {
   userInfo: UserInfo;
   setUserInfo: (fn: (userInfo: UserInfo) => UserInfo) => void;
   login: ({ token, memberId }: { token: string; memberId: number }) => void;
+  showIntroduce: boolean;
+  setShowIntroduce: (showIntroduce: boolean) => void;
 }
 
 const useAuthStore = create<Auth>()(
-  devtools(
+  persist(
     (set) => ({
       isLogin: false,
       token: '',
@@ -39,6 +41,10 @@ const useAuthStore = create<Auth>()(
         set((state) => ({ userInfo: fn(state.userInfo) })),
       login: ({ token, memberId }) => {
         set({ isLogin: true, token, memberId });
+      },
+      showIntroduce: true,
+      setShowIntroduce: (showIntroduce) => {
+        set({ showIntroduce });
       },
     }),
     { name: 'auth' },
