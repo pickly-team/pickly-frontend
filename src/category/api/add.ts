@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { GET_CATEGORY_LIST } from './category';
 import useBookmarkStore from '@/store/bookmark';
 import { navigatePath } from '@/constants/navigatePath';
+import { bookmarkAddPagePaths } from '@/pages/CategoryManagePage';
 
 interface CategoryItem {
   name: string;
@@ -51,7 +52,7 @@ export const usePOSTCategoryMutation = ({ memberId }: POSTCategoryMutation) => {
         });
         return;
       }
-      if (fromPath.includes('bookmark')) {
+      if (bookmarkAddPagePaths.some((path) => path.includes(fromPath))) {
         router(fromPath, {
           state: {
             isCategoryAddPage: true,

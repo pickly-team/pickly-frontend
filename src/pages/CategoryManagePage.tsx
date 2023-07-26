@@ -23,7 +23,7 @@ interface CategoryManagePageProps {
   mode: 'ADD' | 'EDIT';
 }
 
-const bookmarkAddPagePaths = [
+export const bookmarkAddPagePaths = [
   '',
   '/friend',
   '/notification',
