@@ -25,6 +25,9 @@ const BasicInfoBox = () => {
   const onClickUserBlock = () => {
     router(navigatePath.BLOCK_USER);
   };
+  const onClickHelp = () => {
+    router(navigatePath.INTRODUCE);
+  };
 
   const { setSelectedType } = useFriendStore();
 
@@ -50,6 +53,9 @@ const BasicInfoBox = () => {
                 </TriggerBottomSheet.Item>
                 <TriggerBottomSheet.Item onClick={onClickUserBlock}>
                   차단한 사용자
+                </TriggerBottomSheet.Item>
+                <TriggerBottomSheet.Item onClick={onClickHelp}>
+                  도움말 다시 보기
                 </TriggerBottomSheet.Item>
               </TriggerBottomSheet.BottomSheet>
             </TriggerBottomSheet>
