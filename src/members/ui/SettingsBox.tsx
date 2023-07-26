@@ -12,9 +12,13 @@ import useToast from '@/common-ui/Toast/hooks/useToast';
 
 interface SettingsBoxProps {
   serverRemindInDays: number;
+  disabled?: boolean;
 }
 
-const SettingsBox = ({ serverRemindInDays }: SettingsBoxProps) => {
+const SettingsBox = ({
+  serverRemindInDays,
+  disabled = false,
+}: SettingsBoxProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [remindInDays, setRemindInDays] = useState(3);
 
@@ -29,6 +33,7 @@ const SettingsBox = ({ serverRemindInDays }: SettingsBoxProps) => {
   const { fireToast } = useToast();
 
   const toggleIsEditing = () => {
+    if (disabled) return;
     if (isEditing) {
       if (remindInDays === serverRemindInDays) {
         setIsEditing(!isEditing);

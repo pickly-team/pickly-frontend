@@ -22,6 +22,7 @@ const BookmarkItem = ({
   readByUser,
   title,
   url,
+  disabled = false,
 }: BookmarkItem) => {
   const onImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/images/main.png';
@@ -29,7 +30,13 @@ const BookmarkItem = ({
   };
 
   return (
-    <LinkWrapper to={`/bookmark/${bookmarkId}`}>
+    <LinkWrapper
+      to={`/bookmark/${bookmarkId}`}
+      onClick={(e) => {
+        if (disabled) e.preventDefault();
+      }}
+      disabled={disabled}
+    >
       <ItemWrapper>
         <ItemUpperLeft>
           <EllipsisText fontSize={1.1} weight="bold">
@@ -69,11 +76,20 @@ const BookmarkItem = ({
 
 export default BookmarkItem;
 
-const LinkWrapper = styled(NavLink)`
+interface LinkWrapperProps {
+  disabled?: boolean;
+}
+
+const LinkWrapper = styled(NavLink)<LinkWrapperProps>`
   display: block;
   padding: ${getRem(10, 20)};
   margin-bottom: 1rem;
   transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+  border: ${(props) =>
+    props.disabled ? `1px solid ${theme.colors.grey800}` : 'none'};
+
+  border-radius: 0.5rem;
 
   &:active {
     background-color: ${theme.colors.grey800};
