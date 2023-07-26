@@ -304,13 +304,21 @@ interface POSTBookmarkRequest {
   visibility: Visibility;
 }
 
-const postBookmark = async (data: POSTBookmarkRequest) => {
-  await client.post('/bookmarks', data);
+interface POSTBookmarkResponse {
+  id: number;
+}
+
+const postBookmark = async (params: POSTBookmarkRequest) => {
+  const { data } = await client<POSTBookmarkResponse>({
+    method: 'post',
+    url: '/bookmarks',
+    data: params,
+  });
+  return data;
 };
 
 interface POSTBookmarkMutation {
   memberId: number;
-  categoryId: number;
   resetAll: {
     resetAllInputs: () => void;
     resetCategory: () => void;
@@ -320,21 +328,20 @@ interface POSTBookmarkMutation {
 
 export const usePOSTBookmarkMutation = ({
   memberId,
-  categoryId,
   resetAll,
 }: POSTBookmarkMutation) => {
   const queryClient = useQueryClient();
   const { fireToast } = useToast();
   return useMutation(postBookmark, {
-    onSuccess: () => {
+    onSuccess: (res) => {
       resetAll.resetAllInputs();
       resetAll.resetCategory();
       resetAll.resetVisibility();
-      queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, false, 0));
-      queryClient.refetchQueries(
-        GET_BOOKMARK_LIST(memberId, false, categoryId),
-      );
-      queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, true, categoryId));
+      refetchAllBookmarkQuery({
+        queryClient,
+        memberId,
+        bookmarkId: res.id.toString(),
+      });
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
     },
     onError: () => {

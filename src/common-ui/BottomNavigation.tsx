@@ -97,7 +97,6 @@ const BottomNavigation = () => {
       resetVisibility: () => onClickPublishScoped('SCOPE_PUBLIC'),
     },
     memberId,
-    categoryId: Number(selectedCategoryId),
   });
 
   const onClickSubmitButton = () => {
