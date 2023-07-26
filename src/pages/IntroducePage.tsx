@@ -5,22 +5,15 @@ import Text from '@/common-ui/Text';
 import { navigatePath } from '@/constants/navigatePath';
 import FriendFollowingItem from '@/friend/ui/friend/FriendFollowingItem';
 import SettingsBox from '@/members/ui/SettingsBox';
-import useAuthStore from '@/store/auth';
 import getRem from '@/utils/getRem';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
 const IntroducePage = () => {
-  const { showIntroduce, setShowIntroduce } = useAuthStore();
-
   const navigate = useNavigate();
   const onClickConfirm = () => {
-    if (showIntroduce) {
-      navigate(navigatePath.PROFILE);
-      setShowIntroduce(false);
-    }
-    if (!showIntroduce) navigate(-1);
+    navigate(navigatePath.PROFILE);
   };
 
   return (
