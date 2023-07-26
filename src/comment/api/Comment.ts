@@ -210,23 +210,14 @@ interface POSTCommentReportRequest {
   content: string;
 }
 
-// const postCommentReportAPI = async (params: POSTCommentReportRequest) => {
-//   const { data } = await client({
-//     method: 'post',
-//     url: '/reports/comments',
-//     data: params,
-//   });
-
-//   return data;
-// };
-
-const dummyCommentReportAPI = async (params: POSTCommentReportRequest) => {
-  console.log(params);
-  return new Promise((resolve) => {
-    resolve({
-      data: true,
-    });
+const postCommentReportAPI = async (params: POSTCommentReportRequest) => {
+  const { data } = await client({
+    method: 'post',
+    url: '/reports/comments',
+    data: params,
   });
+
+  return data;
 };
 
 export interface POSTBookmarkReportMutation {
@@ -236,7 +227,7 @@ export interface POSTBookmarkReportMutation {
 export const usePOSTReportCommentQuery = () => {
   const toast = useToast();
   const router = useNavigate();
-  return useMutation(dummyCommentReportAPI, {
+  return useMutation(postCommentReportAPI, {
     onSuccess: () => {
       toast.fireToast({
         message: '신고 되었습니다',
@@ -246,7 +237,7 @@ export const usePOSTReportCommentQuery = () => {
     },
     onError: (e: AxiosError) => {
       const errorCode = e.response?.status;
-      if (errorCode && errorCode === 500) {
+      if (errorCode && errorCode === 409) {
         toast.fireToast({
           message: '이미 신고한 북마크에요',
           mode: 'DELETE',
