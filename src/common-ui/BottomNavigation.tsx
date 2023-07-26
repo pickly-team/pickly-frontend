@@ -101,7 +101,7 @@ const BottomNavigation = () => {
 
   const onClickSubmitButton = () => {
     postBookmark({
-      url,
+      url: checkValidateURL(url) ? url : '',
       title,
       categoryId: Number(selectedCategoryId),
       visibility: selectedPublishScoped,
