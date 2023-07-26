@@ -25,6 +25,7 @@ const FriendFollowingItem = ({
       name={name}
       emoji={profileEmoji && profileEmoji}
       id={id}
+      disabled={disabled}
       button={
         isFollowing ? (
           <UnFollowButton
