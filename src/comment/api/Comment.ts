@@ -1,7 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import client from '@/common/service/client';
 import { navigatePath } from '../../constants/navigatePath';
-import { GET_BOOKMARK_COMMENT } from '@/bookmarks/api/bookmark';
+import {
+  GET_BOOKMARK_COMMENT,
+  refetchAllBookmarkQuery,
+} from '@/bookmarks/api/bookmark';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
@@ -100,6 +103,7 @@ export const usePOSTCommentQuery = ({
           memberId,
         }),
       );
+      refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
       initComment();
     },
   });
