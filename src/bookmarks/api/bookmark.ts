@@ -58,6 +58,7 @@ export interface BookmarkItem {
   readByUser: boolean;
   commentCnt: number;
   createdDate: string;
+  disabled?: boolean;
 }
 
 /** mapping 결과 */
