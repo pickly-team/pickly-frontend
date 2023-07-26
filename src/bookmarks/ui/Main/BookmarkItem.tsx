@@ -8,6 +8,10 @@ import type { BookmarkItem } from '../../api/bookmark';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { SyntheticEvent } from 'react';
+import {
+  TbMessageCircle2Filled as MessageFillIcon,
+  TbMessageCircle2 as MessageIcon,
+} from 'react-icons/tb';
 
 const BookmarkItem = ({
   bookmarkId,
@@ -28,10 +32,10 @@ const BookmarkItem = ({
     <LinkWrapper to={`/bookmark/${bookmarkId}`}>
       <ItemWrapper>
         <ItemUpperLeft>
-          <EllipsisText fontSize={1.2} weight="bold">
+          <EllipsisText fontSize={1.1} weight="bold">
             {title}
           </EllipsisText>
-          <EllipsisText fontSize={1} color="lightPrimary">
+          <EllipsisText fontSize={0.9} color="lightPrimary">
             {url}
           </EllipsisText>
         </ItemUpperLeft>
@@ -46,7 +50,13 @@ const BookmarkItem = ({
       <UnderWrapper>
         <IconWrapper>
           <Icon name={isUserLike ? 'like-green' : 'like'} size="xs" />
-          <Icon name={commentCnt ? 'message-on-green' : 'message'} size="xs" />
+          {commentCnt > 0 && (
+            <MessageFillIcon color={theme.colors.lightPrimary} size={16} />
+          )}
+          {commentCnt === 0 && (
+            <MessageIcon color={theme.colors.white} size={16} />
+          )}
+
           {!readByUser && <Icon name="not-read" size="xs" />}
         </IconWrapper>
         <Text.Span fontSize={0.9} color="lightPrimary">
@@ -113,4 +123,5 @@ const Thumbnail = styled(LazyLoadImage)`
   border-radius: 0.5rem;
   margin-left: 1rem;
   object-fit: contain;
+  background-color: ${theme.colors.grey800};
 `;
