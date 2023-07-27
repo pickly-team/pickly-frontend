@@ -269,7 +269,7 @@ interface GetBookmarkTitleRequest {
   setTitle?: (title: string) => void;
 }
 
-const getBookmarkTitleAPI = async ({ 
+const getBookmarkTitleAPI = async ({
   memberId,
   url,
 }: GetBookmarkTitleRequest) => {
