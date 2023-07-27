@@ -264,15 +264,19 @@ export const useGETCategoryListQuery = ({
 type GETBookmarkTitleResponse = string;
 
 interface GetBookmarkTitleRequest {
+  memberId: number;
   url: string;
   setTitle?: (title: string) => void;
 }
 
-const getBookmarkTitleAPI = async ({ url }: GetBookmarkTitleRequest) => {
+const getBookmarkTitleAPI = async ({ 
+  memberId,
+  url 
+}: GetBookmarkTitleRequest) => {
   const { data } = await client<GETBookmarkTitleResponse>({
     method: 'get',
-    url: '/bookmark/title',
-    params: { url },
+    url: `/members/${memberId}/bookmark/title`,
+    params: { memberId, url },
     data: {},
   });
   return data;
@@ -281,11 +285,12 @@ const getBookmarkTitleAPI = async ({ url }: GetBookmarkTitleRequest) => {
 const GET_BOOKMARK_TITLE = (url: string) => ['GET_BOOKMARK_TITLE', url];
 
 export const useGETBookmarkTitleQuery = ({
+  memberId,
   url,
   setTitle,
 }: GetBookmarkTitleRequest) => {
   const { fireToast } = useToast();
-  return useQuery(GET_BOOKMARK_TITLE(url), () => getBookmarkTitleAPI({ url }), {
+  return useQuery(GET_BOOKMARK_TITLE(url), () => getBookmarkTitleAPI({ memberId, url }), {
     enabled: !!url,
     retry: 0,
     onSuccess: (data) => {
