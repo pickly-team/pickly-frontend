@@ -271,7 +271,7 @@ interface GetBookmarkTitleRequest {
 
 const getBookmarkTitleAPI = async ({ 
   memberId,
-  url 
+  url,
 }: GetBookmarkTitleRequest) => {
   const { data } = await client<GETBookmarkTitleResponse>({
     method: 'get',
@@ -290,16 +290,20 @@ export const useGETBookmarkTitleQuery = ({
   setTitle,
 }: GetBookmarkTitleRequest) => {
   const { fireToast } = useToast();
-  return useQuery(GET_BOOKMARK_TITLE(url), () => getBookmarkTitleAPI({ memberId, url }), {
-    enabled: !!url,
-    retry: 0,
-    onSuccess: (data) => {
-      setTitle && setTitle(data);
+  return useQuery(
+    GET_BOOKMARK_TITLE(url),
+    () => getBookmarkTitleAPI({ memberId, url }),
+    {
+      enabled: !!url,
+      retry: 0,
+      onSuccess: (data) => {
+        setTitle && setTitle(data);
+      },
+      onError: () => {
+        fireToast({ message: '앗! 유효하지 않은 주소에요', mode: 'DELETE' });
+      },
     },
-    onError: () => {
-      fireToast({ message: '앗! 유효하지 않은 주소에요', mode: 'DELETE' });
-    },
-  });
+  );
 };
 
 interface POSTBookmarkRequest {
