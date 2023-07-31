@@ -686,12 +686,16 @@ export const refetchAllBookmarkQuery = ({
     },
   );
   queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, true, 0));
+  queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, false, 0));
   queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, null, 0));
   queryClient.refetchQueries(
     GET_BOOKMARK_LIST(memberId, false, categoryId ?? 0),
   );
   queryClient.refetchQueries(
     GET_BOOKMARK_LIST(memberId, true, categoryId ?? 0),
+  );
+  queryClient.refetchQueries(
+    GET_BOOKMARK_LIST(memberId, null, categoryId ?? 0),
   );
 };
 
