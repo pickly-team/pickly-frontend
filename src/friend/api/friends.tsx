@@ -6,7 +6,6 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import client from '@/common/service/client';
-import useToast from '@/common-ui/Toast/hooks/useToast';
 import useSearchStore from '@/store/search';
 import { GET_FRIEND_PROFILE } from '@/members/api/member';
 import { GET_USER_PROFILE } from '@/auth/api/profile';
@@ -169,15 +168,10 @@ export interface POSTFollowQueryRequest {
 export const usePOSTFollowUserQuery = ({
   memberId,
 }: POSTFollowQueryRequest) => {
-  const { fireToast } = useToast();
   const queryClient = useQueryClient();
   const { keyword, selectedMemberId } = useSearchStore();
   return useMutation(postFollowUserAPI, {
     onSuccess: () => {
-      fireToast({
-        message: '팔로잉 중인 친구의 알림만 받을 수 있습니다',
-        mode: 'SUCCESS',
-      });
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
       queryClient.refetchQueries(GET_FOLLOWER_LIST_KEY({ memberId }));
       queryClient.refetchQueries(GET_FOLLOWING_LIST_KEY({ memberId }));
@@ -249,15 +243,10 @@ export interface DELETEUnFollowQueryRequest {
 export const useDELETEUnFollowQuery = ({
   memberId,
 }: DELETEUnFollowQueryRequest) => {
-  const { fireToast } = useToast();
   const queryClient = useQueryClient();
   const { keyword, selectedMemberId } = useSearchStore();
   return useMutation(deleteUnFollowAPI, {
     onSuccess: () => {
-      fireToast({
-        message: '팔로잉 중인 친구의 알림만 받을 수 있습니다',
-        mode: 'SUCCESS',
-      });
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
       queryClient.refetchQueries(GET_FOLLOWER_LIST_KEY({ memberId }));
       queryClient.refetchQueries(GET_FOLLOWING_LIST_KEY({ memberId }));
