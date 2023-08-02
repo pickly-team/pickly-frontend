@@ -45,6 +45,7 @@ export const useGETCommentListQuery = ({ userId }: GETCommentListRequest) => {
     refetchOnWindowFocus: false,
     retry: 0,
     enabled: !!userId,
+    suspense: true,
   });
 };
 
