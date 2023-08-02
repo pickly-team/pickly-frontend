@@ -72,6 +72,7 @@ export const useGETFollowingListQuery = (
         }
         return undefined;
       },
+      suspense: true,
     },
   );
 };
@@ -139,6 +140,7 @@ export const useGETFollowerListQuery = (
         }
         return undefined;
       },
+      suspense: true,
     },
   );
 };
