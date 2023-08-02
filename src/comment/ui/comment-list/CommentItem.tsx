@@ -46,10 +46,10 @@ const CommentItem = ({
           </IconAndTitleWrapper>
         </CommentHeader>
         <IconAndNickNameWrapper>
+          {<Icon name="badge-green" size={'s'} />}
           <NicknameText fontSize={getRem(14)} weight={'bold'}>
             {nickName}
           </NicknameText>
-          {<Icon name="badge-green" size={'s'} />}
         </IconAndNickNameWrapper>
         <ContentText fontSize={getRem(11)}>{content}</ContentText>
         <IconAndTimeAndCategoryWrapper>
