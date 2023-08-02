@@ -24,6 +24,7 @@ import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 import useFriendStore from '@/store/friend';
 import useBookmarkStore from '@/store/bookmark';
+import SkeletonBookmarkUserInfo from '@/bookmarks/ui/SkeletonBookmarkUserInfo';
 
 const FriendBookmarkPage = () => {
   // FIRST RENDER
@@ -39,10 +40,11 @@ const FriendBookmarkPage = () => {
 
   // SERVER
   // 1. 친구 프로필 조회
-  const { data: profileInfo } = useGETFriendProfileQuery({
-    loginId: memberId,
-    memberId: Number(friendId),
-  });
+  const { data: profileInfo, isLoading: profileLoading } =
+    useGETFriendProfileQuery({
+      loginId: memberId,
+      memberId: Number(friendId),
+    });
 
   // USER INTERACTION
   // 뒤로가기
@@ -97,16 +99,29 @@ const FriendBookmarkPage = () => {
         }
       />
       <LTop>
-        <BookmarkUserInfo
-          userEmoji={profileInfo?.profileEmoji ?? ''}
-          userName={profileInfo?.nickname ?? ''}
-          isFriendPage={{
-            isFollowing: profileInfo?.isFollowing ?? false,
-            friendId: Number(friendId),
-            memberId,
-            isBlocked: profileInfo?.isBlocked ?? false,
-          }}
-        />
+        {profileLoading ? (
+          <SkeletonWrapper>
+            <SkeletonBookmarkUserInfo
+              isFriendPage={{
+                isFollowing: false,
+                friendId: Number(friendId),
+                memberId,
+                isBlocked: false,
+              }}
+            />
+          </SkeletonWrapper>
+        ) : (
+          <BookmarkUserInfo
+            userEmoji={profileInfo?.profileEmoji ?? ''}
+            userName={profileInfo?.nickname ?? ''}
+            isFriendPage={{
+              isFollowing: profileInfo?.isFollowing ?? false,
+              friendId: Number(friendId),
+              memberId,
+              isBlocked: profileInfo?.isBlocked ?? false,
+            }}
+          />
+        )}
       </LTop>
       <BookmarkToggle isFriendPage>
         <BookmarkToggle.SelectCategory
