@@ -24,6 +24,9 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
   // x 시작점
   const [startX, setStartX] = useState(0);
 
+  // y 시작점
+  const [startY, setStartY] = useState(0);
+
   // x 움직인 거리
   const [moveX, setMoveX] = useState(0);
 
@@ -32,6 +35,7 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
 
   // 왼쪽으로 최대로 이동할 수 있는 거리
   const maxLeftPositionX = optionWrapperWidth;
+  const someThreshold = 5; // y축의 최대 허용 움직임, 필요에 따라 조정
 
   useEffect(() => {
     initializeItemsStyle();
@@ -46,27 +50,44 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
     }
   };
 
-  const updateStartPositionX = (currentTargetX: number) => {
+  const updateStartPosition = (
+    currentTargetX: number,
+    currentTargetY: number,
+  ) => {
     const rect = wrapperRef.current?.getBoundingClientRect();
     if (!rect) {
       return;
     }
 
-    const startX = currentTargetX - rect.left;
-
-    setStartX(startX);
-    setIsSlideEventStart(true);
+    setStartX(currentTargetX - rect.left);
+    setStartY(currentTargetY - rect.top);
+    setIsSlideEventStart(false); // 초기 상태를 false로 설정
   };
 
-  const updateMovedPositionX = (currentTargetX: number) => {
+  const updateMovedPosition = (
+    currentTargetX: number,
+    currentTargetY: number,
+  ) => {
     const rect = wrapperRef.current?.getBoundingClientRect();
     if (!rect) {
       return;
     }
-    const moveX = currentTargetX - rect.left - startX;
-    setMoveX(moveX);
 
-    if (isSlideEventStart && isMoveToLeft(moveX)) {
+    const xDifference = currentTargetX - rect.left - startX;
+    const yDifference = currentTargetY - rect.top - startY;
+
+    // 수직 움직임이 특정 임계치를 초과하면 슬라이드 이벤트를 시작하지 않음
+    if (Math.abs(yDifference) > someThreshold) {
+      return;
+    }
+
+    if (Math.abs(xDifference) > Math.abs(yDifference) && !isSlideEventStart) {
+      setIsSlideEventStart(true);
+    }
+
+    setMoveX(xDifference);
+
+    if (isSlideEventStart && isMoveToLeft(xDifference)) {
       handleLeftMovedPositionX();
     }
   };
@@ -107,16 +128,16 @@ const SlideItem = ({ main, option, ...restProps }: SlideItemProps) => {
     <SlideWrapper
       ref={wrapperRef}
       onMouseDown={(event) => {
-        updateStartPositionX(event.clientX);
+        updateStartPosition(event.clientX, event.clientY);
       }}
       onTouchStart={(event) => {
-        updateStartPositionX(event.touches[0].clientX);
+        updateStartPosition(event.touches[0].clientX, event.touches[0].clientY);
       }}
       onMouseMove={(event) => {
-        updateMovedPositionX(event.clientX);
+        updateMovedPosition(event.clientX, event.clientY);
       }}
       onTouchMove={(event) => {
-        updateMovedPositionX(event.touches[0].clientX);
+        updateMovedPosition(event.touches[0].clientX, event.touches[0].clientY);
       }}
       onMouseUp={moveToSlideDirection}
       onTouchEnd={moveToSlideDirection}
