@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import Text from '../Text';
 import Button from '../Button';
 import { theme } from '@/styles/theme';
-import Header from '../Header/Header';
 import { ActivityComponentType } from '@stackflow/react';
 
 const NetworkError: ActivityComponentType = () => {
@@ -13,7 +12,7 @@ const NetworkError: ActivityComponentType = () => {
   };
   return (
     <>
-      <Header showBackButton backButtonCallback={reload} />
+      {/* <Header showBackButton backButtonCallback={reload} /> */}
       <Wrapper>
         <ErrorImage src="/images/network-error.png" />
         <ErrorText>{'앗! 네트워크에 문제가\n 있는거 같아요'}</ErrorText>

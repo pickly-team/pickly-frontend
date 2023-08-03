@@ -5,6 +5,7 @@ import { theme } from '@/styles/theme';
 import { ReactNode } from 'react';
 import getRem from '@/utils/getRem';
 import { HEADER_Z_INDEX } from '@/constants/zIndex';
+import { useFlow } from '../stackflow';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -19,15 +20,16 @@ const Header = ({
   rightButton,
   backButtonCallback,
 }: HeaderProps) => {
+  const { pop } = useFlow();
   const onClickBackButton = () => {
-    window.history.back();
+    pop();
     backButtonCallback && backButtonCallback();
   };
   return (
     <HeaderContainer>
       <BackButtonAndTitleWrapper>
         {showBackButton && (
-          <button type="button" onClick={onClickBackButton}>
+          <button type="button" onClick={() => onClickBackButton()}>
             <Icon name="back" size={'m'} />
           </button>
         )}
