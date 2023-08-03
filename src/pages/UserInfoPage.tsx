@@ -74,7 +74,7 @@ const UserInfoPage: ActivityComponentType<UserCreatePageProps> = ({
   };
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <UserProfileInfo
         emoji={emoji}
         name={name}

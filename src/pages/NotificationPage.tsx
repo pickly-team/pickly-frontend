@@ -9,7 +9,7 @@ import Layout from '@/common-ui/Layout';
 
 const NotificationPage: ActivityComponentType = () => {
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Layout>
         <Header title={'🔔 알림 왔어요!'} />
         <Suspense

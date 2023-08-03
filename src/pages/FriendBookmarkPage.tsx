@@ -81,7 +81,7 @@ const FriendBookmarkPage: ActivityComponentType<FriendBookmarkPageProps> = ({
     useReadList();
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Header
         showBackButton
         backButtonCallback={onClickBack}

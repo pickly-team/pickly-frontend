@@ -14,7 +14,7 @@ const LikePage: ActivityComponentType = () => {
   const title = '좋아요 목록';
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Layout>
         <Header title={title} showBackButton={showBackButton} />
         <LBody>

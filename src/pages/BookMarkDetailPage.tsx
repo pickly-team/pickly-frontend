@@ -12,17 +12,16 @@ import SkeletonCommentList from '@/comment/ui/bookmark/SkeletonCommentList';
 import Header from '@/common-ui/Header/Header';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
-import { ActivityComponentType, useActivity } from '@stackflow/react';
+import { ActivityComponentType } from '@stackflow/react';
 import { AppScreen } from '@stackflow/plugin-basic-ui';
 
 interface BookMarkDetailPageProps {
   bookmarkId: string;
 }
 
-const BookMarkDetailPage: ActivityComponentType<
-  BookMarkDetailPageProps
-> = () => {
-  const { params } = useActivity();
+const BookMarkDetailPage: ActivityComponentType<BookMarkDetailPageProps> = ({
+  params: { bookmarkId },
+}) => {
   const {
     deleteBookmarkBS,
     editBookmarkBS,
@@ -34,10 +33,10 @@ const BookMarkDetailPage: ActivityComponentType<
     onClickEditBookmark,
     openDeleteBookmarkBS,
     onClickReportBookmark,
-  } = useHandleBookmarkDetailMore({ id: params.bookmarkId ?? '' });
+  } = useHandleBookmarkDetailMore({ id: bookmarkId });
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Header
         rightButton={
           <TriggerBottomSheet>
@@ -94,7 +93,7 @@ const BookMarkDetailPage: ActivityComponentType<
       </Body>
       {/** 댓글 입력 영역 */}
       <CommentUploadInputBottomBar>
-        <CommentUploadInput bookmarkId={params.bookmarkId ?? ''} />
+        <CommentUploadInput bookmarkId={bookmarkId} />
       </CommentUploadInputBottomBar>
       {/** 북마크 삭제 BS */}
       <BSConfirmation

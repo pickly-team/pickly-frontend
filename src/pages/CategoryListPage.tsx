@@ -54,7 +54,7 @@ const CategoryListPage: ActivityComponentType = () => {
   });
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Header
         showBackButton
         title="카테고리 목록"

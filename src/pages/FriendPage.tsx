@@ -12,7 +12,7 @@ import Layout from '@/common-ui/Layout';
 const FriendPage: ActivityComponentType = () => {
   const { push } = useFlow();
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Layout>
         <Header
           title={'친구 목록'}

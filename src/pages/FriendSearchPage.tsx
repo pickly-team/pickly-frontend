@@ -15,7 +15,7 @@ const FriendSearchPage: ActivityComponentType = () => {
     useSearchUser();
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Header
         title="친구 찾기"
         showBackButton={true}

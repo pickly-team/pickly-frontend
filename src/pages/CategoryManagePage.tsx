@@ -125,7 +125,7 @@ const CategoryManagePage: ActivityComponentType<CategoryManagePageProps> = ({
   const isAllCategoryInfoFilled = !!(emoji.length && categoryName.length);
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Wrapper>
         <HeaderLeftAndRight
           leftButton={{ type: 'back', onClick: onClickBack }}

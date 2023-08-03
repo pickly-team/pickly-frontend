@@ -12,7 +12,7 @@ const FaqPage: ActivityComponentType = () => {
   const title = 'FAQ';
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Layout>
         <LTop>
           <Header title={title} showBackButton={showBackButton} />

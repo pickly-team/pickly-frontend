@@ -59,7 +59,7 @@ const ReportPage: ActivityComponentType<ReportPageProps> = ({
     reportMode === 'WRITE' ? !reportText.length : !selectedReport.length;
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Header showBackButton />
       <Form onSubmit={onSubmit}>
         <MainText fontSize={getRem(20)} weight="bold" level="h1">

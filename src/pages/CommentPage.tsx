@@ -10,7 +10,7 @@ import { AppScreen } from '@stackflow/plugin-basic-ui';
 
 const CommentPage: ActivityComponentType = () => {
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Header title={'댓글 목록'} showBackButton />
       <Body>
         <Suspense

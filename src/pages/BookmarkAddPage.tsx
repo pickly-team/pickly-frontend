@@ -74,7 +74,7 @@ const BookmarkAddPage: ActivityComponentType = () => {
     close();
   };
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Header showBackButton />
       <Wrapper>
         <BookmarkAddBS.URLInput

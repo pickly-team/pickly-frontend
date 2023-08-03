@@ -45,7 +45,7 @@ const ProfilePage: ActivityComponentType = () => {
   });
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Wrapper>
         {/** 유저 정보 */}
         <BasicInfoBox />

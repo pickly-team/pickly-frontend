@@ -39,7 +39,7 @@ const MainPage: ActivityComponentType = () => {
   } = useDeleteBookmarkList({ categoryId: selectedCategoryId });
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Layout>
         <LTop>
           <BookmarkUserInfo

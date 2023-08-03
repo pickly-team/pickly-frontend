@@ -24,7 +24,7 @@ const IntroducePage: ActivityComponentType = () => {
   };
 
   return (
-    <AppScreen>
+    <AppScreen preventSwipeBack>
       <Title level="h2" fontSize={1.5} weight="bold">
         피클리는 이런 서비스에요
       </Title>
