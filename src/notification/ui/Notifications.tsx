@@ -6,6 +6,7 @@ import {
 } from '@/notification/api/notification';
 import useAuthStore from '@/store/auth';
 import BlankItem from '@/common-ui/BlankItem';
+import styled from '@emotion/styled';
 
 const Notifications = () => {
   // FIRST RENDER
@@ -33,7 +34,7 @@ const Notifications = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       {notificationList?.length === 0 && <BlankItem page="NOTIFICATION" />}
       {notificationList?.map((notification) => (
         <NotificationSlideItem
@@ -51,8 +52,12 @@ const Notifications = () => {
           deleteNotification={() => onClickDeleteNotification(notification.id)}
         />
       ))}
-    </>
+    </Wrapper>
   );
 };
 
 export default Notifications;
+
+const Wrapper = styled.div`
+  padding-bottom: 5rem;
+`;
