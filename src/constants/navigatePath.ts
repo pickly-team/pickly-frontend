@@ -1,26 +1,29 @@
 const navigatePath = {
-  MAIN: '/',
-  FRIEND: '/friend',
-  FRIEND_SEARCH: '/friend/search',
-  FRIEND_DETAIL: '/friend/:id',
-  FRIEND_BOOKMARK: '/friend/:id/bookmark',
-  BLOCK_USER: '/block',
-  NOTIFICATION: '/notification',
-  PROFILE: '/profile',
-  BOOKMARK_DETAIL: '/bookmark/:id',
-  FAQ: '/faq',
-  USER: '/user/:id',
-  USER_EDIT: '/user/:id/edit',
-  CATEGORY_ADD: '/category/add',
-  CATEGORY_EDIT: '/category/edit/:id',
-  CATEGORY_LIST: '/category/list',
-  COMMENT_REPORT: '/comment/:id/report',
-  BOOKMARK_REPORT: '/bookmark/:id/report',
-  COMMENT: '/comment',
-  LIKE_PAGE: '/likes',
-  INTRODUCE: '/introduce',
-} as const;
+  MainPage: '/',
+  FriendPage: '/friend/',
+  FriendSearchPage: '/friend/search',
+  FriendBookmarkPage: '/friend/:id/bookmark',
+  BlockUserListPage: '/block',
+  NotificationPage: '/notification',
+  ProfilePage: '/profile/',
+  BookMarkDetailPage: '/bookmark/:bookmarkId/',
+  FaqPage: '/faq',
+  UserInfoPage: '/user/:id',
+  CategoryManagePage: [
+    '/category/add/',
+    '/category/edit/:id',
+    '/category/list',
+  ],
+  CategoryListPage: '/category/list',
+  ReportPage: ['/bookmark/:id/report', '/comment/:id/report'],
+  CommentPage: '/comment',
+  LikePage: '/likes',
+  IntroducePage: '/introduce',
+  NetworkError: '/error',
+  BookmarkAddPage: '/bookmark/add',
+};
 
 type NavigatePath = (typeof navigatePath)[keyof typeof navigatePath];
+type NavigatePathKey = keyof typeof navigatePath;
 
-export { navigatePath, NavigatePath };
+export { navigatePath, NavigatePathKey, NavigatePath };
