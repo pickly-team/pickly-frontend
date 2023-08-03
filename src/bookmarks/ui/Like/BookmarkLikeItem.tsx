@@ -1,10 +1,10 @@
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
 import BookmarkLikeButton from './BookmarkLikeButton';
 import getRem from '@/utils/getRem';
 import { LikeBookmarkItem } from '../../api/like';
+import { useFlow } from '@/common-ui/stackflow';
 
 type BookmarkLikeItemProps = {
   onClickLikeBtn: (bookmarkId: number) => void;
@@ -16,10 +16,17 @@ const BookmarkLikeItem = ({
   bookmarkId,
   onClickLikeBtn,
 }: BookmarkLikeItemProps) => {
+  const { push } = useFlow();
   return (
     <>
       <ItemWrapper>
-        <LinkWrapper to={`/bookmark/${bookmarkId}`}>
+        <LinkWrapper
+          onClick={() =>
+            push('BookMarkDetailPage', {
+              bookmarkId: String(bookmarkId),
+            })
+          }
+        >
           <ItemUpperLeft>
             <EllipsisText fontSize={1.1} weight="bold">
               {title}
@@ -55,7 +62,7 @@ const ItemWrapper = styled.div`
   }
 `;
 
-const LinkWrapper = styled(Link)`
+const LinkWrapper = styled.div`
   display: flex;
   align-items: center;
   flex: 1 1 0;

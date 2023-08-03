@@ -1,8 +1,8 @@
 import { GET_BOOKMARK_CATEGORY_LIST } from '@/bookmarks/api/bookmark';
 import client from '@/common/service/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { GET_CATEGORY, GET_CATEGORY_LIST } from './category';
+import { useFlow } from '@/common-ui/stackflow';
 
 interface CategoryItem {
   name: string;
@@ -41,14 +41,14 @@ export const usePUTCategoryMutation = ({
 }: PUTCategoryMutation) => {
   const queryClient = useQueryClient();
 
-  const router = useNavigate();
+  const { pop } = useFlow();
 
   return useMutation(PUTCategory.API, {
     onSuccess: async () => {
       await queryClient.refetchQueries(GET_CATEGORY_LIST(memberId));
       await queryClient.refetchQueries(GET_CATEGORY(memberId, categoryId));
       queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
-      router(-1);
+      pop();
     },
   });
 };

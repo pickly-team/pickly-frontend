@@ -8,7 +8,6 @@ import useReadList, {
   READ_OPTIONS,
 } from '@/bookmarks/service/hooks/home/useReadList';
 import getRem from '@/utils/getRem';
-import { useParams } from 'react-router-dom';
 import Header from '@/common-ui/Header/Header';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
@@ -25,11 +24,19 @@ import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 import useFriendStore from '@/store/friend';
 import useBookmarkStore from '@/store/bookmark';
 import SkeletonBookmarkUserInfo from '@/bookmarks/ui/SkeletonBookmarkUserInfo';
+import { ActivityComponentType } from '@stackflow/react';
+import { AppScreen } from '@stackflow/plugin-basic-ui';
 
-const FriendBookmarkPage = () => {
+interface FriendBookmarkPageProps {
+  id: string;
+}
+
+const FriendBookmarkPage: ActivityComponentType<FriendBookmarkPageProps> = ({
+  params: { id: friendId },
+}) => {
   // FIRST RENDER
   const { memberId } = useAuthStore();
-  const { id: friendId } = useParams<{ id: string }>();
+
   const { setReadOption } = useBookmarkStore();
   const { setFriendId } = useFriendStore();
 
@@ -74,7 +81,7 @@ const FriendBookmarkPage = () => {
     useReadList();
 
   return (
-    <>
+    <AppScreen>
       <Header
         showBackButton
         backButtonCallback={onClickBack}
@@ -153,7 +160,7 @@ const FriendBookmarkPage = () => {
           />
         </Suspense>
       </LMiddle>
-    </>
+    </AppScreen>
   );
 };
 

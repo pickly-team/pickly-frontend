@@ -11,7 +11,6 @@ import Icon from '@/common-ui/assets/Icon';
 import { KeyboardEvent, useEffect, useRef } from 'react';
 import IconButton from '@/common/ui/IconButton';
 import useBookmarkStore from '@/store/bookmark';
-import { useLocation } from 'react-router-dom';
 
 interface BookmarkAddBSProps {
   isOpen: boolean;
@@ -20,7 +19,6 @@ interface BookmarkAddBSProps {
 }
 
 const BookmarkAddBS = ({ isOpen, close, children }: BookmarkAddBSProps) => {
-  const location = useLocation();
   const { setFromPath } = useBookmarkStore();
   useEffect(() => {
     setFromPath(location.pathname);
@@ -303,6 +301,6 @@ const StyledInput = styled(Input)`
 `;
 
 const StyledMarginSpanText = styled.div`
-  margin-top: ${getRem(25)};
-  margin-bottom: ${getRem(25)};
+  margin-top: ${getRem(30)};
+  margin-bottom: ${getRem(30)};
 `;

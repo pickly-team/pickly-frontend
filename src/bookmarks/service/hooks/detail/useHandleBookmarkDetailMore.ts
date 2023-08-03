@@ -5,16 +5,19 @@ import {
   useDELETEBookmarkQuery,
 } from '@/bookmarks/api/bookmark';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
-import { navigatePath } from '@/constants/navigatePath';
+import { useFlow } from '@/common-ui/stackflow';
 import useAuthStore from '@/store/auth';
 import useBookmarkStore from '@/store/bookmark';
 import { useQueryClient } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router-dom';
 
-const useHandleBookmarkDetailMore = () => {
-  const router = useNavigate();
+interface HandleBookmarkDetailMore {
+  id: string;
+}
+
+const useHandleBookmarkDetailMore = ({ id }: HandleBookmarkDetailMore) => {
+  const { pop, push } = useFlow();
   const { memberId } = useAuthStore();
-  const { id } = useParams() as { id: string };
+
   const queryClient = useQueryClient();
   const { setTitle, setUrl } = useBookmarkStore();
   // USER INTERACTION
@@ -31,7 +34,7 @@ const useHandleBookmarkDetailMore = () => {
   const onClickDeleteBookmark = () => {
     deleteBookmark({ bookmarkId: Number(id) });
     closeDeleteBookmarkBS();
-    router('/');
+    pop();
   };
   // 2. 뒤로가기
   const onClickBackCallback = () => {
@@ -60,7 +63,7 @@ const useHandleBookmarkDetailMore = () => {
   const writtenId = bookmarkDetail?.memberId ?? 0;
   const isMyBookmark = memberId === writtenId;
   const onClickReportBookmark = () => {
-    router(navigatePath.BOOKMARK_REPORT.replace(':id', id));
+    push('ReportPage', { mode: 'BOOKMARK', id });
   };
 
   return {

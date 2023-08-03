@@ -8,9 +8,11 @@ import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import Header from '@/common-ui/Header/Header';
 import BSConfirmation from '@/common/ui/BSConfirmation';
 import useAuthStore from '@/store/auth';
+import { AppScreen } from '@stackflow/plugin-basic-ui';
+import { ActivityComponentType } from '@stackflow/react';
 import { Suspense, useState } from 'react';
 
-const CategoryListPage = () => {
+const CategoryListPage: ActivityComponentType = () => {
   const { memberId } = useAuthStore();
   const [mode, setMode] = useState<Mode>('NORMAL');
 
@@ -52,7 +54,7 @@ const CategoryListPage = () => {
   });
 
   return (
-    <>
+    <AppScreen>
       <Header
         showBackButton
         title="카테고리 목록"
@@ -75,7 +77,7 @@ const CategoryListPage = () => {
         onClose={close}
         onConfirm={onClickDelete}
       />
-    </>
+    </AppScreen>
   );
 };
 

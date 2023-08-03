@@ -42,7 +42,7 @@ class ApiErrorBoundary extends Component<Props, State> {
     }
 
     if (this.state.error && this.state.error.response) {
-      return <NetworkError />;
+      return <NetworkError params={{}} />;
     }
 
     return this.props.children;

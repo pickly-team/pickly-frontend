@@ -1,5 +1,6 @@
 import { GET_USER_PROFILE } from '@/auth/api/profile';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import { useFlow } from '@/common-ui/stackflow';
 import client from '@/common/service/client';
 import { GET_SEARCH_LIST_KEY, SearchList } from '@/friend/api/friends';
 import useFriendStore from '@/store/friend';
@@ -11,7 +12,6 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 
 type Count = number;
 
@@ -342,14 +342,14 @@ type InfiniteSearchList =
 export const usePOSTBlockMemberQuery = ({
   memberId,
 }: POSTBlockMemberQueryParams) => {
-  const router = useNavigate();
+  const { pop } = useFlow();
   const { fireToast } = useToast();
   const queryClient = useQueryClient();
   const { keyword, selectedMemberId } = useSearchStore();
   return useMutation(postBlockMemberAPI, {
     onSuccess: () => {
       fireToast({ message: '차단 되었습니다' });
-      router(-1);
+      pop();
       queryClient.refetchQueries(GET_BLOCK_MEMBER_LIST_KEY({ memberId }));
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
       if (keyword && selectedMemberId) {

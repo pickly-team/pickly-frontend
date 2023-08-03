@@ -6,14 +6,16 @@ import FriendSkeletonItem from '@/friend/ui/FriendSkeletonItem';
 import FriendList from '@/friend/ui/friend/FriendList';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
+import { AppScreen } from '@stackflow/plugin-basic-ui';
+import { ActivityComponentType } from '@stackflow/react';
 import { Suspense } from 'react';
 
-const FriendSearchPage = () => {
+const FriendSearchPage: ActivityComponentType = () => {
   const { keyword, debounceKeyword, handleChange, initializeKeyword } =
     useSearchUser();
 
   return (
-    <>
+    <AppScreen>
       <Header
         title="친구 찾기"
         showBackButton={true}
@@ -40,7 +42,7 @@ const FriendSearchPage = () => {
       >
         <FriendList keyword={debounceKeyword} />
       </Suspense>
-    </>
+    </AppScreen>
   );
 };
 

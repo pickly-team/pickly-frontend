@@ -25,7 +25,6 @@ const FollowButton = ({
 
   const { fireToast } = useToast();
 
-  //TODO: 하드 코딩 개선
   const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (disabled) return;

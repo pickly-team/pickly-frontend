@@ -6,9 +6,9 @@ import {
   refetchAllBookmarkQuery,
 } from '@/bookmarks/api/bookmark';
 import useToast from '@/common-ui/Toast/hooks/useToast';
-import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import useAuthStore from '@/store/auth';
+import { useFlow } from '@/common-ui/stackflow';
 
 const DOMAIN = 'COMMENT';
 
@@ -231,14 +231,14 @@ export interface POSTBookmarkReportMutation {
 
 export const usePOSTReportCommentQuery = () => {
   const toast = useToast();
-  const router = useNavigate();
+  const { pop } = useFlow();
   return useMutation(postCommentReportAPI, {
     onSuccess: () => {
       toast.fireToast({
         message: '신고 되었습니다',
         mode: 'SUCCESS',
       });
-      router(-1);
+      pop();
     },
     onError: (e: AxiosError) => {
       const errorCode = e.response?.status;
@@ -247,7 +247,7 @@ export const usePOSTReportCommentQuery = () => {
           message: '이미 신고한 북마크에요',
           mode: 'DELETE',
         });
-        router(-1);
+        pop();
       }
     },
   });

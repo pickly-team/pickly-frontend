@@ -5,7 +5,7 @@ import getRem, { calculateRem } from '@/utils/getRem';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ClientBookmarkCategoryItem } from '../api/bookmark';
-import { Link } from 'react-router-dom';
+import { useFlow } from '@/common-ui/stackflow';
 
 interface TagBoxListProps {
   tags: ClientBookmarkCategoryItem[];
@@ -18,7 +18,7 @@ const TagBoxList = ({ tags, onClickCategory }: TagBoxListProps) => {
       {tags.map((tag) => (
         <TagBox key={tag.id} tag={tag} onClickCategory={onClickCategory} />
       ))}
-      <PlusBox to="/category/add" />
+      <PlusBox />
     </StyledListWrapper>
   );
 };
@@ -67,13 +67,15 @@ const TagBox = ({ tag, onClickCategory }: TagBoxProps) => {
   );
 };
 
-interface PlusBoxProps {
-  to: string;
-}
+const PlusBox = () => {
+  const { push } = useFlow();
 
-const PlusBox = ({ to }: PlusBoxProps) => {
+  const onClickAdd = () => {
+    push('CategoryManagePage', { mode: 'ADD' });
+  };
+
   return (
-    <Link to={to}>
+    <div onClick={onClickAdd}>
       <div
         css={css`
           display: flex;
@@ -91,6 +93,6 @@ const PlusBox = ({ to }: PlusBoxProps) => {
       >
         <Icon size="xs" name="plus-dark" />
       </div>
-    </Link>
+    </div>
   );
 };

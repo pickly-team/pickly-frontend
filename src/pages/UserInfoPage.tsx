@@ -4,12 +4,16 @@ import useHandleInput from '@/common/service/useHandleInput';
 import { FormEventHandler, useEffect, useState } from 'react';
 import useAuthStore from '@/store/auth';
 import { usePutUserInfoQuery } from '@/user/api/user';
+import { ActivityComponentType } from '@stackflow/react';
+import { AppScreen } from '@stackflow/plugin-basic-ui';
 
 interface UserCreatePageProps {
   mode: Mode;
 }
 
-const UserInfoPage = ({ mode }: UserCreatePageProps) => {
+const UserInfoPage: ActivityComponentType<UserCreatePageProps> = ({
+  params: { mode },
+}) => {
   const { userInfo, memberId } = useAuthStore();
 
   const [name, onChangeElementName, onChangeName] = useHandleInput();
@@ -70,20 +74,22 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
   };
 
   return (
-    <UserProfileInfo
-      emoji={emoji}
-      name={name}
-      nickname={nickname}
-      isEmojiBSOpen={isEmojiBSOpen}
-      buttonDisabled={disabled}
-      mode={mode}
-      onChangeEmoji={onChangeEmoji}
-      setEmojiBSOpen={setEmojiBSOpen}
-      closeEmojiBS={closeEmojiBS}
-      onChangeName={onChangeElementName}
-      onChangeNickname={onChangeElementNickname}
-      onSubmit={onSubmitUserInfo}
-    />
+    <AppScreen>
+      <UserProfileInfo
+        emoji={emoji}
+        name={name}
+        nickname={nickname}
+        isEmojiBSOpen={isEmojiBSOpen}
+        buttonDisabled={disabled}
+        mode={mode}
+        onChangeEmoji={onChangeEmoji}
+        setEmojiBSOpen={setEmojiBSOpen}
+        closeEmojiBS={closeEmojiBS}
+        onChangeName={onChangeElementName}
+        onChangeNickname={onChangeElementNickname}
+        onSubmit={onSubmitUserInfo}
+      />
+    </AppScreen>
   );
 };
 

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import Text from '@/common-ui/Text';
@@ -6,6 +5,7 @@ import { theme } from '@/styles/theme';
 import { numberWithCommas } from '@/utils/numberWithCommas';
 import Icon from '@/common-ui/assets/Icon';
 import getRem from '@/utils/getRem';
+import { Link } from '@/common-ui/Link';
 
 const StatsBox = ({
   numberOfLikes,
@@ -19,7 +19,7 @@ const StatsBox = ({
   return (
     <Container>
       <StatsContainer>
-        <Link to="/likes">
+        <Link activityName="LikePage" activityParams={{}}>
           <StatItemContainer>
             <IconLabelContainer>
               <Icon name={'like'} size={'s'} />
@@ -33,7 +33,7 @@ const StatsBox = ({
           </StatItemContainer>
         </Link>
         <Divider />
-        <Link to="/category/list">
+        <Link activityName="CategoryListPage" activityParams={{}}>
           <StatItemContainer>
             <IconLabelContainer>
               <Icon name={'folder'} size={'s'} />
@@ -49,7 +49,7 @@ const StatsBox = ({
           </StatItemContainer>
         </Link>
         <Divider />
-        <Link to="/comment">
+        <Link activityName="CommentPage" activityParams={{}}>
           <StatItemContainer>
             <IconLabelContainer>
               <Icon name={'message'} size={'s'} />

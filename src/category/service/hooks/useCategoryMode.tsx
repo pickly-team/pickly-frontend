@@ -1,11 +1,11 @@
 import { Mode } from '@/category';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import Text from '@/common-ui/Text';
+import { useFlow } from '@/common-ui/stackflow';
 import IconButton from '@/common/ui/IconButton';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 interface CategoryModeProps {
   mode: Mode;
@@ -20,12 +20,10 @@ const useCategoryMode = ({
   openDeleteCategoryBS,
   onClickSaveOrder,
 }: CategoryModeProps) => {
-  const router = useNavigate();
+  const { push } = useFlow();
   const navigateToCategoryAddPage = () => {
-    router('/category/add', {
-      state: {
-        fromPath: location.pathname,
-      },
+    push('CategoryManagePage', {
+      mode: 'EDIT',
     });
   };
 

@@ -1,8 +1,7 @@
+import { useFlow } from '@/common-ui/stackflow';
 import client from '@/common/service/client';
-import { navigatePath } from '@/constants/navigatePath';
 import useAuthStore, { UserInfo } from '@/store/auth';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 
 interface RequestInterface {
   loginId: number;
@@ -30,7 +29,7 @@ export const GET_USER_PROFILE = (params: GetAPIRequest) => [
 ];
 
 export const useGETUserProfile = (params: GetAPIRequest) => {
-  const router = useNavigate();
+  const { replace } = useFlow();
   const { setUserInfo } = useAuthStore();
   return useQuery(GET_USER_PROFILE(params), () => getUserProfile(params), {
     enabled: params.loginId !== 0,
@@ -40,7 +39,10 @@ export const useGETUserProfile = (params: GetAPIRequest) => {
         ...data,
         profileEmoji: data.profileEmoji ?? '🐶',
       }));
-      if (data.nickname === '') router(navigatePath.USER);
+      if (data.nickname === '')
+        replace('UserInfoPage', {
+          mode: 'CREATE',
+        });
     },
     onError: (e) => console.log(e),
     cacheTime: 10 * 60 * 1000,

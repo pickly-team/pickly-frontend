@@ -2,7 +2,6 @@ import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { NavLink } from 'react-router-dom';
 import getRem from '@/utils/getRem';
 import type { BookmarkItem } from '../../api/bookmark';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -11,6 +10,7 @@ import {
   TbMessageCircle2Filled as MessageFillIcon,
   TbMessageCircle2 as MessageIcon,
 } from 'react-icons/tb';
+import { useFlow } from '@/common-ui/stackflow';
 
 const BookmarkItem = ({
   bookmarkId,
@@ -28,13 +28,26 @@ const BookmarkItem = ({
     e.currentTarget.setAttribute('style', 'object-fit: contain');
   };
 
+  const { push } = useFlow();
+
+  const onClickBookmark = () => {
+    push(
+      'BookMarkDetailPage',
+      {
+        bookmarkId: String(bookmarkId),
+      },
+      {
+        animate: true,
+      },
+    );
+  };
+
   return (
     <LinkWrapper
-      to={`/bookmark/${bookmarkId}`}
       onClick={(e) => {
         if (disabled) e.preventDefault();
+        onClickBookmark();
       }}
-      disabled={disabled}
     >
       <ItemWrapper>
         <ItemUpperLeft>
@@ -79,7 +92,7 @@ interface LinkWrapperProps {
   disabled?: boolean;
 }
 
-const LinkWrapper = styled(NavLink)<LinkWrapperProps>`
+const LinkWrapper = styled.div<LinkWrapperProps>`
   display: block;
   padding: ${getRem(10, 20)};
   margin-bottom: 1rem;

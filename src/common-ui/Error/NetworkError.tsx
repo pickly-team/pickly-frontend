@@ -3,8 +3,9 @@ import Text from '../Text';
 import Button from '../Button';
 import { theme } from '@/styles/theme';
 import Header from '../Header/Header';
+import { ActivityComponentType } from '@stackflow/react';
 
-const NetworkError = () => {
+const NetworkError: ActivityComponentType = () => {
   const reload = () => {
     setTimeout(() => {
       window.location.reload();

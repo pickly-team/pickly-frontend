@@ -14,8 +14,11 @@ import BookmarkListView from '@/bookmarks/ui/Main/BookmarkListView';
 import { Suspense } from 'react';
 import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
+import { ActivityComponentType } from '@stackflow/react';
+import Layout from '@/common-ui/Layout';
+import { AppScreen } from '@stackflow/plugin-basic-ui';
 
-const MainPage = () => {
+const MainPage: ActivityComponentType = () => {
   const { memberId, userInfo } = useAuthStore();
   const { selectedCategoryId, categoryOptions, onChangeCategory } = useCategory(
     {
@@ -36,52 +39,57 @@ const MainPage = () => {
   } = useDeleteBookmarkList({ categoryId: selectedCategoryId });
 
   return (
-    <>
-      <LTop>
-        <BookmarkUserInfo
-          userEmoji={userInfo.profileEmoji}
-          userName={userInfo.nickname}
-        />
-      </LTop>
-      <BookmarkToggle>
-        <BookmarkToggle.SelectCategory
-          selectedCategory={String(selectedCategoryId)}
-          categoryOptions={categoryOptions}
-          setCategoryId={onChangeCategory}
-        />
-        <BookmarkToggle.SelectReadMode
-          readOptions={readSelectOptionsList}
-          selectedReadOption={selectedReadOption}
-          onChangeRead={onClickReadMode}
-        />
-        <BookmarkToggle.ToggleEdit isEdit={isEdit} onClickEdit={onClickEdit} />
-      </BookmarkToggle>
-      <LMiddle>
-        <Suspense
-          fallback={
-            <SkeletonWrapper>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <BookmarkSkeletonItem key={index} />
-              ))}
-            </SkeletonWrapper>
-          }
-        >
-          <BookmarkListView
-            memberId={memberId}
-            isEditMode={isEdit}
-            isReadMode={READ_OPTIONS[selectedReadOption ?? '📖 전체']}
-            selectedCategory={selectedCategoryId}
-            onClickBookmarkItemInEdit={onClickBookmarkItemInEdit}
+    <AppScreen>
+      <Layout>
+        <LTop>
+          <BookmarkUserInfo
+            userEmoji={userInfo.profileEmoji}
+            userName={userInfo.nickname}
           />
-        </Suspense>
-      </LMiddle>
-      {/** 북마크 삭제 확인 */}
-      <BookmarkBSDeleteConfirmation
-        onClose={deleteBookmarkClose}
-        onDelete={onClickDelete}
-        open={isDeleteBookmarkOpen}
-      />
-    </>
+        </LTop>
+        <BookmarkToggle>
+          <BookmarkToggle.SelectCategory
+            selectedCategory={String(selectedCategoryId)}
+            categoryOptions={categoryOptions}
+            setCategoryId={onChangeCategory}
+          />
+          <BookmarkToggle.SelectReadMode
+            readOptions={readSelectOptionsList}
+            selectedReadOption={selectedReadOption}
+            onChangeRead={onClickReadMode}
+          />
+          <BookmarkToggle.ToggleEdit
+            isEdit={isEdit}
+            onClickEdit={onClickEdit}
+          />
+        </BookmarkToggle>
+        <LMiddle>
+          <Suspense
+            fallback={
+              <SkeletonWrapper>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <BookmarkSkeletonItem key={index} />
+                ))}
+              </SkeletonWrapper>
+            }
+          >
+            <BookmarkListView
+              memberId={memberId}
+              isEditMode={isEdit}
+              isReadMode={READ_OPTIONS[selectedReadOption ?? '📖 전체']}
+              selectedCategory={selectedCategoryId}
+              onClickBookmarkItemInEdit={onClickBookmarkItemInEdit}
+            />
+          </Suspense>
+        </LMiddle>
+        {/** 북마크 삭제 확인 */}
+        <BookmarkBSDeleteConfirmation
+          onClose={deleteBookmarkClose}
+          onDelete={onClickDelete}
+          open={isDeleteBookmarkOpen}
+        />
+      </Layout>
+    </AppScreen>
   );
 };
 
