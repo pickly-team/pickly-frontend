@@ -3,8 +3,7 @@ import Button from '@/common-ui/Button';
 import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
-import { ReactNode, SyntheticEvent, useEffect } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { ReactNode, SyntheticEvent } from 'react';
 import { theme } from '@/styles/theme';
 import BookmarkLikeButton from './Like/BookmarkLikeButton';
 import {
@@ -25,6 +24,7 @@ import useCategoryList from '../service/hooks/add/useCategoryList';
 import checkValidateURL from '@/utils/checkValidateURL';
 import useAuthStore from '@/store/auth';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useActivity } from '@stackflow/react';
 
 interface BookMarkArticleProps {
   editBookmarkBS: boolean;
@@ -37,10 +37,10 @@ const BookMarkArticle = ({
   openEditBookmarkBS,
   closeEditBookmarkBS,
 }: BookMarkArticleProps) => {
-  const { id: bookmarkId } = useParams<{ id: string }>();
+  const { params } = useActivity();
   const { memberId } = useAuthStore();
   const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
-    bookmarkId: bookmarkId ?? '',
+    bookmarkId: params.bookmarkId ?? '',
     memberId,
   });
   const { commentCount } = useCommentStore();
@@ -51,11 +51,11 @@ const BookMarkArticle = ({
   };
 
   const { mutate: postBookmarkLike } = usePOSTBookmarkLikeQuery({
-    bookmarkId: bookmarkId ?? '',
+    bookmarkId: params.bookmarkId ?? '',
     memberId,
   });
   const { mutate: postBookmarkDislike } = useDELETEBookmarkLikeQuery({
-    bookmarkId: bookmarkId ?? '',
+    bookmarkId: params.bookmarkId ?? '',
     memberId,
   });
 
@@ -63,12 +63,12 @@ const BookMarkArticle = ({
 
   const onClickLike = () => {
     if (!isMyPost) return;
-    postBookmarkLike({ bookmarkId: bookmarkId ?? '' });
+    postBookmarkLike({ bookmarkId: params.bookmarkId ?? '' });
   };
 
   const onClickDislike = () => {
     if (!isMyPost) return;
-    postBookmarkDislike({ bookmarkId: bookmarkId ?? '' });
+    postBookmarkDislike({ bookmarkId: params.bookmarkId ?? '' });
   };
 
   // SERVER
@@ -112,13 +112,13 @@ const BookMarkArticle = ({
   const isAllWritten = !!(url && selectedCategoryId && selectedPublishScoped);
 
   const { mutate: putBookmark } = usePUTBookmarkQuery({
-    bookmarkId: bookmarkId ?? '',
+    bookmarkId: params.bookmarkId ?? '',
     memberId,
   });
 
   const onSubmitBookmark = () => {
     putBookmark({
-      bookmarkId: bookmarkId ?? '',
+      bookmarkId: params.bookmarkId ?? '',
       putData: {
         categoryId: String(selectedCategoryId) ?? 0,
         title: title,
@@ -128,16 +128,6 @@ const BookMarkArticle = ({
     });
     closeEditBookmarkBS();
   };
-
-  const routerLocation = useLocation().state as {
-    isCategoryAddPage: boolean;
-  };
-
-  useEffect(() => {
-    if (routerLocation?.isCategoryAddPage === true) {
-      openEditBookmarkBS();
-    }
-  }, [routerLocation]);
 
   return (
     <>
@@ -183,11 +173,7 @@ const BookMarkArticle = ({
             description="원본 URL"
             icon={<Icon name="location" size="s" />}
             content={
-              <BookmarkUrl
-                to={bookmarkDetail?.url ?? ''}
-                target={'_blank'}
-                rel={'noreferrer'}
-              >
+              <BookmarkUrl>
                 <Text.Span fontSize={0.75}>
                   {bookmarkDetail?.url ?? ''}
                 </Text.Span>
@@ -299,7 +285,7 @@ const InfoRow = styled.div`
   overflow: hidden;
 `;
 
-const BookmarkUrl = styled(Link)`
+const BookmarkUrl = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

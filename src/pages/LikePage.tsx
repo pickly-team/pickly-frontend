@@ -6,26 +6,30 @@ import { Suspense } from 'react';
 import BookmarkLikeList from '@/bookmarks/ui/Like/BookmarkLikeList';
 import SkeletonBookmarkLikeList from '@/bookmarks/ui/Like/SkeletonBookmarkLikeList';
 import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import { ActivityComponentType } from '@stackflow/react';
+import { AppScreen } from '@stackflow/plugin-basic-ui';
 
-const LikePage = () => {
+const LikePage: ActivityComponentType = () => {
   const showBackButton = true;
   const title = '좋아요 목록';
 
   return (
-    <Layout>
-      <Header title={title} showBackButton={showBackButton} />
-      <LBody>
-        <Suspense
-          fallback={
-            <SkeletonWrapper>
-              <SkeletonBookmarkLikeList />
-            </SkeletonWrapper>
-          }
-        >
-          <BookmarkLikeList />
-        </Suspense>
-      </LBody>
-    </Layout>
+    <AppScreen>
+      <Layout>
+        <Header title={title} showBackButton={showBackButton} />
+        <LBody>
+          <Suspense
+            fallback={
+              <SkeletonWrapper>
+                <SkeletonBookmarkLikeList />
+              </SkeletonWrapper>
+            }
+          >
+            <BookmarkLikeList />
+          </Suspense>
+        </LBody>
+      </Layout>
+    </AppScreen>
   );
 };
 

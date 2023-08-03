@@ -42,7 +42,7 @@ export default Header;
 
 const HeaderContainer = styled.div`
   position: sticky;
-  top: 0;
+  top: -1px;
   left: 0;
   background-color: ${theme.colors.black};
   padding: ${getRem(8, 20)};

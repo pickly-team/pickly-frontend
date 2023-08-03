@@ -6,19 +6,20 @@ import useCommentStore from '@/store/comment';
 import { useDELETECommentQuery } from '@/comment/api/Comment';
 import BSConfirmation from '@/common/ui/BSConfirmation';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
-import { useParams } from 'react-router-dom';
 import BlankComment from './BlankComment';
 import useAuthStore from '@/store/auth';
 import getRem from '@/utils/getRem';
+import { useActivity } from '@stackflow/react';
 
 const CommentList = () => {
   // FIRST RENDER
   const { comment, setCommentId, setCommentCount } = useCommentStore();
   // SERVER
   const { memberId } = useAuthStore();
-  const { id: bookmarkId } = useParams<{ id: string }>();
+  const { params } = useActivity();
+
   const { data: commentList } = useGETBookmarkCommentListQuery({
-    bookmarkId: bookmarkId ?? '',
+    bookmarkId: params.bookmarkId ?? '',
     memberId,
     setCommentCount,
   });
@@ -29,7 +30,7 @@ const CommentList = () => {
 
   // 2. 댓글 삭제
   const { mutate: deleteComment } = useDELETECommentQuery({
-    bookmarkId: bookmarkId ?? '',
+    bookmarkId: params.bookmarkId ?? '',
   });
   const onClickDeleteComment = () => {
     deleteComment({ commentId: comment.id ?? 0 });

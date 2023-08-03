@@ -12,12 +12,12 @@ import DragAndDrop from '@/common/ui/DragAndDrop';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 import CheckBox from '@/common-ui/CheckBox';
-import { useNavigate } from 'react-router-dom';
 import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import SkeletonCategoryList from './SkeletonCategoryList';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import BlankItem from '@/common-ui/BlankItem';
 import useAuthStore from '@/store/auth';
+import { useFlow } from '@/common-ui/stackflow';
 
 interface CategoryListProps {
   mode: Mode;
@@ -41,7 +41,7 @@ const CategoryList = ({
   deleteCategoryList,
   setDeleteCategoryList,
 }: CategoryListProps) => {
-  const navigate = useNavigate();
+  const { push } = useFlow();
   const { memberId } = useAuthStore();
   const {
     data: categoryList,
@@ -73,10 +73,8 @@ const CategoryList = ({
 
   const onClickCategory = (categoryId: string) => {
     if (mode === 'NORMAL') {
-      navigate(`/category/edit/${categoryId}`, {
-        state: {
-          fromPath: location.pathname,
-        },
+      push('CategoryManagePage', {
+        mode: 'EDIT',
       });
     }
 

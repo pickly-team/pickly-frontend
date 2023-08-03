@@ -1,19 +1,28 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import Header from '@/common-ui/Header/Header';
 import CommentUploadInput from '@/comment/ui/bookmark/CommentUploadInput';
 import styled from '@emotion/styled';
 import BookmarkArticle from '@/bookmarks/ui/BookmarkArticle';
 import { Suspense } from 'react';
 import CommentList from '@/comment/ui/bookmark/CommentList';
-import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
-import IconButton from '@/common/ui/IconButton';
 import BSConfirmation from '@/common/ui/BSConfirmation';
 import useHandleBookmarkDetailMore from '@/bookmarks/service/hooks/detail/useHandleBookmarkDetailMore';
 import SkeletonBookmarkDetail from '@/bookmarks/ui/Detail/SkeletonBookmarkDetail';
 import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 import SkeletonCommentList from '@/comment/ui/bookmark/SkeletonCommentList';
+import Header from '@/common-ui/Header/Header';
+import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
+import IconButton from '@/common/ui/IconButton';
+import { ActivityComponentType, useActivity } from '@stackflow/react';
+import { AppScreen } from '@stackflow/plugin-basic-ui';
 
-const BookMarkDetailPage = () => {
+interface BookMarkDetailPageProps {
+  bookmarkId: string;
+}
+
+const BookMarkDetailPage: ActivityComponentType<
+  BookMarkDetailPageProps
+> = () => {
+  const { params } = useActivity();
   const {
     deleteBookmarkBS,
     editBookmarkBS,
@@ -25,10 +34,10 @@ const BookMarkDetailPage = () => {
     onClickEditBookmark,
     openDeleteBookmarkBS,
     onClickReportBookmark,
-  } = useHandleBookmarkDetailMore();
+  } = useHandleBookmarkDetailMore({ id: params.bookmarkId ?? '' });
 
   return (
-    <>
+    <AppScreen>
       <Header
         rightButton={
           <TriggerBottomSheet>
@@ -85,7 +94,7 @@ const BookMarkDetailPage = () => {
       </Body>
       {/** 댓글 입력 영역 */}
       <CommentUploadInputBottomBar>
-        <CommentUploadInput />
+        <CommentUploadInput bookmarkId={params.bookmarkId ?? ''} />
       </CommentUploadInputBottomBar>
       {/** 북마크 삭제 BS */}
       <BSConfirmation
@@ -96,17 +105,19 @@ const BookMarkDetailPage = () => {
         description="삭제된 북마크는 복구할 수 없습니다."
         onConfirm={onClickDeleteBookmark}
       />
-    </>
+    </AppScreen>
   );
 };
 
 export default BookMarkDetailPage;
 
-const Body = styled.div``;
+const Body = styled.div`
+  min-height: 85dvh;
+`;
 
 const CommentUploadInputBottomBar = styled.div`
-  position: fixed;
+  position: sticky;
   width: 100%;
   left: 0;
-  bottom: 0;
+  bottom: -1px;
 `;

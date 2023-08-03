@@ -8,21 +8,24 @@ import Text from '@/common-ui/Text';
 import useAuthStore from '@/store/auth';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
+import { AppScreen } from '@stackflow/plugin-basic-ui';
+import { ActivityComponentType } from '@stackflow/react';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 export type ReportMode = 'CHECK' | 'WRITE';
 
 interface ReportPageProps {
   mode: 'BOOKMARK' | 'COMMENT';
+  id: string;
 }
 
-const ReportPage = ({ mode }: ReportPageProps) => {
+const ReportPage: ActivityComponentType<ReportPageProps> = ({
+  params: { id, mode },
+}) => {
   const [reportMode, setReportMode] = useState<ReportMode>('CHECK');
   const [reportText, setReportText] = useState('');
   const [selectedReport, setSelectedReport] = useState('');
   const { memberId } = useAuthStore();
-  const { id } = useParams() as { id: string };
 
   const onChangeReportText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReportText(e.target.value);
@@ -56,7 +59,7 @@ const ReportPage = ({ mode }: ReportPageProps) => {
     reportMode === 'WRITE' ? !reportText.length : !selectedReport.length;
 
   return (
-    <>
+    <AppScreen>
       <Header showBackButton />
       <Form onSubmit={onSubmit}>
         <MainText fontSize={getRem(20)} weight="bold" level="h1">
@@ -75,7 +78,7 @@ const ReportPage = ({ mode }: ReportPageProps) => {
           <Text.Span>신고하기</Text.Span>
         </BottomFixedButton>
       </Form>
-    </>
+    </AppScreen>
   );
 };
 

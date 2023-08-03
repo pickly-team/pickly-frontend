@@ -25,7 +25,7 @@ const FriendTypeSelect = ({
         }}
         activeButtonColor="black"
         buttonColor={'black'}
-        active={value === FriendType.Follower}
+        on={(value === FriendType.Follower).toString()}
       >
         팔로워 {followerTotalCount}
       </FriendTypeButton>
@@ -35,7 +35,7 @@ const FriendTypeSelect = ({
         }}
         activeButtonColor="black"
         buttonColor={'black'}
-        active={value === FriendType.Following}
+        on={(value === FriendType.Following).toString()}
       >
         팔로잉 {followingTotalCount}
       </FriendTypeButton>
@@ -49,12 +49,17 @@ const ButtonWrapper = styled.div`
   display: flex;
 `;
 
-const FriendTypeButton = styled(Button)<{ active: boolean }>`
+interface FriendTypeButtonProps {
+  on: string;
+}
+
+const FriendTypeButton = styled(Button)<FriendTypeButtonProps>`
   border-radius: 0;
   ${(p) =>
-    p.active &&
-    css`
-      color: ${theme.colors.lightPrimary};
-      border-bottom: 1px solid ${theme.colors.lightPrimary};
-    `}
+    p.on === 'true'
+      ? css`
+          color: ${theme.colors.lightPrimary};
+          border-bottom: 1px solid ${theme.colors.lightPrimary};
+        `
+      : css``}
 `;

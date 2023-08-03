@@ -1,15 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
-
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
-import { navigatePath } from '@/constants/navigatePath';
 import { useGETUserProfile } from '@/auth/api/profile';
 import useAuthStore from '@/store/auth';
 import useFriendStore, { FriendType } from '@/store/friend';
+import { useFlow } from '@/common-ui/stackflow';
+import { Link } from '@/common-ui/Link';
 
 const BasicInfoBox = () => {
   const { memberId } = useAuthStore();
@@ -17,16 +16,18 @@ const BasicInfoBox = () => {
 
   const numberFormatter = new Intl.NumberFormat('en', { notation: 'compact' });
 
-  const router = useNavigate();
+  const { push } = useFlow();
 
   const onClickUserEdit = () => {
-    router(navigatePath.USER_EDIT);
+    push('UserInfoPage', {
+      mode: 'EDIT',
+    });
   };
   const onClickUserBlock = () => {
-    router(navigatePath.BLOCK_USER);
+    push('BlockUserListPage', {});
   };
   const onClickHelp = () => {
-    router(navigatePath.INTRODUCE);
+    push('IntroducePage', {});
   };
 
   const { setSelectedType } = useFriendStore();
@@ -66,7 +67,7 @@ const BasicInfoBox = () => {
             <Text.Span fontSize={3}>{userInfo?.profileEmoji ?? ''}</Text.Span>
           </ProfileImage>
           <ProfileStatsColumn>
-            <Link to={'/'}>
+            <Link activityName="MainPage" activityParams={{}}>
               <ProfileStatColumn>
                 <Text.Span>
                   {numberFormatter.format(userInfo?.bookmarksCount ?? 0)}
@@ -75,7 +76,11 @@ const BasicInfoBox = () => {
               </ProfileStatColumn>
             </Link>
 
-            <Link onClick={onClickFollowers} to={'/friend'}>
+            <Link
+              onClick={onClickFollowers}
+              activityName="FriendPage"
+              activityParams={{}}
+            >
               <ProfileStatColumn>
                 <Text.Span>
                   {numberFormatter.format(userInfo?.followersCount ?? 0)}
@@ -84,7 +89,11 @@ const BasicInfoBox = () => {
               </ProfileStatColumn>
             </Link>
 
-            <Link onClick={onClickFollowings} to={'/friend'}>
+            <Link
+              onClick={onClickFollowings}
+              activityName="FriendPage"
+              activityParams={{}}
+            >
               <ProfileStatColumn>
                 <Text.Span>
                   {numberFormatter.format(userInfo?.followeesCount ?? 0)}

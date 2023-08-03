@@ -6,8 +6,7 @@ import Icon from '@/common-ui/assets/Icon';
 import getRem from '@/utils/getRem';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
-import { useNavigate } from 'react-router-dom';
-import { navigatePath } from '@/constants/navigatePath';
+import { useFlow } from '@/common-ui/stackflow';
 
 interface CommentProps {
   id: number;
@@ -32,13 +31,18 @@ const CommentItem = ({
   onClickDelete,
   onClickEdit,
 }: CommentProps) => {
-  const navigate = useNavigate();
+  const { push } = useFlow();
   const onClickUserProfile = () => {
     if (isWriter) return;
-    navigate(navigatePath.FRIEND_BOOKMARK.replace(':id', String(memberId)));
+    push('FriendBookmarkPage', {
+      id: String(memberId),
+    });
   };
   const onClickReport = () => {
-    navigate(navigatePath.COMMENT_REPORT.replace(':id', String(id)));
+    push('ReportPage', {
+      mode: 'COMMENT',
+      id: String(id),
+    });
   };
 
   return (

@@ -1,8 +1,7 @@
-import { navigatePath } from '@/constants/navigatePath';
+import { NavigatePathKey } from '@/constants/navigatePath';
 import { theme } from '@/styles/theme';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from './assets/Icon';
 import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
 import BookmarkAddBS from '@/bookmarks/ui/Main/BookmarkAddBS';
@@ -11,11 +10,12 @@ import useInputUrl from '@/bookmarks/service/hooks/add/useInputUrl';
 import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
 import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
 import useCategoryList from '@/bookmarks/service/hooks/add/useCategoryList';
-import { useEffect } from 'react';
 import { usePOSTBookmarkMutation } from '@/bookmarks/api/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
 import ToastList from './Toast/ToastList';
 import useAuthStore from '@/store/auth';
+import { useActivity } from '@stackflow/react';
+import { useFlow } from './stackflow';
 
 // TODO : 네비게이터에 대한 path를 재정의 필요
 
@@ -27,8 +27,6 @@ import useAuthStore from '@/store/auth';
  */
 
 const BottomNavigation = () => {
-  const { pathname } = useLocation();
-
   // SERVER
   const { categoryList, setCategoryList, toggleCategory } = useCategoryList();
   // 1. URL & 북마크 Title 입력
@@ -66,25 +64,12 @@ const BottomNavigation = () => {
     selectedPublishScoped
   );
 
-  const { isOpen, close, open } = useBottomSheet();
+  const { isOpen, close } = useBottomSheet();
   const onClickAddButton = () => {
-    open();
+    push('BookmarkAddPage', {});
   };
-
-  const routerLocation = useLocation().state as {
-    isCategoryAddPage: boolean;
-  };
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  useEffect(() => {
-    if (routerLocation?.isCategoryAddPage === true) {
-      open();
-      navigate(location.pathname, {
-        state: { fromPath: location.pathname },
-      });
-    }
-  }, [routerLocation?.isCategoryAddPage]);
+  const { replace, push } = useFlow();
+  const { name } = useActivity();
 
   const { memberId } = useAuthStore();
   const { mutate: postBookmark } = usePOSTBookmarkMutation({
@@ -108,6 +93,16 @@ const BottomNavigation = () => {
       memberId,
     });
     close();
+  };
+
+  const onClickBottomNavigation = (path: NavigatePathKey) => {
+    replace(
+      path,
+      {},
+      {
+        animate: false,
+      },
+    );
   };
 
   return (
@@ -140,36 +135,34 @@ const BottomNavigation = () => {
         <button onClick={onClickAddButton} css={plusButton}>
           <Icon name="plus" size="m" />
         </button>
-        <Link to={navigatePath.MAIN} css={iconStyle}>
-          {pathname === `${navigatePath.MAIN}` && (
-            <Icon size="l" name="list-green" />
-          )}
-          {pathname !== `${navigatePath.MAIN}` && <Icon size="l" name="list" />}
-        </Link>
-        <Link to="/friend" css={iconStyle}>
-          {pathname === `${navigatePath.FRIEND}` && (
-            <Icon size="l" name="people-green" />
-          )}
-          {pathname !== `${navigatePath.FRIEND}` && (
-            <Icon size="l" name="people" />
-          )}
-        </Link>
-        <Link to={navigatePath.NOTIFICATION} css={iconStyle}>
-          {pathname === `${navigatePath.NOTIFICATION}` && (
-            <Icon size="m" name="alarm-green" />
-          )}
-          {pathname !== `${navigatePath.NOTIFICATION}` && (
-            <Icon size="m" name="alarm" />
-          )}
-        </Link>
-        <Link to="/profile" css={iconStyle}>
-          {pathname === `${navigatePath.PROFILE}` && (
-            <Icon size="m" name="profile-green" />
-          )}
-          {pathname !== `${navigatePath.PROFILE}` && (
-            <Icon size="m" name="profile" />
-          )}
-        </Link>
+        <div
+          onClick={() => onClickBottomNavigation('MainPage')}
+          css={iconStyle}
+        >
+          {name === 'MainPage' && <Icon size="l" name="list-green" />}
+          {name !== 'MainPage' && <Icon size="l" name="list" />}
+        </div>
+        <div
+          onClick={() => onClickBottomNavigation('FriendPage')}
+          css={iconStyle}
+        >
+          {name === 'FriendPage' && <Icon size="l" name="people-green" />}
+          {name !== 'FriendPage' && <Icon size="l" name="people" />}
+        </div>
+        <div
+          onClick={() => onClickBottomNavigation('NotificationPage')}
+          css={iconStyle}
+        >
+          {name === 'NotificationPage' && <Icon size="m" name="alarm-green" />}
+          {name !== 'NotificationPage' && <Icon size="m" name="alarm" />}
+        </div>
+        <div
+          onClick={() => onClickBottomNavigation('ProfilePage')}
+          css={iconStyle}
+        >
+          {name === 'ProfilePage' && <Icon size="m" name="profile-green" />}
+          {name !== 'ProfilePage' && <Icon size="m" name="profile" />}
+        </div>
       </NavigationWrapper>
     </>
   );
@@ -184,7 +177,7 @@ const NavigationWrapper = styled.div`
   position: fixed;
   max-width: 480px;
   margin: 0 auto;
-  bottom: 0;
+  bottom: -1px;
   left: 0;
   right: 0;
   background-color: ${theme.colors.grey900};

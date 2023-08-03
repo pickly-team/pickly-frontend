@@ -6,14 +6,16 @@ import getRem from '@/utils/getRem';
 import useCommentStore from '@/store/comment';
 import IconButton from '@/common/ui/IconButton';
 import { usePOSTCommentQuery, usePUTCommentQuery } from '@/comment/api/Comment';
-import { useParams } from 'react-router-dom';
 import useAuthStore from '@/store/auth';
 
-const CommentUploadInput = () => {
+interface CommentUploadInputProps {
+  bookmarkId: string;
+}
+
+const CommentUploadInput = ({ bookmarkId }: CommentUploadInputProps) => {
   const { memberId } = useAuthStore();
-  const { id } = useParams() as { id: string };
+
   const { mode, comment, setComment, initComment } = useCommentStore();
-  const { id: bookmarkId } = useParams<{ id: string }>();
 
   const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const { value } = event.target;
@@ -39,7 +41,7 @@ const CommentUploadInput = () => {
     event.preventDefault();
     if (mode === 'CREATE') {
       postComment({
-        bookmarkId: Number(id),
+        bookmarkId: Number(bookmarkId),
         memberId: memberId,
         postData: {
           content: comment.content,

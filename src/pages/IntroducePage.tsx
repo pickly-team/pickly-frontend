@@ -2,22 +2,29 @@ import BookmarkItem from '@/bookmarks/ui/Main/BookmarkItem';
 import Divider from '@/category/ui/Divider';
 import BottomFixedButton from '@/common-ui/BottomFixedButton';
 import Text from '@/common-ui/Text';
-import { navigatePath } from '@/constants/navigatePath';
 import FriendFollowingItem from '@/friend/ui/friend/FriendFollowingItem';
 import SettingsBox from '@/members/ui/SettingsBox';
 import getRem from '@/utils/getRem';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
+import { AppScreen } from '@stackflow/plugin-basic-ui';
+import { ActivityComponentType } from '@stackflow/react';
+import { useFlow } from '@/common-ui/stackflow';
 
-const IntroducePage = () => {
-  const navigate = useNavigate();
+const IntroducePage: ActivityComponentType = () => {
+  const { push } = useFlow();
   const onClickConfirm = () => {
-    navigate(navigatePath.PROFILE);
+    push(
+      'MainPage',
+      {},
+      {
+        animate: true,
+      },
+    );
   };
 
   return (
-    <>
+    <AppScreen>
       <Title level="h2" fontSize={1.5} weight="bold">
         피클리는 이런 서비스에요
       </Title>
@@ -78,7 +85,7 @@ const IntroducePage = () => {
         />
       </PaddingWrapper>
       <BottomFixedButton onClick={onClickConfirm}>확인했어요</BottomFixedButton>
-    </>
+    </AppScreen>
   );
 };
 

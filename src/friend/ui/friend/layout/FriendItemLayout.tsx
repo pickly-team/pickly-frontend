@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
-import { useNavigate } from 'react-router-dom';
-import { navigatePath } from '@/constants/navigatePath';
+import { useFlow } from '@/common-ui/stackflow';
 
 interface FriendItemLayoutProps {
   emoji: ReactNode;
@@ -18,13 +17,15 @@ const FriendItemLayout = ({
   id,
   disabled = false,
 }: FriendItemLayoutProps) => {
-  const navigate = useNavigate();
+  const { push } = useFlow();
 
   return (
     <Container
       onClick={() =>
         !disabled &&
-        navigate(navigatePath.FRIEND_BOOKMARK.replace(':id', String(id)))
+        push('FriendBookmarkPage', {
+          id: String(id),
+        })
       }
     >
       <EmojiAndNameWrapper>

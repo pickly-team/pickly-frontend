@@ -1,8 +1,7 @@
 import { GET_USER_PROFILE } from '@/auth/api/profile';
+import { useFlow } from '@/common-ui/stackflow';
 import client from '@/common/service/client';
-import { navigatePath } from '@/constants/navigatePath';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 
 interface RequestInterface {
   memberId: number;
@@ -30,12 +29,12 @@ export interface PutAPIRequest {
   memberId: number;
 }
 export const usePutUserInfoQuery = ({ mode, memberId }: PutAPIRequest) => {
-  const router = useNavigate();
+  const { push } = useFlow();
   const queryClient = useQueryClient();
   return useMutation(putUserInfo, {
     onSuccess: () => {
-      if (mode === 'CREATE') router(navigatePath.INTRODUCE);
-      if (mode === 'EDIT') router(navigatePath.PROFILE);
+      if (mode === 'CREATE') push('IntroducePage', {});
+      if (mode === 'EDIT') push('ProfilePage', {});
       queryClient.invalidateQueries(GET_USER_PROFILE({ loginId: memberId }));
     },
     onError: (e) => console.log(e),

@@ -4,8 +4,7 @@ import Icon from '@/common-ui/assets/Icon';
 import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
 import { timeStampToDate } from '@/utils/date/timeConverter';
-import { navigatePath } from '@/constants/navigatePath';
-import { useNavigate } from 'react-router-dom';
+import { useFlow } from '@/common-ui/stackflow';
 
 interface CommentListProps {
   id: number;
@@ -26,10 +25,12 @@ const CommentItem = ({
   updatedAt,
   category,
 }: CommentListProps) => {
-  const navigate = useNavigate();
+  const { push } = useFlow();
 
   const navigateToBookmark = () => {
-    navigate(navigatePath.BOOKMARK_DETAIL.replace(':id', String(bookmarkId)));
+    push('BookMarkDetailPage', {
+      bookmarkId: String(bookmarkId),
+    });
   };
 
   return (

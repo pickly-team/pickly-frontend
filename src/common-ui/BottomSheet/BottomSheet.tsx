@@ -43,13 +43,19 @@ const BottomSheet = ({
   }, [open]);
 
   return (
-    <Background onClick={(e) => e.stopPropagation()} visible={showBackground}>
+    <Background
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+      visible={showBackground}
+    >
       <div data-testid="bottom-sheet">
         <SpringBottomSheet
           open={open}
           onDismiss={onClose}
           skipInitialTransition
           ref={ref}
+          id="bottom-sheet"
           snapPoints={({ minHeight, maxHeight }) => [
             minHeight,
             maxHeight * (bsMaxHeight / 100),

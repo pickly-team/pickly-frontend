@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import RoundedBox from '@/members/ui/RoundedBox';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
@@ -7,6 +5,7 @@ import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import Icon from '@/common-ui/assets/Icon';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import { Link } from '@/common-ui/Link';
 
 const CustomerFeedbackBox = () => {
   const { fireToast } = useToast();
@@ -20,7 +19,11 @@ const CustomerFeedbackBox = () => {
 
   return (
     <Container>
-      <StyledLink to="/faq">
+      <Link
+        style={{ width: '100%' }}
+        activityName="FaqPage"
+        activityParams={{}}
+      >
         <RoundedBox
           borderColor="lightPrimary"
           style={{
@@ -32,7 +35,7 @@ const CustomerFeedbackBox = () => {
           <FeedbackText>❓ FAQ</FeedbackText>
           <Icon name={'arrow-right-black'} size={'xs'} />
         </RoundedBox>
-      </StyledLink>
+      </Link>
       <BoxWrapper onClick={onClickInquiry}>
         <RoundedBox
           borderColor="lightPrimary"
@@ -55,9 +58,6 @@ const Container = styled.div`
   margin-top: ${getRem(21)};
   width: 100%;
   gap: ${getRem(16)};
-`;
-const StyledLink = styled(Link)`
-  width: 100%;
 `;
 
 const BoxWrapper = styled.div`

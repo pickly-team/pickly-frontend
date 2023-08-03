@@ -4,14 +4,14 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 const DOMAIN = 'CATEGORY';
 
 export const GET_CATEGORY_LIST = (memberId: number) => [
-  navigatePath.CATEGORY_LIST,
+  navigatePath.CategoryListPage,
   DOMAIN,
   'CATEGORY_LIST',
   memberId,
 ];
 
 export const GET_CATEGORY = (memberId: number, categoryId: string) => [
-  navigatePath.CATEGORY_EDIT,
+  navigatePath.CategoryListPage,
   DOMAIN,
   'CATEGORY',
   memberId,

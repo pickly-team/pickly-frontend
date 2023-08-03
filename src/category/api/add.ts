@@ -1,11 +1,11 @@
 import { GET_BOOKMARK_CATEGORY_LIST } from '@/bookmarks/api/bookmark';
 import client from '@/common/service/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { GET_CATEGORY_LIST } from './category';
 import useBookmarkStore from '@/store/bookmark';
 import { navigatePath } from '@/constants/navigatePath';
 import { bookmarkAddPagePaths } from '@/pages/CategoryManagePage';
+import { useFlow } from '@/common-ui/stackflow';
 
 interface CategoryItem {
   name: string;
@@ -35,7 +35,7 @@ interface POSTCategoryMutation {
 export const usePOSTCategoryMutation = ({ memberId }: POSTCategoryMutation) => {
   const queryClient = useQueryClient();
 
-  const router = useNavigate();
+  const { push, pop } = useFlow();
   const { fromPath } = useBookmarkStore();
 
   return useMutation(POSTCategory.API, {
@@ -43,24 +43,15 @@ export const usePOSTCategoryMutation = ({ memberId }: POSTCategoryMutation) => {
       await queryClient.refetchQueries(GET_CATEGORY_LIST(memberId));
       queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
 
-      if (fromPath === navigatePath.MAIN) {
-        router('/', {
-          preventScrollReset: true,
-          state: {
-            isCategoryAddPage: true,
-          },
-        });
+      if (fromPath === navigatePath.MainPage) {
+        push('MainPage', {});
         return;
       }
       if (bookmarkAddPagePaths.some((path) => path.includes(fromPath))) {
-        router(fromPath, {
-          state: {
-            isCategoryAddPage: true,
-          },
-        });
+        push('MainPage', {});
         return;
       }
-      router(-1);
+      pop();
     },
   });
 };

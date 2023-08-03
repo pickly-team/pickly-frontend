@@ -9,12 +9,12 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { GET_LIKE_BOOKMARK_LIST } from './like';
 import { GET_USER_PROFILE } from '@/auth/api/profile';
+import { useFlow } from '@/common-ui/stackflow';
 dayjs.locale('ko');
 
 const DOMAIN = 'BOOKMARK';
@@ -773,7 +773,7 @@ export const usePOSTBookmarkReportMutation = ({
 }: POSTBookmarkReportMutation) => {
   const queryClient = useQueryClient();
   const toast = useToast();
-  const router = useNavigate();
+  const { pop } = useFlow();
   return useMutation(postBookmarkReportAPI, {
     onSuccess: () => {
       queryClient.refetchQueries(GET_BOOKMARK_LIST(reporterId, false, 0));
@@ -782,7 +782,7 @@ export const usePOSTBookmarkReportMutation = ({
         message: '신고 되었습니다',
         mode: 'SUCCESS',
       });
-      router(-1);
+      pop();
     },
     onError: (e: AxiosError) => {
       const errorCode = e.response?.status;
@@ -791,7 +791,7 @@ export const usePOSTBookmarkReportMutation = ({
           message: '이미 신고한 북마크에요',
           mode: 'DELETE',
         });
-        router(-1);
+        pop();
       }
     },
   });

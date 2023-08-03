@@ -4,10 +4,9 @@ import getRem from '@/utils/getRem';
 import { theme } from '@/styles/theme';
 import Text from '@/common-ui/Text';
 import Icon from '@/common-ui/assets/Icon';
-import { Link } from 'react-router-dom';
-import { navigatePath } from '@/constants/navigatePath';
 import getRandomElementFromArray from '@/utils/getRandomElementFromArray';
 import { timeStampToDate } from '@/utils/date/timeConverter';
+import { Link } from '@/common-ui/Link';
 
 const NOTIFICATION_TITLES = [
   '읽지 않은 북마크가 있어요!',
@@ -42,27 +41,32 @@ const NotificationSlideItem = ({
   return (
     <SlideItem
       main={
-        <NotificationInfoWrapper
-          isRead={isRead}
-          onClick={toggleReadNotification}
+        <Link
+          activityName="BookMarkDetailPage"
+          activityParams={{
+            bookmarkId: id,
+          }}
         >
-          <Text.Span fontSize={getRem(16)} weight={'bold'}>
-            {title}
-          </Text.Span>
-          <NotificationContentWrapper>
-            <TitleAndCreatedAtLink
-              to={`${navigatePath.BOOKMARK_DETAIL.replace(':id', id)}`}
-            >
-              <TitleText fontSize={getRem(12)}>{content}</TitleText>
-              <CreatedAtText fontSize={getRem(8)}>
-                {timeStampToDate(createdAt)}
-              </CreatedAtText>
-            </TitleAndCreatedAtLink>
-            <EllipseWrapper>
-              {showEllipse && <IsBeforeReadEllipseWrapper />}
-            </EllipseWrapper>
-          </NotificationContentWrapper>
-        </NotificationInfoWrapper>
+          <NotificationInfoWrapper
+            isRead={isRead}
+            onClick={toggleReadNotification}
+          >
+            <Text.Span fontSize={getRem(16)} weight={'bold'}>
+              {title}
+            </Text.Span>
+            <NotificationContentWrapper>
+              <TitleAndCreatedAtLink>
+                <TitleText fontSize={getRem(12)}>{content}</TitleText>
+                <CreatedAtText fontSize={getRem(8)}>
+                  {timeStampToDate(createdAt)}
+                </CreatedAtText>
+              </TitleAndCreatedAtLink>
+              <EllipseWrapper>
+                {showEllipse && <IsBeforeReadEllipseWrapper />}
+              </EllipseWrapper>
+            </NotificationContentWrapper>
+          </NotificationInfoWrapper>
+        </Link>
       }
       option={
         <DeleteWrapper onClick={deleteNotification}>
@@ -93,7 +97,7 @@ const NotificationContentWrapper = styled.div`
   margin-top: ${getRem(8)};
 `;
 
-const TitleAndCreatedAtLink = styled(Link)`
+const TitleAndCreatedAtLink = styled.div`
   display: grid;
   width: 100%;
   border-left: 3px solid ${theme.colors.lightPrimary};
