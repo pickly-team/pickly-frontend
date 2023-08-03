@@ -31,15 +31,9 @@ const BookmarkItem = ({
   const { push } = useFlow();
 
   const onClickBookmark = () => {
-    push(
-      'BookMarkDetailPage',
-      {
-        bookmarkId: String(bookmarkId),
-      },
-      {
-        animate: true,
-      },
-    );
+    push('BookMarkDetailPage', {
+      bookmarkId: String(bookmarkId),
+    });
   };
 
   return (
