@@ -9,6 +9,9 @@ import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
 import BSConfirmation from '@/common/ui/BSConfirmation';
 import useHandleBookmarkDetailMore from '@/bookmarks/service/hooks/detail/useHandleBookmarkDetailMore';
+import SkeletonBookmarkDetail from '@/bookmarks/ui/Detail/SkeletonBookmarkDetail';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import SkeletonCommentList from '@/comment/ui/bookmark/SkeletonCommentList';
 
 const BookMarkDetailPage = () => {
   const {
@@ -56,7 +59,13 @@ const BookMarkDetailPage = () => {
       />
       <Body>
         {/** 북마크 정보 영역 */}
-        <Suspense>
+        <Suspense
+          fallback={
+            <SkeletonWrapper>
+              <SkeletonBookmarkDetail />
+            </SkeletonWrapper>
+          }
+        >
           <BookmarkArticle
             editBookmarkBS={editBookmarkBS}
             openEditBookmarkBS={onClickEditBookmark}
@@ -64,7 +73,13 @@ const BookMarkDetailPage = () => {
           />
         </Suspense>
         {/** 댓글 리스트 영역 */}
-        <Suspense>
+        <Suspense
+          fallback={
+            <SkeletonWrapper>
+              <SkeletonCommentList />
+            </SkeletonWrapper>
+          }
+        >
           <CommentList />
         </Suspense>
       </Body>

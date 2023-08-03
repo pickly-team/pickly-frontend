@@ -5,6 +5,7 @@ import FriendSkeletonItem from '@/friend/ui/FriendSkeletonItem';
 import IconButton from '@/common/ui/IconButton';
 import { useNavigate } from 'react-router-dom';
 import { navigatePath } from '@/constants/navigatePath';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 
 const FriendPage = () => {
   const router = useNavigate();
@@ -21,9 +22,11 @@ const FriendPage = () => {
         }
       />
       <Suspense
-        fallback={Array.from({ length: 5 }, (_, item) => (
-          <FriendSkeletonItem key={item} />
-        ))}
+        fallback={
+          <SkeletonWrapper>
+            <FriendSkeletonItem />
+          </SkeletonWrapper>
+        }
       >
         <Friends />
       </Suspense>
