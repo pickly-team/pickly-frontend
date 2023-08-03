@@ -12,7 +12,6 @@ import {
 } from '../api/friends';
 import BlankItem from '@/common-ui/BlankItem';
 import useFriendStore, { FriendType } from '@/store/friend';
-import { Link } from '@/common-ui/Link';
 
 const Friends = () => {
   const { memberId } = useAuthStore();
@@ -32,12 +31,7 @@ const Friends = () => {
     followingData?.pages.flatMap((page) => page.contents) ?? [];
 
   return (
-    <Link
-      activityName="FriendBookmarkPage"
-      activityParams={{
-        id: memberId.toString(),
-      }}
-    >
+    <>
       <FriendTypeSelect
         value={selectedType}
         onSelect={setSelectedType}
@@ -76,7 +70,7 @@ const Friends = () => {
             />
           ))}
       </Container>
-    </Link>
+    </>
   );
 };
 
