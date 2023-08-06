@@ -176,10 +176,13 @@ export const useDELETEBookMarkMutation = ({
   return useMutation(DELETEBookMarkList.API, {
     onSuccess: () => {
       queryClient.refetchQueries(
-        GET_BOOKMARK_LIST(userId, false, categoryId ?? 0),
+        GET_BOOKMARK_LIST(userId, true, categoryId ?? 0),
       );
       queryClient.refetchQueries(
-        GET_BOOKMARK_LIST(userId, true, categoryId ?? 0),
+        GET_BOOKMARK_LIST(userId, null, categoryId ?? 0),
+      );
+      queryClient.refetchQueries(
+        GET_BOOKMARK_LIST(userId, false, categoryId ?? 0),
       );
       toast.fireToast({
         message: '삭제 되었습니다',
@@ -664,25 +667,37 @@ export const refetchAllBookmarkQuery = ({
   queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
     GET_BOOKMARK_LIST(memberId, false, 0),
     (prev) => {
-      if (prev) {
-        if (!prev) return undefined;
-        return {
-          ...prev,
-          pages: prev.pages.map((page) => ({
-            ...page,
-            contents: page.contents.map((bookmark) => {
-              if (bookmark.bookmarkId === Number(bookmarkId)) {
-                return {
-                  ...bookmark,
-                  readByUser: true,
-                };
-              }
-              return bookmark;
-            }),
-          })),
-        };
-      }
-      return prev;
+      return toggleBookmarkRead(prev, Number(bookmarkId));
+    },
+  );
+  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
+    GET_BOOKMARK_LIST(memberId, false, categoryId ?? 0),
+    (prev) => {
+      return toggleBookmarkRead(prev, Number(bookmarkId));
+    },
+  );
+  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
+    GET_BOOKMARK_LIST(memberId, true, 0),
+    (prev) => {
+      return toggleBookmarkRead(prev, Number(bookmarkId));
+    },
+  );
+  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
+    GET_BOOKMARK_LIST(memberId, true, categoryId ?? 0),
+    (prev) => {
+      return toggleBookmarkRead(prev, Number(bookmarkId));
+    },
+  );
+  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
+    GET_BOOKMARK_LIST(memberId, null, 0),
+    (prev) => {
+      return toggleBookmarkRead(prev, Number(bookmarkId));
+    },
+  );
+  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
+    GET_BOOKMARK_LIST(memberId, null, categoryId ?? 0),
+    (prev) => {
+      return toggleBookmarkRead(prev, Number(bookmarkId));
     },
   );
   queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, true, 0));
@@ -697,6 +712,31 @@ export const refetchAllBookmarkQuery = ({
   queryClient.refetchQueries(
     GET_BOOKMARK_LIST(memberId, null, categoryId ?? 0),
   );
+};
+
+const toggleBookmarkRead = (
+  prev: InfiniteData<SeverBookMarkItem> | undefined,
+  bookmarkId: number,
+) => {
+  if (prev) {
+    if (!prev) return undefined;
+    return {
+      ...prev,
+      pages: prev.pages.map((page) => ({
+        ...page,
+        contents: page.contents.map((bookmark) => {
+          if (bookmark.bookmarkId === Number(bookmarkId)) {
+            return {
+              ...bookmark,
+              readByUser: true,
+            };
+          }
+          return bookmark;
+        }),
+      })),
+    };
+  }
+  return prev;
 };
 
 // 북마크 수정
