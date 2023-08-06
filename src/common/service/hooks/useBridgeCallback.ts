@@ -19,6 +19,8 @@ interface BridgeParams {
   };
   /** snap 초기화 */
   initialize: null;
+  /** 페이지 뒤로 가기 */
+  goBack: null;
 }
 
 function useBridgeCallback<T extends keyof BridgeParams>(
