@@ -11,7 +11,6 @@ import {
   useGETCommentCntQuery,
   useGETLikeCountQuery,
   useGETNotificationSettingDayQuery,
-  useGETNotificationStandardsQuery,
   useGetCategoryCntQuery,
 } from '@/members/api/member';
 
@@ -36,11 +35,6 @@ const ProfilePage = () => {
     loginId: userInfo.id,
   });
 
-  // 4. 알림 시간 조회
-  const { data: notificationSetting } = useGETNotificationStandardsQuery({
-    loginId: userInfo.id,
-  });
-
   return (
     <Layout>
       {/** 유저 정보 */}
@@ -52,21 +46,10 @@ const ProfilePage = () => {
           numberOfCategories={categoryCount || 0}
           numberOfComments={commentCount || 0}
         />
+        {/** 알림 시간 설정 */}
+        <NotificationSettingBox />
         {/** 알림 기준 일자 설정 */}
         <SettingsBox serverRemindInDays={notificationSettingDay || 7} />
-        {/** 알림 시간 설정 */}
-        <NotificationSettingBox
-          notificationSetting={{
-            time: {
-              hour: Number(
-                notificationSetting?.notifyDailyAt.split(':')[0] || 9,
-              ),
-              minute: Number(
-                notificationSetting?.notifyDailyAt.split(':')[1] || 0,
-              ),
-            },
-          }}
-        />
         <CustomerFeedbackBox />
       </LBody>
     </Layout>
