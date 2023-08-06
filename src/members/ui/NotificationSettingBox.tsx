@@ -66,7 +66,6 @@ const NotificationSettingBox = () => {
           paddingBottom: `${getRem(30)}`,
         }}
         onClick={() => isNotificationOn && open()}
-        borderColor="lightPrimary"
       >
         <Text.Span color={'grey900'} fontSize={1.2}>
           {'🔔 '}
