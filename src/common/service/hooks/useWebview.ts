@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-type POST_MESSAGE_TYPE = 'login' | 'notification';
+type POST_MESSAGE_TYPE = 'login' | 'notification' | 'goBack';
 
 const useWebview = () => {
   return React.useMemo(() => {
