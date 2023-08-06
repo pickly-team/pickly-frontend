@@ -6,7 +6,10 @@ import Icon from '@/common-ui/assets/Icon';
 import RoundedBox from '@/members/ui/RoundedBox';
 import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
-import { usePATCHNotificationDayQuery } from '../api/member';
+import {
+  useGETNotificationStandardsQuery,
+  usePATCHNotificationDayQuery,
+} from '../api/member';
 import useAuthStore from '@/store/auth';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 
@@ -26,6 +29,10 @@ const SettingsBox = ({
 
   const { mutate } = usePATCHNotificationDayQuery({ loginId: memberId });
 
+  const { data: defaultTime } = useGETNotificationStandardsQuery({
+    loginId: memberId,
+  });
+
   useEffect(() => {
     setRemindInDays(serverRemindInDays);
   }, [serverRemindInDays]);
@@ -34,6 +41,13 @@ const SettingsBox = ({
 
   const toggleIsEditing = () => {
     if (disabled) return;
+    if (!defaultTime?.isActive) {
+      fireToast({
+        message: '앗! 알림 설정이 필요해요',
+        mode: 'ERROR',
+      });
+      return;
+    }
     if (isEditing) {
       if (remindInDays === serverRemindInDays) {
         setIsEditing(!isEditing);
