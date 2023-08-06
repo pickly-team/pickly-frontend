@@ -126,11 +126,11 @@ const RemindingDescription = ({
 
   return (
     <>
-      <StyledTitle>
+      <Text.P fontSize={1.25} weight="bold" color="grey900">
         {unreadBookmarkExists
           ? '앗! 잊혀진 북마크가 있어요 🔥'
           : '북마크를 모두 읽으셨어요! 👏'}
-      </StyledTitle>
+      </Text.P>
       <StyledDescription>
         {unreadBookmarkExists ? (
           <>
@@ -169,11 +169,6 @@ const RemindingDescription = ({
   );
 };
 
-const StyledTitle = styled.div`
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: ${theme.colors.grey900};
-`;
 const StyledDescription = styled.div`
   margin-top: ${getRem(20)};
 `;
