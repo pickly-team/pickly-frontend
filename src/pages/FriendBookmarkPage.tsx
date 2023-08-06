@@ -4,9 +4,7 @@ import styled from '@emotion/styled';
 import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
-import useReadList, {
-  READ_OPTIONS,
-} from '@/bookmarks/service/hooks/home/useReadList';
+import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import getRem from '@/utils/getRem';
 import { useParams } from 'react-router-dom';
 import Header from '@/common-ui/Header/Header';
@@ -149,7 +147,7 @@ const FriendBookmarkPage = () => {
           <BookmarkListView
             memberId={friendId ? Number(friendId) : 0}
             isEditMode={false}
-            isReadMode={READ_OPTIONS[selectedReadOption ?? '📖 전체']}
+            readMode={selectedReadOption ?? '📖 전체'}
           />
         </Suspense>
       </LMiddle>
