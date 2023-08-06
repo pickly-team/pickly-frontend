@@ -65,12 +65,11 @@ const NotificationSettingBox = () => {
           paddingTop: `${getRem(30)}`,
           paddingBottom: `${getRem(30)}`,
         }}
-        onClick={() => isNotificationOn && open()}
       >
         <Text.Span color={'grey900'} fontSize={1.2}>
           {'🔔 '}
         </Text.Span>
-        <Text.Span color={'grey900'} fontSize={1.1}>
+        <Text.Span color={'grey900'} weight="bold" fontSize={1}>
           알림을 받아볼까요?
         </Text.Span>
         <RoundToggle
