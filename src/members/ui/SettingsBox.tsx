@@ -43,7 +43,7 @@ const SettingsBox = ({
     if (disabled) return;
     if (!defaultTime?.isActive) {
       fireToast({
-        message: '앗! 알림 설정이 필요해요',
+        message: '앗! 알림 설정이 꺼져 있어요',
         mode: 'ERROR',
       });
       return;
