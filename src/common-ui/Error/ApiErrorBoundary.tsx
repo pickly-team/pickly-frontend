@@ -1,6 +1,20 @@
-import React, { Component, ErrorInfo } from 'react';
+import React, { Component } from 'react';
 import { AxiosError } from 'axios';
 import NetworkError from './NetworkError';
+import { POST_MESSAGE_TYPE } from '@/common/service/hooks/useWebview';
+
+type ErrorType = 'NO_USER_INFO';
+
+const ErrorTypes: Record<ErrorType, string> = {
+  NO_USER_INFO: 'M001',
+} as const;
+
+interface CustomData {
+  message: string;
+  code: ErrorType;
+}
+
+type CustomAxiosError = AxiosError<CustomData>;
 
 interface State {
   shouldHandleError: boolean;
@@ -9,6 +23,7 @@ interface State {
 
 interface Props {
   children: React.ReactNode;
+  postMessage: (message: POST_MESSAGE_TYPE) => void;
 }
 
 class ApiErrorBoundary extends Component<Props, State> {
@@ -30,10 +45,11 @@ class ApiErrorBoundary extends Component<Props, State> {
     };
   }
 
-  componentDidCatch(error: AxiosError, errorInfo: ErrorInfo) {
-    console.log(error, errorInfo);
-
-    // TODO: Sentry에 에러 로그를 남기는 로직을 추가해야 합니다.
+  componentDidCatch(error: CustomAxiosError) {
+    if (error.response?.data.code === ErrorTypes.NO_USER_INFO) {
+      alert('로그인이 필요합니다.');
+      this.props.postMessage('signUp');
+    }
   }
 
   render() {
