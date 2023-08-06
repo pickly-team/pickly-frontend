@@ -26,6 +26,7 @@ import FriendSearchPage from './pages/FriendSearchPage';
 import RNListener from './RNListener';
 import BlockUserListPage from './pages/BlockUserListPage';
 import IntroducePage from './pages/IntroducePage';
+import WithPostMessage from './utils/WithPostMessage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,70 +48,86 @@ const App = () => {
         <ToastList />
         <BrowserRouter>
           <RNListener />
-          <ApiErrorBoundary>
-            <Layout>
-              <Routes>
-                <Route
-                  path={navigatePath.INTRODUCE}
-                  element={<IntroducePage />}
-                />
-                <Route path={navigatePath.MAIN} element={<MainPage />} />
-                <Route
-                  path={navigatePath.BOOKMARK_DETAIL}
-                  element={<BookMarkDetailPage />}
-                />
-                <Route path={navigatePath.FAQ} element={<FaqPage />} />
-                <Route
-                  path={navigatePath.COMMENT_REPORT}
-                  element={<ReportPage mode="COMMENT" />}
-                />
-                <Route
-                  path={navigatePath.BOOKMARK_REPORT}
-                  element={<ReportPage mode="BOOKMARK" />}
-                />
-                <Route
-                  path={navigatePath.USER}
-                  element={<UserCreatePage mode="CREATE" />}
-                />
-                <Route
-                  path={navigatePath.NOTIFICATION}
-                  element={<NotificationPage />}
-                />
-                <Route
-                  path={navigatePath.USER_EDIT}
-                  element={<UserCreatePage mode="EDIT" />}
-                />
-                <Route
-                  path={navigatePath.CATEGORY_LIST}
-                  element={<CategoryListPage />}
-                />
-                <Route
-                  path={navigatePath.CATEGORY_ADD}
-                  element={<CategoryAddPage mode="ADD" />}
-                />
-                <Route
-                  path={navigatePath.CATEGORY_EDIT}
-                  element={<CategoryAddPage mode="EDIT" />}
-                />
-                <Route path={navigatePath.COMMENT} element={<CommentPage />} />
-                <Route path={navigatePath.PROFILE} element={<ProfilePage />} />
-                <Route path={navigatePath.LIKE_PAGE} element={<LikePage />} />
-                <Route path={navigatePath.FRIEND} element={<FriendPage />} />
-                <Route
-                  path={navigatePath.FRIEND_SEARCH}
-                  element={<FriendSearchPage />}
-                />
-                <Route
-                  path={navigatePath.FRIEND_BOOKMARK}
-                  element={<FriendBookmarkPage />}
-                />
-                <Route
-                  path={navigatePath.BLOCK_USER}
-                  element={<BlockUserListPage />}
-                />
-              </Routes>
-            </Layout>
-          </ApiErrorBoundary>
+          <WithPostMessage>
+            {(postMessage) => (
+              <ApiErrorBoundary postMessage={postMessage}>
+                <Layout>
+                  <Routes>
+                    <Route
+                      path={navigatePath.INTRODUCE}
+                      element={<IntroducePage />}
+                    />
+                    <Route path={navigatePath.MAIN} element={<MainPage />} />
+                    <Route
+                      path={navigatePath.BOOKMARK_DETAIL}
+                      element={<BookMarkDetailPage />}
+                    />
+                    <Route path={navigatePath.FAQ} element={<FaqPage />} />
+                    <Route
+                      path={navigatePath.COMMENT_REPORT}
+                      element={<ReportPage mode="COMMENT" />}
+                    />
+                    <Route
+                      path={navigatePath.BOOKMARK_REPORT}
+                      element={<ReportPage mode="BOOKMARK" />}
+                    />
+                    <Route
+                      path={navigatePath.USER}
+                      element={<UserCreatePage mode="CREATE" />}
+                    />
+                    <Route
+                      path={navigatePath.NOTIFICATION}
+                      element={<NotificationPage />}
+                    />
+                    <Route
+                      path={navigatePath.USER_EDIT}
+                      element={<UserCreatePage mode="EDIT" />}
+                    />
+                    <Route
+                      path={navigatePath.CATEGORY_LIST}
+                      element={<CategoryListPage />}
+                    />
+                    <Route
+                      path={navigatePath.CATEGORY_ADD}
+                      element={<CategoryAddPage mode="ADD" />}
+                    />
+                    <Route
+                      path={navigatePath.CATEGORY_EDIT}
+                      element={<CategoryAddPage mode="EDIT" />}
+                    />
+                    <Route
+                      path={navigatePath.COMMENT}
+                      element={<CommentPage />}
+                    />
+                    <Route
+                      path={navigatePath.PROFILE}
+                      element={<ProfilePage />}
+                    />
+                    <Route
+                      path={navigatePath.LIKE_PAGE}
+                      element={<LikePage />}
+                    />
+                    <Route
+                      path={navigatePath.FRIEND}
+                      element={<FriendPage />}
+                    />
+                    <Route
+                      path={navigatePath.FRIEND_SEARCH}
+                      element={<FriendSearchPage />}
+                    />
+                    <Route
+                      path={navigatePath.FRIEND_BOOKMARK}
+                      element={<FriendBookmarkPage />}
+                    />
+                    <Route
+                      path={navigatePath.BLOCK_USER}
+                      element={<BlockUserListPage />}
+                    />
+                  </Routes>
+                </Layout>
+              </ApiErrorBoundary>
+            )}
+          </WithPostMessage>
         </BrowserRouter>
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
