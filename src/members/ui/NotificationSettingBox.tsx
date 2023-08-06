@@ -3,13 +3,7 @@ import { useEffect, useState } from 'react';
 import Text from '@/common-ui/Text';
 import RoundedBox from '@/members/ui/RoundedBox';
 import getRem from '@/utils/getRem';
-import {
-  NotificationSetting,
-  toReadableTime,
-} from '@/notification/api/notification';
 import RoundToggle from '@/common-ui/RoundToggle';
-import NotificationSettingsBottomSheet from '@/members/ui/NotificationSettingsBottomSheet';
-import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import {
   useGETNotificationStandardsQuery,
   usePUTNotificationStandardsQuery,
@@ -17,13 +11,8 @@ import {
 import useAuthStore from '@/store/auth';
 import useWebview from '@/common/service/hooks/useWebview';
 
-const NotificationSettingBox = ({
-  notificationSetting,
-}: {
-  notificationSetting: NotificationSetting;
-}) => {
+const NotificationSettingBox = () => {
   const [isNotificationOn, setIsNotificationOn] = useState(false);
-  const { isOpen, open, close } = useBottomSheet();
 
   const { memberId } = useAuthStore();
 
@@ -79,8 +68,11 @@ const NotificationSettingBox = ({
         onClick={() => isNotificationOn && open()}
         borderColor="lightPrimary"
       >
-        <Text.Span color={'grey900'} fontSize={1.25}>
-          {`🔔 ${toReadableTime(notificationSetting.time)}`}
+        <Text.Span color={'grey900'} fontSize={1.2}>
+          {'🔔 '}
+        </Text.Span>
+        <Text.Span color={'grey900'} fontSize={1.1}>
+          알림을 받아볼까요?
         </Text.Span>
         <RoundToggle
           style={{
@@ -93,11 +85,6 @@ const NotificationSettingBox = ({
           setOff={onDeactivate}
         />
       </RoundedBox>
-      <NotificationSettingsBottomSheet
-        defaultTime={defaultTime?.notifyDailyAt || '09:00'}
-        open={isOpen}
-        onClose={close}
-      />
     </>
   );
 };
