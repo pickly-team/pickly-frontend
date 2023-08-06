@@ -5,10 +5,14 @@ import BookmarkItem from './BookmarkItem';
 import BookmarkSkeletonItem from './BookmarkSkeletonItem';
 import BlankItem from '@/common-ui/BlankItem';
 import BookmarkEditItem from './BookmarkEditItem';
+import {
+  READ_OPTION,
+  READ_OPTIONS,
+} from '@/bookmarks/service/hooks/home/useReadList';
 
 interface BookmarkListViewProps {
   memberId: number;
-  isReadMode: boolean | null;
+  readMode: READ_OPTION;
   isEditMode: boolean;
   selectedCategory?: number | null;
   onClickBookmarkItemInEdit?: (bookmarkId: number) => void;
@@ -16,13 +20,13 @@ interface BookmarkListViewProps {
 
 const BookmarkListView = ({
   memberId,
-  isReadMode,
+  readMode,
   isEditMode,
   selectedCategory,
   onClickBookmarkItemInEdit,
 }: BookmarkListViewProps) => {
   const { bookMarkList, fetchNextPage, isFetchingNextPage } = useBookmarkList({
-    readByUser: isReadMode,
+    readByUser: READ_OPTIONS[readMode],
     categoryId: selectedCategory,
     memberId,
   });
@@ -38,16 +42,17 @@ const BookmarkListView = ({
     <>
       {!flatBookMarkList?.length && (
         <>
-          {!!isReadMode && <BlankItem page="BOOKMARK" />}
-          {!isReadMode && <BlankItem page="BOOKMARK_READ" />}
+          {readMode === '📖 전체' && <BlankItem page="BOOKMARK" />}
+          {readMode === '👀 읽음' && <BlankItem page="BOOKMARK" />}
+          {readMode === '🫣 읽지 않음' && <BlankItem page="BOOKMARK_READ" />}
         </>
       )}
       {!isEditMode && !!flatBookMarkList?.length && (
         <BookmarkList
           bookmarkList={
-            isReadMode !== null
+            READ_OPTIONS[readMode] !== null
               ? flatBookMarkList.filter(
-                  (bookmark) => bookmark.readByUser === isReadMode,
+                  (bookmark) => bookmark.readByUser === READ_OPTIONS[readMode],
                 )
               : flatBookMarkList
           }
@@ -59,9 +64,9 @@ const BookmarkListView = ({
       {!!isEditMode && !!flatBookMarkList?.length && (
         <BookmarkList
           bookmarkList={
-            isReadMode !== null
+            READ_OPTIONS[readMode] !== null
               ? flatBookMarkList.filter(
-                  (bookmark) => bookmark.readByUser === isReadMode,
+                  (bookmark) => bookmark.readByUser === READ_OPTIONS[readMode],
                 )
               : flatBookMarkList
           }
