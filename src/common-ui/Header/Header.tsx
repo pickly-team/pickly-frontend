@@ -5,6 +5,7 @@ import { theme } from '@/styles/theme';
 import { ReactNode } from 'react';
 import getRem from '@/utils/getRem';
 import { HEADER_Z_INDEX } from '@/constants/zIndex';
+import useWebview from '@/common/service/hooks/useWebview';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -19,8 +20,10 @@ const Header = ({
   rightButton,
   backButtonCallback,
 }: HeaderProps) => {
+  const { postMessage } = useWebview();
   const onClickBackButton = () => {
     window.history.back();
+    postMessage('goBack');
     backButtonCallback && backButtonCallback();
   };
   return (

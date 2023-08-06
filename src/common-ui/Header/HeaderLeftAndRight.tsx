@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import Icon from '../assets/Icon';
 import Text from '../Text';
+import useWebview from '@/common/service/hooks/useWebview';
 
 export interface HeaderProps {
   leftButton: {
@@ -31,11 +32,16 @@ const HeaderLeftAndRight = ({
   middleText,
   rightButton,
 }: HeaderProps) => {
+  const { postMessage } = useWebview();
+  const onClickBackButton = () => {
+    leftButton.onClick();
+    postMessage('goBack');
+  };
   return (
     <StyleHeader>
       <Left>
         {leftButton.type === 'back' && (
-          <button onClick={leftButton.onClick}>
+          <button onClick={onClickBackButton}>
             <Icon name="back" size="m" />
           </button>
         )}
