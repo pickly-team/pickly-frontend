@@ -10,7 +10,8 @@ export type ToastMessage =
   | '이미 신고한 북마크에요'
   | '앗! 알림 설정 기준일은 1일 이상이어야 해요'
   | '차단된 사용자는 팔로우 할 수 없어요'
-  | '준비 중인 기능이에요';
+  | '준비 중인 기능이에요'
+  | '앗! 알림 설정이 필요해요';
 
 export type ToastMode = 'SUCCESS' | 'DELETE' | 'ERROR';
 
