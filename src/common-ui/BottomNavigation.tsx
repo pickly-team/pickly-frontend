@@ -5,19 +5,6 @@ import styled from '@emotion/styled';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from './assets/Icon';
 import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
-import BookmarkAddBS from '@/bookmarks/ui/Main/BookmarkAddBS';
-import useBottomSheet from './BottomSheet/hooks/useBottomSheet';
-import useInputUrl from '@/bookmarks/service/hooks/add/useInputUrl';
-import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
-import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
-import useCategoryList from '@/bookmarks/service/hooks/add/useCategoryList';
-import { useEffect } from 'react';
-import { usePOSTBookmarkMutation } from '@/bookmarks/api/bookmark';
-import checkValidateURL from '@/utils/checkValidateURL';
-import ToastList from './Toast/ToastList';
-import useAuthStore from '@/store/auth';
-
-// TODO : 네비게이터에 대한 path를 재정의 필요
 
 /**
  *
@@ -28,114 +15,14 @@ import useAuthStore from '@/store/auth';
 
 const BottomNavigation = () => {
   const { pathname } = useLocation();
+  const router = useNavigate();
 
-  // SERVER
-  const { categoryList, setCategoryList, toggleCategory } = useCategoryList();
-  // 1. URL & 북마크 Title 입력
-  const {
-    url,
-    title,
-    onChangeUrl,
-    onChangeTitle,
-    handleKeyDown,
-    onDeleteInput,
-    resetAllInputs,
-  } = useInputUrl({});
-
-  // 2. 카테고리 선택
-  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory({});
-
-  // 3. 공개 범위 선택
-  const { onClickPublishScoped, selectedPublishScoped } =
-    useSelectPublishScoped({});
-
-  // 2. 카테고리 변경
-  const onClickCategory = (id: number) => {
-    // 새로운 카테고리 선택
-    setSelectedCategoryId(id);
-    // 선택된 카테고리 변경
-    setCategoryList(toggleCategory(id));
-  };
-
-  // VALIDATION
-  const isValidateUrl = checkValidateURL(url);
-  const isAllWritten = !!(
-    url &&
-    isValidateUrl &&
-    selectedCategoryId &&
-    selectedPublishScoped
-  );
-
-  const { isOpen, close, open } = useBottomSheet();
   const onClickAddButton = () => {
-    open();
-  };
-
-  const routerLocation = useLocation().state as {
-    isCategoryAddPage: boolean;
-  };
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  useEffect(() => {
-    if (routerLocation?.isCategoryAddPage === true) {
-      open();
-      navigate(location.pathname, {
-        state: { fromPath: location.pathname },
-      });
-    }
-  }, [routerLocation?.isCategoryAddPage]);
-
-  const { memberId } = useAuthStore();
-  const { mutate: postBookmark } = usePOSTBookmarkMutation({
-    resetAll: {
-      resetAllInputs,
-      resetCategory: () => {
-        setSelectedCategoryId(0);
-        setCategoryList(toggleCategory(0));
-      },
-      resetVisibility: () => onClickPublishScoped('SCOPE_PUBLIC'),
-    },
-    memberId,
-  });
-
-  const onClickSubmitButton = () => {
-    postBookmark({
-      url: checkValidateURL(url) ? checkValidateURL(url) : '',
-      title,
-      categoryId: Number(selectedCategoryId),
-      visibility: selectedPublishScoped,
-      memberId,
-    });
-    close();
+    router(navigatePath.BOOKMARK_ADD);
   };
 
   return (
     <>
-      <BookmarkAddBS isOpen={isOpen} close={close}>
-        <ToastList />
-        <BookmarkAddBS.URLInput
-          url={url}
-          title={title}
-          isValidateUrl={isValidateUrl.length > 0}
-          onChangeUrl={onChangeUrl}
-          onChangeTitle={onChangeTitle}
-          handleKeyDown={handleKeyDown}
-          onDeleteInput={onDeleteInput}
-        />
-        <BookmarkAddBS.SelectCategory
-          categoryList={categoryList}
-          onClickCategory={onClickCategory}
-        />
-        <BookmarkAddBS.PublishScoped
-          selectedPublishScoped={selectedPublishScoped}
-          onClickPublishScoped={onClickPublishScoped}
-        />
-        <BookmarkAddBS.SubmitButton
-          onClick={onClickSubmitButton}
-          isAllWritten={isAllWritten}
-        />
-      </BookmarkAddBS>
       <NavigationWrapper>
         <button onClick={onClickAddButton} css={plusButton}>
           <Icon name="plus" size="m" />

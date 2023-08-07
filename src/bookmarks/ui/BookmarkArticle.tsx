@@ -3,40 +3,22 @@ import Button from '@/common-ui/Button';
 import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
-import { ReactNode, SyntheticEvent, useEffect } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import BookmarkLikeButton from './Like/BookmarkLikeButton';
 import {
   useDELETEBookmarkLikeQuery,
   useGETBookmarkDetailQuery,
   usePOSTBookmarkLikeQuery,
-  usePUTBookmarkQuery,
 } from '../api/bookmark';
 import { timeStampToDate } from '@/utils/date/timeConverter';
 import CommentCountInfo from '@/comment/ui/bookmark/CommentCountInfo';
 import useCommentStore from '@/store/comment';
-import BookmarkAddBS from './Main/BookmarkAddBS';
-import ToastList from '@/common-ui/Toast/ToastList';
-import useInputUrl from '../service/hooks/add/useInputUrl';
-import useSelectCategory from '../service/hooks/add/useSelectCategory';
-import useSelectPublishScoped from '../service/hooks/add/useSelectPublishScoped';
-import useCategoryList from '../service/hooks/add/useCategoryList';
-import checkValidateURL from '@/utils/checkValidateURL';
 import useAuthStore from '@/store/auth';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-interface BookMarkArticleProps {
-  editBookmarkBS: boolean;
-  openEditBookmarkBS: () => void;
-  closeEditBookmarkBS: () => void;
-}
-
-const BookMarkArticle = ({
-  editBookmarkBS,
-  openEditBookmarkBS,
-  closeEditBookmarkBS,
-}: BookMarkArticleProps) => {
+const BookMarkArticle = () => {
   const { id: bookmarkId } = useParams<{ id: string }>();
   const { memberId } = useAuthStore();
   const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
@@ -59,7 +41,11 @@ const BookMarkArticle = ({
     memberId,
   });
 
-  const isMyPost = bookmarkDetail?.memberId === memberId;
+  const [isMyPost, setIsMyPost] = useState(false);
+
+  useEffect(() => {
+    setIsMyPost(bookmarkDetail?.memberId === memberId);
+  }, [bookmarkDetail?.memberId, memberId]);
 
   const onClickLike = () => {
     if (!isMyPost) return;
@@ -70,74 +56,6 @@ const BookMarkArticle = ({
     if (!isMyPost) return;
     postBookmarkDislike({ bookmarkId: bookmarkId ?? '' });
   };
-
-  // SERVER
-  const { categoryList, toggleCategory } = useCategoryList(
-    bookmarkDetail?.categoryId,
-    editBookmarkBS,
-  );
-  // 1. URL & 북마크 Title 입력
-  const {
-    url,
-    title,
-    onChangeUrl,
-    onChangeTitle,
-    handleKeyDown,
-    onDeleteInput,
-  } = useInputUrl({
-    defaultUrl: bookmarkDetail?.url ?? '',
-    defaultTitle: bookmarkDetail?.title ?? '',
-  });
-
-  // 2. 카테고리 선택
-  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory({
-    defaultCategoryId: bookmarkDetail?.categoryId ?? 0,
-  });
-
-  // 3. 공개 범위 선택
-  const { onClickPublishScoped, selectedPublishScoped } =
-    useSelectPublishScoped({
-      defaultPublishScoped: bookmarkDetail?.visibility ?? 'SCOPE_PUBLIC',
-    });
-
-  const onClickCategory = (id: number) => {
-    // 새로운 카테고리 선택
-    setSelectedCategoryId(id);
-    // 선택된 카테고리 변경
-    toggleCategory(id);
-  };
-
-  // VALIDATION
-  const isValidateUrl = checkValidateURL(url);
-  const isAllWritten = !!(url && selectedCategoryId && selectedPublishScoped);
-
-  const { mutate: putBookmark } = usePUTBookmarkQuery({
-    bookmarkId: bookmarkId ?? '',
-    memberId,
-  });
-
-  const onSubmitBookmark = () => {
-    putBookmark({
-      bookmarkId: bookmarkId ?? '',
-      putData: {
-        categoryId: String(selectedCategoryId) ?? 0,
-        title: title,
-        readByUser: true,
-        visibility: selectedPublishScoped,
-      },
-    });
-    closeEditBookmarkBS();
-  };
-
-  const routerLocation = useLocation().state as {
-    isCategoryAddPage: boolean;
-  };
-
-  useEffect(() => {
-    if (routerLocation?.isCategoryAddPage === true) {
-      openEditBookmarkBS();
-    }
-  }, [routerLocation]);
 
   return (
     <>
@@ -196,32 +114,6 @@ const BookMarkArticle = ({
           />
         </BookMarkInfoWrapper>
       </Container>
-      {/** 북마크 수정 BS */}
-      <BookmarkAddBS isOpen={editBookmarkBS} close={closeEditBookmarkBS}>
-        <ToastList />
-        <BookmarkAddBS.URLInput
-          url={url}
-          title={title}
-          isValidateUrl={isValidateUrl.length > 0}
-          onChangeUrl={onChangeUrl}
-          onChangeTitle={onChangeTitle}
-          handleKeyDown={handleKeyDown}
-          onDeleteInput={onDeleteInput}
-          disabled={true}
-        />
-        <BookmarkAddBS.SelectCategory
-          categoryList={categoryList}
-          onClickCategory={onClickCategory}
-        />
-        <BookmarkAddBS.PublishScoped
-          selectedPublishScoped={selectedPublishScoped}
-          onClickPublishScoped={onClickPublishScoped}
-        />
-        <BookmarkAddBS.SubmitButton
-          onClick={onSubmitBookmark}
-          isAllWritten={isAllWritten}
-        />
-      </BookmarkAddBS>
     </>
   );
 };
