@@ -20,11 +20,11 @@ dayjs.locale('ko');
 const DOMAIN = 'BOOKMARK';
 
 export type Visibility = 'SCOPE_PUBLIC' | 'SCOPE_PRIVATE' | 'SCOPE_FRIEND';
-export type ClientVisibility = '전체 공개' | '나만 보기' | '친구만 보기';
+export type ClientVisibility = '전체 공개' | '나만 보기' | '친구 공개';
 export const TEMP_VISIBILITY: Record<ClientVisibility, Visibility> = {
   '전체 공개': 'SCOPE_PUBLIC',
   '나만 보기': 'SCOPE_PRIVATE',
-  '친구만 보기': 'SCOPE_FRIEND',
+  '친구 공개': 'SCOPE_FRIEND',
 };
 
 export const GET_BOOKMARK_LIST = (
@@ -207,7 +207,6 @@ export interface ClientBookmarkCategoryItem {
   id: number;
   name: string;
   emoji: string;
-  isSelected: boolean;
 }
 
 interface GETBookmarkCategoryListRequest {
@@ -230,7 +229,6 @@ const GETBookmarkCategoryList = {
         id: category.categoryId,
         emoji: category.emoji,
         name: category.name,
-        isSelected: false,
       }))
       .sort((a, b) => a.order - b.order);
   },

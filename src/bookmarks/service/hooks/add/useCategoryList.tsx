@@ -7,10 +7,10 @@ import useAuthStore from '@/store/auth';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 
-const useCategoryList = (defaultCategoryId?: number, isOpen?: boolean) => {
+const useCategoryList = (defaultCategoryId?: number) => {
   const { memberId } = useAuthStore();
   // SERVER
-  const { data: categoryList } = useGETCategoryListQuery({
+  const { data: categoryList, isStale } = useGETCategoryListQuery({
     memberId,
   });
 
@@ -24,8 +24,8 @@ const useCategoryList = (defaultCategoryId?: number, isOpen?: boolean) => {
   };
 
   useEffect(() => {
-    isOpen && toggleCategory(defaultCategoryId ?? 0);
-  }, [defaultCategoryId, isOpen]);
+    isStale && toggleCategory(defaultCategoryId ?? 0);
+  }, [defaultCategoryId, isStale]);
 
   const toggleCategory = useCallback(
     (categoryId: number): ClientBookmarkCategoryItem[] => {
