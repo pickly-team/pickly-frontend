@@ -9,14 +9,24 @@ import { Link } from 'react-router-dom';
 
 interface TagBoxListProps {
   tags: ClientBookmarkCategoryItem[];
+  selectedTagId: number;
   onClickCategory: (id: number) => void;
 }
 
-const TagBoxList = ({ tags, onClickCategory }: TagBoxListProps) => {
+const TagBoxList = ({
+  tags,
+  selectedTagId,
+  onClickCategory,
+}: TagBoxListProps) => {
   return (
     <StyledListWrapper>
       {tags.map((tag) => (
-        <TagBox key={tag.id} tag={tag} onClickCategory={onClickCategory} />
+        <TagBox
+          key={tag.id}
+          isSelected={selectedTagId === tag.id}
+          tag={tag}
+          onClickCategory={onClickCategory}
+        />
       ))}
       <PlusBox to="/category/add" />
     </StyledListWrapper>
@@ -35,18 +45,19 @@ const StyledListWrapper = styled.div`
 
 interface TagBoxProps {
   tag: ClientBookmarkCategoryItem;
+  isSelected: boolean;
   onClickCategory: (id: number) => void;
 }
 
-const TagBox = ({ tag, onClickCategory }: TagBoxProps) => {
+const TagBox = ({ tag, isSelected, onClickCategory }: TagBoxProps) => {
   return (
     <button
       onClick={() => onClickCategory(tag.id)}
       css={css`
-        background-color: ${tag.isSelected
+        background-color: ${isSelected
           ? theme.colors.lightPrimary
           : theme.colors.grey700};
-        color: ${tag.isSelected ? theme.colors.black : theme.colors.white};
+        color: ${isSelected ? theme.colors.black : theme.colors.white};
         padding: ${getRem(5)} ${getRem(10)};
         border-radius: ${getRem(10)};
         transition: background-color 0.3s ease-in-out;
@@ -57,7 +68,7 @@ const TagBox = ({ tag, onClickCategory }: TagBoxProps) => {
       `}
     >
       <Text.Span
-        color={tag.isSelected ? 'black' : 'white'}
+        color={isSelected ? 'black' : 'white'}
         fontSize={calculateRem(13)}
         weight="bold"
       >
