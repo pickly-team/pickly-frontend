@@ -8,6 +8,8 @@ const navigatePath = {
   NOTIFICATION: '/notification',
   PROFILE: '/profile',
   BOOKMARK_DETAIL: '/bookmark/:id',
+  BOOKMARK_ADD: '/bookmark/add',
+  BOOKMARK_EDIT: '/bookmark/edit/:id',
   FAQ: '/faq',
   USER: '/user/:id',
   USER_EDIT: '/user/:id/edit',
