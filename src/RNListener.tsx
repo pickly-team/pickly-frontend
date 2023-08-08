@@ -12,7 +12,7 @@ const RNListener = () => {
   const { postMessage } = useWebview();
 
   useEffect(() => {
-    postMessage('login');
+    postMessage('login', null);
   }, []);
 
   useBridgeCallback(({ message, params }) => {

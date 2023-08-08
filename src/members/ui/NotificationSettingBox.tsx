@@ -31,7 +31,7 @@ const NotificationSettingBox = () => {
   // 사용자 알림 설정 변경 시, 웹뷰에 권한 요청
   const { postMessage } = useWebview();
   useEffect(() => {
-    if (isNotificationOn) postMessage('notification');
+    if (isNotificationOn) postMessage('notification', null);
   }, [isNotificationOn]);
 
   const onActive = () => {

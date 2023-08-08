@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AxiosError } from 'axios';
 import NetworkError from './NetworkError';
-import { POST_MESSAGE_TYPE } from '@/common/service/hooks/useWebview';
+import { PostBridgeParams } from '@/common/service/hooks/useWebview';
 
 type ErrorType = 'NO_USER_INFO';
 
@@ -23,7 +23,12 @@ interface State {
 
 interface Props {
   children: React.ReactNode;
-  postMessage: (message: POST_MESSAGE_TYPE) => void;
+  postMessage: (
+    message: keyof PostBridgeParams,
+    data: {
+      url: string;
+    } | null,
+  ) => void;
 }
 
 class ApiErrorBoundary extends Component<Props, State> {
@@ -48,7 +53,7 @@ class ApiErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: CustomAxiosError) {
     if (error.response?.data.code === ErrorTypes.NO_USER_INFO) {
       alert('로그인이 필요합니다.');
-      this.props.postMessage('signUp');
+      this.props.postMessage('signUp', null);
     }
   }
 

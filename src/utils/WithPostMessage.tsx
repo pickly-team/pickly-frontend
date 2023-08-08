@@ -1,10 +1,15 @@
 import useWebview, {
-  POST_MESSAGE_TYPE,
+  PostBridgeParams,
 } from '@/common/service/hooks/useWebview';
 
 const WithPostMessage = (props: {
   children: (
-    postMessage: (message: POST_MESSAGE_TYPE) => void,
+    postMessage: (
+      message: keyof PostBridgeParams,
+      data: {
+        url: string;
+      } | null,
+    ) => void,
   ) => React.ReactNode;
 }) => {
   const { postMessage } = useWebview();
