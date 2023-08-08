@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 const RNListener = () => {
   const { memberId, login } = useAuthStore();
-  const { setUrl, setTitle, setReadOption } = useBookmarkStore();
+  const { initializeUrlAndTitle, setReadOption } = useBookmarkStore();
 
   const { postMessage } = useWebview();
 
@@ -22,8 +22,7 @@ const RNListener = () => {
       }
     }
     if (message === 'initialize') {
-      setUrl('');
-      setTitle('');
+      initializeUrlAndTitle();
       setReadOption('📖 전체');
     }
   });

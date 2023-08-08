@@ -131,18 +131,24 @@ const URLInput = ({
 
 interface SelectCategoryProps {
   categoryList: ClientBookmarkCategoryItem[] | undefined;
+  selectedCategoryId: number;
   onClickCategory: (category: number) => void;
 }
 
 const SelectCategory = ({
   categoryList,
+  selectedCategoryId,
   onClickCategory,
 }: SelectCategoryProps) => {
   return (
     <>
       <HeadingText>Step 2. 카테고리 선택</HeadingText>
       {categoryList && (
-        <TagBoxList tags={categoryList} onClickCategory={onClickCategory} />
+        <TagBoxList
+          tags={categoryList}
+          selectedTagId={selectedCategoryId}
+          onClickCategory={onClickCategory}
+        />
       )}
     </>
   );
@@ -303,6 +309,8 @@ const StyledInput = styled(Input)`
 `;
 
 const StyledMarginSpanText = styled.div`
-  margin-top: ${getRem(25)};
-  margin-bottom: ${getRem(25)};
+  margin: ${getRem(30)} 0;
+  :nth-of-type(1) {
+    margin-top: ${getRem(10)};
+  }
 `;

@@ -16,8 +16,6 @@ import { useGETCategoryAPI } from '@/category/api/category';
 import { useEffect } from 'react';
 import { usePUTCategoryMutation } from '@/category/api/edit';
 import useAuthStore from '@/store/auth';
-import useBookmarkStore from '@/store/bookmark';
-import { navigatePath } from '@/constants/navigatePath';
 
 interface CategoryManagePageProps {
   mode: 'ADD' | 'EDIT';
@@ -34,7 +32,6 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   // TODO : 인증 로직 추가
   const { memberId } = useAuthStore();
   const router = useNavigate();
-  const { fromPath } = useBookmarkStore();
 
   const categoryId = location.pathname.split('/').pop();
 
@@ -60,26 +57,6 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   // INTERACTION
   // 1. 뒤로가기 버튼 > 뒤로가기
   const onClickBack = () => {
-    if (fromPath === navigatePath.MAIN && mode === 'ADD') {
-      router('/', {
-        preventScrollReset: true,
-        state: {
-          isCategoryAddPage: true,
-        },
-      });
-      return;
-    }
-    if (
-      bookmarkAddPagePaths.some((path) => path.includes(fromPath)) &&
-      mode === 'ADD'
-    ) {
-      router(fromPath, {
-        state: {
-          isCategoryAddPage: true,
-        },
-      });
-      return;
-    }
     router(-1);
   };
 

@@ -1,14 +1,14 @@
 import {
-  ClientBookmarkDetail,
-  GET_BOOKMARK_DETAIL_KEY,
   refetchAllBookmarkQuery,
   useDELETEBookmarkQuery,
+  useGETBookmarkDetailQuery,
 } from '@/bookmarks/api/bookmark';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import { navigatePath } from '@/constants/navigatePath';
 import useAuthStore from '@/store/auth';
 import useBookmarkStore from '@/store/bookmark';
 import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const useHandleBookmarkDetailMore = () => {
@@ -16,7 +16,7 @@ const useHandleBookmarkDetailMore = () => {
   const { memberId } = useAuthStore();
   const { id } = useParams() as { id: string };
   const queryClient = useQueryClient();
-  const { setTitle, setUrl } = useBookmarkStore();
+  const { initializeUrlAndTitle } = useBookmarkStore();
   // USER INTERACTION
   // 1. 북마크 삭제
   const { mutate: deleteBookmark } = useDELETEBookmarkQuery({
@@ -40,38 +40,36 @@ const useHandleBookmarkDetailMore = () => {
       memberId: memberId ?? 0,
       bookmarkId: id,
     });
-    setTitle('');
-    setUrl('');
+    initializeUrlAndTitle();
   };
   // 3. 북마크 수정
-  const {
-    isOpen: editBookmarkBS,
-    close: closeEditBookmarkBS,
-    open: openEditBookmarkBS,
-  } = useBottomSheet();
   const onClickEditBookmark = () => {
-    openEditBookmarkBS();
+    router(navigatePath.BOOKMARK_EDIT.replace(':id', id));
   };
 
   // 4. 북마크 신고
-  const bookmarkDetail = queryClient.getQueryData<ClientBookmarkDetail>(
-    GET_BOOKMARK_DETAIL_KEY({ bookmarkId: id, memberId }),
-  );
-  const writtenId = bookmarkDetail?.memberId ?? 0;
-  const isMyBookmark = memberId === writtenId;
+  const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
+    bookmarkId: id,
+    memberId: memberId ?? 0,
+  });
+
+  const [isMyBookmark, setIsMyBookmark] = useState(true);
+
+  useEffect(() => {
+    setIsMyBookmark(memberId === bookmarkDetail?.memberId);
+  }, [memberId, bookmarkDetail?.memberId]);
+
   const onClickReportBookmark = () => {
     router(navigatePath.BOOKMARK_REPORT.replace(':id', id));
   };
 
   return {
-    editBookmarkBS,
     isMyBookmark,
     deleteBookmarkBS,
     openDeleteBookmarkBS,
     closeDeleteBookmarkBS,
     onClickDeleteBookmark,
     onClickBackCallback,
-    closeEditBookmarkBS,
     onClickEditBookmark,
     onClickReportBookmark,
   };

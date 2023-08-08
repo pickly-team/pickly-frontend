@@ -27,6 +27,8 @@ import RNListener from './RNListener';
 import BlockUserListPage from './pages/BlockUserListPage';
 import IntroducePage from './pages/IntroducePage';
 import WithPostMessage from './utils/WithPostMessage';
+import BookmarkAddPage from './pages/BookmarkAddPage';
+import BookmarkEditPage from './pages/BookmarkEditPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,6 +63,14 @@ const App = () => {
                     <Route
                       path={navigatePath.BOOKMARK_DETAIL}
                       element={<BookMarkDetailPage />}
+                    />
+                    <Route
+                      path={navigatePath.BOOKMARK_ADD}
+                      element={<BookmarkAddPage />}
+                    />
+                    <Route
+                      path={navigatePath.BOOKMARK_EDIT}
+                      element={<BookmarkEditPage />}
                     />
                     <Route path={navigatePath.FAQ} element={<FaqPage />} />
                     <Route
