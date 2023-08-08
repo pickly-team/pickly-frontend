@@ -1,7 +1,13 @@
+import BSDeleteConfirmation from '@/bookmarks/ui/Main/BSDeleteConfirmation';
 import BottomFixedButton from '@/common-ui/BottomFixedButton';
+import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import Header from '@/common-ui/Header/Header';
+import Text from '@/common-ui/Text';
+import useWebview from '@/common/service/hooks/useWebview';
 import Emoji from '@/common/ui/Emoji';
 import EmojiSelect from '@/common/ui/EmojiSelect';
+import { useDELETEUserInfoQuery } from '@/members/api/member';
+import useAuthStore from '@/store/auth';
 import EditBox from '@/user/ui/EditBox';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
@@ -36,6 +42,21 @@ const UserProfileInfo = ({
   onChangeNickname,
   onSubmit,
 }: UserProfileInfoProps) => {
+  const {
+    isOpen: deleteUserInfoBS,
+    open: openDeleteUserInfo,
+    close: closeDeleteUserInfo,
+  } = useBottomSheet();
+
+  const { memberId, initializeUserInfo } = useAuthStore();
+  const { postMessage } = useWebview();
+  const { mutate: deleteUserInfo } = useDELETEUserInfoQuery();
+  const onClickDeleteUserInfo = () => {
+    deleteUserInfo({ loginId: memberId });
+    initializeUserInfo();
+    postMessage('signUp');
+  };
+
   return (
     <Form onSubmit={onSubmit}>
       <Header showBackButton={mode === 'EDIT'} />
@@ -56,6 +77,17 @@ const UserProfileInfo = ({
             withCount
           />
         </StyleEditBox>
+        {mode === 'EDIT' && (
+          <DeleteUserInfoWrapper>
+            <DeleteUserInfoText
+              onClick={openDeleteUserInfo}
+              fontSize={0.8}
+              color="grey600"
+            >
+              탈퇴하기
+            </DeleteUserInfoText>
+          </DeleteUserInfoWrapper>
+        )}
         <BottomFixedButton
           activeButtonColor="lightGreen"
           buttonColor="buttonGreen"
@@ -66,6 +98,16 @@ const UserProfileInfo = ({
         </BottomFixedButton>
       </EmojiBackDrop>
       {isEmojiBSOpen && <EmojiSelect onChangeEmoji={onChangeEmoji} />}
+      {mode === 'EDIT' && (
+        <BSDeleteConfirmation
+          open={deleteUserInfoBS}
+          onClose={closeDeleteUserInfo}
+          onDelete={onClickDeleteUserInfo}
+          mainText="정말로 탈퇴할까요?"
+          subText="탈퇴하면 다시 복구할 수 없습니다. 탈퇴하시겠습니까?"
+          buttonText="탈퇴"
+        />
+      )}
     </Form>
   );
 };
@@ -87,3 +129,12 @@ const StyleEditBox = styled.div`
   flex-direction: column;
   padding: 0 ${getRem(20)};
 `;
+
+const DeleteUserInfoWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: ${getRem(10)};
+  padding-right: ${getRem(20)};
+`;
+
+const DeleteUserInfoText = styled(Text.Span)``;
