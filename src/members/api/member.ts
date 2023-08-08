@@ -526,3 +526,27 @@ export const useUnblockUserQuery = ({
     },
   });
 };
+
+interface DELETEUserInfoRequest {
+  loginId: number;
+  token?: string;
+}
+
+const deleteUserInfoAPI = async ({ loginId, token }: DELETEUserInfoRequest) => {
+  const { data } = await client({
+    method: 'delete',
+    url: '/members/me',
+    params: { loginId },
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface DeleteAPIRequest {
+  loginId: number;
+  token?: string;
+}
+export const useDELETEUserInfoQuery = () => {
+  return useMutation(deleteUserInfoAPI);
+};
