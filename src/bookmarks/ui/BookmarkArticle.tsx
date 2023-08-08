@@ -4,7 +4,7 @@ import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
 import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import BookmarkLikeButton from './Like/BookmarkLikeButton';
 import {
@@ -17,6 +17,7 @@ import CommentCountInfo from '@/comment/ui/bookmark/CommentCountInfo';
 import useCommentStore from '@/store/comment';
 import useAuthStore from '@/store/auth';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import useWebview from '@/common/service/hooks/useWebview';
 
 const BookMarkArticle = () => {
   const { id: bookmarkId } = useParams<{ id: string }>();
@@ -55,6 +56,14 @@ const BookMarkArticle = () => {
   const onClickDislike = () => {
     if (!isMyPost) return;
     postBookmarkDislike({ bookmarkId: bookmarkId ?? '' });
+  };
+
+  const { postMessage } = useWebview();
+
+  const onClickBookmarkUrl = (url: string) => {
+    postMessage('visitBookmark', {
+      url: url,
+    });
   };
 
   return (
@@ -102,9 +111,7 @@ const BookMarkArticle = () => {
             icon={<Icon name="location" size="s" />}
             content={
               <BookmarkUrl
-                to={bookmarkDetail?.url ?? ''}
-                target={'_blank'}
-                rel={'noreferrer'}
+                onClick={() => onClickBookmarkUrl(bookmarkDetail?.url ?? '')}
               >
                 <Text.Span fontSize={0.75}>
                   {bookmarkDetail?.url ?? ''}
@@ -191,11 +198,10 @@ const InfoRow = styled.div`
   overflow: hidden;
 `;
 
-const BookmarkUrl = styled(Link)`
+const BookmarkUrl = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  margin-top: -0.3rem;
   max-width: 70%;
 `;
 
