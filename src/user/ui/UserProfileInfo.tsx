@@ -54,7 +54,7 @@ const UserProfileInfo = ({
   const onClickDeleteUserInfo = () => {
     deleteUserInfo({ loginId: memberId });
     initializeUserInfo();
-    postMessage('signUp');
+    postMessage('signUp', null);
   };
 
   return (

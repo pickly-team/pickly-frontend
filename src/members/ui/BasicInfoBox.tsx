@@ -38,7 +38,7 @@ const BasicInfoBox = () => {
   const { postMessage } = useWebview();
   const onClickLogout = () => {
     initializeUserInfo();
-    postMessage('signUp');
+    postMessage('signUp', null);
   };
 
   return (

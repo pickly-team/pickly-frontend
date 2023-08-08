@@ -9,14 +9,31 @@ declare global {
   }
 }
 
-export type POST_MESSAGE_TYPE = 'login' | 'notification' | 'goBack' | 'signUp';
-
-const useWebview = () => {
+export interface PostBridgeParams {
+  /** 웹뷰 로그인 */
+  login: null;
+  /** 알림 */
+  notification: null;
+  /** 페이지 뒤로 가기 */
+  goBack: null;
+  /** 회원가입 */
+  signUp: null;
+  /** 북마크 방문 */
+  visitBookmark: {
+    url: string;
+  };
+}
+function useWebview<T extends keyof PostBridgeParams>() {
   return React.useMemo(() => {
     const isInWebview = window.isInWebview;
-    const postMessage = (message: POST_MESSAGE_TYPE) => {
+    const postMessage = (message: T, data: PostBridgeParams[T]) => {
       if (window.ReactNativeWebView) {
-        window.ReactNativeWebView.postMessage(message);
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            message: message,
+            params: data,
+          }),
+        );
       }
     };
 
@@ -25,6 +42,6 @@ const useWebview = () => {
       postMessage,
     };
   }, []);
-};
+}
 
 export default useWebview;
