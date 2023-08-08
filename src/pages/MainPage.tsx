@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
-import BookmarkBSDeleteConfirmation from '@/bookmarks/ui/Main/BookmarkBSDeleteConfirmation';
+import BSDeleteConfirmation from '@/bookmarks/ui/Main/BSDeleteConfirmation';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
@@ -74,7 +74,7 @@ const MainPage = () => {
         </Suspense>
       </LMiddle>
       {/** 북마크 삭제 확인 */}
-      <BookmarkBSDeleteConfirmation
+      <BSDeleteConfirmation
         onClose={deleteBookmarkClose}
         onDelete={onClickDelete}
         open={isDeleteBookmarkOpen}
