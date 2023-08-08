@@ -20,6 +20,7 @@ interface Auth {
   login: ({ token, memberId }: { token: string; memberId: number }) => void;
   showIntroduce: boolean;
   setShowIntroduce: (showIntroduce: boolean) => void;
+  initializeUserInfo: () => void;
 }
 
 const useAuthStore = create<Auth>()(
@@ -45,6 +46,22 @@ const useAuthStore = create<Auth>()(
       showIntroduce: true,
       setShowIntroduce: (showIntroduce) => {
         set({ showIntroduce });
+      },
+      initializeUserInfo: () => {
+        set({
+          isLogin: false,
+          token: '',
+          memberId: 0,
+          userInfo: {
+            id: 0,
+            name: '',
+            nickname: '',
+            profileEmoji: '😃',
+            followersCount: 0,
+            followeesCount: 0,
+            bookmarksCount: 0,
+          },
+        });
       },
     }),
     { name: 'auth' },

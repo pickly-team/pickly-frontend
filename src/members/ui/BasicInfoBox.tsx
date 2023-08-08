@@ -10,9 +10,10 @@ import { navigatePath } from '@/constants/navigatePath';
 import { useGETUserProfile } from '@/auth/api/profile';
 import useAuthStore from '@/store/auth';
 import useFriendStore, { FriendType } from '@/store/friend';
+import useWebview from '@/common/service/hooks/useWebview';
 
 const BasicInfoBox = () => {
-  const { memberId } = useAuthStore();
+  const { memberId, initializeUserInfo } = useAuthStore();
   const { data: userInfo } = useGETUserProfile({ loginId: memberId });
 
   const numberFormatter = new Intl.NumberFormat('en', { notation: 'compact' });
@@ -33,6 +34,12 @@ const BasicInfoBox = () => {
 
   const onClickFollowers = () => setSelectedType(FriendType.Follower);
   const onClickFollowings = () => setSelectedType(FriendType.Following);
+
+  const { postMessage } = useWebview();
+  const onClickLogout = () => {
+    initializeUserInfo();
+    postMessage('signUp');
+  };
 
   return (
     <>
@@ -56,6 +63,9 @@ const BasicInfoBox = () => {
                 </TriggerBottomSheet.Item>
                 <TriggerBottomSheet.Item onClick={onClickHelp}>
                   도움말 다시 보기
+                </TriggerBottomSheet.Item>
+                <TriggerBottomSheet.Item onClick={onClickLogout}>
+                  로그 아웃
                 </TriggerBottomSheet.Item>
               </TriggerBottomSheet.BottomSheet>
             </TriggerBottomSheet>
