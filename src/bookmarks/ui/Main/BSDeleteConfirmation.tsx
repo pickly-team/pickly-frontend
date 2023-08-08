@@ -7,18 +7,24 @@ interface BSDeleteConfirmationProps {
   open: boolean;
   onClose: () => void;
   onDelete: () => void;
+  mainText?: string;
+  subText?: string;
+  buttonText?: string;
 }
 
-const BookmarkBSDeleteConfirmation = ({
+const BSDeleteConfirmation = ({
   open,
   onClose,
   onDelete,
+  mainText = '정말로 삭제 할까요?',
+  subText = '삭제하면 다시 복구할 수 없습니다. 삭제하시겠습니까?',
+  buttonText = '삭제',
 }: BSDeleteConfirmationProps) => {
   return (
     <BottomSheet open={open} maxHeight={30} onClose={onClose}>
       <BSWrapper>
         <Text.Span style={{ margin: '1rem 0' }} weight="bold" fontSize={1.4}>
-          정말로 삭제 할까요?
+          {mainText}
         </Text.Span>
 
         <Text.Span
@@ -27,7 +33,7 @@ const BookmarkBSDeleteConfirmation = ({
           }}
           fontSize={0.9}
         >
-          삭제하면 다시 복구할 수 없습니다. 삭제하시겠습니까?
+          {subText}
         </Text.Span>
         <ButtonWrapper>
           <Button
@@ -45,7 +51,7 @@ const BookmarkBSDeleteConfirmation = ({
             }}
             onClick={onDelete}
           >
-            삭제
+            {buttonText}
           </Button>
         </ButtonWrapper>
       </BSWrapper>
@@ -53,7 +59,7 @@ const BookmarkBSDeleteConfirmation = ({
   );
 };
 
-export default BookmarkBSDeleteConfirmation;
+export default BSDeleteConfirmation;
 
 const BSWrapper = styled.div`
   display: flex;
