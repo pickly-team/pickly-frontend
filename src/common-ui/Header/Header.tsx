@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import { ReactNode } from 'react';
 import getRem from '@/utils/getRem';
 import { HEADER_Z_INDEX } from '@/constants/zIndex';
 import useWebview from '@/common/service/hooks/useWebview';
+import { IoArrowBack } from 'react-icons/io5';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -23,16 +23,18 @@ const Header = ({
   const { postMessage } = useWebview();
   const onClickBackButton = () => {
     window.history.back();
-    postMessage('goBack');
+    postMessage('goBack', null);
     backButtonCallback && backButtonCallback();
   };
   return (
     <HeaderContainer>
       <BackButtonAndTitleWrapper>
         {showBackButton && (
-          <button type="button" onClick={onClickBackButton}>
-            <Icon name="back" size={'m'} />
-          </button>
+          <IoArrowBack
+            size={getRem(24)}
+            color={theme.colors.white}
+            onClick={onClickBackButton}
+          />
         )}
         {title && <Text.Div fontSize={getRem(20)}>{title}</Text.Div>}
       </BackButtonAndTitleWrapper>
