@@ -32,7 +32,7 @@ const IntroducePage = () => {
         bookmarkId={1}
         commentCnt={3}
         isUserLike
-        createdDate="20"
+        createdDate="2023-08-09"
         previewImageUrl="/image/"
         readByUser={false}
         title="피클리는 이런 서비스에요"
@@ -47,7 +47,7 @@ const IntroducePage = () => {
         <SubTitle level="h3" fontSize={1.5} weight="bold">
           Pick 2.
         </SubTitle>
-        <Description>북마크를 자유롭게 추가할 수 있어요!</Description>
+        <Description>읽지 않은 북마크는 저희가 알려드릴게요!</Description>
       </BoxWrapper>
       <PaddingWrapper>
         <SettingsBox serverRemindInDays={3} disabled />
