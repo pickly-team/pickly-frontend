@@ -9,7 +9,16 @@ interface ListItemProps {
 }
 
 const ListItem = ({ children, onClick }: ListItemProps) => {
-  return <ItemWrapper onClick={onClick}>{children}</ItemWrapper>;
+  return (
+    <ItemWrapper
+      onClick={(e) => {
+        e.preventDefault();
+        onClick && onClick();
+      }}
+    >
+      {children}
+    </ItemWrapper>
+  );
 };
 
 const ItemWrapper = styled.div`

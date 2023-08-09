@@ -37,6 +37,9 @@ export const CheckBox: ForwardRefRenderFunction<
         type={'checkbox'}
         id={id}
         onChange={_onChange}
+        onClick={() => {
+          onChange?.(true);
+        }}
         checked={checked}
         {...restProps}
         ref={ref}
