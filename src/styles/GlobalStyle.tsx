@@ -14,6 +14,7 @@ const GlobalStyle = () => (
           width: 0;
           display: none !important;
         }
+        -webkit-touch-callout: none;
       }
       html,
       body,
@@ -109,6 +110,16 @@ const GlobalStyle = () => (
         vertical-align: baseline;
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
       }
       html {
         background-color: ${theme.colors.black};
@@ -151,6 +162,30 @@ const GlobalStyle = () => (
         font: inherit;
         color: inherit;
         -webkit-tap-highlight-color: transparent;
+      }
+      a {
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
+      }
+      img {
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
       }
       @font-face {
         font-family: 'NanumSquareRoundB';
