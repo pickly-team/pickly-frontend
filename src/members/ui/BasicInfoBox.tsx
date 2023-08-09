@@ -65,7 +65,7 @@ const BasicInfoBox = () => {
                   도움말 다시 보기
                 </TriggerBottomSheet.Item>
                 <TriggerBottomSheet.Item onClick={onClickLogout}>
-                  로그 아웃
+                  로그아웃
                 </TriggerBottomSheet.Item>
               </TriggerBottomSheet.BottomSheet>
             </TriggerBottomSheet>
