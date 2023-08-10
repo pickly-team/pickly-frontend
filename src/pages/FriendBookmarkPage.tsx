@@ -28,12 +28,12 @@ const FriendBookmarkPage = () => {
   // FIRST RENDER
   const { memberId } = useAuthStore();
   const { id: friendId } = useParams<{ id: string }>();
-  const { setReadOption } = useBookmarkStore();
+  const { setFriendReadOption } = useBookmarkStore();
   const { setFriendId } = useFriendStore();
 
   useEffect(() => {
     setFriendId(Number(friendId));
-    setReadOption('📖 전체');
+    setFriendReadOption('📖 전체');
   }, [friendId]);
 
   // SERVER
@@ -46,10 +46,6 @@ const FriendBookmarkPage = () => {
 
   // USER INTERACTION
   // 뒤로가기
-  const onClickBack = () => {
-    setReadOption('📖 전체');
-  };
-
   // 1. 상단 more > 차단하기
   const { mutate: postBlockMember } = usePOSTBlockMemberQuery({ memberId });
   const onClick_차단하기 = () => {
@@ -64,18 +60,18 @@ const FriendBookmarkPage = () => {
   const { selectedCategoryId, categoryOptions, onChangeCategory } = useCategory(
     {
       memberId: Number(friendId),
+      isFriendPage: true,
     },
   );
 
   // 3. 읽은 북마크 선택
   const { readSelectOptionsList, selectedReadOption, onClickReadMode } =
-    useReadList();
+    useReadList({ memberId, isFriendPage: true });
 
   return (
     <>
       <Header
         showBackButton
-        backButtonCallback={onClickBack}
         rightButton={
           <TriggerBottomSheet>
             <TriggerBottomSheet.Trigger
@@ -123,7 +119,7 @@ const FriendBookmarkPage = () => {
       </LTop>
       <BookmarkToggle isFriendPage>
         <BookmarkToggle.SelectCategory
-          selectedCategory={String(selectedCategoryId)}
+          selectedCategoryId={selectedCategoryId}
           categoryOptions={categoryOptions}
           setCategoryId={onChangeCategory}
         />
@@ -148,6 +144,7 @@ const FriendBookmarkPage = () => {
             memberId={friendId ? Number(friendId) : 0}
             isEditMode={false}
             readMode={selectedReadOption ?? '📖 전체'}
+            selectedCategory={selectedCategoryId}
           />
         </Suspense>
       </LMiddle>

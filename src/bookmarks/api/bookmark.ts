@@ -81,7 +81,7 @@ const GETBookMarkList = {
       `/members/${params.memberId}/bookmarks`,
       {
         params: {
-          categoryId: params.categoryId,
+          categoryId: params.categoryId === 0 ? null : params.categoryId,
           readByUser: params.readByUser,
           visibility: params.visibility,
           cursorId: params.pageRequest?.cursorId,

@@ -9,17 +9,24 @@ export type CategoryType = {
 
 interface Category {
   memberId: number;
+  isFriendPage?: boolean;
 }
 
-const useCategory = ({ memberId }: Category) => {
+const useCategory = ({ memberId, isFriendPage = false }: Category) => {
   const { data: categoryList } = useGETCategoryListQuery({ memberId });
 
   const {
     categoryOptions,
     selectedCategoryId,
+    friendCategoryId,
     setCategoryOptions,
     setSelectedCategoryId,
+    setFriendCategoryId,
   } = useBookmarkStore();
+
+  useEffect(() => {
+    if (isFriendPage) setFriendCategoryId(null);
+  }, [memberId, isFriendPage]);
 
   useEffect(() => {
     if (categoryList) {
@@ -35,10 +42,18 @@ const useCategory = ({ memberId }: Category) => {
   }, [categoryList, memberId]);
 
   const onChangeCategory = (categoryId: string | null) => {
-    setSelectedCategoryId(categoryId ? Number(categoryId) : null);
+    if (isFriendPage) {
+      setFriendCategoryId(categoryId ? Number(categoryId) : null);
+    } else {
+      setSelectedCategoryId(categoryId ? Number(categoryId) : null);
+    }
   };
 
-  return { categoryOptions, selectedCategoryId, onChangeCategory };
+  return {
+    categoryOptions,
+    selectedCategoryId: isFriendPage ? friendCategoryId : selectedCategoryId,
+    onChangeCategory,
+  };
 };
 
 export default useCategory;
