@@ -25,11 +25,12 @@ const BookmarkListView = ({
   selectedCategory,
   onClickBookmarkItemInEdit,
 }: BookmarkListViewProps) => {
-  const { bookMarkList, fetchNextPage, isFetchingNextPage } = useBookmarkList({
-    readByUser: READ_OPTIONS[readMode],
-    categoryId: selectedCategory,
-    memberId,
-  });
+  const { bookMarkList, fetchNextPage, isFetchingNextPage, isLoading } =
+    useBookmarkList({
+      readByUser: READ_OPTIONS[readMode],
+      categoryId: selectedCategory,
+      memberId,
+    });
 
   const { bottom } = useBottomIntersection({
     fetchNextPage,
@@ -40,7 +41,7 @@ const BookmarkListView = ({
 
   return (
     <>
-      {!flatBookMarkList?.length && (
+      {!isLoading && !flatBookMarkList?.length && (
         <>
           {readMode === '📖 전체' && <BlankItem page="BOOKMARK" />}
           {readMode === '👀 읽음' && <BlankItem page="BOOKMARK" />}
