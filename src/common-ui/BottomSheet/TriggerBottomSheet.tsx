@@ -82,10 +82,9 @@ interface BSProps {
    *
    * 100: 전체화면
    */
-  maxHeight?: 100 | 90 | 80 | 70 | 60 | 50 | 40 | 30 | 20 | 10;
 }
 
-const BottomSheet = ({ children, maxHeight: bsMaxHeight = 90 }: BSProps) => {
+const BottomSheet = ({ children }: BSProps) => {
   const ref = useRef<BottomSheetRef>(null);
   const { isOpen, setIsOpen } = React.useContext(BottomSheetContext);
 
@@ -100,10 +99,6 @@ const BottomSheet = ({ children, maxHeight: bsMaxHeight = 90 }: BSProps) => {
         onDismiss={onClose}
         skipInitialTransition
         ref={ref}
-        snapPoints={({ minHeight, maxHeight }) => [
-          minHeight,
-          maxHeight * (bsMaxHeight / 100),
-        ]}
       >
         {children}
       </SpringBottomSheet>
