@@ -47,7 +47,11 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   };
 
   const onDeleteInput = (type: 'url' | 'title') => {
-    type === 'url' && setUrl('');
+    if (type === 'url') {
+      setUrl('');
+      setDebouncedUrl('');
+      setTitle('');
+    }
     type === 'title' && setTitle('');
   };
 
