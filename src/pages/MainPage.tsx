@@ -22,7 +22,7 @@ const MainPage = () => {
   );
 
   const { readSelectOptionsList, selectedReadOption, onClickReadMode } =
-    useReadList();
+    useReadList({ memberId });
 
   const {
     isEditMode: isEdit,
