@@ -19,7 +19,7 @@ export interface BottomSheetProps {
    *
    * 100: 전체화면
    */
-  maxHeight?: 100 | 90 | 80 | 70 | 60 | 50 | 40 | 30 | 20 | 10;
+  maxHeight?: number;
 }
 
 /**
@@ -39,7 +39,7 @@ const BottomSheet = ({
 
   // 100 ms delay to remove background
   useEffect(() => {
-    setTimeout(() => setShowBackground(open), 100);
+    setTimeout(() => setShowBackground(open), 10);
   }, [open]);
 
   return (
@@ -50,10 +50,10 @@ const BottomSheet = ({
           onDismiss={onClose}
           skipInitialTransition
           ref={ref}
-          snapPoints={({ minHeight, maxHeight }) => [
-            minHeight,
-            maxHeight * (bsMaxHeight / 100),
-          ]}
+          // snapPoints={({ minHeight, maxHeight }) => [
+          //   minHeight,
+          //   maxHeight * (bsMaxHeight / 100),
+          // ]}
         >
           {children}
         </SpringBottomSheet>
