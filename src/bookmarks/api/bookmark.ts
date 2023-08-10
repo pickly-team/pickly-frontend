@@ -412,7 +412,6 @@ export interface ClientBookmarkDetail {
 const getBookmarkDetailMapper = (
   data: BookmarkDetail,
 ): ClientBookmarkDetail => {
-  const dateInKST = dayjs(data.createdAt).add(9, 'hour');
   return {
     categoryId: data.categoryId,
     categoryName: data.categoryName,
@@ -422,7 +421,7 @@ const getBookmarkDetailMapper = (
     previewImageUrl: data.previewImageUrl ?? '/images/main.png',
     isUserLike: data.isUserLike,
     readByUser: data.readByUser,
-    createdAt: dateInKST.unix(),
+    createdAt: dayjs(data.createdAt).unix(),
     visibility: TEMP_VISIBILITY[data.visibility],
   };
 };
