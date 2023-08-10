@@ -1,5 +1,6 @@
 import { ReadType } from '@/bookmarks/ui/Main/BookmarkToggle';
 import useBookmarkStore from '@/store/bookmark';
+import { useEffect } from 'react';
 
 export type READ_OPTION = '📖 전체' | '👀 읽음' | '🫣 읽지 않음';
 
@@ -15,8 +16,22 @@ export const READ_OPTIONS: Record<READ_OPTION, boolean | null> = {
   '🫣 읽지 않음': false,
 } as const;
 
-const useReadList = () => {
-  const { readOption: selectedReadOption, setReadOption } = useBookmarkStore();
+interface ReadListProps {
+  memberId: number;
+  isFriendPage?: boolean;
+}
+
+const useReadList = ({ memberId, isFriendPage = false }: ReadListProps) => {
+  const {
+    readOption: selectedReadOption,
+    setReadOption,
+    friendReadOption,
+    setFriendReadOption,
+  } = useBookmarkStore();
+
+  useEffect(() => {
+    if (isFriendPage) setFriendReadOption('📖 전체');
+  }, [memberId, isFriendPage]);
 
   const readSelectOptionsList: ReadType[] = Object.entries(
     readSelectOptions,
@@ -26,12 +41,16 @@ const useReadList = () => {
   }));
 
   const onClickReadMode = (readMode: READ_OPTION) => {
-    setReadOption(readMode);
+    if (isFriendPage) {
+      setFriendReadOption(readMode);
+    } else {
+      setReadOption(readMode);
+    }
   };
 
   return {
     readSelectOptionsList,
-    selectedReadOption,
+    selectedReadOption: isFriendPage ? friendReadOption : selectedReadOption,
     onClickReadMode,
   };
 };
