@@ -34,9 +34,8 @@ const useCategory = ({ memberId }: Category) => {
     }
   }, [categoryList, memberId]);
 
-  const onChangeCategory = (category: string) => {
-    const isAll = Object.is(category, '🥒 전체');
-    setSelectedCategoryId(isAll ? null : Number(category));
+  const onChangeCategory = (categoryId: string | null) => {
+    setSelectedCategoryId(categoryId ? Number(categoryId) : null);
   };
 
   return { categoryOptions, selectedCategoryId, onChangeCategory };

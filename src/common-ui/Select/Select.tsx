@@ -31,9 +31,9 @@ interface SelectProps {
 
 const Select = ({
   trigger,
+  children,
   value,
   onChange,
-  children,
   isSearchActive = false,
 }: SelectProps) => {
   const ref = useRef<HTMLSelectElement>(null);
