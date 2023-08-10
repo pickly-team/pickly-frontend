@@ -43,13 +43,13 @@ const MainPage = () => {
       </LTop>
       <BookmarkToggle>
         <BookmarkToggle.SelectCategory
-          selectedCategory={String(selectedCategoryId)}
+          selectedCategoryId={selectedCategoryId}
           categoryOptions={categoryOptions}
           setCategoryId={onChangeCategory}
         />
         <BookmarkToggle.SelectReadMode
-          readOptions={readSelectOptionsList}
           selectedReadOption={selectedReadOption}
+          readOptions={readSelectOptionsList}
           onChangeRead={onClickReadMode}
         />
         <BookmarkToggle.ToggleEdit isEdit={isEdit} onClickEdit={onClickEdit} />

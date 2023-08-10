@@ -27,13 +27,13 @@ const BookmarkToggle = ({
 };
 
 interface SelectCategoryProps {
-  selectedCategory: string;
-  setCategoryId: (category: string) => void;
+  selectedCategoryId: number | null;
   categoryOptions: ReadType[];
+  setCategoryId: (categoryId: string) => void;
 }
 
 const SelectCategory = ({
-  selectedCategory,
+  selectedCategoryId,
   categoryOptions,
   setCategoryId,
 }: SelectCategoryProps) => {
@@ -87,7 +87,7 @@ const SelectCategory = ({
               </Text.Span>
             </Button>
           }
-          value={selectedCategory ?? '🥒 전체'}
+          value={String(selectedCategoryId) ?? '🥒 전체'}
           onChange={setCategoryId}
           isSearchActive
         >
@@ -103,14 +103,14 @@ const SelectCategory = ({
 };
 
 interface ToggleReadProps {
-  readOptions: ReadType[];
   selectedReadOption: READ_OPTION | null;
+  readOptions: ReadType[];
   onChangeRead: (readMode: READ_OPTION) => void;
 }
 
 const SelectReadMode = ({
-  readOptions,
   selectedReadOption,
+  readOptions,
   onChangeRead,
 }: ToggleReadProps) => {
   return (
