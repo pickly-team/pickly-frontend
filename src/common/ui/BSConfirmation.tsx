@@ -34,19 +34,12 @@ const BSConfirmation = ({
   onCancel,
 }: ConfirmationProps) => {
   return (
-    <BottomSheet open={open} onClose={onClose}>
+    <BottomSheet open={open} onClose={onClose} maxHeight={23}>
       <BSWrapper>
-        <Text.Span style={{ margin: '1rem 0' }} weight="bold" fontSize={1.4}>
+        <MainText weight="bold" fontSize={1.3}>
           {title}
-        </Text.Span>
-
-        <Text.Span
-          style={{
-            marginBottom: '1rem',
-          }}
-        >
-          {description}
-        </Text.Span>
+        </MainText>
+        <SubText fontSize={0.8}>{description}</SubText>
         <ButtonWrapper>
           <Button
             style={{
@@ -77,6 +70,14 @@ const BSWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
+`;
+
+const MainText = styled(Text.Span)`
+  margin: 1.2rem 0;
+`;
+
+const SubText = styled(Text.P)`
+  margin-bottom: 1.2rem;
 `;
 
 const ButtonWrapper = styled.div`

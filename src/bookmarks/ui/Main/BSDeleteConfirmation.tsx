@@ -23,7 +23,7 @@ const BSDeleteConfirmation = ({
   return (
     <BottomSheet open={open} maxHeight={30} onClose={onClose}>
       <BSWrapper>
-        <Text.Span style={{ margin: '1rem 0' }} weight="bold" fontSize={1.4}>
+        <Text.Span style={{ margin: '1rem 0' }} weight="bold" fontSize={1.3}>
           {mainText}
         </Text.Span>
 
@@ -31,7 +31,7 @@ const BSDeleteConfirmation = ({
           style={{
             marginBottom: '1rem',
           }}
-          fontSize={0.9}
+          fontSize={0.8}
         >
           {subText}
         </Text.Span>
