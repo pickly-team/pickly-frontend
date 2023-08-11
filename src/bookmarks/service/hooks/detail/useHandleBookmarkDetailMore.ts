@@ -1,5 +1,4 @@
 import {
-  refetchAllBookmarkQuery,
   useDELETEBookmarkQuery,
   useGETBookmarkDetailQuery,
 } from '@/bookmarks/api/bookmark';
@@ -7,7 +6,6 @@ import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import { navigatePath } from '@/constants/navigatePath';
 import useAuthStore from '@/store/auth';
 import useBookmarkStore from '@/store/bookmark';
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -15,7 +13,6 @@ const useHandleBookmarkDetailMore = () => {
   const router = useNavigate();
   const { memberId } = useAuthStore();
   const { id } = useParams() as { id: string };
-  const queryClient = useQueryClient();
   const { initializeUrlAndTitle } = useBookmarkStore();
   // USER INTERACTION
   // 1. 북마크 삭제
@@ -35,11 +32,6 @@ const useHandleBookmarkDetailMore = () => {
   };
   // 2. 뒤로가기
   const onClickBackCallback = () => {
-    refetchAllBookmarkQuery({
-      queryClient,
-      memberId: memberId ?? 0,
-      bookmarkId: id,
-    });
     initializeUrlAndTitle();
   };
   // 3. 북마크 수정
