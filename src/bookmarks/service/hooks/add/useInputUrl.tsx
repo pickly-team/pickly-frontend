@@ -55,7 +55,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     type === 'title' && setTitle('');
   };
 
-  useGETBookmarkTitleQuery({
+  const { isFetching } = useGETBookmarkTitleQuery({
     memberId: userInfo.id,
     url: checkValidateURL(debouncedUrl) ? checkValidateURL(debouncedUrl) : '',
     setTitle: onChangeTitle,
@@ -74,6 +74,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     handleKeyDown,
     onDeleteInput,
     resetAllInputs,
+    isLoadingGetTitle: isFetching,
   };
 };
 

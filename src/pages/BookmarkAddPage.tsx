@@ -22,6 +22,7 @@ const BookmarkAddPage = () => {
   const {
     url,
     title,
+    isLoadingGetTitle,
     onChangeUrl,
     onChangeTitle,
     handleKeyDown,
@@ -91,6 +92,7 @@ const BookmarkAddPage = () => {
           onChangeTitle={onChangeTitle}
           handleKeyDown={handleKeyDown}
           onDeleteInput={onDeleteInput}
+          isLoadingGetTitle={isLoadingGetTitle}
         />
         <BookmarkAddBS.SelectCategory
           categoryList={categoryList}
