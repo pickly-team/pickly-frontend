@@ -3,7 +3,7 @@ import FriendFollowerItem from '@/friend/ui/friend/FriendFollowerItem';
 import FriendTypeSelect from '@/friend/ui/FriendTypeSelect';
 import styled from '@emotion/styled';
 import getRem from '@/utils/getRem';
-import useAuthStore from '@/store/auth';
+import useAuthStore, { UserInfo } from '@/store/auth';
 import {
   useGETFollowerCountQuery,
   useGETFollowerListQuery,
@@ -12,6 +12,9 @@ import {
 } from '../api/friends';
 import BlankItem from '@/common-ui/BlankItem';
 import useFriendStore, { FriendType } from '@/store/friend';
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { GET_USER_PROFILE } from '@/auth/api/profile';
 
 const Friends = () => {
   const { memberId } = useAuthStore();
@@ -23,6 +26,21 @@ const Friends = () => {
   const { data: followingTotalCount } = useGETFollowingCountQuery({
     memberId,
   });
+
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    queryClient.setQueryData<UserInfo>(
+      GET_USER_PROFILE({
+        loginId: memberId,
+      }),
+      (prev) =>
+        prev && {
+          ...prev,
+          followerCount: followerTotalCount ?? 0,
+          followingCount: followingTotalCount ?? 0,
+        },
+    );
+  }, [followerTotalCount, followingTotalCount]);
 
   const { selectedType, setSelectedType } = useFriendStore();
 
