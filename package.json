@@ -34,6 +34,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-lazy-load-image-component": "^1.6.0",
+    "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.6.2",
     "react-spring-bottom-sheet": "^3.4.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
