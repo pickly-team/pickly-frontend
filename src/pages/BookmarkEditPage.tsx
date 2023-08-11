@@ -33,6 +33,7 @@ const BookmarkEditPage = () => {
   const {
     url,
     title,
+    isLoadingGetTitle,
     onChangeUrl,
     onChangeTitle,
     handleKeyDown,
@@ -92,6 +93,7 @@ const BookmarkEditPage = () => {
           url={url}
           title={title}
           isValidateUrl={isValidateUrl.length > 0}
+          isLoadingGetTitle={isLoadingGetTitle}
           onChangeUrl={onChangeUrl}
           onChangeTitle={onChangeTitle}
           handleKeyDown={handleKeyDown}

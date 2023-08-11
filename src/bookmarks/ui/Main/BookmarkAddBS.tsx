@@ -12,6 +12,8 @@ import { KeyboardEvent, useEffect, useRef } from 'react';
 import IconButton from '@/common/ui/IconButton';
 import useBookmarkStore from '@/store/bookmark';
 import { useLocation } from 'react-router-dom';
+import { theme } from '@/styles/theme';
+import { Oval } from 'react-loader-spinner';
 
 interface BookmarkAddBSProps {
   isOpen: boolean;
@@ -38,6 +40,7 @@ interface URLInputProps {
   url: string;
   title: string;
   isValidateUrl: boolean;
+  isLoadingGetTitle: boolean;
   onChangeUrl: (url: string) => void;
   onChangeTitle: (title: string) => void;
   handleKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
@@ -49,6 +52,7 @@ const URLInput = ({
   url,
   title,
   isValidateUrl,
+  isLoadingGetTitle,
   onChangeUrl,
   onChangeTitle,
   handleKeyDown,
@@ -76,6 +80,9 @@ const URLInput = ({
           <Icon name="bookmark" size="m" />
           <StyledInputCloseWrapper>
             <StyledInput
+              css={css`
+                transition: all 0.5s ease-in-out;
+              `}
               border={{
                 color: isValidateUrl ? 'lightPrimary' : 'grey700',
                 borderWidth: calculateRem(30),
@@ -102,32 +109,65 @@ const URLInput = ({
         <StyleIconWrapper>
           <Icon name="pencil" size="m" />
           <StyledInputCloseWrapper>
-            <StyledInput
-              border={{
-                color: title.length ? 'lightPrimary' : 'grey700',
-                borderWidth: calculateRem(30),
-                borderRadius: calculateRem(10),
-              }}
-              value={title}
-              onChange={(e) => onChangeTitle(e.target.value)}
-              ref={titleInputRef}
-              maxLength={100}
-            />
-            <FixedIconWrapper>
-              {!!title.length && (
-                <IconButton
-                  onClick={() => onDeleteInput('title')}
-                  name="close"
-                  size="xs"
+            {isLoadingGetTitle ? (
+              <StyledLoadingInput>
+                <Oval
+                  height={25}
+                  width={25}
+                  color={theme.colors.lightPrimary}
+                  visible={true}
+                  ariaLabel="oval-loading"
+                  secondaryColor={theme.colors.lightPrimary}
+                  strokeWidth={4}
+                  strokeWidthSecondary={4}
                 />
-              )}
-            </FixedIconWrapper>
+              </StyledLoadingInput>
+            ) : (
+              <>
+                <StyledInput
+                  css={css`
+                    transition: all 0.5s ease-in-out;
+                  `}
+                  border={{
+                    color: title.length ? 'lightPrimary' : 'grey700',
+                    borderWidth: calculateRem(30),
+                    borderRadius: calculateRem(10),
+                  }}
+                  value={title}
+                  onChange={(e) => onChangeTitle(e.target.value)}
+                  ref={titleInputRef}
+                  maxLength={100}
+                />
+                <FixedIconWrapper>
+                  {!!title.length && (
+                    <IconButton
+                      onClick={() => onDeleteInput('title')}
+                      name="close"
+                      size="xs"
+                    />
+                  )}
+                </FixedIconWrapper>
+              </>
+            )}
           </StyledInputCloseWrapper>
         </StyleIconWrapper>
       </StyledInputWrapper>
     </>
   );
 };
+
+const StyledLoadingInput = styled.div`
+  display: flex;
+  height: ${getRem(52)};
+  width: 100%;
+  background-color: ${theme.colors.grey900};
+  border-color: ${theme.colors.grey700};
+  border-width: ${getRem(30)};
+  border-radius: ${getRem(10)};
+  border: 1px solid ${theme.colors.grey700};
+  align-items: center;
+  justify-content: center;
+`;
 
 interface SelectCategoryProps {
   categoryList: ClientBookmarkCategoryItem[] | undefined;
