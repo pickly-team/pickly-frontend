@@ -28,8 +28,6 @@ const SkeletonCommentItem = () => {
           <SkeletonText height={1} width={7} animationType="reverse" />
           <SkeletonText height={1} />
         </NicknameTextAndIconWrapper>
-        {/* <div />
-        <div /> */}
       </CommentHeader>
       <SkeletonText height={1} />
       <IconAndTextWrapper>
