@@ -648,7 +648,7 @@ export const useDELETEBookmarkQuery = ({
 interface RefetchAllBookmark {
   queryClient: ReturnType<typeof useQueryClient>;
   memberId: number;
-  bookmarkId: string;
+  bookmarkId?: string;
 }
 
 export const refetchAllBookmarkQuery = ({
@@ -657,7 +657,7 @@ export const refetchAllBookmarkQuery = ({
   bookmarkId,
 }: RefetchAllBookmark) => {
   const bookmark = queryClient.getQueryData<ClientBookmarkDetail>(
-    GET_BOOKMARK_DETAIL_KEY({ bookmarkId, memberId }),
+    GET_BOOKMARK_DETAIL_KEY({ bookmarkId: bookmarkId ?? '', memberId }),
   );
   const categoryId = bookmark?.categoryId ?? 0;
   // NOTE : 왜 도대체 뒤로 가기 시에는 refetch가 되지 않는지 모르겠음
