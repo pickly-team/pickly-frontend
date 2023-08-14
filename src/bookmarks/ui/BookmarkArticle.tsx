@@ -203,6 +203,7 @@ const BookmarkUrl = styled.div`
   overflow: hidden;
   white-space: nowrap;
   max-width: 70%;
+  margin-bottom: 0.2rem;
 `;
 
 const InfoDescriptionText = styled(Text.Span)`
