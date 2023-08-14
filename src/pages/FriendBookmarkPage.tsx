@@ -147,7 +147,7 @@ const FriendBookmarkPage = () => {
           <BookmarkListView
             memberId={friendId ? Number(friendId) : 0}
             isEditMode={false}
-            readMode={selectedReadOption ?? '📖 전체'}
+            readMode={selectedReadOption}
             selectedCategory={selectedCategoryId}
           />
         </Suspense>

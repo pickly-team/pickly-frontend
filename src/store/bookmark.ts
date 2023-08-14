@@ -13,10 +13,10 @@ interface BookmarkStore {
   setSelectedCategoryId: (id: number | null) => void;
   friendCategoryId: number | null;
   setFriendCategoryId: (id: number | null) => void;
-  readOption: READ_OPTION | null;
-  setReadOption: (option: READ_OPTION | null) => void;
-  friendReadOption: READ_OPTION | null;
-  setFriendReadOption: (option: READ_OPTION | null) => void;
+  readOption: READ_OPTION;
+  setReadOption: (option: READ_OPTION) => void;
+  friendReadOption: READ_OPTION;
+  setFriendReadOption: (option: READ_OPTION) => void;
   url: string;
   setUrl: (url: string) => void;
   title: string;
@@ -41,11 +41,11 @@ const useBookmarkStore = create<BookmarkStore>((set) => ({
   setFriendCategoryId: (id) => {
     set({ friendCategoryId: id });
   },
-  readOption: null,
+  readOption: '📖 전체',
   setReadOption: (option) => {
     set({ readOption: option });
   },
-  friendReadOption: null,
+  friendReadOption: '📖 전체',
   setFriendReadOption: (option) => {
     set({ friendReadOption: option });
   },

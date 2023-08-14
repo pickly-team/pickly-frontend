@@ -6,7 +6,6 @@ import {
   GET_BOOKMARK_LIST,
 } from '@/bookmarks/api/bookmark';
 import { GET_LIKE_BOOKMARK_LIST } from '@/bookmarks/api/like';
-import { READ_OPTIONS } from '@/bookmarks/service/hooks/home/useReadList';
 import { GET_CATEGORY_LIST } from '@/category/api/category';
 import { GET_COMMENT_LIST } from '@/comment/api/Comment';
 import {
@@ -51,11 +50,7 @@ const useHandleRefresh = ({ pageType }: HandleRefreshProps) => {
   const handleRefresh = async () => {
     if (pageType === 'MAIN') {
       await queryClient.invalidateQueries(
-        GET_BOOKMARK_LIST(
-          memberId,
-          READ_OPTIONS[readOption ?? '📖 전체'],
-          selectedCategoryId ?? 0,
-        ),
+        GET_BOOKMARK_LIST(memberId, readOption, selectedCategoryId),
       );
       return queryClient.invalidateQueries(
         GET_BOOKMARK_CATEGORY_LIST(memberId),
@@ -111,11 +106,7 @@ const useHandleRefresh = ({ pageType }: HandleRefreshProps) => {
         }),
       );
       await queryClient.invalidateQueries(
-        GET_BOOKMARK_LIST(
-          memberId,
-          READ_OPTIONS[readOption ?? '📖 전체'],
-          selectedCategoryId ?? 0,
-        ),
+        GET_BOOKMARK_LIST(memberId, readOption, selectedCategoryId ?? 0),
       );
       return queryClient.invalidateQueries(
         GET_BOOKMARK_CATEGORY_LIST(friendId),

@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { GET_LIKE_BOOKMARK_LIST } from './like';
 import { GET_USER_PROFILE } from '@/auth/api/profile';
+import { READ_OPTION, READ_OPTIONS } from '../service/hooks/home/useReadList';
 dayjs.locale('ko');
 
 const DOMAIN = 'BOOKMARK';
@@ -29,8 +30,8 @@ export const TEMP_VISIBILITY: Record<ClientVisibility, Visibility> = {
 
 export const GET_BOOKMARK_LIST = (
   userId: number,
-  readByUser: boolean | null,
-  categoryId: number,
+  readByUser: READ_OPTION,
+  categoryId: number | null,
 ) => [
   getKeyofObject(navigatePath, '/'),
   DOMAIN,
@@ -66,8 +67,8 @@ export type bookmarkGETBookMarkList = BookmarkItem[];
 
 interface GETBookMarkListRequest {
   memberId: number;
-  categoryId?: number | null;
-  readByUser: boolean | null;
+  categoryId: number | null;
+  readByUser: READ_OPTION;
   visibility?: Visibility;
   pageRequest?: {
     cursorId?: number;
@@ -82,7 +83,7 @@ const GETBookMarkList = {
       {
         params: {
           categoryId: params.categoryId === 0 ? null : params.categoryId,
-          readByUser: params.readByUser,
+          readByUser: READ_OPTIONS[params.readByUser],
           visibility: params.visibility,
           cursorId: params.pageRequest?.cursorId,
           pageSize: params.pageRequest?.pageSize,
@@ -111,11 +112,7 @@ const GETBookMarkList = {
 
 export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
   return useInfiniteQuery(
-    GET_BOOKMARK_LIST(
-      params.memberId,
-      params.readByUser,
-      params.categoryId ?? 0,
-    ),
+    GET_BOOKMARK_LIST(params.memberId, params.readByUser, params.categoryId),
     async ({ pageParam = null }) => {
       const { contents, hasNext } = await GETBookMarkList.API({
         ...params,
@@ -137,6 +134,8 @@ export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
         return undefined;
       },
       refetchOnWindowFocus: false,
+      cacheTime: 5 * 60 * 1000,
+      staleTime: 5 * 60 * 1000,
       enabled: params.memberId !== 0,
     },
   );
@@ -650,52 +649,36 @@ export const refetchAllBookmarkQuery = ({
   const categoryId = bookmark?.categoryId ?? 0;
   // NOTE : 왜 도대체 뒤로 가기 시에는 refetch가 되지 않는지 모르겠음
   queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, false, 0),
+    GET_BOOKMARK_LIST(memberId, '📖 전체', categoryId),
     (prev) => {
       return toggleBookmarkRead(prev, Number(bookmarkId));
     },
   );
   queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, false, categoryId ?? 0),
+    GET_BOOKMARK_LIST(memberId, '👀 읽음', categoryId),
     (prev) => {
       return toggleBookmarkRead(prev, Number(bookmarkId));
     },
   );
   queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, true, 0),
+    GET_BOOKMARK_LIST(memberId, '🫣 읽지 않음', categoryId),
     (prev) => {
       return toggleBookmarkRead(prev, Number(bookmarkId));
     },
   );
-  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, true, categoryId ?? 0),
-    (prev) => {
-      return toggleBookmarkRead(prev, Number(bookmarkId));
-    },
+  queryClient.invalidateQueries(GET_BOOKMARK_LIST(memberId, '📖 전체', null));
+  queryClient.invalidateQueries(GET_BOOKMARK_LIST(memberId, '👀 읽음', null));
+  queryClient.invalidateQueries(
+    GET_BOOKMARK_LIST(memberId, '🫣 읽지 않음', null),
   );
-  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, null, 0),
-    (prev) => {
-      return toggleBookmarkRead(prev, Number(bookmarkId));
-    },
+  queryClient.invalidateQueries(
+    GET_BOOKMARK_LIST(memberId, '📖 전체', categoryId),
   );
-  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, null, categoryId ?? 0),
-    (prev) => {
-      return toggleBookmarkRead(prev, Number(bookmarkId));
-    },
+  queryClient.invalidateQueries(
+    GET_BOOKMARK_LIST(memberId, '👀 읽음', categoryId),
   );
-  queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, true, 0));
-  queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, false, 0));
-  queryClient.refetchQueries(GET_BOOKMARK_LIST(memberId, null, 0));
-  queryClient.refetchQueries(
-    GET_BOOKMARK_LIST(memberId, false, categoryId ?? 0),
-  );
-  queryClient.refetchQueries(
-    GET_BOOKMARK_LIST(memberId, true, categoryId ?? 0),
-  );
-  queryClient.refetchQueries(
-    GET_BOOKMARK_LIST(memberId, null, categoryId ?? 0),
+  queryClient.invalidateQueries(
+    GET_BOOKMARK_LIST(memberId, '🫣 읽지 않음', categoryId),
   );
 };
 
@@ -801,8 +784,15 @@ export const usePOSTBookmarkReportMutation = ({
   const router = useNavigate();
   return useMutation(postBookmarkReportAPI, {
     onSuccess: () => {
-      queryClient.refetchQueries(GET_BOOKMARK_LIST(reporterId, false, 0));
-      queryClient.refetchQueries(GET_BOOKMARK_LIST(reporterId, true, 0));
+      queryClient.invalidateQueries(
+        GET_BOOKMARK_LIST(reporterId, '📖 전체', 0),
+      );
+      queryClient.invalidateQueries(
+        GET_BOOKMARK_LIST(reporterId, '👀 읽음', 0),
+      );
+      queryClient.invalidateQueries(
+        GET_BOOKMARK_LIST(reporterId, '🫣 읽지 않음', 0),
+      );
       toast.fireToast({
         message: '신고 되었습니다',
         mode: 'SUCCESS',
