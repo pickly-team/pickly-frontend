@@ -13,7 +13,13 @@ const useHandleBookmarkDetailMore = () => {
   const router = useNavigate();
   const { memberId } = useAuthStore();
   const { id } = useParams() as { id: string };
-  const { initializeUrlAndTitle } = useBookmarkStore();
+
+  const { initializeUrlAndTitle, setSelectedBookmarkId } = useBookmarkStore();
+
+  useEffect(() => {
+    setSelectedBookmarkId(Number(id));
+  }, [id, setSelectedBookmarkId]);
+
   // USER INTERACTION
   // 1. 북마크 삭제
   const { mutate: deleteBookmark } = useDELETEBookmarkQuery({

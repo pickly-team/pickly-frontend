@@ -24,6 +24,8 @@ interface BookmarkStore {
   initializeUrlAndTitle: () => void;
   fromPath: string;
   setFromPath: (path: string) => void;
+  selectedBookmarkId: number;
+  setSelectedBookmarkId: (id: number) => void;
 }
 
 const useBookmarkStore = create<BookmarkStore>((set) => ({
@@ -61,6 +63,10 @@ const useBookmarkStore = create<BookmarkStore>((set) => ({
   fromPath: '',
   setFromPath: (path) => {
     set({ fromPath: path });
+  },
+  selectedBookmarkId: 0,
+  setSelectedBookmarkId: (id) => {
+    set({ selectedBookmarkId: id });
   },
 }));
 

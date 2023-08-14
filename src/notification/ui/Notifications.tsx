@@ -60,4 +60,5 @@ export default Notifications;
 
 const Wrapper = styled.div`
   padding-bottom: 5rem;
+  min-height: 80dvh;
 `;

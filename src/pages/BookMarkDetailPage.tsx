@@ -9,14 +9,17 @@ import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 import SkeletonCommentList from '@/comment/ui/bookmark/SkeletonCommentList';
 import BookmarkDetailHeader from '@/bookmarks/ui/Detail/BookmarkDetailHeader';
 import Header from '@/common-ui/Header/Header';
+import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
+import PullToRefresh from '@/common-ui/PullToRefresh';
 
 const BookMarkDetailPage = () => {
+  const { handleRefresh } = useHandleRefresh({ pageType: 'BOOKMARK_DETAIL' });
   return (
     <>
-      <Suspense fallback={<Header showBackButton />}>
-        <BookmarkDetailHeader />
-      </Suspense>
-      <Body>
+      <PullToRefresh onRefresh={handleRefresh}>
+        <Suspense fallback={<Header showBackButton />}>
+          <BookmarkDetailHeader />
+        </Suspense>
         {/** 북마크 정보 영역 */}
         <Suspense
           fallback={
@@ -37,7 +40,7 @@ const BookMarkDetailPage = () => {
         >
           <CommentList />
         </Suspense>
-      </Body>
+      </PullToRefresh>
       {/** 댓글 입력 영역 */}
       <CommentUploadInputBottomBar>
         <CommentUploadInput />
@@ -48,10 +51,8 @@ const BookMarkDetailPage = () => {
 
 export default BookMarkDetailPage;
 
-const Body = styled.div``;
-
 const CommentUploadInputBottomBar = styled.div`
-  position: fixed;
+  position: absolute;
   width: 100%;
   left: 0;
   bottom: 0;

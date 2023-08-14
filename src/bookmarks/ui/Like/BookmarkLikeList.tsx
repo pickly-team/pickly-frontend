@@ -8,6 +8,7 @@ import SkeletonBookmarkLikeList from './SkeletonBookmarkLikeList';
 import useAuthStore from '@/store/auth';
 import { useState } from 'react';
 import BlankItem from '@/common-ui/BlankItem';
+import styled from '@emotion/styled';
 
 const BookmarkLikeList = () => {
   const { memberId } = useAuthStore();
@@ -39,7 +40,7 @@ const BookmarkLikeList = () => {
 
   const { bottom } = useBottomIntersection({ fetchNextPage });
   return (
-    <>
+    <Container>
       {bookmarkItems && !bookmarkItems.length && <BlankItem page="LIKE" />}
       {bookmarkItems &&
         bookmarkItems.map((bookmark) => (
@@ -51,8 +52,12 @@ const BookmarkLikeList = () => {
         ))}
       {isFetchingNextPage && <SkeletonBookmarkLikeList count={15} />}
       <div ref={bottom} />
-    </>
+    </Container>
   );
 };
 
 export default BookmarkLikeList;
+
+const Container = styled.div`
+  min-height: 80dvh;
+`;

@@ -65,10 +65,10 @@ const ProfilePage = () => {
 export default ProfilePage;
 
 const Layout = styled.div`
-  height: calc(100lvh - 5rem);
   overflow-y: scroll;
 `;
 const LBody = styled.div`
   padding: 0 ${getRem(20)};
   margin: ${getRem(12)} 0;
+  margin-bottom: 7rem;
 `;

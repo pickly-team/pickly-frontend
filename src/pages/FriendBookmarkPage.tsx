@@ -23,6 +23,8 @@ import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
 import useFriendStore from '@/store/friend';
 import useBookmarkStore from '@/store/bookmark';
 import SkeletonBookmarkUserInfo from '@/bookmarks/ui/SkeletonBookmarkUserInfo';
+import PullToRefresh from '@/common-ui/PullToRefresh';
+import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
 
 const FriendBookmarkPage = () => {
   // FIRST RENDER
@@ -68,8 +70,10 @@ const FriendBookmarkPage = () => {
   const { readSelectOptionsList, selectedReadOption, onClickReadMode } =
     useReadList({ memberId, isFriendPage: true });
 
+  const { handleRefresh } = useHandleRefresh({ pageType: 'FRIEND_BOOKMARK' });
+
   return (
-    <>
+    <PullToRefresh onRefresh={handleRefresh}>
       <Header
         showBackButton
         rightButton={
@@ -148,7 +152,7 @@ const FriendBookmarkPage = () => {
           />
         </Suspense>
       </LMiddle>
-    </>
+    </PullToRefresh>
   );
 };
 

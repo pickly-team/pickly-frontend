@@ -6,6 +6,9 @@ import CategoryList from '@/category/ui/CategoryList';
 import SkeletonCategoryList from '@/category/ui/SkeletonCategoryList';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import Header from '@/common-ui/Header/Header';
+import PullToRefresh from '@/common-ui/PullToRefresh';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
 import BSConfirmation from '@/common/ui/BSConfirmation';
 import useAuthStore from '@/store/auth';
 import { Suspense, useState } from 'react';
@@ -51,14 +54,22 @@ const CategoryListPage = () => {
     onClickSaveOrder,
   });
 
+  const { handleRefresh } = useHandleRefresh({ pageType: 'CATEGORY_LIST' });
+
   return (
-    <>
+    <PullToRefresh onRefresh={handleRefresh} disabled={mode !== 'NORMAL'}>
       <Header
         showBackButton
         title="카테고리 목록"
         rightButton={headerRight()}
       />
-      <Suspense fallback={<SkeletonCategoryList />}>
+      <Suspense
+        fallback={
+          <SkeletonWrapper>
+            <SkeletonCategoryList />
+          </SkeletonWrapper>
+        }
+      >
         <CategoryList
           mode={mode}
           clientCategoryList={clientCategoryList}
@@ -75,7 +86,7 @@ const CategoryListPage = () => {
         onClose={close}
         onConfirm={onClickDelete}
       />
-    </>
+    </PullToRefresh>
   );
 };
 

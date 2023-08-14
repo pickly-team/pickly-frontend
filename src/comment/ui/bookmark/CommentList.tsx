@@ -78,6 +78,6 @@ const CommentList = () => {
 export default CommentList;
 
 const CommentListWrapper = styled.div`
-  margin-bottom: 6rem;
+  margin-bottom: 10rem;
   padding: 0 ${getRem(20)};
 `;

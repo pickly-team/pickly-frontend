@@ -115,7 +115,7 @@ const CategoryList = ({
   }
 
   return (
-    <>
+    <Container>
       {mode !== 'ORDER' && (
         <>
           {categoryList?.pages[0].contents[0].categoryId &&
@@ -168,13 +168,16 @@ const CategoryList = ({
           setItemList={setClientCategoryList}
         />
       )}
-    </>
+    </Container>
   );
 };
 
 export default CategoryList;
 
-// TODO : Checkbox label에 접근 불가하여 한번 더 Wrapping 추후 해결
+const Container = styled.div`
+  min-height: 80dvh;
+`;
+
 const Box = styled.div`
   display: flex;
   align-items: center;
