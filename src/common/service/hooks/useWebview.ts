@@ -22,6 +22,7 @@ export interface PostBridgeParams {
   visitBookmark: {
     url: string;
   };
+  vibrate: null;
 }
 function useWebview<T extends keyof PostBridgeParams>() {
   return React.useMemo(() => {
