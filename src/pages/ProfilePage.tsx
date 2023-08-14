@@ -13,6 +13,8 @@ import {
   useGETNotificationSettingDayQuery,
   useGetCategoryCntQuery,
 } from '@/members/api/member';
+import PullToRefresh from '@/common-ui/PullToRefresh';
+import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
 
 const ProfilePage = () => {
   // FIRST RENDER
@@ -35,24 +37,28 @@ const ProfilePage = () => {
     loginId: userInfo.id,
   });
 
+  const { handleRefresh } = useHandleRefresh({ pageType: 'PROFILE' });
+
   return (
-    <Layout>
-      {/** 유저 정보 */}
-      <BasicInfoBox />
-      <LBody>
-        {/** 좋아요, 카테고리, 댓글 수 */}
-        <StatsBox
-          numberOfLikes={likeCount || 0}
-          numberOfCategories={categoryCount || 0}
-          numberOfComments={commentCount || 0}
-        />
-        {/** 알림 시간 설정 */}
-        <NotificationSettingBox />
-        {/** 알림 기준 일자 설정 */}
-        <SettingsBox serverRemindInDays={notificationSettingDay || 7} />
-        <CustomerFeedbackBox />
-      </LBody>
-    </Layout>
+    <PullToRefresh onRefresh={handleRefresh}>
+      <Layout>
+        {/** 유저 정보 */}
+        <BasicInfoBox />
+        <LBody>
+          {/** 좋아요, 카테고리, 댓글 수 */}
+          <StatsBox
+            numberOfLikes={likeCount || 0}
+            numberOfCategories={categoryCount || 0}
+            numberOfComments={commentCount || 0}
+          />
+          {/** 알림 시간 설정 */}
+          <NotificationSettingBox />
+          {/** 알림 기준 일자 설정 */}
+          <SettingsBox serverRemindInDays={notificationSettingDay || 7} />
+          <CustomerFeedbackBox />
+        </LBody>
+      </Layout>
+    </PullToRefresh>
   );
 };
 

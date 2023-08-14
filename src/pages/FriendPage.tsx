@@ -6,11 +6,16 @@ import IconButton from '@/common/ui/IconButton';
 import { useNavigate } from 'react-router-dom';
 import { navigatePath } from '@/constants/navigatePath';
 import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import PullToRefresh from '@/common-ui/PullToRefresh';
+
+import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
 
 const FriendPage = () => {
   const router = useNavigate();
+  const { handleRefresh } = useHandleRefresh({ pageType: 'FRIENDS' });
+
   return (
-    <>
+    <PullToRefresh onRefresh={handleRefresh}>
       <Header
         title={'친구 목록'}
         rightButton={
@@ -30,7 +35,7 @@ const FriendPage = () => {
       >
         <Friends />
       </Suspense>
-    </>
+    </PullToRefresh>
   );
 };
 

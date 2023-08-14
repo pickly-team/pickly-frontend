@@ -40,7 +40,7 @@ export interface GetLikeCount {
   token?: string;
 }
 
-const GetLikeCountAPIKey = (params: GetLikeCount) => [
+export const GetLikeCountAPIKey = (params: GetLikeCount) => [
   'LIKE_COUNT',
   params.memberId,
 ];
@@ -77,10 +77,9 @@ export interface GETBookmarkCategoryCntQueryParams {
   token?: string;
 }
 
-const GetCategoryCntKey = (params: GETBookmarkCategoryCntQueryParams) => [
-  'GET_CATEGORY_CNT',
-  params.memberId,
-];
+export const GetCategoryCntKey = (
+  params: GETBookmarkCategoryCntQueryParams,
+) => ['GET_CATEGORY_CNT', params.memberId];
 
 export const useGetCategoryCntQuery = (
   params: GETBookmarkCategoryCntQueryParams,
@@ -116,7 +115,7 @@ export interface GetCommentCnt {
   token?: string;
 }
 
-const GetCommentCntKey = (params: GetCommentCnt) => [
+export const GetCommentCntKey = (params: GetCommentCnt) => [
   'GET_COMMENT_CNT',
   params.memberId,
 ];
@@ -249,7 +248,7 @@ export interface GETNotificationSettingQueryParams {
   token?: string;
 }
 
-const GET_NOTIFICATION_SETTING_DAY_KEY = (
+export const GET_NOTIFICATION_SETTING_DAY_KEY = (
   params: GETNotificationSettingQueryParams,
 ) => ['GET_NOTIFICATION_SETTING_DAY', params.loginId];
 
@@ -516,11 +515,36 @@ export const useUnblockUserQuery = ({
   const queryClient = useQueryClient();
   const { fireToast } = useToast();
   const { friendId } = useFriendStore();
+  const { keyword, selectedMemberId } = useSearchStore();
   return useMutation(unblockUserAPI, {
     onSuccess: () => {
       queryClient.invalidateQueries(GET_BLOCK_MEMBER_LIST_KEY({ memberId }));
       queryClient.refetchQueries(
         GET_FRIEND_PROFILE({ memberId: friendId, loginId: memberId }),
+      );
+      queryClient.setQueryData<InfiniteSearchList>(
+        GET_SEARCH_LIST_KEY({ memberId, keyword }),
+        (searchList) => {
+          if (searchList) {
+            return {
+              ...searchList,
+              pages: searchList.pages.map((page) => ({
+                ...page,
+                contents: page.contents.map((content) => {
+                  if (content.memberId === selectedMemberId) {
+                    return {
+                      ...content,
+                      isFollowing: false,
+                      isBlocked: false,
+                    };
+                  }
+                  return content;
+                }),
+              })),
+            };
+          }
+          return searchList;
+        },
       );
       fireToast({ message: '차단이 해제 되었습니다' });
     },

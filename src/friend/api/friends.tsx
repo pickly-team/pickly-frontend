@@ -52,12 +52,9 @@ export interface GETFollowingListQueryRequest {
   token?: string;
 }
 
-const GET_FOLLOWING_LIST_KEY = (params: GETFollowingListQueryRequest) => [
-  'GET_FOLLOWING_LIST',
-  params.memberId,
-  params.cursorId,
-  params.pageSize,
-];
+export const GET_FOLLOWING_LIST_KEY = (
+  params: GETFollowingListQueryRequest,
+) => ['GET_FOLLOWING_LIST', params.memberId, params.cursorId, params.pageSize];
 
 export const useGETFollowingListQuery = (
   params: GETFollowingListQueryRequest,
@@ -120,7 +117,7 @@ export interface GETFollowerListQueryRequest {
   token?: string;
 }
 
-const GET_FOLLOWER_LIST_KEY = (params: GETFollowerListQueryRequest) => [
+export const GET_FOLLOWER_LIST_KEY = (params: GETFollowerListQueryRequest) => [
   'GET_FOLLOWER_LIST',
   params.memberId,
   params.cursorId,
@@ -319,10 +316,9 @@ export interface GETFollowingCountQueryRequest {
   token?: string;
 }
 
-const GET_FOLLOWING_COUNT_KEY = (params: GETFollowingCountQueryRequest) => [
-  'GET_FOLLOWING_COUNT',
-  params.memberId,
-];
+export const GET_FOLLOWING_COUNT_KEY = (
+  params: GETFollowingCountQueryRequest,
+) => ['GET_FOLLOWING_COUNT', params.memberId];
 
 export const useGETFollowingCountQuery = (
   params: GETFollowingCountQueryRequest,
@@ -354,10 +350,9 @@ export interface GETFollowerCountQueryRequest {
   token?: string;
 }
 
-const GET_FOLLOWER_COUNT_KEY = (params: GETFollowerCountQueryRequest) => [
-  'GET_FOLLOWER_COUNT',
-  params.memberId,
-];
+export const GET_FOLLOWER_COUNT_KEY = (
+  params: GETFollowerCountQueryRequest,
+) => ['GET_FOLLOWER_COUNT', params.memberId];
 
 export const useGETFollowerCountQuery = (
   params: GETFollowerCountQueryRequest,
