@@ -14,7 +14,7 @@ interface BookmarkListViewProps {
   memberId: number;
   readMode: READ_OPTION;
   isEditMode: boolean;
-  selectedCategory?: number | null;
+  selectedCategory: number | null;
   onClickBookmarkItemInEdit?: (bookmarkId: number) => void;
 }
 
@@ -27,7 +27,7 @@ const BookmarkListView = ({
 }: BookmarkListViewProps) => {
   const { bookMarkList, fetchNextPage, isFetchingNextPage, isLoading } =
     useBookmarkList({
-      readByUser: READ_OPTIONS[readMode],
+      readByUser: readMode,
       categoryId: selectedCategory,
       memberId,
     });

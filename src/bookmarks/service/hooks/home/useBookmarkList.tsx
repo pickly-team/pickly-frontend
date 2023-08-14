@@ -2,11 +2,12 @@ import { useGETBookMarkListQuery } from '@/bookmarks/api/bookmark';
 import useBookmarkStore from '@/store/bookmark';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { READ_OPTION } from './useReadList';
 
 interface BookmarkListProps {
-  readByUser: boolean | null;
+  readByUser: READ_OPTION;
   memberId: number;
-  categoryId?: number | null;
+  categoryId: number | null;
 }
 
 const useBookmarkList = ({
