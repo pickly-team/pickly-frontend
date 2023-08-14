@@ -137,8 +137,6 @@ export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
         return undefined;
       },
       refetchOnWindowFocus: false,
-      cacheTime: 1000 * 60 * 5,
-      staleTime: 1000 * 60 * 5,
       enabled: params.memberId !== 0,
     },
   );
@@ -164,26 +162,16 @@ const DELETEBookMarkList = {
 
 interface DELETEBookMarkListMutation {
   userId: number;
-  categoryId?: number | null;
 }
 
 export const useDELETEBookMarkMutation = ({
   userId,
-  categoryId,
 }: DELETEBookMarkListMutation) => {
   const queryClient = useQueryClient();
   const toast = useToast();
   return useMutation(DELETEBookMarkList.API, {
     onSuccess: () => {
-      queryClient.refetchQueries(
-        GET_BOOKMARK_LIST(userId, true, categoryId ?? 0),
-      );
-      queryClient.refetchQueries(
-        GET_BOOKMARK_LIST(userId, null, categoryId ?? 0),
-      );
-      queryClient.refetchQueries(
-        GET_BOOKMARK_LIST(userId, false, categoryId ?? 0),
-      );
+      refetchAllBookmarkQuery({ queryClient, memberId: userId });
       toast.fireToast({
         message: '삭제 되었습니다',
         mode: 'DELETE',
