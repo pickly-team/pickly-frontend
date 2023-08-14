@@ -192,7 +192,7 @@ const SlideInnerWrapper = styled.div`
   width: fit-content;
   display: flex;
   height: 100%;
-  transition: left 0.1s ease-in-out;
+  transition: left 0.2s ease-in-out;
 `;
 
 const MainItemWrapper = styled.div`
