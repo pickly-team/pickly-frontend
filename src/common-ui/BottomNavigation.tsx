@@ -8,6 +8,7 @@ import { BOTTOM_NAVIGATION_Z_INDEX } from '@/constants/zIndex';
 import { BsBookFill } from 'react-icons/bs';
 import { useGETNotificationListQuery } from '@/notification/api/notification';
 import useAuthStore from '@/store/auth';
+import useWebview from '@/common/service/hooks/useWebview';
 
 /**
  *
@@ -29,13 +30,23 @@ const BottomNavigation = () => {
     (notification) => !notification.isChecked,
   );
 
+  const { postMessage } = useWebview();
+
+  const onClickLink = () => {
+    postMessage('vibrate', null);
+  };
+
   return (
     <>
       <NavigationWrapper>
         <button onClick={onClickAddButton} css={plusButton}>
           <Icon name="plus" size="m" />
         </button>
-        <StyledLink to={navigatePath.MAIN} css={iconStyle}>
+        <StyledLink
+          onClick={onClickLink}
+          to={navigatePath.MAIN}
+          css={iconStyle}
+        >
           {pathname === `${navigatePath.MAIN}` && (
             <BsBookFill size={24} color={theme.colors.lightPrimary} />
           )}
@@ -43,7 +54,7 @@ const BottomNavigation = () => {
             <BsBookFill size={24} color={theme.colors.white} />
           )}
         </StyledLink>
-        <StyledLink to="/friend" css={iconStyle}>
+        <StyledLink onClick={onClickLink} to="/friend" css={iconStyle}>
           {pathname === `${navigatePath.FRIEND}` && (
             <Icon size="l" name="people-green" />
           )}
@@ -53,7 +64,11 @@ const BottomNavigation = () => {
         </StyledLink>
         {!!isCheckNotification && (
           <NotificationWithRedDot>
-            <StyledLink to="/notification" css={iconStyle}>
+            <StyledLink
+              onClick={onClickLink}
+              to="/notification"
+              css={iconStyle}
+            >
               {pathname === `${navigatePath.NOTIFICATION}` && (
                 <Icon size="m" name="alarm-green" />
               )}
@@ -65,7 +80,7 @@ const BottomNavigation = () => {
           </NotificationWithRedDot>
         )}
         {!isCheckNotification && (
-          <StyledLink to="/notification" css={iconStyle}>
+          <StyledLink onClick={onClickLink} to="/notification" css={iconStyle}>
             {pathname === `${navigatePath.NOTIFICATION}` && (
               <Icon size="m" name="alarm-green" />
             )}
@@ -74,7 +89,7 @@ const BottomNavigation = () => {
             )}
           </StyledLink>
         )}
-        <StyledLink to="/profile" css={iconStyle}>
+        <StyledLink onClick={onClickLink} to="/profile" css={iconStyle}>
           {pathname === `${navigatePath.PROFILE}` && (
             <Icon size="m" name="profile-green" />
           )}
