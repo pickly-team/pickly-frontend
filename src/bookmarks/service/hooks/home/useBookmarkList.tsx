@@ -1,7 +1,7 @@
 import { useGETBookMarkListQuery } from '@/bookmarks/api/bookmark';
 import useBookmarkStore from '@/store/bookmark';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 interface BookmarkListProps {
   readByUser: boolean | null;
@@ -14,7 +14,7 @@ const useBookmarkList = ({
   memberId,
   categoryId,
 }: BookmarkListProps) => {
-  const navigate = useNavigate();
+  const navigate = useLocation();
   // SERVER
   // 1. 북마크 리스트 조회
   const {
@@ -22,7 +22,7 @@ const useBookmarkList = ({
     isLoading,
     fetchNextPage,
     isFetchingNextPage,
-    refetch,
+    remove,
   } = useGETBookMarkListQuery({
     readByUser,
     categoryId,
@@ -30,14 +30,14 @@ const useBookmarkList = ({
   });
 
   useEffect(() => {
-    if (categoryId) refetch();
+    if (categoryId) remove();
   }, [categoryId]);
 
   const { initializeUrlAndTitle } = useBookmarkStore();
 
   useEffect(() => {
-    refetch();
     initializeUrlAndTitle();
+    remove();
   }, [navigate]);
 
   return {

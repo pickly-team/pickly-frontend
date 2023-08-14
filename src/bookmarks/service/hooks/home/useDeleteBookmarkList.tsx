@@ -1,12 +1,10 @@
 import { useDELETEBookMarkMutation } from '@/bookmarks/api/bookmark';
 import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
+import useAuthStore from '@/store/auth';
 import { useState } from 'react';
 
-interface DeleteBookmarkListProps {
-  categoryId?: number | null;
-}
-
-const useDeleteBookmarkList = ({ categoryId }: DeleteBookmarkListProps) => {
+const useDeleteBookmarkList = () => {
+  const { memberId } = useAuthStore();
   const [isEditMode, setEditMode] = useState(false);
 
   const {
@@ -34,7 +32,9 @@ const useDeleteBookmarkList = ({ categoryId }: DeleteBookmarkListProps) => {
   };
 
   // BS에 대한 이벤트 처리
-  const { mutate } = useDELETEBookMarkMutation({ userId: 1, categoryId });
+  const { mutate } = useDELETEBookMarkMutation({
+    userId: memberId,
+  });
   const onClickDelete = () => {
     // 1. 북마크 삭제
     mutate({ bookmarkIds: deleteBookmarkList });

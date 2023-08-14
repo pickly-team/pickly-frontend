@@ -33,7 +33,7 @@ const MainPage = () => {
     onClickDelete,
     onClickEdit,
     deleteBookmarkClose,
-  } = useDeleteBookmarkList({ categoryId: selectedCategoryId });
+  } = useDeleteBookmarkList();
 
   const { handleRefresh } = useHandleRefresh({ pageType: 'MAIN' });
 
