@@ -6,13 +6,17 @@ import { Suspense } from 'react';
 import BookmarkLikeList from '@/bookmarks/ui/Like/BookmarkLikeList';
 import SkeletonBookmarkLikeList from '@/bookmarks/ui/Like/SkeletonBookmarkLikeList';
 import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import PullToRefresh from '@/common-ui/PullToRefresh';
+import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
 
 const LikePage = () => {
   const showBackButton = true;
   const title = '좋아요 목록';
 
+  const { handleRefresh } = useHandleRefresh({ pageType: 'LIKE_PAGE' });
+
   return (
-    <Layout>
+    <PullToRefresh onRefresh={handleRefresh}>
       <Header title={title} showBackButton={showBackButton} />
       <LBody>
         <Suspense
@@ -25,13 +29,12 @@ const LikePage = () => {
           <BookmarkLikeList />
         </Suspense>
       </LBody>
-    </Layout>
+    </PullToRefresh>
   );
 };
 
 export default LikePage;
 
-const Layout = styled.div``;
 const LBody = styled.div`
   margin-top: ${getRem(12)};
   row-gap: ${getRem(21)};

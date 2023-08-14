@@ -37,4 +37,5 @@ const CommentListWrapper = styled.div`
     margin-top: ${getRem(10)};
     margin-bottom: ${getRem(10)};
   }
+  min-height: 80dvh;
 `;
