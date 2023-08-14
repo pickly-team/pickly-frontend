@@ -59,7 +59,7 @@ export interface GetAPIRequest {
   token?: string;
 }
 
-const GET_NOTIFICATION_LIST_KEY = (params: GetAPIRequest) => [
+export const GET_NOTIFICATION_LIST_KEY = (params: GetAPIRequest) => [
   'GET_NOTIFICATION_LIST',
   params.memberId,
 ];
