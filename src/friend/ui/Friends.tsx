@@ -49,7 +49,7 @@ const Friends = () => {
     followingData?.pages.flatMap((page) => page.contents) ?? [];
 
   return (
-    <div>
+    <>
       <FriendTypeSelect
         value={selectedType}
         onSelect={setSelectedType}
@@ -88,13 +88,14 @@ const Friends = () => {
             />
           ))}
       </Container>
-    </div>
+    </>
   );
 };
 
 export default Friends;
 
 const Container = styled.div`
+  min-height: 80dvh;
   padding: ${getRem(10)};
   > * + * {
     margin-top: ${getRem(10)};
