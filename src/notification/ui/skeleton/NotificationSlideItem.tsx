@@ -46,7 +46,7 @@ const NotificationSlideItem = ({
           isRead={isRead}
           onClick={toggleReadNotification}
         >
-          <Text.Span fontSize={getRem(16)} weight={'bold'}>
+          <Text.Span fontSize={getRem(14)} weight={'bold'}>
             {title}
           </Text.Span>
           <NotificationContentWrapper>
