@@ -6,16 +6,13 @@ import styled from '@emotion/styled';
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import Icon from '@/common-ui/assets/Icon';
-import useToast from '@/common-ui/Toast/hooks/useToast';
+import useWebview from '@/common/service/hooks/useWebview';
 
 const CustomerFeedbackBox = () => {
-  const { fireToast } = useToast();
+  const { postMessage } = useWebview();
 
-  const onClickInquiry = () => {
-    fireToast({
-      message: '준비 중인 기능이에요',
-      mode: 'ERROR',
-    });
+  const onClick_문의하기 = () => {
+    postMessage('email', null);
   };
 
   return (
@@ -33,7 +30,7 @@ const CustomerFeedbackBox = () => {
           <Icon name={'arrow-right-black'} size={'xs'} />
         </RoundedBox>
       </StyledLink>
-      <BoxWrapper onClick={onClickInquiry}>
+      <BoxWrapper onClick={onClick_문의하기}>
         <RoundedBox
           borderColor="lightPrimary"
           style={{
