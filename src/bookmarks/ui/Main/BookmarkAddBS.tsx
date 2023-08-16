@@ -93,7 +93,7 @@ const URLInput = ({
               onChange={(e) => onChangeUrl(e.target.value)}
               disabled={disabled}
               ref={urlInputRef}
-              maxLength={500}
+              maxLength={2000}
             />
             <FixedIconWrapper>
               {!!url.length && !disabled && (
