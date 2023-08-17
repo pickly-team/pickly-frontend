@@ -3,12 +3,14 @@ import client from '@/common/service/client';
 import { navigatePath } from '../../constants/navigatePath';
 import {
   GET_BOOKMARK_COMMENT,
+  GET_BOOKMARK_LIST,
   refetchAllBookmarkQuery,
 } from '@/bookmarks/api/bookmark';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import useAuthStore from '@/store/auth';
+import useBookmarkStore from '@/store/bookmark';
 
 const DOMAIN = 'COMMENT';
 
@@ -96,6 +98,7 @@ export const usePOSTCommentQuery = ({
 }: POSTCommentQueryRequest) => {
   const queryClient = useQueryClient();
   const { memberId } = useAuthStore();
+  const { readOption, selectedCategoryId } = useBookmarkStore();
   return useMutation(postCommentAPI, {
     onSuccess: () => {
       queryClient.refetchQueries(
@@ -105,6 +108,9 @@ export const usePOSTCommentQuery = ({
         }),
       );
       refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
+      queryClient.invalidateQueries(
+        GET_BOOKMARK_LIST(memberId, readOption, selectedCategoryId),
+      );
       initComment();
     },
   });
