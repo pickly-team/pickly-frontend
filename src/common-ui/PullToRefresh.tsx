@@ -75,7 +75,6 @@ const PullToRefresh = ({
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       onTouchMove={onTouchMove}
-      style={{ overflow: 'hidden' }}
     >
       <IconContainer
         style={{
@@ -110,6 +109,7 @@ const IconContainer = styled.div`
   z-index: 10;
   top: 0;
   transition: transform 0.3s;
+  background-color: ${theme.colors.black};
 `;
 
 const fade = keyframes`
