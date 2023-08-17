@@ -23,7 +23,7 @@ const useBookmarkList = ({
     isLoading,
     fetchNextPage,
     isFetchingNextPage,
-    remove,
+    refetch,
   } = useGETBookMarkListQuery({
     readByUser,
     categoryId,
@@ -31,14 +31,14 @@ const useBookmarkList = ({
   });
 
   useEffect(() => {
-    if (categoryId) remove();
+    if (categoryId) refetch();
   }, [categoryId]);
 
   const { initializeUrlAndTitle } = useBookmarkStore();
 
   useEffect(() => {
     initializeUrlAndTitle();
-    remove();
+    refetch();
   }, [navigate]);
 
   return {
