@@ -30,6 +30,15 @@ const Layout = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    if (ref.current && pathname.includes('bookmark')) {
+      ref.current.scrollTo({
+        top: 0,
+        behavior: 'instant',
+      });
+    }
+  }, [pathname]);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (ref.current && ref.current.scrollTop > 0) {
         sessionStorage.setItem('scroll', ref.current.scrollTop.toString());
