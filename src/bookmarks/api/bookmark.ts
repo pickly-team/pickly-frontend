@@ -285,6 +285,9 @@ export const useGETBookmarkTitleQuery = ({
       enabled: !!url,
       retry: 0,
       onSuccess: (data) => {
+        if (!data.length) {
+          fireToast({ message: '앗! 유효하지 않은 주소에요', mode: 'DELETE' });
+        }
         setTitle && setTitle(data);
       },
       onError: () => {
