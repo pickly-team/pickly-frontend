@@ -14,6 +14,7 @@ import useBookmarkStore from '@/store/bookmark';
 import { useLocation } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import { Oval } from 'react-loader-spinner';
+import DisabledButton from '@/common-ui/DisabledButton';
 
 interface BookmarkAddBSProps {
   isOpen: boolean;
@@ -273,21 +274,41 @@ interface SubmitButtonProps {
 
 const SubmitButton = ({ isAllWritten, onClick }: SubmitButtonProps) => {
   return (
-    <Button
-      disabled={!isAllWritten}
-      buttonColor="buttonGreen"
-      style={{
-        position: 'absolute',
-        bottom: getRem(20),
-        width: `calc(100% - ${getRem(40)})`,
-      }}
-      height={calculateRem(52)}
-      onClick={onClick}
-    >
-      <Text.Span color="white" fontSize={calculateRem(18)} weight="bold">
-        저장
-      </Text.Span>
-    </Button>
+    <>
+      {!!isAllWritten && (
+        <Button
+          disabled={!isAllWritten}
+          buttonColor="buttonGreen"
+          style={{
+            position: 'absolute',
+            bottom: getRem(20),
+            width: `calc(100% - ${getRem(40)})`,
+          }}
+          height={calculateRem(52)}
+          onClick={onClick}
+        >
+          <Text.Span color="white" fontSize={calculateRem(18)} weight="bold">
+            저장
+          </Text.Span>
+        </Button>
+      )}
+      {!isAllWritten && (
+        <DisabledButton
+          buttonColor="buttonGreen"
+          style={{
+            position: 'absolute',
+            bottom: getRem(20),
+            width: `calc(100% - ${getRem(40)})`,
+          }}
+          height={calculateRem(52)}
+          onClick={onClick}
+        >
+          <Text.Span color="white" fontSize={calculateRem(18)} weight="bold">
+            저장
+          </Text.Span>
+        </DisabledButton>
+      )}
+    </>
   );
 };
 
