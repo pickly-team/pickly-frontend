@@ -8,6 +8,7 @@ import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
 import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
 import BookmarkAddBS from '@/bookmarks/ui/Main/BookmarkAddBS';
 import Header from '@/common-ui/Header/Header';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 import useAuthStore from '@/store/auth';
 import useBookmarkStore from '@/store/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
@@ -70,7 +71,24 @@ const BookmarkEditPage = () => {
     memberId,
   });
 
+  const { fireToast } = useToast();
+
   const onSubmitBookmark = () => {
+    if (!isAllWritten) {
+      if (!url.length) {
+        fireToast({ mode: 'ERROR', message: '앗! URL을 입력해주세요' });
+        return;
+      }
+      if (!title.length) {
+        fireToast({ mode: 'ERROR', message: '앗! 제목을 입력해주세요' });
+        return;
+      }
+      if (!selectedCategoryId) {
+        fireToast({ mode: 'ERROR', message: '앗! 카테고리를 선택해주세요' });
+        return;
+      }
+      return;
+    }
     putBookmark({
       bookmarkId: bookmarkId ?? '',
       putData: {

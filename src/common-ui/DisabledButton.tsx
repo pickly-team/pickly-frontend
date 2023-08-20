@@ -1,6 +1,8 @@
-import { ColorType, theme } from '@/styles/theme';
+/* eslint-disable react/jsx-props-no-spreading */
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
+
 import { css } from '@emotion/react';
-import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from 'react';
+import { ColorType, theme } from '@/styles/theme';
 
 export type ButtonProps = {
   buttonColor?: ColorType;
@@ -19,7 +21,7 @@ export type ButtonProps = {
  * @param {number} fontSize rem 단위
  *
  * @example
- *  <Button
+ *  <DisabledButton
         type="button"
         width={100}
         height={3}
@@ -30,21 +32,20 @@ export type ButtonProps = {
         disabledButtonColor="grey800"
       >
         이것은 버튼 입니다.
-      </Button>
+      </DisabledButton>
  */
 
 /** */
-const Button: FunctionComponent<ButtonProps> = ({
+
+const DisabledButton = ({
   children,
   type = 'button',
   width = 100,
   height = 3,
   fontSize = 1,
   buttonColor = 'buttonGreen',
-  activeButtonColor = 'lightGreen',
-  disabledButtonColor = 'grey800',
   ...rest
-}) => {
+}: ButtonProps) => {
   return (
     <button
       type={type}
@@ -66,12 +67,12 @@ const Button: FunctionComponent<ButtonProps> = ({
         &:focus {
           outline: none;
         }
-        &:disabled {
-          background-color: ${theme.colors[disabledButtonColor]};
-          cursor: not-allowed;
-        }
         &:active {
-          background-color: ${theme.colors[activeButtonColor]};
+          background-color: ${theme.colors.grey900};
+        }
+        &:read-only {
+          background-color: ${theme.colors.grey800};
+          cursor: not-allowed;
         }
       `}
       {...rest}
@@ -81,4 +82,4 @@ const Button: FunctionComponent<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default DisabledButton;
