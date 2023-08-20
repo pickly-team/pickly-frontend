@@ -1,7 +1,9 @@
 import { GET_USER_PROFILE } from '@/auth/api/profile';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 import client from '@/common/service/client';
 import { navigatePath } from '@/constants/navigatePath';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 interface RequestInterface {
@@ -32,12 +34,18 @@ export interface PutAPIRequest {
 export const usePutUserInfoQuery = ({ mode, memberId }: PutAPIRequest) => {
   const router = useNavigate();
   const queryClient = useQueryClient();
+  const { fireToast } = useToast();
   return useMutation(putUserInfo, {
     onSuccess: () => {
       if (mode === 'CREATE') router(navigatePath.INTRODUCE);
       if (mode === 'EDIT') router(navigatePath.PROFILE);
       queryClient.invalidateQueries(GET_USER_PROFILE({ loginId: memberId }));
     },
-    onError: (e) => console.log(e),
+    onError: (e: AxiosError) => {
+      if (e.response?.status === 500) {
+        // TODO : 이후 에러 세분화 처리 필요
+        fireToast({ mode: 'ERROR', message: '앗! 중복된 닉네임이에요' });
+      }
+    },
   });
 };
