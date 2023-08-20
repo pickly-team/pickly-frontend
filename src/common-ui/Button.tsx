@@ -48,6 +48,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   return (
     <button
       type={type}
+      disabled={false}
       css={css`
         display: flex;
         align-items: center;
