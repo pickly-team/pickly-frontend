@@ -52,7 +52,6 @@ class ApiErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: CustomAxiosError) {
     if (error.response?.data.code === ErrorTypes.NO_USER_INFO) {
-      alert('로그인이 필요합니다.');
       this.props.postMessage('signUp', null);
     }
   }
