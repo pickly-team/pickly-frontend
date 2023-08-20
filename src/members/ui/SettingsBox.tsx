@@ -142,6 +142,7 @@ const RemindingDescription = ({
                 <StyledInput
                   height={1.2}
                   value={remindInDays}
+                  type="number"
                   onChange={onChangeRemainingDays}
                   max={MAX_DAYS}
                 />
