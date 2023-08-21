@@ -32,8 +32,10 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
     if (userInfo) {
       const { name, nickname, profileEmoji } = userInfo;
 
+      if (nickname === name.slice(0, 3) + '-+@') onChangeNickname('');
+      else onChangeNickname(nickname);
+
       onChangeName(name);
-      onChangeNickname(nickname);
       onChangeEmoji(profileEmoji);
       setInitialValues({
         name,
@@ -49,6 +51,12 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
       nickname: initialNickname,
       emoji: initialEmoji,
     } = initialValues;
+
+    if (nickname.length === 0) {
+      setDisabled(true);
+      return;
+    }
+
     if (
       name === initialName &&
       nickname === initialNickname &&
