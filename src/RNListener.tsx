@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { navigatePath } from './constants/navigatePath';
 
+const PREFIX = '-+@*' as const;
+
 const RNListener = () => {
   const { memberId, login, userInfo } = useAuthStore();
   const { initializeUrlAndTitle } = useBookmarkStore();
@@ -21,7 +23,7 @@ const RNListener = () => {
 
   useEffect(() => {
     if (userInfo) {
-      if (userInfo.name.slice(0, 3) + '-+@' === userInfo.nickname) {
+      if (userInfo.nickname.includes(PREFIX)) {
         router(navigatePath.USER);
       }
     }
