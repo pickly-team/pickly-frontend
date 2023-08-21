@@ -19,24 +19,6 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
   const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen, closeEmojiBS } =
     useChangeEmoji();
 
-  // TODO : 백엔드 수정 후 수정
-  const { mutate } = usePutUserInfoQuery({ mode: 'CREATE', memberId });
-
-  useEffect(() => {
-    if (userInfo) {
-      if (userInfo.nickname === '' && memberId) {
-        mutate({
-          putData: {
-            name: userInfo.name || '피클리123',
-            nickname: 'oxo' + generateRandomString(4),
-            profileEmoji: userInfo.profileEmoji ?? '🐶',
-          },
-          memberId,
-        });
-      }
-    }
-  }, [userInfo, memberId]);
-
   // TODO : 이게 최선의 방법인지 고민해보기
   const [initialValues, setInitialValues] = useState({
     name: '',
@@ -49,16 +31,13 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
   useEffect(() => {
     if (userInfo) {
       const { name, nickname, profileEmoji } = userInfo;
-      // TODO : 백엔드 수정 후 수정
-      const changeName = name.includes('피클리123') ? '' : name;
-      const changeNickName = nickname.includes('oxo') ? '' : nickname;
 
-      onChangeName(changeName);
-      onChangeNickname(changeNickName);
+      onChangeName(name);
+      onChangeNickname(nickname);
       onChangeEmoji(profileEmoji);
       setInitialValues({
-        name: changeName,
-        nickname: changeNickName,
+        name,
+        nickname,
         emoji: profileEmoji,
       });
     }
@@ -80,6 +59,8 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
     }
     setDisabled(false);
   }, [name, nickname, emoji, initialValues]);
+
+  const { mutate } = usePutUserInfoQuery({ mode: 'CREATE', memberId });
 
   const onSubmitUserInfo: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -112,15 +93,3 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
 };
 
 export default UserInfoPage;
-
-// TODO : 백엔드 수정 후 수정
-const generateRandomString = (num: number) => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  let result = '';
-  const charactersLength = characters.length;
-  for (let i = 0; i < num; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-
-  return result;
-};
