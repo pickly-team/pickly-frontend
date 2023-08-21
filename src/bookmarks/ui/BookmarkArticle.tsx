@@ -8,6 +8,9 @@ import { useParams } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import BookmarkLikeButton from './Like/BookmarkLikeButton';
 import {
+  GET_BOOKMARK_LIST,
+  SeverBookMarkItem,
+  toggleBookmarkRead,
   useDELETEBookmarkLikeQuery,
   useGETBookmarkDetailQuery,
   usePOSTBookmarkLikeQuery,
@@ -18,6 +21,8 @@ import useCommentStore from '@/store/comment';
 import useAuthStore from '@/store/auth';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import useWebview from '@/common/service/hooks/useWebview';
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
+import useBookmarkStore from '@/store/bookmark';
 
 const BookMarkArticle = () => {
   const { id: bookmarkId } = useParams<{ id: string }>();
@@ -27,6 +32,19 @@ const BookMarkArticle = () => {
     memberId,
   });
   const { commentCount } = useCommentStore();
+
+  const queryClient = useQueryClient();
+
+  const { selectedCategoryId } = useBookmarkStore();
+
+  useEffect(() => {
+    queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
+      GET_BOOKMARK_LIST(memberId, '📖 전체', selectedCategoryId),
+      (prev) => {
+        return toggleBookmarkRead(prev, Number(bookmarkId));
+      },
+    );
+  }, [bookmarkId, selectedCategoryId, memberId, queryClient]);
 
   const onErrorImage = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/images/main.png';
