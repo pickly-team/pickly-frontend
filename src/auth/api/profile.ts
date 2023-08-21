@@ -41,7 +41,6 @@ export const useGETUserProfile = (params: GetAPIRequest) => {
         profileEmoji: data.profileEmoji ?? '🐶',
       }));
       if (data.nickname === '') router(navigatePath.USER);
-      if (data.nickname.includes('oxo')) router(navigatePath.USER);
     },
     onError: (e) => console.log(e),
     cacheTime: 10 * 60 * 1000,
