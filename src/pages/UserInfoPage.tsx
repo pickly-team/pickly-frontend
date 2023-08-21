@@ -5,6 +5,8 @@ import { FormEventHandler, useEffect, useState } from 'react';
 import useAuthStore from '@/store/auth';
 import { usePutUserInfoQuery } from '@/user/api/user';
 
+const PREFIX = '-+@*' as const;
+
 interface UserCreatePageProps {
   mode: Mode;
 }
@@ -32,7 +34,7 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
     if (userInfo) {
       const { name, nickname, profileEmoji } = userInfo;
 
-      if (nickname === name.slice(0, 3) + '-+@') onChangeNickname('');
+      if (nickname.includes(PREFIX)) onChangeNickname('');
       else onChangeNickname(nickname);
 
       onChangeName(name);
