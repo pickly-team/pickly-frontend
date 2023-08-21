@@ -45,7 +45,7 @@ export const GET_BOOKMARK_LIST = (
 // 북마크 메인 페이지
 // 북마크 리스트 조회
 /** API call 결과 */
-interface SeverBookMarkItem {
+export interface SeverBookMarkItem {
   hasNext: boolean;
   contents: BookmarkItem[];
 }
@@ -685,7 +685,7 @@ export const refetchAllBookmarkQuery = ({
   );
 };
 
-const toggleBookmarkRead = (
+export const toggleBookmarkRead = (
   prev: InfiniteData<SeverBookMarkItem> | undefined,
   bookmarkId: number,
 ) => {
