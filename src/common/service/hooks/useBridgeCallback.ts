@@ -21,6 +21,8 @@ interface BridgeParams {
   initialize: null;
   /** 페이지 뒤로 가기 */
   goBack: null;
+  /** 새로고침 */
+  refetch: null;
 }
 
 function useBridgeCallback<T extends keyof BridgeParams>(

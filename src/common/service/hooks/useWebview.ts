@@ -26,6 +26,8 @@ export interface PostBridgeParams {
   vibrate: null;
   /** 이메일 */
   email: null;
+  /** 새로고침 끝 */
+  refetch: null;
 }
 function useWebview<T extends keyof PostBridgeParams>() {
   return React.useMemo(() => {
