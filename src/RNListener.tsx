@@ -6,6 +6,7 @@ import useWebview from './common/service/hooks/useWebview';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { navigatePath } from './constants/navigatePath';
+import useHandleRefresh from './common/service/hooks/useHandleRefresh';
 
 const PREFIX = '-+@*' as const;
 
@@ -14,6 +15,7 @@ const RNListener = () => {
   const { initializeUrlAndTitle } = useBookmarkStore();
 
   const { postMessage } = useWebview();
+  const { handleRefresh } = useHandleRefresh({ pageType: 'MAIN' });
 
   useEffect(() => {
     postMessage('login', null);
@@ -37,6 +39,10 @@ const RNListener = () => {
     }
     if (message === 'initialize') {
       initializeUrlAndTitle();
+    }
+    if (message === 'refetch') {
+      postMessage('refetch', null);
+      handleRefresh();
     }
   });
 
