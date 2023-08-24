@@ -28,6 +28,8 @@ export interface PostBridgeParams {
   email: null;
   /** 새로고침 끝 */
   refetch: null;
+  /** android 공유하기 종료 */
+  androidShareExit: null;
 }
 function useWebview<T extends keyof PostBridgeParams>() {
   return React.useMemo(() => {
