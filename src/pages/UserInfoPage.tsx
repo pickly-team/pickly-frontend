@@ -70,7 +70,7 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
     setDisabled(false);
   }, [name, nickname, emoji, initialValues]);
 
-  const { mutate } = usePutUserInfoQuery({ mode: 'CREATE', memberId });
+  const { mutate } = usePutUserInfoQuery({ mode, memberId });
 
   const onSubmitUserInfo: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
