@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
+type MessageHandlers = {
+  [K in keyof BridgeParams]: (params: BridgeParams[K]) => void;
+};
+
 interface MessageEventData<T extends keyof BridgeParams> {
   message: T;
-  params?: BridgeParams[T];
+  params: BridgeParams[T];
 }
-
-type MessageHandler<T extends keyof BridgeParams> = (
-  data: MessageEventData<T>,
-) => void;
 
 interface BridgeParams {
   /** 웹뷰 종료 */
@@ -23,20 +23,24 @@ interface BridgeParams {
   goBack: null;
   /** 새로고침 */
   refetch: null;
+  /** 안드로이드 url 공유 */
+  androidShareUrl: {
+    url: string;
+  };
 }
 
 function useBridgeCallback<T extends keyof BridgeParams>(
-  callback: MessageHandler<T>,
+  message: T,
+  callback: MessageHandlers[T],
 ) {
   useEffect(() => {
     const handler = (event: MessageEvent) => {
       if (event && event.data) {
         try {
           const data = JSON.parse(event.data) as MessageEventData<T>;
-          const message = data.message;
-          const params = data.params;
-
-          callback({ message, params });
+          if (data.message === message) {
+            callback(data.params);
+          }
         } catch (error) {
           console.error('Error parsing JSON:', error);
         }
@@ -51,7 +55,11 @@ function useBridgeCallback<T extends keyof BridgeParams>(
     } else {
       return;
     }
-  }, [callback]);
+    return () => {
+      (document as any).removeEventListener('message', handler);
+      window.removeEventListener('message', handler);
+    };
+  }, [message, callback]);
 }
 
 export default useBridgeCallback;
