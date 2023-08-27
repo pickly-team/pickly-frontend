@@ -15,6 +15,8 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   const { url, setUrl, title, setTitle } = useBookmarkStore();
   const [debouncedUrl, setDebouncedUrl] = useState<string>('');
 
+  const [isInitial, setIsInitial] = useState<boolean>(true);
+
   useEffect(() => {
     if (defaultTitle) setTitle(defaultTitle);
     if (defaultUrl) setUrl(defaultUrl);
@@ -23,6 +25,14 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   // url 입력시 0.5초 후에 url 검증
   // 추가적으로 title 불러오는 api 호출
   const debouncedChangeUrl = debounce((url) => setDebouncedUrl(url), 500);
+
+  useEffect(() => {
+    if (isInitial && url !== '') {
+      setIsInitial(false);
+      setDebouncedUrl(url);
+      return;
+    }
+  }, [isInitial, url]);
 
   let isDeleting = false; // 사용자가 지우는 동작을 수행하고 있는지 여부를 저장하는 변수
 

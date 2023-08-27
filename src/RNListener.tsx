@@ -31,19 +31,25 @@ const RNListener = () => {
     }
   }, [userInfo]);
 
-  useBridgeCallback(({ message, params }) => {
-    if (message === 'login') {
-      if (params?.memberId && params?.token) {
-        login({ token: params.token, memberId: params.memberId });
-      }
-    }
-    if (message === 'initialize') {
-      initializeUrlAndTitle();
-    }
-    if (message === 'refetch') {
-      postMessage('refetch', null);
-      handleRefresh();
-    }
+  useBridgeCallback('login', (params) => {
+    login(params);
+  });
+
+  useBridgeCallback('initialize', () => {
+    initializeUrlAndTitle();
+  });
+
+  useBridgeCallback('refetch', () => {
+    postMessage('refetch', null);
+    handleRefresh();
+  });
+
+  const { setUrl } = useBookmarkStore();
+
+  useBridgeCallback('androidShareUrl', (params) => {
+    setUrl(params.url);
+    if (params.url === '') return;
+    router(navigatePath.BOOKMARK_ADD);
   });
 
   useGETUserProfile({ loginId: memberId });
