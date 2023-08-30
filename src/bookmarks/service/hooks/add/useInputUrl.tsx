@@ -12,7 +12,7 @@ interface InputUrlProps {
 
 const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   const { userInfo } = useAuthStore();
-  const { url, setUrl, title, setTitle } = useBookmarkStore();
+  const { url, setUrl, title, setTitle, isBookmarkError } = useBookmarkStore();
   const [debouncedUrl, setDebouncedUrl] = useState<string>('');
 
   const [isInitial, setIsInitial] = useState<boolean>(true);
@@ -27,12 +27,12 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   const debouncedChangeUrl = debounce((url) => setDebouncedUrl(url), 500);
 
   useEffect(() => {
-    if (isInitial && url !== '') {
+    if (isInitial && url !== '' && debouncedUrl !== '') {
       setIsInitial(false);
       setDebouncedUrl(url);
       return;
     }
-  }, [isInitial, url]);
+  }, [isInitial, url, debouncedUrl]);
 
   let isDeleting = false; // 사용자가 지우는 동작을 수행하고 있는지 여부를 저장하는 변수
 
@@ -65,9 +65,10 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     type === 'title' && setTitle('');
   };
 
+  const validatedUrl = checkValidateURL(debouncedUrl);
   const { isFetching } = useGETBookmarkTitleQuery({
     memberId: userInfo.id,
-    url: checkValidateURL(debouncedUrl) ? checkValidateURL(debouncedUrl) : '',
+    url: validatedUrl ? validatedUrl : '',
     setTitle: onChangeTitle,
   });
 
@@ -85,6 +86,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     onDeleteInput,
     resetAllInputs,
     isLoadingGetTitle: isFetching,
+    isBookmarkError,
   };
 };
 

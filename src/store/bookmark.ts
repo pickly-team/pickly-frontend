@@ -26,6 +26,8 @@ interface BookmarkStore {
   setFromPath: (path: string) => void;
   selectedBookmarkId: number;
   setSelectedBookmarkId: (id: number) => void;
+  isBookmarkError: boolean;
+  setIsBookmarkError: (isBookmarkError: boolean) => void;
 }
 
 const useBookmarkStore = create<BookmarkStore>((set) => ({
@@ -67,6 +69,10 @@ const useBookmarkStore = create<BookmarkStore>((set) => ({
   selectedBookmarkId: 0,
   setSelectedBookmarkId: (id) => {
     set({ selectedBookmarkId: id });
+  },
+  isBookmarkError: false,
+  setIsBookmarkError: (isBookmarkError) => {
+    set({ isBookmarkError });
   },
 }));
 
