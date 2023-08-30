@@ -16,6 +16,11 @@ import 'dayjs/locale/ko';
 import { GET_LIKE_BOOKMARK_LIST } from './like';
 import { GET_USER_PROFILE } from '@/auth/api/profile';
 import { READ_OPTION, READ_OPTIONS } from '../service/hooks/home/useReadList';
+import {
+  CustomAxiosError,
+  ErrorTypes,
+} from '@/common-ui/Error/ApiErrorBoundary';
+import useBookmarkStore from '@/store/bookmark';
 dayjs.locale('ko');
 
 const DOMAIN = 'BOOKMARK';
@@ -254,7 +259,6 @@ type GETBookmarkTitleResponse = string;
 interface GetBookmarkTitleRequest {
   memberId: number;
   url: string;
-  setTitle?: (title: string) => void;
 }
 
 const getBookmarkTitleAPI = async ({
@@ -272,26 +276,44 @@ const getBookmarkTitleAPI = async ({
 
 const GET_BOOKMARK_TITLE = (url: string) => ['GET_BOOKMARK_TITLE', url];
 
+interface GETBookmarkTitleQuery {
+  memberId: number;
+  url: string;
+  setTitle: (title: string) => void;
+}
+
 export const useGETBookmarkTitleQuery = ({
   memberId,
   url,
   setTitle,
-}: GetBookmarkTitleRequest) => {
+}: GETBookmarkTitleQuery) => {
   const { fireToast } = useToast();
+  const { setIsBookmarkError } = useBookmarkStore();
   return useQuery(
     GET_BOOKMARK_TITLE(url),
     () => getBookmarkTitleAPI({ memberId, url }),
     {
-      enabled: !!url,
+      enabled: !!url.length,
       retry: 0,
       onSuccess: (data) => {
-        if (!data.length) {
-          fireToast({ message: '앗! 유효하지 않은 주소에요', mode: 'DELETE' });
-        }
         setTitle && setTitle(data);
+        setIsBookmarkError(false);
       },
-      onError: () => {
-        fireToast({ message: '앗! 유효하지 않은 주소에요', mode: 'DELETE' });
+      onError: (e: CustomAxiosError) => {
+        if (e.response?.data.code === ErrorTypes.PRIVATE_BOOKMARK) {
+          fireToast({
+            message: '앗! 비공개 북마크는 공유할 수 없어요',
+            mode: 'ERROR',
+          });
+        } else {
+          console.log(e.response?.data.code);
+          fireToast({
+            message: '앗! 유효하지 않은 주소에요',
+            mode: 'ERROR',
+          });
+        }
+
+        setIsBookmarkError(true);
       },
     },
   );
