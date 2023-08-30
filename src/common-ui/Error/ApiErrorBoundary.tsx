@@ -3,10 +3,11 @@ import { AxiosError } from 'axios';
 import NetworkError from './NetworkError';
 import { PostBridgeParams } from '@/common/service/hooks/useWebview';
 
-type ErrorType = 'NO_USER_INFO' | 'PRIVATE_BOOKMARK';
+type ErrorType = 'NO_USER_INFO' | 'PRIVATE_BOOKMARK' | 'DUPLICATED_NICKNAME';
 
 export const ErrorTypes: Record<ErrorType, string> = {
   NO_USER_INFO: 'M001',
+  DUPLICATED_NICKNAME: 'M002',
   PRIVATE_BOOKMARK: 'B002',
 } as const;
 
