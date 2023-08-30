@@ -24,6 +24,7 @@ const BookmarkAddPage = () => {
     url,
     title,
     isLoadingGetTitle,
+    isBookmarkError,
     onChangeUrl,
     onChangeTitle,
     handleKeyDown,
@@ -48,11 +49,13 @@ const BookmarkAddPage = () => {
 
   // VALIDATION
   const isValidateUrl = checkValidateURL(url);
+
   const isAllWritten = !!(
     url &&
     isValidateUrl &&
     selectedCategoryId &&
-    selectedPublishScoped
+    selectedPublishScoped &&
+    !isBookmarkError
   );
 
   const { memberId } = useAuthStore();
@@ -71,6 +74,13 @@ const BookmarkAddPage = () => {
   const { fireToast } = useToast();
 
   const onClickSubmitButton = () => {
+    if (isBookmarkError) {
+      fireToast({
+        mode: 'ERROR',
+        message: '앗! 추가할 수 없는 북마크에요',
+      });
+      return;
+    }
     if (!isAllWritten) {
       if (!url.length) {
         fireToast({ mode: 'ERROR', message: '앗! URL을 입력해주세요' });
