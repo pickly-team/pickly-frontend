@@ -14,7 +14,7 @@ const NetworkError = () => {
     <>
       <Header showBackButton backButtonCallback={reload} />
       <Wrapper>
-        <ErrorImage src="/images/network-error.png" />
+        <ErrorImage src={process.env.ASSETS_URL + '/network-error.webp'} />
         <ErrorText>{'앗! 네트워크에 문제가\n 있는거 같아요'}</ErrorText>
         <ErrorButton buttonColor="lightPrimary" onClick={reload}>
           다시 시도하기

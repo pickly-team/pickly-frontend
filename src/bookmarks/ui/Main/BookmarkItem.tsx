@@ -24,7 +24,7 @@ const BookmarkItem = ({
   disabled = false,
 }: BookmarkItem) => {
   const onImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = '/images/main.png';
+    e.currentTarget.src = process.env.VITE_ASSETS_URL + '/main.webp';
     e.currentTarget.setAttribute('style', 'object-fit: contain');
   };
 
