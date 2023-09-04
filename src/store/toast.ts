@@ -16,7 +16,8 @@ export type ToastMessage =
   | '앗! URL을 입력해주세요'
   | '앗! 카테고리를 선택해주세요'
   | '앗! 제목을 입력해주세요'
-  | '앗! 중복된 닉네임이에요';
+  | '앗! 중복된 닉네임이에요'
+  | '앗! 에러가 발생했어요';
 
 export type ToastMode = 'SUCCESS' | 'DELETE' | 'ERROR';
 
