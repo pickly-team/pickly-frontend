@@ -45,16 +45,16 @@ const height: Record<BlankItemProps['page'], string> = {
 };
 
 const imgSrc: Record<BlankItemProps['page'], string> = {
-  BOOKMARK: '/images/empty.png',
-  BOOKMARK_READ: '/images/main.png',
-  CATEGORY: '/images/empty.png',
-  FRIEND: '/images/empty.png',
-  NOTIFICATION: '/images/empty.png',
-  FOLLOWER: '/images/empty.png',
-  FOLLOWING: '/images/empty.png',
-  COMMENT: '/images/empty.png',
-  LIKE: '/images/empty.png',
-  BLOCK_USER: '/images/empty.png',
+  BOOKMARK: `${process.env.VITE_ASSETS_URL}/empty.webp`,
+  BOOKMARK_READ: `${process.env.VITE_ASSETS_URL}/main.webp`,
+  CATEGORY: `${process.env.VITE_ASSETS_URL}/empty.webp`,
+  FRIEND: `${process.env.VITE_ASSETS_URL}/empty.webp`,
+  NOTIFICATION: `${process.env.VITE_ASSETS_URL}/empty.webp`,
+  FOLLOWER: `${process.env.VITE_ASSETS_URL}/empty.webp`,
+  FOLLOWING: `${process.env.VITE_ASSETS_URL}/empty.webp`,
+  COMMENT: `${process.env.VITE_ASSETS_URL}/empty.webp`,
+  LIKE: `${process.env.VITE_ASSETS_URL}/empty.webp`,
+  BLOCK_USER: `${process.env.VITE_ASSETS_URL}/empty.webp`,
 };
 
 const BlankItem = ({ page }: BlankItemProps) => {

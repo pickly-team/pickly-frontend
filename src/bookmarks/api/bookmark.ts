@@ -106,7 +106,8 @@ const GETBookMarkList = {
       bookmarkId: bookmark.bookmarkId,
       title: bookmark.title,
       url: bookmark.url,
-      previewImageUrl: bookmark.previewImageUrl ?? '/images/main.png',
+      previewImageUrl:
+        bookmark.previewImageUrl ?? process.env.VITE_ASSETS_URL + '/main.webp',
       isUserLike: bookmark.isUserLike,
       readByUser: bookmark.readByUser,
       commentCnt: bookmark.commentCnt,
@@ -431,7 +432,8 @@ const getBookmarkDetailMapper = (
     memberId: data.memberId,
     url: data.url,
     title: data.title,
-    previewImageUrl: data.previewImageUrl ?? '/images/main.png',
+    previewImageUrl:
+      data.previewImageUrl ?? process.env.VITE_ASSETS_URL + '/main.webp',
     isUserLike: data.isUserLike,
     readByUser: data.readByUser,
     createdAt: dayjs(data.createdAt).unix(),
