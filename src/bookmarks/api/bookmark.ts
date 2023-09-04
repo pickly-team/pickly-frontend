@@ -142,6 +142,7 @@ export const useGETBookMarkListQuery = (params: GETBookMarkListRequest) => {
       cacheTime: 5 * 60 * 1000,
       staleTime: 5 * 60 * 1000,
       enabled: params.memberId !== 0,
+      suspense: true,
     },
   );
 };
