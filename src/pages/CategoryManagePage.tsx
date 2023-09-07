@@ -1,7 +1,5 @@
-import useAddAndDeleteCategory from '@/category/service/hooks/useAddAndDeleteCategory';
 import useChangeCategoryName from '@/category/service/hooks/useChangeCategoryName';
 import useChangeEmoji from '@/common/service/useChangeEmoji';
-import CategoryAddArea from '@/category/ui/Add/CategoryAddArea';
 import CategoryAddInfo from '@/category/ui/Add/CategoryManageInfo';
 import EmojiSelect from '@/common/ui/EmojiSelect';
 import HeaderLeftAndRight from '@/common-ui/Header/HeaderLeftAndRight';
@@ -10,7 +8,6 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import Emoji from '@/common/ui/Emoji';
 import CategoryName from '@/category/ui/Add/CategoryName';
-import Divider from '@/category/ui/Divider';
 import { usePOSTCategoryMutation } from '@/category/api/add';
 import { useGETCategoryAPI } from '@/category/api/category';
 import { useEffect } from 'react';
@@ -39,8 +36,8 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen } =
     useChangeEmoji();
   const { categoryName, onChangeCategoryName } = useChangeCategoryName();
-  const { categoryList, addCategory, deleteCategory } =
-    useAddAndDeleteCategory();
+  // const { categoryList, addCategory, deleteCategory } =
+  //   useAddAndDeleteCategory();
 
   const { data: categoryData } = useGETCategoryAPI({
     categoryId: categoryId ?? '',
@@ -83,40 +80,46 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
     if (mode === 'ADD') {
       postCategory({
         memberId,
-        postData: categoryList.map((category) => ({
-          emoji: category.emoji,
-          name: category.name,
-        })),
+        // postData: categoryList.map((category) => ({
+        //   emoji: category.emoji,
+        //   name: category.name,
+        // })),
+        postData: [
+          {
+            emoji,
+            name: categoryName,
+          },
+        ],
       });
     }
   };
 
-  const onClickAddCategory = (emoji: string, categoryName: string) => {
-    addCategory(emoji, categoryName);
-    onChangeCategoryName('');
-    onChangeEmoji('📖');
-  };
+  // const onClickAddCategory = (emoji: string, categoryName: string) => {
+  //   addCategory(emoji, categoryName);
+  //   onChangeCategoryName('');
+  //   onChangeEmoji('📖');
+  // };
 
-  const onClickDeleteCategory = (id: string) => {
-    deleteCategory(id);
-  };
+  // const onClickDeleteCategory = (id: string) => {
+  //   deleteCategory(id);
+  // };
 
-  const setSelectedCategory = (id: string) => {
-    const selectedCategory = categoryList.find(
-      (category) => category.categoryId === id,
-    );
-    if (selectedCategory) {
-      onChangeEmoji(selectedCategory.emoji);
-      onChangeCategoryName(selectedCategory.name);
-    }
-  };
+  // const setSelectedCategory = (id: string) => {
+  //   const selectedCategory = categoryList.find(
+  //     (category) => category.categoryId === id,
+  //   );
+  //   if (selectedCategory) {
+  //     onChangeEmoji(selectedCategory.emoji);
+  //     onChangeCategoryName(selectedCategory.name);
+  //   }
+  // };
 
-  const onClickEditCategory = (id: string) => {
-    setSelectedCategory(id);
-    deleteCategory(id);
-  };
+  // const onClickEditCategory = (id: string) => {
+  //   setSelectedCategory(id);
+  //   deleteCategory(id);
+  // };
 
-  const isAllCategoryInfoFilled = !!(emoji.length && categoryName.length);
+  // const isAllCategoryInfoFilled = !!(emoji.length && categoryName.length);
 
   return (
     <>
@@ -134,13 +137,13 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
           onChangeCategoryName={onChangeCategoryName}
         />
       </CategoryNameInputWrapper>
-      {mode === 'ADD' && (
+      {/* {mode === 'ADD' && (
         <MarginDivider>
           <Divider size="s" margin="off" />
         </MarginDivider>
-      )}
+      )} */}
       {/** 카테고리 추가 영역 */}
-      {mode === 'ADD' && (
+      {/* {mode === 'ADD' && (
         <CategoryAddArea categoryList={categoryList}>
           <CategoryAddArea.BlankCategoryBox
             onClickAddCategory={() => onClickAddCategory(emoji, categoryName)}
@@ -154,7 +157,7 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
             onClickAddCategory={() => onClickAddCategory(emoji, categoryName)}
           />
         </CategoryAddArea>
-      )}
+      )} */}
       {/** 이모지 BS */}
       {isEmojiBSOpen && <EmojiSelect onChangeEmoji={onChangeEmoji} />}
     </>
@@ -163,9 +166,9 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
 
 export default CategoryManagePage;
 
-const MarginDivider = styled.div`
-  margin: ${getRem(40)} 0;
-`;
+// const MarginDivider = styled.div`
+//   margin: ${getRem(40)} 0;
+// `;
 
 const CategoryNameInputWrapper = styled.div`
   display: flex;
