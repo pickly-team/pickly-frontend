@@ -35,7 +35,7 @@ const IntroducePage = () => {
         createdDate="2023-08-09"
         previewImageUrl="/image/"
         readByUser={false}
-        title="피클리는 이런 서비스에요"
+        title="북마크를 추가한 예시에요"
         url="https://velog.io"
         disabled
       />
