@@ -26,19 +26,25 @@ const IntroducePage = () => {
         <SubTitle level="h3" fontSize={1.5} weight="bold">
           Pick 1.
         </SubTitle>
-        <Description>북마크를 자유롭게 추가할 수 있어요!</Description>
+        <Description>
+          {
+            '북마크를 자유롭게 추가할 수 있어요!\n북마크를 추가하면 다음과 같이 보여요'
+          }
+        </Description>
       </BoxWrapper>
-      <BookmarkItem
-        bookmarkId={1}
-        commentCnt={3}
-        isUserLike
-        createdDate="2023-08-09"
-        previewImageUrl="/image/"
-        readByUser={false}
-        title="북마크를 추가한 예시에요"
-        url="https://velog.io"
-        disabled
-      />
+      <BookmarkWrapper>
+        <BookmarkItem
+          bookmarkId={1}
+          commentCnt={3}
+          isUserLike
+          createdDate="2023-08-09"
+          previewImageUrl="/image/"
+          readByUser={false}
+          title="북마크를 추가한 예시에요"
+          url="https://velog.io"
+          disabled
+        />
+      </BookmarkWrapper>
       <DividerWrapper paddingSize="s">
         <Divider size="m" margin="off" />
       </DividerWrapper>
@@ -99,12 +105,17 @@ const BoxWrapper = styled.div`
   }
 `;
 
+const BookmarkWrapper = styled.div`
+  padding: 0 ${getRem(20)};
+`;
+
 const SubTitle = styled(Text.Header)`
   padding: 0 ${getRem(20)};
 `;
 
 const Description = styled(Text.P)`
   padding: 0 ${getRem(20)};
+  white-space: pre-line;
 `;
 
 const PaddingWrapper = styled.div`
