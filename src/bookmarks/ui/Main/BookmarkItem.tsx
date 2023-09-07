@@ -91,8 +91,10 @@ const LinkWrapper = styled(NavLink)<LinkWrapperProps>`
   border-radius: 0.5rem;
 
   &:active {
-    background-color: ${theme.colors.grey800};
-    opacity: 0.7;
+    background-color: ${(props) =>
+      props.disabled ? 'none' : theme.colors.grey800};
+
+    opacity: ${(props) => (props.disabled ? 1 : 0.7)};
   }
 `;
 
