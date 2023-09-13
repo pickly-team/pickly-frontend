@@ -7,12 +7,14 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { navigatePath } from './constants/navigatePath';
 import useHandleRefresh from './common/service/hooks/useHandleRefresh';
+import useCommentStore from './store/comment';
 
 const PREFIX = '-+@*' as const;
 
 const RNListener = () => {
   const { memberId, login, userInfo } = useAuthStore();
   const { initializeUrlAndTitle } = useBookmarkStore();
+  const { initComment } = useCommentStore();
 
   const { postMessage } = useWebview();
   const { handleRefresh } = useHandleRefresh({ pageType: 'MAIN' });
@@ -37,6 +39,7 @@ const RNListener = () => {
 
   useBridgeCallback('initialize', () => {
     initializeUrlAndTitle();
+    initComment();
   });
 
   useBridgeCallback('refetch', () => {
