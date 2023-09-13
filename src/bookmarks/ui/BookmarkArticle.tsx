@@ -23,6 +23,8 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import useWebview from '@/common/service/hooks/useWebview';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import useBookmarkStore from '@/store/bookmark';
+import useToast from '@/common-ui/Toast/hooks/useToast';
+import { BsFillClipboard2Fill as CopyIcon } from 'react-icons/bs';
 
 const BookMarkArticle = () => {
   const { id: bookmarkId } = useParams<{ id: string }>();
@@ -78,10 +80,17 @@ const BookMarkArticle = () => {
 
   const { postMessage } = useWebview();
 
-  const onClickBookmarkUrl = (url: string) => {
+  const onClickBookmarkUrl = () => {
     postMessage('visitBookmark', {
-      url: url,
+      url: bookmarkDetail?.url ?? '',
     });
+  };
+
+  const { fireToast } = useToast();
+
+  const onClickCopyUrl = () => {
+    window.navigator.clipboard.writeText(bookmarkDetail?.url ?? '');
+    fireToast({ message: 'URL이 복사되었어요' });
   };
 
   return (
@@ -91,6 +100,7 @@ const BookMarkArticle = () => {
         onError={onErrorImage}
         effect="opacity"
         width={'100%'}
+        onClick={onClickBookmarkUrl}
       />
       <Container>
         <BookMarkTitle level="h1" fontSize={1.5} weight="bold">
@@ -105,6 +115,9 @@ const BookMarkArticle = () => {
             </CategoryButton>
           </CategoryButtonWrapper>
           <LikeAndMessageIconWrapper>
+            <IconWrapper onClick={onClickCopyUrl}>
+              <CopyIcon color={theme.colors.lightPrimary} size={24} />
+            </IconWrapper>
             <BookmarkLikeButton
               isLike={bookmarkDetail?.isUserLike ?? false}
               isMyPost={isMyPost}
@@ -128,9 +141,7 @@ const BookMarkArticle = () => {
             description="원본 URL"
             icon={<Icon name="location" size="s" />}
             content={
-              <BookmarkUrl
-                onClick={() => onClickBookmarkUrl(bookmarkDetail?.url ?? '')}
-              >
+              <BookmarkUrl onClick={onClickBookmarkUrl}>
                 <Text.Span fontSize={0.75}>
                   {bookmarkDetail?.url ?? ''}
                 </Text.Span>
