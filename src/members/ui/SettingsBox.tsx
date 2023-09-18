@@ -12,6 +12,7 @@ import {
 } from '../api/member';
 import useAuthStore from '@/store/auth';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import { BiSolidPencil as PencilIcon } from 'react-icons/bi';
 
 interface SettingsBoxProps {
   serverRemindInDays: number;
@@ -92,7 +93,9 @@ const SettingsBox = ({
           onChangeRemainingDays={onChangeRemainingDays}
         />
         <SettingsButton onClick={toggleIsEditing}>
-          {!isEditing && <Icon name={'setting-green'} size={'xxl'} />}
+          {!isEditing && (
+            <PencilIcon size={getRem(30)} color={theme.colors.lightPrimary} />
+          )}
           {!!isEditing && <Icon name={'check-green-reverse'} size={'xxl'} />}
         </SettingsButton>
       </RoundedBox>
