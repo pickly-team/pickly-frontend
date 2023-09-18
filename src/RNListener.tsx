@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { navigatePath } from './constants/navigatePath';
 import useHandleRefresh from './common/service/hooks/useHandleRefresh';
 import useCommentStore from './store/comment';
+import useVersionStore from './store/version';
 
 const PREFIX = '-+@*' as const;
 
@@ -56,6 +57,17 @@ const RNListener = () => {
   });
 
   useGETUserProfile({ loginId: memberId });
+
+  useEffect(() => {
+    postMessage('appVersion', null);
+  }, []);
+
+  const { setVersion, setBuildNumber, setPlatform } = useVersionStore();
+  useBridgeCallback('appVersion', (data) => {
+    setVersion(data.version);
+    setBuildNumber(data.buildNumber);
+    setPlatform(data.platform);
+  });
 
   return null;
 };
