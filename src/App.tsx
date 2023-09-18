@@ -30,6 +30,7 @@ import WithPostMessage from './utils/WithPostMessage';
 import BookmarkAddPage from './pages/BookmarkAddPage';
 import BookmarkEditPage from './pages/BookmarkEditPage';
 import AuthenticationCodePage from './pages/AuthenticationCodePage';
+import SettingPage from './pages/SettingPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -137,6 +138,10 @@ const App = () => {
                     <Route
                       path={navigatePath.CODE}
                       element={<AuthenticationCodePage />}
+                    />
+                    <Route
+                      path={navigatePath.SETTING}
+                      element={<SettingPage />}
                     />
                   </Routes>
                 </Layout>
