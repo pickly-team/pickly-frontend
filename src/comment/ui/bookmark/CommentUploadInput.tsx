@@ -1,4 +1,4 @@
-import { ChangeEventHandler, MouseEvent } from 'react';
+import { ChangeEventHandler, MouseEvent, useEffect } from 'react';
 import Input from '@/common-ui/Input';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
@@ -56,6 +56,11 @@ const CommentUploadInput = () => {
       });
     }
   };
+
+  // 페이지 이동 시 댓글 초기화
+  useEffect(() => {
+    setComment('');
+  }, [bookmarkId]);
 
   return (
     <Container onSubmit={onSubmit}>
