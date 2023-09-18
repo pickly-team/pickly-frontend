@@ -4,45 +4,27 @@ import styled from '@emotion/styled';
 import Text from '@/common-ui/Text';
 import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
-import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
-import IconButton from '@/common/ui/IconButton';
 import { navigatePath } from '@/constants/navigatePath';
 import { useGETUserProfile } from '@/auth/api/profile';
 import useAuthStore from '@/store/auth';
 import useFriendStore, { FriendType } from '@/store/friend';
-import useWebview from '@/common/service/hooks/useWebview';
+import { IoIosSettings as SettingIcon } from 'react-icons/io';
 
 const BasicInfoBox = () => {
-  const { memberId, initializeUserInfo } = useAuthStore();
+  const { memberId } = useAuthStore();
   const { data: userInfo } = useGETUserProfile({ loginId: memberId });
 
   const numberFormatter = new Intl.NumberFormat('en', { notation: 'compact' });
 
   const router = useNavigate();
 
-  const onClickUserEdit = () => {
-    router(navigatePath.USER_EDIT);
-  };
-  const onClickUserBlock = () => {
-    router(navigatePath.BLOCK_USER);
-  };
-  const onClickHelp = () => {
-    router(navigatePath.INTRODUCE);
-  };
-
   const { setSelectedType } = useFriendStore();
 
   const onClickFollowers = () => setSelectedType(FriendType.Follower);
   const onClickFollowings = () => setSelectedType(FriendType.Following);
 
-  const { postMessage } = useWebview();
-  const onClickLogout = () => {
-    initializeUserInfo();
-    postMessage('signUp', null);
-  };
-
-  const onClickCode = () => {
-    router(navigatePath.CODE);
+  const onClickSetting = () => {
+    router(navigatePath.SETTING);
   };
 
   return (
@@ -52,30 +34,9 @@ const BasicInfoBox = () => {
           <NicknameColumn>
             <Text.Span fontSize={1.5}>{userInfo?.nickname ?? ''}</Text.Span>
           </NicknameColumn>
-          <MoreButtonContainer>
-            <TriggerBottomSheet>
-              <TriggerBottomSheet.Trigger
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                as={<IconButton onClick={() => {}} name="more" size="s" />}
-              />
-              <TriggerBottomSheet.BottomSheet>
-                <TriggerBottomSheet.Item onClick={onClickUserEdit}>
-                  내 정보 수정
-                </TriggerBottomSheet.Item>
-                <TriggerBottomSheet.Item onClick={onClickCode}>
-                  인증코드 발급
-                </TriggerBottomSheet.Item>
-                <TriggerBottomSheet.Item onClick={onClickUserBlock}>
-                  차단한 사용자
-                </TriggerBottomSheet.Item>
-                <TriggerBottomSheet.Item onClick={onClickHelp}>
-                  도움말 다시 보기
-                </TriggerBottomSheet.Item>
-                <TriggerBottomSheet.Item onClick={onClickLogout}>
-                  로그아웃
-                </TriggerBottomSheet.Item>
-              </TriggerBottomSheet.BottomSheet>
-            </TriggerBottomSheet>
+
+          <MoreButtonContainer onClick={onClickSetting}>
+            <SettingIcon size={getRem(30)} color={theme.colors.grey200} />
           </MoreButtonContainer>
         </ProfileNameRow>
         <ProfileInfoRow>
