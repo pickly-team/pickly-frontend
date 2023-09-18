@@ -29,6 +29,7 @@ import IntroducePage from './pages/IntroducePage';
 import WithPostMessage from './utils/WithPostMessage';
 import BookmarkAddPage from './pages/BookmarkAddPage';
 import BookmarkEditPage from './pages/BookmarkEditPage';
+import AuthenticationCodePage from './pages/AuthenticationCodePage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -132,6 +133,10 @@ const App = () => {
                     <Route
                       path={navigatePath.BLOCK_USER}
                       element={<BlockUserListPage />}
+                    />
+                    <Route
+                      path={navigatePath.CODE}
+                      element={<AuthenticationCodePage />}
                     />
                   </Routes>
                 </Layout>
