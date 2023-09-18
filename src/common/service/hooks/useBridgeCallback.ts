@@ -27,6 +27,12 @@ interface BridgeParams {
   androidShareUrl: {
     url: string;
   };
+  /** 버전 정보 */
+  appVersion: {
+    version: string;
+    buildNumber: string;
+    platform: 'iOS' | 'Android';
+  };
 }
 
 function useBridgeCallback<T extends keyof BridgeParams>(
