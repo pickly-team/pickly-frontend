@@ -22,6 +22,7 @@ const navigatePath = {
   LIKE_PAGE: '/likes',
   INTRODUCE: '/introduce',
   CODE: '/code',
+  SETTING: '/setting',
 } as const;
 
 type NavigatePath = (typeof navigatePath)[keyof typeof navigatePath];
