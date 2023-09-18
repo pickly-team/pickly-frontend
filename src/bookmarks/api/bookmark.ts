@@ -270,7 +270,7 @@ const getBookmarkTitleAPI = async ({
   const { data } = await client<GETBookmarkTitleResponse>({
     method: 'get',
     url: `/members/${memberId}/bookmark/title`,
-    params: { memberId, url },
+    params: { url },
     data: {},
   });
   return data;
