@@ -34,11 +34,11 @@ const AuthenticationCodePage = () => {
       <Header showBackButton title="인증코드 발급" />
       <TitleWrapper>
         <HeaderText level="h2" fontSize={1.3} weight="bold">
-          인증코드로 로그인할 수 있습니다.
+          인증코드로 로그인할 수 있습니다
         </HeaderText>
         <DescriptionText fontSize={0.8} color="grey400">
           {
-            'chrome 브라우저 > 확장 프로그램 > pickly를 검색해서\n익스텐션을 설치해주세요.'
+            'chrome 브라우저 > 확장 프로그램 > pickly를 검색해서\n익스텐션을 설치해주세요'
           }
         </DescriptionText>
       </TitleWrapper>
