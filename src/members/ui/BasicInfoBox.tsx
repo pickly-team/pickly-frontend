@@ -41,6 +41,10 @@ const BasicInfoBox = () => {
     postMessage('signUp', null);
   };
 
+  const onClickCode = () => {
+    router(navigatePath.CODE);
+  };
+
   return (
     <>
       <Container>
@@ -57,6 +61,9 @@ const BasicInfoBox = () => {
               <TriggerBottomSheet.BottomSheet>
                 <TriggerBottomSheet.Item onClick={onClickUserEdit}>
                   내 정보 수정
+                </TriggerBottomSheet.Item>
+                <TriggerBottomSheet.Item onClick={onClickCode}>
+                  인증코드 발급
                 </TriggerBottomSheet.Item>
                 <TriggerBottomSheet.Item onClick={onClickUserBlock}>
                   차단한 사용자
