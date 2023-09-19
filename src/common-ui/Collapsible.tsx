@@ -44,7 +44,7 @@ const ToggleBody = styled.div<{ open: boolean }>`
   flex-direction: row;
   align-items: center;
 
-  max-height: ${(props) => (props.open ? getRem(200) : '0')};
+  max-height: ${(props) => (props.open ? getRem(250) : '0')};
   opacity: ${(props) => (props.open ? '1' : '0')};
   overflow: hidden;
   transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
