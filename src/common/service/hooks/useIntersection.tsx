@@ -25,10 +25,11 @@ const useIntersection = ({
       threshold,
       rootMargin,
     });
+
     io.observe(target.current);
 
     return () => io.disconnect();
-  }, [onIntersect, target, threshold]);
+  }, [onIntersect, target, threshold, rootElement, rootMargin]);
 };
 
 export default useIntersection;
