@@ -12,7 +12,7 @@ import { LuTimer as TimerIcon } from 'react-icons/lu';
 
 const AuthenticationCodePage = () => {
   const { memberId } = useAuthStore();
-  const { time, isFinished, resetTimer } = useTimer(5 * 60 * 1000);
+  const { formattedTime, isFinished, resetTimer } = useTimer(5 * 60 * 1000);
 
   const {
     mutate: postMemberId,
@@ -45,12 +45,12 @@ const AuthenticationCodePage = () => {
       <ContentWrapper>
         <CodeWrapper>
           <Code fontSize={2.5} weight="bold">
-            {`${code}`}
+            {`${code ?? '000000'}`}
           </Code>
           <TimerWrapper>
             <TimerIcon size={getRem(20)} color={theme.colors.lightRed} />
             <TimerText fontSize={1} color="lightRed">
-              {time}
+              {`${formattedTime}`}
             </TimerText>
           </TimerWrapper>
         </CodeWrapper>
