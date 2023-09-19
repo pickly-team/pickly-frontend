@@ -1,48 +1,67 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const formatTime = (milliseconds: number) => {
+interface TimerResponse {
+  formattedTime: string;
+  isFinished: boolean;
+  resetTimer: () => void;
+}
+
+const formatTime = (milliseconds: number): string => {
   const totalSeconds = Math.floor(milliseconds / 1000);
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
-
-  return `${minutes.toString().padStart(2, '0')}:${seconds
-    .toString()
-    .padStart(2, '0')}`;
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
+    2,
+    '0',
+  )}`;
 };
 
-const useTimer = (duration: number) => {
-  const [time, setTime] = useState(formatTime(duration));
-  const [isFinished, setIsFinished] = useState(false);
-  const [isActive, setIsActive] = useState(true);
+const useTimer = (
+  initialMilliseconds: number = 5 * 60 * 1000,
+): TimerResponse => {
+  const [startTime, setStartTime] = useState<number>(Date.now());
+  const [remainingTime, setRemainingTime] =
+    useState<number>(initialMilliseconds);
+  const [isFinished, setIsFinished] = useState<boolean>(false);
 
   useEffect(() => {
-    const worker = new Worker(new URL('./timerWorker.ts', import.meta.url));
+    const calculateRemaining = () => {
+      const elapsedMilliseconds = Date.now() - startTime;
+      const newRemainingTime = initialMilliseconds - elapsedMilliseconds;
 
-    worker.onmessage = (e: MessageEvent) => {
-      switch (e.data.type) {
-        case 'tick':
-          setTime(formatTime(e.data.timeLeft));
-          break;
-        case 'finished':
-          setIsFinished(true);
-          break;
+      if (newRemainingTime <= 0) {
+        setIsFinished(true);
+        setRemainingTime(0);
+      } else {
+        setRemainingTime(newRemainingTime);
       }
     };
 
-    worker.postMessage(duration);
+    // 첫 실행에서 간격 조정
+    setTimeout(() => {
+      calculateRemaining();
 
-    return () => {
-      worker.terminate();
-    };
-  }, [isActive, duration]);
+      const intervalId = setInterval(() => {
+        calculateRemaining();
+      }, 1000);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }, Date.now() - startTime);
+  }, [startTime, initialMilliseconds]);
 
   const resetTimer = () => {
-    setIsActive(!isActive);
-    setTime(formatTime(duration));
+    setStartTime(Date.now());
+    setRemainingTime(initialMilliseconds);
     setIsFinished(false);
   };
 
-  return { time, isFinished, resetTimer };
+  return {
+    formattedTime: formatTime(remainingTime),
+    isFinished,
+    resetTimer,
+  };
 };
 
 export default useTimer;
