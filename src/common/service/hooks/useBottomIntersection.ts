@@ -3,11 +3,13 @@ import useIntersection from './useIntersection';
 
 interface IntersectionObserverProps {
   fetchNextPage: () => void;
+  rootElement?: HTMLElement | null;
   enabled?: boolean;
 }
 
 const useBottomIntersection = ({
   fetchNextPage,
+  rootElement = null,
   enabled = true,
 }: IntersectionObserverProps) => {
   const bottom = useRef(null);
@@ -19,12 +21,13 @@ const useBottomIntersection = ({
         fetchNextPage();
       }
     },
-    [fetchNextPage, enabled],
+    [fetchNextPage, enabled, rootElement],
   );
 
   useIntersection({
     onIntersect,
     target: bottom,
+    rootElement: rootElement,
   });
 
   return { bottom };
