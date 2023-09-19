@@ -54,7 +54,7 @@ const SettingPage = () => {
         <Content text="차단한 사용자" onClick={onClickUserBlock} />
         <Content
           text="앱 버전"
-          subText={version !== CURRENT_VERSION ? '최신 버전입니다' : '업데이트'}
+          subText={version !== CURRENT_VERSION ? '업데이트' : '최신 버전입니다'}
           onClick={onClickUpdate}
         />
         <Content text="로그아웃" onClick={onClickLogout} />
