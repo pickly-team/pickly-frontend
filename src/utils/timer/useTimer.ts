@@ -23,6 +23,7 @@ const useTimer = (
   const [remainingTime, setRemainingTime] =
     useState<number>(initialMilliseconds);
   const [isFinished, setIsFinished] = useState<boolean>(false);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
 
   useEffect(() => {
     const calculateRemaining = () => {
@@ -45,6 +46,8 @@ const useTimer = (
         calculateRemaining();
       }, 1000);
 
+      setIntervalId(intervalId);
+
       return () => {
         clearInterval(intervalId);
       };
@@ -53,6 +56,7 @@ const useTimer = (
 
   const resetTimer = () => {
     setStartTime(Date.now());
+    intervalId && clearInterval(intervalId);
     setRemainingTime(initialMilliseconds);
     setIsFinished(false);
   };
