@@ -218,15 +218,13 @@ const GETBookmarkCategoryList = {
   Mapper: (
     categoryList: ServerBookmarkCategoryItem[],
   ): ClientBookmarkCategoryItem[] => {
-    return categoryList
-      .map((category) => ({
-        order: category.orderNum,
-        id: category.categoryId,
-        emoji: category.emoji,
-        name: category.name,
-        isChecked: false,
-      }))
-      .sort((a, b) => a.order - b.order);
+    return categoryList.map((category) => ({
+      order: category.orderNum,
+      id: category.categoryId,
+      emoji: category.emoji,
+      name: category.name,
+      isChecked: false,
+    }));
   },
 };
 
