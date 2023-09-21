@@ -1,38 +1,29 @@
 import Text from '@/common-ui/Text';
 import ListItem from '@/common/ui/ListItem';
-import {
-  ClientCategoryItem,
-  GET_CATEGORY_LIST,
-  useGETCategoryListQuery,
-} from '../api/category';
 import Icon from '@/common-ui/assets/Icon';
-import { CategoryItem, Mode } from '..';
+import { Mode } from '..';
 import { Dispatch, useEffect } from 'react';
 import DragAndDrop from '@/common/ui/DragAndDrop';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 import CheckBox from '@/common-ui/CheckBox';
 import { useNavigate } from 'react-router-dom';
-import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
-import SkeletonCategoryList from './SkeletonCategoryList';
-import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import BlankItem from '@/common-ui/BlankItem';
 import useAuthStore from '@/store/auth';
+import {
+  ClientBookmarkCategoryItem,
+  useGETCategoryListQuery,
+} from '@/bookmarks/api/bookmark';
 
 interface CategoryListProps {
   mode: Mode;
-  clientCategoryList: CategoryItem[];
-  setClientCategoryList: Dispatch<React.SetStateAction<CategoryItem[]>>;
+  clientCategoryList: ClientBookmarkCategoryItem[];
+  setClientCategoryList: Dispatch<
+    React.SetStateAction<ClientBookmarkCategoryItem[]>
+  >;
   deleteCategoryList: string[];
   setDeleteCategoryList: Dispatch<React.SetStateAction<string[]>>;
 }
-
-type InfiniteCategory =
-  | InfiniteData<{
-      contents: ClientCategoryItem[];
-      hasNext: boolean;
-    }>
-  | undefined;
 
 const CategoryList = ({
   mode,
@@ -43,33 +34,15 @@ const CategoryList = ({
 }: CategoryListProps) => {
   const navigate = useNavigate();
   const { memberId } = useAuthStore();
-  const {
-    data: categoryList,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useGETCategoryListQuery({
+  const { data: categoryList } = useGETCategoryListQuery({
     memberId,
-    pageRequest: {
-      pageSize: 15,
-    },
   });
 
   useEffect(() => {
     if (categoryList) {
-      const item = categoryList.pages.flatMap((page) => page.contents);
-      setClientCategoryList(
-        item.map((category) => ({
-          ...category,
-          categoryName: category.name,
-          isChecked: false,
-        })),
-      );
+      setClientCategoryList(categoryList);
     }
-  }, [categoryList]);
-
-  const { bottom } = useBottomIntersection({ fetchNextPage });
-
-  const queryClient = useQueryClient();
+  }, [categoryList, setClientCategoryList]);
 
   const onClickCategory = (categoryId: string) => {
     if (mode === 'NORMAL') {
@@ -87,30 +60,17 @@ const CategoryList = ({
         );
       else setDeleteCategoryList([...deleteCategoryList, categoryId]);
 
-      queryClient.setQueryData<InfiniteCategory>(
-        GET_CATEGORY_LIST(memberId),
-        (prev) => {
-          if (!prev) return undefined;
-          return {
-            ...prev,
-            pages: prev.pages.map((page) => ({
-              ...page,
-              contents: page.contents.map((category) =>
-                category.categoryId === categoryId
-                  ? {
-                      ...category,
-                      isChecked: !deleteCategoryList.includes(categoryId),
-                    }
-                  : category,
-              ),
-            })),
-          };
-        },
+      setClientCategoryList(
+        clientCategoryList.map((category) =>
+          category.id === Number(categoryId)
+            ? { ...category, isChecked: !category.isChecked }
+            : category,
+        ),
       );
     }
   };
 
-  if (categoryList?.pages[0].contents.length === 0) {
+  if (categoryList?.length === 0) {
     return <BlankItem page="CATEGORY" />;
   }
 
@@ -118,44 +78,38 @@ const CategoryList = ({
     <Container>
       {mode !== 'ORDER' && (
         <>
-          {categoryList?.pages[0].contents[0].categoryId &&
-            categoryList.pages.map((categoryPage) =>
-              categoryPage.contents.map((category) => (
-                <ListItem
-                  key={category.categoryId}
-                  onClick={() => onClickCategory(category.categoryId)}
-                >
-                  <ListItem.Left
-                    left={
-                      mode === 'DELETE' && (
-                        <Box>
-                          <CheckBox
-                            isChecked={category.isChecked}
-                            onChange={() =>
-                              onClickCategory(category.categoryId)
-                            }
-                          />
-                        </Box>
-                      )
-                    }
-                    middle={<Text.P>{category.emoji}</Text.P>}
-                    right={<Text.P>{category.name}</Text.P>}
-                  />
-                  <ListItem.Right>
-                    {mode === 'EDIT' && <Text.P>편집</Text.P>}
-                  </ListItem.Right>
-                </ListItem>
-              )),
-            )}
-          <div ref={bottom} />
-          {isFetchingNextPage && <SkeletonCategoryList count={10} />}
+          {clientCategoryList &&
+            clientCategoryList.map((category) => (
+              <ListItem
+                key={category.id}
+                onClick={() => onClickCategory(String(category.id))}
+              >
+                <ListItem.Left
+                  left={
+                    mode === 'DELETE' && (
+                      <Box>
+                        <CheckBox
+                          isChecked={category.isChecked}
+                          onChange={() => onClickCategory(String(category.id))}
+                        />
+                      </Box>
+                    )
+                  }
+                  middle={<Text.P>{category.emoji}</Text.P>}
+                  right={<Text.P>{category.name}</Text.P>}
+                />
+                <ListItem.Right>
+                  {mode === 'EDIT' && <Text.P>편집</Text.P>}
+                </ListItem.Right>
+              </ListItem>
+            ))}
         </>
       )}
       {mode === 'ORDER' && (
         <DragAndDrop
-          itemList={clientCategoryList}
+          itemList={clientCategoryList ?? []}
           renderDragItem={(item) => (
-            <ListItem key={item.categoryId}>
+            <ListItem key={item.id}>
               <ListItem.Left
                 middle={<Text.P>{item.emoji}</Text.P>}
                 right={<Text.P>{item.name}</Text.P>}

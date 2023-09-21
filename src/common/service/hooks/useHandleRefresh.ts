@@ -6,7 +6,6 @@ import {
   GET_BOOKMARK_LIST,
 } from '@/bookmarks/api/bookmark';
 import { GET_LIKE_BOOKMARK_LIST } from '@/bookmarks/api/like';
-import { GET_CATEGORY_LIST } from '@/category/api/category';
 import { GET_COMMENT_LIST } from '@/comment/api/Comment';
 import {
   GET_FOLLOWER_COUNT_KEY,
@@ -116,7 +115,9 @@ const useHandleRefresh = ({ pageType }: HandleRefreshProps) => {
       return queryClient.invalidateQueries(GET_LIKE_BOOKMARK_LIST(memberId));
     }
     if (pageType === 'CATEGORY_LIST') {
-      return queryClient.invalidateQueries(GET_CATEGORY_LIST(memberId));
+      return queryClient.invalidateQueries(
+        GET_BOOKMARK_CATEGORY_LIST(memberId),
+      );
     }
     if (pageType === 'COMMENT_LIST') {
       return queryClient.invalidateQueries(GET_COMMENT_LIST);
