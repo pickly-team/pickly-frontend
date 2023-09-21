@@ -201,6 +201,7 @@ export interface ClientBookmarkCategoryItem {
   id: number;
   name: string;
   emoji: string;
+  isChecked: boolean;
 }
 
 interface GETBookmarkCategoryListRequest {
@@ -217,14 +218,13 @@ const GETBookmarkCategoryList = {
   Mapper: (
     categoryList: ServerBookmarkCategoryItem[],
   ): ClientBookmarkCategoryItem[] => {
-    return categoryList
-      .map((category) => ({
-        order: category.orderNum,
-        id: category.categoryId,
-        emoji: category.emoji,
-        name: category.name,
-      }))
-      .sort((a, b) => a.order - b.order);
+    return categoryList.map((category) => ({
+      order: category.orderNum,
+      id: category.categoryId,
+      emoji: category.emoji,
+      name: category.name,
+      isChecked: false,
+    }));
   },
 };
 
@@ -249,6 +249,8 @@ export const useGETCategoryListQuery = ({
       refetchOnWindowFocus: false,
       retry: 0,
       enabled: memberId !== 0,
+      staleTime: 1000 * 60 * 5,
+      cacheTime: 1000 * 60 * 5,
     },
   );
 };
