@@ -212,7 +212,7 @@ const PublishScoped = ({
           display: flex;
           flex-direction: row;
           column-gap: ${getRem(10)};
-          margin-bottom: ${getRem(25)};
+          margin-bottom: ${getRem(90)};
         `}
       >
         <Button

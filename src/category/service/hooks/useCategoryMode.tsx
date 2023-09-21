@@ -1,7 +1,9 @@
 import { Mode } from '@/category';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import Text from '@/common-ui/Text';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 import IconButton from '@/common/ui/IconButton';
+import { MAX_CATEGORY_COUNT } from '@/store/bookmark';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
@@ -9,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface CategoryModeProps {
   mode: Mode;
+  categoryLength: number;
   setMode: Dispatch<SetStateAction<Mode>>;
   openDeleteCategoryBS: () => void;
   onClickSaveOrder: () => void;
@@ -16,12 +19,21 @@ interface CategoryModeProps {
 
 const useCategoryMode = ({
   mode,
+  categoryLength,
   setMode,
   openDeleteCategoryBS,
   onClickSaveOrder,
 }: CategoryModeProps) => {
   const router = useNavigate();
+  const { fireToast } = useToast();
   const navigateToCategoryAddPage = () => {
+    if (categoryLength >= MAX_CATEGORY_COUNT) {
+      fireToast({
+        message: '앗! 카테고리는 최대 20개까지만 만들 수 있어요',
+        mode: 'ERROR',
+      });
+      return;
+    }
     router('/category/add', {
       state: {
         fromPath: location.pathname,
