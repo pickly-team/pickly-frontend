@@ -2,7 +2,6 @@ import { GET_BOOKMARK_CATEGORY_LIST } from '@/bookmarks/api/bookmark';
 import client from '@/common/service/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { GET_CATEGORY_LIST } from './category';
 
 interface CategoryItem {
   name: string;
@@ -36,7 +35,7 @@ export const usePOSTCategoryMutation = ({ memberId }: POSTCategoryMutation) => {
 
   return useMutation(POSTCategory.API, {
     onSuccess: async () => {
-      await queryClient.refetchQueries(GET_CATEGORY_LIST(memberId));
+      await queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
       queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
 
       router(-1);

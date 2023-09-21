@@ -1,6 +1,5 @@
 import client from '@/common/service/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { GET_CATEGORY_LIST } from './category';
 import { GET_BOOKMARK_CATEGORY_LIST } from '@/bookmarks/api/bookmark';
 
 interface CategoryOrderData {
@@ -27,8 +26,7 @@ export const usePATCHCategoryOrderMutation = ({
   const queryClient = useQueryClient();
   return useMutation(PATCHCategoryOrder.API, {
     onSuccess: async () => {
-      await queryClient.refetchQueries(GET_CATEGORY_LIST(memberId));
-      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
+      await queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
     },
   });
 };

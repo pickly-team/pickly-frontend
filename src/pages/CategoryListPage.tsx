@@ -1,4 +1,5 @@
-import { CategoryItem, Mode } from '@/category';
+import { ClientBookmarkCategoryItem } from '@/bookmarks/api/bookmark';
+import { Mode } from '@/category';
 import { useDeleteCategoryMutation } from '@/category/api/delete';
 import { usePATCHCategoryOrderMutation } from '@/category/api/order';
 import useCategoryMode from '@/category/service/hooks/useCategoryMode';
@@ -31,16 +32,16 @@ const CategoryListPage = () => {
     setMode('NORMAL');
     close();
   };
-  const [clientCategoryList, setClientCategoryList] = useState<CategoryItem[]>(
-    [],
-  );
+  const [clientCategoryList, setClientCategoryList] = useState<
+    ClientBookmarkCategoryItem[]
+  >([]);
 
   const { mutateAsync: mutatePatchOrder } = usePATCHCategoryOrderMutation({
     memberId,
   });
   const onClickSaveOrder = async () => {
     const orderData = clientCategoryList.map((category, index) => ({
-      categoryId: category.categoryId,
+      categoryId: String(category.id),
       orderNum: index + 1,
     }));
     await mutatePatchOrder(orderData);
