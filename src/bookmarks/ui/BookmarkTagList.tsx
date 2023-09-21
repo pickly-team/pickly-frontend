@@ -5,7 +5,9 @@ import getRem, { calculateRem } from '@/utils/getRem';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ClientBookmarkCategoryItem } from '../api/bookmark';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useToast from '@/common-ui/Toast/hooks/useToast';
+import { MAX_CATEGORY_COUNT } from '@/store/bookmark';
 
 interface TagBoxListProps {
   tags: ClientBookmarkCategoryItem[];
@@ -28,7 +30,7 @@ const TagBoxList = ({
           onClickCategory={onClickCategory}
         />
       ))}
-      <PlusBox to="/category/add" />
+      <PlusBox to="/category/add" categoryCount={tags.length} />
     </StyledListWrapper>
   );
 };
@@ -80,12 +82,28 @@ const TagBox = ({ tag, isSelected, onClickCategory }: TagBoxProps) => {
 
 interface PlusBoxProps {
   to: string;
+  categoryCount: number;
 }
 
-const PlusBox = ({ to }: PlusBoxProps) => {
+const PlusBox = ({ to, categoryCount }: PlusBoxProps) => {
+  const navigate = useNavigate();
+  const { fireToast } = useToast();
+
+  const onClickPlusBox = () => {
+    if (categoryCount >= MAX_CATEGORY_COUNT) {
+      fireToast({
+        mode: 'ERROR',
+        message: '앗! 카테고리는 최대 20개까지만 만들 수 있어요',
+      });
+    } else {
+      navigate(to);
+    }
+  };
+
   return (
-    <Link to={to}>
+    <>
       <div
+        onClick={onClickPlusBox}
         css={css`
           display: flex;
           align-items: center;
@@ -102,6 +120,6 @@ const PlusBox = ({ to }: PlusBoxProps) => {
       >
         <Icon size="xs" name="plus-dark" />
       </div>
-    </Link>
+    </>
   );
 };

@@ -50,6 +50,7 @@ const CategoryListPage = () => {
 
   const { headerRight } = useCategoryMode({
     mode,
+    categoryLength: clientCategoryList.length,
     setMode,
     openDeleteCategoryBS: open,
     onClickSaveOrder,
