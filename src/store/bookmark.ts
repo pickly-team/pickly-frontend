@@ -1,6 +1,8 @@
 import { READ_OPTION } from '@/bookmarks/service/hooks/home/useReadList';
 import { create } from 'zustand';
 
+export const MAX_CATEGORY_COUNT = 20 as const;
+
 interface OptionType {
   value: string | null;
   label: string;
