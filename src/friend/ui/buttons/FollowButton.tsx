@@ -7,6 +7,7 @@ import { type MouseEvent } from 'react';
 import { usePOSTFollowUserQuery } from '@/friend/api/friends';
 import useSearchStore from '@/store/search';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import Text from '@/common-ui/Text';
 
 interface FollowButtonProps {
   memberId: number;
@@ -42,7 +43,9 @@ const FollowButton = ({
   };
   return (
     <StyledButton onClick={onClick} buttonColor={'black'}>
-      팔로우
+      <Text.Span color="white" fontSize={0.8}>
+        팔로우
+      </Text.Span>
     </StyledButton>
   );
 };
