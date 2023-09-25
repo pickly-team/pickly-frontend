@@ -15,6 +15,7 @@ import { useLocation } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import { Oval } from 'react-loader-spinner';
 import DisabledButton from '@/common-ui/DisabledButton';
+import { AiOutlinePaperClip as PaperClip } from 'react-icons/ai';
 
 interface BookmarkAddBSProps {
   isOpen: boolean;
@@ -78,7 +79,9 @@ const URLInput = ({
       <HeadingText>Step 1. URL 입력</HeadingText>
       <StyledInputWrapper>
         <StyleIconWrapper>
-          <Icon name="bookmark" size="m" />
+          <IconWrapper>
+            <PaperClip size={27} color={theme.colors.white} />
+          </IconWrapper>
           <StyledInputCloseWrapper>
             <StyledInput
               css={css`
@@ -108,7 +111,9 @@ const URLInput = ({
           </StyledInputCloseWrapper>
         </StyleIconWrapper>
         <StyleIconWrapper>
-          <Icon name="pencil" size="m" />
+          <IconWrapper>
+            <Icon name="bookmark" size="m" />
+          </IconWrapper>
           <StyledInputCloseWrapper>
             {isLoadingGetTitle ? (
               <StyledLoadingInput>
@@ -374,4 +379,8 @@ const StyledMarginSpanText = styled.div`
   :nth-of-type(1) {
     margin-top: ${getRem(10)};
   }
+`;
+
+const IconWrapper = styled.div`
+  width: ${getRem(40)};
 `;
