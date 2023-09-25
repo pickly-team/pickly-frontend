@@ -27,7 +27,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   const debouncedChangeUrl = debounce((url) => setDebouncedUrl(url), 500);
 
   useEffect(() => {
-    if (isInitial && url !== '' && debouncedUrl !== '') {
+    if (isInitial && url !== '' && debouncedUrl === '') {
       setIsInitial(false);
       setDebouncedUrl(url);
       return;
