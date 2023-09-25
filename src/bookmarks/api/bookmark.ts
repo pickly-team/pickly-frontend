@@ -654,8 +654,10 @@ export const useDELETEBookmarkQuery = ({
   bookmarkId,
 }: DeleteAPIRequest) => {
   const queryClient = useQueryClient();
+  const { fireToast } = useToast();
   return useMutation(deleteBookmarkAPI, {
     onSuccess: () => {
+      fireToast({ message: '삭제 되었습니다', mode: 'DELETE' });
       refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
     },

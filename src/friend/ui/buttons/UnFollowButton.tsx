@@ -6,6 +6,7 @@ import { type MouseEvent } from 'react';
 import { useDELETEUnFollowQuery } from '@/friend/api/friends';
 import useSearchStore from '@/store/search';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import Text from '@/common-ui/Text';
 
 interface UnFollowButtonProps {
   memberId: number;
@@ -36,7 +37,9 @@ const UnFollowButton = ({
   };
   return (
     <StyledButton onClick={onClick} buttonColor={'black'}>
-      언팔로우
+      <Text.Span color="lightPrimary" fontSize={0.8}>
+        언팔로우
+      </Text.Span>
     </StyledButton>
   );
 };

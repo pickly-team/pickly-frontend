@@ -173,7 +173,7 @@ const ToggleEdit = ({ isEdit, onClickEdit }: ToggleEditProps) => {
         onClick={onClickEdit}
       >
         <Text.Span fontSize={0.9} color="lightPrimary">
-          {isEdit ? '완료' : '편집'}
+          {isEdit ? '완료' : '삭제'}
         </Text.Span>
       </Button>
     </ButtonWrapper>
