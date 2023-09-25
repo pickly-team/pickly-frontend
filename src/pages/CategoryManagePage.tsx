@@ -13,6 +13,7 @@ import { useGETCategoryAPI } from '@/category/api/category';
 import { useEffect } from 'react';
 import { usePUTCategoryMutation } from '@/category/api/edit';
 import useAuthStore from '@/store/auth';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 
 interface CategoryManagePageProps {
   mode: 'ADD' | 'EDIT';
@@ -31,13 +32,12 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   const router = useNavigate();
 
   const categoryId = location.pathname.split('/').pop();
+  const { fireToast } = useToast();
 
   // BUSINESS LOGIC
   const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen } =
     useChangeEmoji();
   const { categoryName, onChangeCategoryName } = useChangeCategoryName();
-  // const { categoryList, addCategory, deleteCategory } =
-  //   useAddAndDeleteCategory();
 
   const { data: categoryData } = useGETCategoryAPI({
     categoryId: categoryId ?? '',
@@ -66,6 +66,10 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
     categoryId: categoryId ?? '',
   });
   const onClickSave = () => {
+    if (!categoryName.length) {
+      fireToast({ message: '앗! 카테고리 이름이 비어있어요', mode: 'ERROR' });
+      return;
+    }
     if (mode === 'EDIT') {
       putCategory({
         categoryId: categoryId ?? '',
@@ -80,10 +84,6 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
     if (mode === 'ADD') {
       postCategory({
         memberId,
-        // postData: categoryList.map((category) => ({
-        //   emoji: category.emoji,
-        //   name: category.name,
-        // })),
         postData: [
           {
             emoji,
@@ -93,33 +93,6 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
       });
     }
   };
-
-  // const onClickAddCategory = (emoji: string, categoryName: string) => {
-  //   addCategory(emoji, categoryName);
-  //   onChangeCategoryName('');
-  //   onChangeEmoji('📖');
-  // };
-
-  // const onClickDeleteCategory = (id: string) => {
-  //   deleteCategory(id);
-  // };
-
-  // const setSelectedCategory = (id: string) => {
-  //   const selectedCategory = categoryList.find(
-  //     (category) => category.categoryId === id,
-  //   );
-  //   if (selectedCategory) {
-  //     onChangeEmoji(selectedCategory.emoji);
-  //     onChangeCategoryName(selectedCategory.name);
-  //   }
-  // };
-
-  // const onClickEditCategory = (id: string) => {
-  //   setSelectedCategory(id);
-  //   deleteCategory(id);
-  // };
-
-  // const isAllCategoryInfoFilled = !!(emoji.length && categoryName.length);
 
   return (
     <>
@@ -137,27 +110,6 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
           onChangeCategoryName={onChangeCategoryName}
         />
       </CategoryNameInputWrapper>
-      {/* {mode === 'ADD' && (
-        <MarginDivider>
-          <Divider size="s" margin="off" />
-        </MarginDivider>
-      )} */}
-      {/** 카테고리 추가 영역 */}
-      {/* {mode === 'ADD' && (
-        <CategoryAddArea categoryList={categoryList}>
-          <CategoryAddArea.BlankCategoryBox
-            onClickAddCategory={() => onClickAddCategory(emoji, categoryName)}
-            isAllCategoryInfoFilled={isAllCategoryInfoFilled}
-          />
-          <CategoryAddArea.CategoryList
-            categoryList={categoryList}
-            onClickDeleteCategory={onClickDeleteCategory}
-            onClickEditCategory={onClickEditCategory}
-            isAllCategoryInfoFilled={isAllCategoryInfoFilled}
-            onClickAddCategory={() => onClickAddCategory(emoji, categoryName)}
-          />
-        </CategoryAddArea>
-      )} */}
       {/** 이모지 BS */}
       {isEmojiBSOpen && <EmojiSelect onChangeEmoji={onChangeEmoji} />}
     </>
