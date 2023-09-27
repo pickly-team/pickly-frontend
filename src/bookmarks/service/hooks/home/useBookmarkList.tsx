@@ -3,6 +3,7 @@ import useBookmarkStore from '@/store/bookmark';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { READ_OPTION } from './useReadList';
+import useAuthStore from '@/store/auth';
 
 interface BookmarkListProps {
   readByUser: READ_OPTION;
@@ -16,6 +17,7 @@ const useBookmarkList = ({
   categoryId,
 }: BookmarkListProps) => {
   const navigate = useLocation();
+  const { userInfo } = useAuthStore();
   // SERVER
   // 1. 북마크 리스트 조회
   const {
@@ -28,6 +30,7 @@ const useBookmarkList = ({
     readByUser,
     categoryId,
     memberId,
+    loginId: userInfo?.id,
   });
 
   useEffect(() => {
