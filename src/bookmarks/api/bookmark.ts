@@ -74,7 +74,7 @@ interface GETBookMarkListRequest {
   memberId: number;
   categoryId: number | null;
   readByUser: READ_OPTION;
-  visibility?: Visibility;
+  loginId: number;
   pageRequest?: {
     cursorId?: number;
     pageSize?: number;
@@ -89,7 +89,7 @@ const GETBookMarkList = {
         params: {
           categoryId: params.categoryId === 0 ? null : params.categoryId,
           readByUser: READ_OPTIONS[params.readByUser],
-          visibility: params.visibility,
+          loginId: params.loginId,
           cursorId: params.pageRequest?.cursorId,
           pageSize: params.pageRequest?.pageSize,
         },
