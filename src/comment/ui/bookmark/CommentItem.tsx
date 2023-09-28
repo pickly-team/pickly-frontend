@@ -8,6 +8,7 @@ import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
 import { useNavigate } from 'react-router-dom';
 import { navigatePath } from '@/constants/navigatePath';
+import useWebview from '@/common/service/hooks/useWebview';
 
 interface CommentProps {
   id: number;
@@ -41,6 +42,22 @@ const CommentItem = ({
     navigate(navigatePath.COMMENT_REPORT.replace(':id', String(id)));
   };
 
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  const { postMessage } = useWebview();
+  const onClickURL = (url: string) => {
+    postMessage('visitBookmark', {
+      url,
+    });
+  };
+
+  // URL을 <a> 태그로 변환
+  const convertedText = content.replace(
+    urlRegex,
+    (url) =>
+      `<a style="color: ${theme.colors.lightPrimary}" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`,
+  );
+
   return (
     <Container>
       <CommentHeader>
@@ -69,7 +86,17 @@ const CommentItem = ({
           </TriggerBottomSheet.BottomSheet>
         </TriggerBottomSheet>
       </CommentHeader>
-      <ContentText fontSize={0.8}>{content}</ContentText>
+      <ContentText
+        fontSize={0.8}
+        dangerouslySetInnerHTML={{ __html: convertedText }}
+        onClick={(e) => {
+          const target = e.target as HTMLAnchorElement;
+          if (target.tagName === 'A') {
+            e.preventDefault();
+            onClickURL(target.href);
+          }
+        }}
+      />
       <IconAndTextWrapper>
         <Icon name="timeline" size={'xs'} />
         <UpdatedAtText fontSize={0.625}>{updatedAt}</UpdatedAtText>
