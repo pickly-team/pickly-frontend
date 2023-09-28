@@ -116,6 +116,7 @@ const BookmarkEditPage = () => {
           onChangeTitle={onChangeTitle}
           handleKeyDown={handleKeyDown}
           onDeleteInput={onDeleteInput}
+          disabled
         />
         <BookmarkAddBS.SelectCategory
           categoryList={categoryList}
