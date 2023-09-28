@@ -3,15 +3,12 @@ import { ColorType, theme } from '@/styles/theme';
 import { css } from '@emotion/react';
 import type { FunctionComponent, HTMLAttributes, ReactNode } from 'react';
 
-type StrictPropsWithChildren<P = unknown> = P & { children: string };
-
 export type TextProps = {
   weight?: 'bold' | 'regular';
   fontSize?: string | number;
   color?: ColorType;
-  children: ReactNode;
-} & StrictPropsWithChildren &
-  HTMLAttributes<HTMLParagraphElement | HTMLSpanElement | HTMLDivElement>;
+  children?: ReactNode;
+} & HTMLAttributes<HTMLParagraphElement | HTMLSpanElement | HTMLDivElement>;
 
 type HeaderType = 'h1' | 'h2' | 'h3';
 
@@ -59,7 +56,7 @@ const Span: FunctionComponent<TextProps> = ({
   weight = 'regular',
   fontSize = 1,
   color,
-  children,
+  children = null,
   ...restProps
 }) => {
   return (
@@ -77,9 +74,9 @@ const Div: FunctionComponent<TextProps> = ({
   ...restProps
 }) => {
   return (
-    <span css={cssText({ color, fontSize, weight })} {...restProps}>
+    <div css={cssText({ color, fontSize, weight })} {...restProps}>
       {children}
-    </span>
+    </div>
   );
 };
 
