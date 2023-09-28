@@ -233,6 +233,7 @@ const BookmarkUrl = styled.div`
   white-space: nowrap;
   max-width: 70%;
   margin-bottom: 0.2rem;
+  color: ${theme.colors.lightPrimary};
 `;
 
 const InfoDescriptionText = styled(Text.Span)`
