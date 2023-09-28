@@ -232,7 +232,7 @@ const PublishScoped = ({
             weight="bold"
             color={selectedPublishScoped === 'SCOPE_PUBLIC' ? 'black' : 'white'}
           >
-            전체 공개
+            👀 전체 공개
           </Text.Span>
         </Button>
         <Button
@@ -247,7 +247,7 @@ const PublishScoped = ({
             weight="bold"
             color={selectedPublishScoped === 'SCOPE_FRIEND' ? 'black' : 'white'}
           >
-            친구 공개
+            👥 친구 공개
           </Text.Span>
         </Button>
         <Button
@@ -264,7 +264,7 @@ const PublishScoped = ({
               selectedPublishScoped === 'SCOPE_PRIVATE' ? 'black' : 'white'
             }
           >
-            비공개
+            🔒 비공개
           </Text.Span>
         </Button>
       </div>
