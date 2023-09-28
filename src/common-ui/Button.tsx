@@ -41,7 +41,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   height = 3,
   fontSize = 1,
   buttonColor = 'buttonGreen',
-  activeButtonColor = 'lightGreen',
+  activeButtonColor = 'lightPrimary',
   disabledButtonColor = 'grey800',
   ...rest
 }) => {

@@ -1,5 +1,4 @@
 import { ChangeEventHandler, MouseEvent, useEffect } from 'react';
-import Input from '@/common-ui/Input';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
@@ -8,6 +7,7 @@ import IconButton from '@/common/ui/IconButton';
 import { usePOSTCommentQuery, usePUTCommentQuery } from '@/comment/api/Comment';
 import { useParams } from 'react-router-dom';
 import useAuthStore from '@/store/auth';
+import TextArea from '@/common-ui/TextArea';
 
 const CommentUploadInput = () => {
   const { memberId } = useAuthStore();
@@ -15,7 +15,7 @@ const CommentUploadInput = () => {
   const { mode, comment, setComment, initComment } = useCommentStore();
   const { id: bookmarkId } = useParams<{ id: string }>();
 
-  const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+  const onChange: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
     const { value } = event.target;
     setComment(value);
   };
@@ -64,11 +64,11 @@ const CommentUploadInput = () => {
 
   return (
     <Container onSubmit={onSubmit}>
-      <StyledInput
+      <TextArea
         value={comment.content}
         onChange={onChange}
-        backgroundColor={'black'}
         placeholder="댓글을 입력하세요"
+        disable={false}
       />
       {mode === 'CREATE' && (
         <IconButton name="check-circle" size="l" type="submit" />
@@ -96,10 +96,4 @@ const Container = styled.form`
   column-gap: ${getRem(10)};
   padding: ${getRem(10)};
   background-color: ${theme.colors.grey900};
-`;
-
-const StyledInput = styled(Input)`
-  ::placeholder {
-    color: ${theme.colors.grey800};
-  }
 `;

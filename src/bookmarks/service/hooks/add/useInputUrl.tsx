@@ -27,12 +27,12 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   const debouncedChangeUrl = debounce((url) => setDebouncedUrl(url), 500);
 
   useEffect(() => {
-    if (isInitial && url !== '' && debouncedUrl === '') {
+    if (isInitial && url !== '' && defaultTitle === '' && debouncedUrl === '') {
       setIsInitial(false);
       setDebouncedUrl(url);
       return;
     }
-  }, [isInitial, url, debouncedUrl]);
+  }, [isInitial, url, debouncedUrl, defaultTitle]);
 
   let isDeleting = false; // 사용자가 지우는 동작을 수행하고 있는지 여부를 저장하는 변수
 
