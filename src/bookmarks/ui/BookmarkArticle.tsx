@@ -109,7 +109,7 @@ const BookMarkArticle = () => {
         <CategoryAndIconsWrapper>
           <CategoryButtonWrapper>
             <CategoryButton height={2.5} buttonColor="lightPrimary">
-              <Text.Span color="black" weight="bold">
+              <Text.Span color="grey900" weight="bold">
                 {bookmarkDetail?.categoryName ?? ''}
               </Text.Span>
             </CategoryButton>
@@ -142,7 +142,7 @@ const BookMarkArticle = () => {
             icon={<Icon name="location" size="s" />}
             content={
               <BookmarkUrl onClick={onClickBookmarkUrl}>
-                <Text.Span fontSize={0.75}>
+                <Text.Span fontSize={0.75} color="lightPrimary">
                   {bookmarkDetail?.url ?? ''}
                 </Text.Span>
               </BookmarkUrl>
