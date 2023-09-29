@@ -71,7 +71,7 @@ const DisabledButton = ({
           background-color: ${theme.colors.grey900};
         }
         &:read-only {
-          background-color: ${theme.colors.grey800};
+          background-color: ${theme.colors[buttonColor]};
           cursor: not-allowed;
         }
       `}
