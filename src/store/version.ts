@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export const CURRENT_VERSION = '1.1.0';
+export const CURRENT_VERSION = '1.1.1';
 
 interface VersionStore {
   version: string;
