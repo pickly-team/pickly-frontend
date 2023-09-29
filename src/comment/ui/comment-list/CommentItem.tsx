@@ -101,7 +101,10 @@ const TitleText = styled(Text.Span)`
 
 const NicknameText = styled(Text.Span)``;
 
-const ContentText = styled(Text.Span)``;
+const ContentText = styled(Text.Span)`
+  white-space: pre-wrap;
+  line-height: 1.3;
+`;
 const CategoryText = styled(Text.Span)`
   margin-left: auto;
 `;
