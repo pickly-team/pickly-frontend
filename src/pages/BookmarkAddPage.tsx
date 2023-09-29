@@ -30,7 +30,7 @@ const BookmarkAddPage = () => {
     handleKeyDown,
     onDeleteInput,
     resetAllInputs,
-  } = useInputUrl({});
+  } = useInputUrl({ defaultTitle: '', defaultUrl: '' });
 
   // 2. 카테고리 선택
   const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory({});
