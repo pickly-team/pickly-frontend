@@ -361,6 +361,7 @@ export const usePOSTBookmarkMutation = ({
   const { fireToast } = useToast();
   return useMutation(postBookmark, {
     onSuccess: (res) => {
+      fireToast({ message: '추가 되었습니다', mode: 'SUCCESS' });
       resetAll.resetAllInputs();
       resetAll.resetCategory();
       resetAll.resetVisibility();
@@ -777,8 +778,10 @@ export const usePUTBookmarkQuery = ({
   memberId,
 }: PUTBookmarkQueryRequest) => {
   const queryClient = useQueryClient();
+  const { fireToast } = useToast();
   return useMutation(putBookmarkAPI, {
     onSuccess: () => {
+      fireToast({ message: '수정 되었습니다', mode: 'SUCCESS' });
       refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
       queryClient.refetchQueries(
         GET_BOOKMARK_DETAIL_KEY({ bookmarkId, memberId }),
