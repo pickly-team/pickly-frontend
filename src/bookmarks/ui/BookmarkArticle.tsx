@@ -1,5 +1,4 @@
 import getRem from '@/utils/getRem';
-import Button from '@/common-ui/Button';
 import Icon from '@/common-ui/assets/Icon';
 import Text from '@/common-ui/Text';
 import styled from '@emotion/styled';
@@ -25,6 +24,7 @@ import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import useBookmarkStore from '@/store/bookmark';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import { BsFillClipboard2Fill as CopyIcon } from 'react-icons/bs';
+import DisabledButton from '@/common-ui/DisabledButton';
 
 const BookMarkArticle = () => {
   const { id: bookmarkId } = useParams<{ id: string }>();
@@ -109,7 +109,7 @@ const BookMarkArticle = () => {
         <CategoryAndIconsWrapper>
           <CategoryButtonWrapper>
             <CategoryButton height={2.5} buttonColor="lightPrimary">
-              <CategoryText color="grey900" weight="bold">
+              <CategoryText color="black" weight="bold">
                 {bookmarkDetail?.categoryName ?? ''}
               </CategoryText>
             </CategoryButton>
@@ -203,7 +203,7 @@ const CategoryButtonWrapper = styled.div`
   min-width: ${getRem(150)};
 `;
 
-const CategoryButton = styled(Button)`
+const CategoryButton = styled(DisabledButton)`
   color: ${theme.colors.black};
   padding: 1rem;
 `;
