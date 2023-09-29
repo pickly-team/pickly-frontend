@@ -85,6 +85,7 @@ const SettingsBox = ({
           position: 'relative',
           marginTop: getRem(21),
         }}
+        onClick={toggleIsEditing}
       >
         <RemindingDescription
           unreadBookmarkExists={true}
@@ -92,7 +93,7 @@ const SettingsBox = ({
           isEditing={isEditing}
           onChangeRemainingDays={onChangeRemainingDays}
         />
-        <SettingsButton onClick={toggleIsEditing}>
+        <SettingsButton>
           {!isEditing && (
             <PencilIcon size={getRem(30)} color={theme.colors.lightPrimary} />
           )}
@@ -147,6 +148,7 @@ const RemindingDescription = ({
                   value={remindInDays}
                   type="number"
                   onChange={onChangeRemainingDays}
+                  onClick={(e) => e.stopPropagation()}
                   max={MAX_DAYS}
                 />
               ) : (
