@@ -199,7 +199,7 @@ const CategoryAndIconsWrapper = styled.div`
 `;
 
 const CategoryButtonWrapper = styled.div`
-  max-width: ${getRem(220)};
+  max-width: calc(100vw / 2 - ${getRem(20)});
   min-width: ${getRem(150)};
 `;
 
