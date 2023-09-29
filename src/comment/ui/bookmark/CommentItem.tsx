@@ -137,7 +137,7 @@ const NicknameTextAndIconWrapper = styled.div`
 const NicknameText = styled(Text.Span)``;
 const ContentText = styled(Text.Span)`
   white-space: pre-wrap;
-  line-height: 1.3;
+  line-height: 1.2;
 `;
 const UpdatedAtText = styled(Text.Span)``;
 const IconAndTextWrapper = styled.div`
