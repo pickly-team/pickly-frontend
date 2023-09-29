@@ -109,9 +109,15 @@ const BookMarkArticle = () => {
         <CategoryAndIconsWrapper>
           <CategoryButtonWrapper>
             <CategoryButton height={2.5} buttonColor="lightPrimary">
-              <CategoryText color="black" weight="bold">
-                {bookmarkDetail?.categoryName ?? ''}
-              </CategoryText>
+              {bookmarkDetail?.categoryName && (
+                <CategoryText
+                  color="black"
+                  weight="bold"
+                  fontSize={bookmarkDetail.categoryName.length > 5 ? 0.8 : 1}
+                >
+                  {bookmarkDetail.categoryName ?? ''}
+                </CategoryText>
+              )}
             </CategoryButton>
           </CategoryButtonWrapper>
           <LikeAndMessageIconWrapper>
