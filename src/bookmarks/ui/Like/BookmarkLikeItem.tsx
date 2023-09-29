@@ -24,7 +24,7 @@ const BookmarkLikeItem = ({
             <EllipsisText fontSize={1.1} weight="bold">
               {title}
             </EllipsisText>
-            <EllipsisText fontSize={0.8} color="grey400">
+            <EllipsisText fontSize={0.8} color="lightPrimary">
               {url}
             </EllipsisText>
           </ItemUpperLeft>
