@@ -109,9 +109,9 @@ const BookMarkArticle = () => {
         <CategoryAndIconsWrapper>
           <CategoryButtonWrapper>
             <CategoryButton height={2.5} buttonColor="lightPrimary">
-              <Text.Span color="grey900" weight="bold">
+              <CategoryText color="grey900" weight="bold">
                 {bookmarkDetail?.categoryName ?? ''}
-              </Text.Span>
+              </CategoryText>
             </CategoryButton>
           </CategoryButtonWrapper>
           <LikeAndMessageIconWrapper>
@@ -199,11 +199,19 @@ const CategoryAndIconsWrapper = styled.div`
 `;
 
 const CategoryButtonWrapper = styled.div`
-  width: ${getRem(154)};
+  max-width: ${getRem(220)};
+  min-width: ${getRem(150)};
 `;
 
 const CategoryButton = styled(Button)`
   color: ${theme.colors.black};
+  padding: 1rem;
+`;
+
+const CategoryText = styled(Text.Span)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const IconWrapper = styled.div`

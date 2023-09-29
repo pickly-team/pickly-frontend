@@ -59,10 +59,10 @@ export const timeStampToDate = (timeStamp: number) => {
   if (diff >= 24 * 60 * 60 * 1000 && diff < 24 * 60 * 60 * 8 * 1000)
     return `${Math.floor(diff / (86400 * 1000))}일 전`;
   // 30일 미만
-  if (diff >= 24 * 60 * 60 * 8 * 1000 && diff < 24 * 60 * 60 * 29 * 1000)
+  if (diff >= 24 * 60 * 60 * 8 * 1000 && diff < 24 * 60 * 60 * 30 * 1000)
     return `${Math.floor(diff / (86400 * 1000 * 7))}주 전`;
   // 30일 이상
-  if (diff >= 24 * 60 * 60 * 29 * 1000)
+  if (diff >= 24 * 60 * 60 * 30 * 1000)
     return `${Math.floor(diff / (86400 * 1000 * 30))}달 전`;
 
   return '';
