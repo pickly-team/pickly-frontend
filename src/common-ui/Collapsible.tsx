@@ -35,7 +35,7 @@ const ToggleCard = styled.div`
 const IconSection = styled.div<{ open: boolean }>`
   margin-right: 15px;
   display: inline-block;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
   transform: rotate(${(props) => (props.open ? '90deg' : '0deg')});
 `;
 
@@ -44,10 +44,10 @@ const ToggleBody = styled.div<{ open: boolean }>`
   flex-direction: row;
   align-items: center;
 
-  max-height: ${(props) => (props.open ? getRem(250) : '0')};
+  max-height: ${(props) => (props.open ? getRem(500) : '0')};
   opacity: ${(props) => (props.open ? '1' : '0')};
   overflow: hidden;
-  transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+  transition: all 0.3s ease;
 
   gap: ${getRem(10)};
   background: #313131;
