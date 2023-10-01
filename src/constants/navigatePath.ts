@@ -18,6 +18,7 @@ const navigatePath = {
   CATEGORY_LIST: '/category/list',
   COMMENT_REPORT: '/comment/:id/report',
   BOOKMARK_REPORT: '/bookmark/:id/report',
+  MEMBER_REPORT: '/member/:id/report',
   COMMENT: '/comment',
   LIKE_PAGE: '/likes',
   INTRODUCE: '/introduce',

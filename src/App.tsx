@@ -84,6 +84,10 @@ const App = () => {
                       element={<ReportPage mode="BOOKMARK" />}
                     />
                     <Route
+                      path={navigatePath.MEMBER_REPORT}
+                      element={<ReportPage mode="MEMBER" />}
+                    />
+                    <Route
                       path={navigatePath.USER}
                       element={<UserCreatePage mode="CREATE" />}
                     />
