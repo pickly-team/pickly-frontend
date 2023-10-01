@@ -3,12 +3,17 @@ import { AxiosError } from 'axios';
 import NetworkError from './NetworkError';
 import { PostBridgeParams } from '@/common/service/hooks/useWebview';
 
-type ErrorType = 'NO_USER_INFO' | 'PRIVATE_BOOKMARK' | 'DUPLICATED_NICKNAME';
+type ErrorType =
+  | 'NO_USER_INFO'
+  | 'PRIVATE_BOOKMARK'
+  | 'DUPLICATED_NICKNAME'
+  | 'DUPLICATE_REPORT';
 
 export const ErrorTypes: Record<ErrorType, string> = {
   NO_USER_INFO: 'M001',
   DUPLICATED_NICKNAME: 'M002',
   PRIVATE_BOOKMARK: 'B002',
+  DUPLICATE_REPORT: 'R002',
 } as const;
 
 interface CustomData {
