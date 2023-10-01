@@ -6,7 +6,7 @@ import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import getRem from '@/utils/getRem';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '@/common-ui/Header/Header';
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import IconButton from '@/common/ui/IconButton';
@@ -25,6 +25,7 @@ import useBookmarkStore from '@/store/bookmark';
 import SkeletonBookmarkUserInfo from '@/bookmarks/ui/SkeletonBookmarkUserInfo';
 import PullToRefresh from '@/common-ui/PullToRefresh';
 import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
+import { navigatePath } from '@/constants/navigatePath';
 
 const FriendBookmarkPage = () => {
   // FIRST RENDER
@@ -48,6 +49,12 @@ const FriendBookmarkPage = () => {
 
   // USER INTERACTION
   // 뒤로가기
+  // 1. 상단 more > 신고하기
+  const navigate = useNavigate();
+  const onClick_신고하기 = () => {
+    navigate(navigatePath.MEMBER_REPORT.replace(':id', String(friendId)));
+  };
+
   // 1. 상단 more > 차단하기
   const { mutate: postBlockMember } = usePOSTBlockMemberQuery({ memberId });
   const onClick_차단하기 = () => {
@@ -82,6 +89,9 @@ const FriendBookmarkPage = () => {
               as={<IconButton onClick={() => {}} name="more" size="s" />}
             />
             <TriggerBottomSheet.BottomSheet>
+              <TriggerBottomSheet.Item onClick={onClick_신고하기}>
+                신고하기
+              </TriggerBottomSheet.Item>
               {!!profileInfo?.isBlocked && (
                 <TriggerBottomSheet.Item onClick={onClick_차단해제}>
                   차단해제

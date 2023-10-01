@@ -9,8 +9,6 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { GET_LIKE_BOOKMARK_LIST } from './like';
@@ -786,63 +784,6 @@ export const usePUTBookmarkQuery = ({
       queryClient.refetchQueries(
         GET_BOOKMARK_DETAIL_KEY({ bookmarkId, memberId }),
       );
-    },
-  });
-};
-
-// 북마크 신고
-interface POSTBookmarkReportRequest {
-  reporterId: number;
-  reportedId: number;
-  content: string;
-}
-
-const postBookmarkReportAPI = async (params: POSTBookmarkReportRequest) => {
-  const { data } = await client({
-    method: 'post',
-    url: '/reports/bookmarks',
-    data: params,
-  });
-
-  return data;
-};
-
-export interface POSTBookmarkReportMutation {
-  reporterId: number;
-}
-
-export const usePOSTBookmarkReportMutation = ({
-  reporterId,
-}: POSTBookmarkReportMutation) => {
-  const queryClient = useQueryClient();
-  const toast = useToast();
-  const router = useNavigate();
-  return useMutation(postBookmarkReportAPI, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(
-        GET_BOOKMARK_LIST(reporterId, '📖 전체', 0),
-      );
-      queryClient.invalidateQueries(
-        GET_BOOKMARK_LIST(reporterId, '👀 읽음', 0),
-      );
-      queryClient.invalidateQueries(
-        GET_BOOKMARK_LIST(reporterId, '🫣 읽지 않음', 0),
-      );
-      toast.fireToast({
-        message: '신고 되었습니다',
-        mode: 'SUCCESS',
-      });
-      router(-1);
-    },
-    onError: (e: AxiosError) => {
-      const errorCode = e.response?.status;
-      if (errorCode && errorCode === 409) {
-        toast.fireToast({
-          message: '이미 신고한 북마크에요',
-          mode: 'DELETE',
-        });
-        router(-1);
-      }
     },
   });
 };
