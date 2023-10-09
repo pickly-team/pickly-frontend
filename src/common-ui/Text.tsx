@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { ColorType, theme } from '@/styles/theme';
-import { css } from '@emotion/react';
+import { SerializedStyles, css } from '@emotion/react';
 import type { FunctionComponent, HTMLAttributes, ReactNode } from 'react';
 
 export type TextProps = {
@@ -8,6 +8,7 @@ export type TextProps = {
   fontSize?: string | number;
   color?: ColorType;
   children?: ReactNode;
+  css?: SerializedStyles;
 } & HTMLAttributes<HTMLParagraphElement | HTMLSpanElement | HTMLDivElement>;
 
 type HeaderType = 'h1' | 'h2' | 'h3';
@@ -29,6 +30,7 @@ const cssText = ({
   weight,
   color = 'white',
   fontSize,
+  css: cssProp,
 }: Omit<TextProps, 'children' | 'fonSize'> & { fontSize: string | number }) =>
   css`
     font-size: ${typeof fontSize === 'number' ? `${fontSize}rem` : fontSize};
@@ -36,6 +38,7 @@ const cssText = ({
     font-family: ${weight === 'bold'
       ? 'NanumSquareRoundB'
       : 'NanumSquareRoundR'};
+    ${cssProp}
   `;
 
 const P: FunctionComponent<TextProps> = ({
@@ -57,10 +60,14 @@ const Span: FunctionComponent<TextProps> = ({
   fontSize = 1,
   color,
   children = null,
+  css: cssProp,
   ...restProps
 }) => {
   return (
-    <span css={cssText({ color, fontSize, weight })} {...restProps}>
+    <span
+      css={cssText({ color, fontSize, weight, css: cssProp })}
+      {...restProps}
+    >
       {children}
     </span>
   );
