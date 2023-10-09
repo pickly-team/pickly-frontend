@@ -50,7 +50,6 @@ const ItemWrapper = styled.div`
 const LinkWrapper = styled.div`
   display: flex;
   align-items: center;
-  border-radius: ${getRem(16)};
   padding: ${getRem(15, 0)};
   width: 100%;
   padding-left: ${getRem(20)};
