@@ -62,7 +62,7 @@ const ItemWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: ${getRem(10)} ${getRem(20)};
+  padding: ${getRem(15)} ${getRem(20)};
   column-gap: 1rem;
   transition: background-color 0.1s ease-in-out, opacity 0.1s ease-in-out;
   border-bottom: 1px solid ${theme.colors.grey800};
