@@ -53,18 +53,22 @@ const BookmarkEditItem = ({
               </EllipsisText>
               <CategoryTimeWrapper>
                 <CategoryWrapper>
-                  <CategoryEllipsisText
-                    fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                  <Text.Span
+                    fontSize={categoryName.length > 5 ? 0.7 : 0.8}
                     color="white"
+                    css={css`
+                      margin-top: -2px;
+                      margin-right: 3px;
+                    `}
                   >
                     {categoryEmoji}
-                  </CategoryEllipsisText>
+                  </Text.Span>
                   <CategoryEllipsisText
-                    fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                    fontSize={categoryName.length > 5 ? 0.7 : 0.8}
                     color="white"
                     css={css`
                       margin-left: 0.3rem;
-                      text-shadow: 1px 1px 5px black;
+                      text-shadow: 1px 1px 5px ${theme.colors.grey800};
                     `}
                   >
                     {` ${categoryName}`}
@@ -164,7 +168,6 @@ const CategoryEllipsisText = styled(Text.Span)`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 80%; // 이 값을 조절하면서 원하시는 결과에 맞게 설정하세요
 `;
 
 const ItemUpperRight = styled.div`
@@ -194,5 +197,5 @@ const CategoryWrapper = styled.div`
   border-radius: 0.5rem;
   max-width: 5rem;
   overflow: hidden;
-  height: 1.5rem;
+  height: 1.7rem;
 `;
