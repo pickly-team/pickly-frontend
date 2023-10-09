@@ -131,12 +131,6 @@ const ItemWrapper = styled.div`
   align-items: center;
 `;
 
-const UnderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.4rem;
-`;
-
 const IconWrapper = styled.div`
   display: flex;
   column-gap: 0.7rem;
