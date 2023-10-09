@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import BookmarkLikeButton from './BookmarkLikeButton';
 import getRem from '@/utils/getRem';
 import { LikeBookmarkItem } from '../../api/like';
+import { css } from '@emotion/react';
 
 type BookmarkLikeItemProps = {
   onClickLikeBtn: (bookmarkId: number) => void;
@@ -12,7 +13,8 @@ type BookmarkLikeItemProps = {
 
 const BookmarkLikeItem = ({
   title,
-  url,
+  categoryEmoji,
+  categoryName,
   bookmarkId,
   onClickLikeBtn,
 }: BookmarkLikeItemProps) => {
@@ -24,9 +26,23 @@ const BookmarkLikeItem = ({
             <EllipsisText fontSize={1.1} weight="bold">
               {title}
             </EllipsisText>
-            <EllipsisText fontSize={0.8} color="lightPrimary">
-              {url}
-            </EllipsisText>
+            <CategoryWrapper>
+              <Text.Span
+                fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                color="white"
+              >
+                {categoryEmoji}
+              </Text.Span>
+              <Text.Span
+                fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                color="white"
+                css={css`
+                  text-shadow: 1px 1px 10px black;
+                `}
+              >
+                {` ${categoryName}`}
+              </Text.Span>
+            </CategoryWrapper>
           </ItemUpperLeft>
         </LinkWrapper>
         <BookmarkLikeButton
@@ -49,6 +65,7 @@ const ItemWrapper = styled.div`
   padding: ${getRem(10)} ${getRem(20)};
   column-gap: 1rem;
   transition: background-color 0.1s ease-in-out, opacity 0.1s ease-in-out;
+  border-bottom: 1px solid ${theme.colors.grey800};
   &:active {
     background-color: ${theme.colors.grey800};
     opacity: 0.8;
@@ -73,4 +90,11 @@ const EllipsisText = styled(Text.Span)`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const CategoryWrapper = styled.div`
+  padding: 0.1rem 0.5rem;
+  background-color: ${theme.colors.lightPrimary};
+  border-radius: 0.5rem;
+  width: fit-content;
 `;
