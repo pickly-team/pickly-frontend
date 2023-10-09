@@ -12,7 +12,7 @@ const BlankComment = () => {
       </IconWrapper>
       <TextWrapper>
         <BlankText fontSize={0.8} weight="bold">
-          댓글이 없습니다.
+          댓글이 없습니다
         </BlankText>
         <BlankText fontSize={0.8} weight="bold">
           첫 댓글을 남겨보세요!
@@ -30,7 +30,7 @@ const Container = styled.div`
   row-gap: 0.6rem;
   padding: ${getRem(15, 20)};
   border-radius: ${getRem(7)};
-  background-color: ${theme.colors.grey800};
+  background-color: ${theme.colors.grey900};
   margin-bottom: 1rem;
 `;
 
