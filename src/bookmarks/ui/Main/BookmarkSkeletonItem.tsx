@@ -40,7 +40,6 @@ const floating2 = keyframes`
 
 const LinkWrapper = styled.div`
   display: block;
-  border-radius: 1rem;
   padding: 10px 20px;
   margin-bottom: 1rem;
   width: 100%;
