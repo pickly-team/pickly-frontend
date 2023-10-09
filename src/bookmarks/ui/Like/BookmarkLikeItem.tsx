@@ -28,13 +28,17 @@ const BookmarkLikeItem = ({
             </EllipsisText>
             <CategoryWrapper>
               <Text.Span
-                fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                fontSize={0.8}
                 color="white"
+                css={css`
+                  margin-top: -2px;
+                  margin-right: 3px;
+                `}
               >
                 {categoryEmoji}
               </Text.Span>
               <Text.Span
-                fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                fontSize={0.8}
                 color="white"
                 css={css`
                   text-shadow: 1px 1px 10px black;
@@ -97,5 +101,7 @@ const CategoryWrapper = styled.div`
   background-color: ${theme.colors.lightPrimary};
   border-radius: 0.5rem;
   width: fit-content;
-  height: 1.5rem;
+  height: 1.7rem;
+  display: flex;
+  align-items: center;
 `;

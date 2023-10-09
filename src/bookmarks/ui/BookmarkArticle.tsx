@@ -117,7 +117,7 @@ const BookMarkArticle = () => {
                   weight="bold"
                   fontSize={bookmarkDetail.categoryName.length > 5 ? 0.8 : 1}
                   css={css`
-                    text-shadow: 1px 1px 4px black;
+                    text-shadow: 1px 1px 5px ${theme.colors.grey800};
                   `}
                 >
                   {bookmarkDetail.categoryName}

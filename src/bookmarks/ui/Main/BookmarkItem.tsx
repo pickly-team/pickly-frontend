@@ -49,6 +49,10 @@ const BookmarkItem = ({
               <Text.Span
                 fontSize={categoryName.length > 5 ? 0.7 : 0.8}
                 color="white"
+                css={css`
+                  margin-top: -2px;
+                  margin-right: 3px;
+                `}
               >
                 {categoryEmoji}
               </Text.Span>
@@ -135,6 +139,9 @@ const CategoryWrapper = styled.div`
   padding: 0.1rem 0.5rem;
   background-color: ${theme.colors.lightPrimary};
   border-radius: 0.5rem;
+  height: 1.7rem;
+  display: flex;
+  align-items: center;
 `;
 
 const IconWrapper = styled.div`
