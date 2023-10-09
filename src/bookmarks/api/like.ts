@@ -13,7 +13,8 @@ export interface ServerLikeBookmarkList {
 export interface LikeBookmarkItem {
   bookmarkId: number;
   title: string;
-  url: string;
+  categoryName: string;
+  categoryEmoji: string;
   isUserLike: boolean;
 }
 

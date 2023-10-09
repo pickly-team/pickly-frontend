@@ -54,6 +54,8 @@ const IntroducePage = () => {
           title="북마크를 추가한 예시에요"
           url="https://velog.io"
           disabled
+          categoryEmoji="📚"
+          categoryName="개발"
         />
       </BookmarkWrapper>
       <DividerWrapper paddingSize="s">
@@ -153,7 +155,7 @@ const BoxWrapper = styled.div`
 `;
 
 const BookmarkWrapper = styled.div`
-  padding: 0 ${getRem(20)};
+  /* padding: 0 ${getRem(20)}; */
 `;
 
 const SubTitle = styled(Text.Header)`

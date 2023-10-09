@@ -3,7 +3,7 @@ import Text from '@/common-ui/Text';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 
-const CATEGORY_MAX_LENGTH = 10;
+const CATEGORY_MAX_LENGTH = 8;
 
 interface NameProps {
   onChangeCategoryName: (name: string) => void;

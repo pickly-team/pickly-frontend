@@ -63,6 +63,8 @@ export interface BookmarkItem {
   commentCnt: number;
   createdDate: string;
   disabled?: boolean;
+  categoryName: string;
+  categoryEmoji: string;
 }
 
 /** mapping 결과 */
@@ -110,6 +112,8 @@ const GETBookMarkList = {
       readByUser: bookmark.readByUser,
       commentCnt: bookmark.commentCnt,
       createdDate: bookmark.createdDate,
+      categoryName: bookmark.categoryName,
+      categoryEmoji: bookmark.categoryEmoji,
     }));
   },
 };
@@ -381,6 +385,7 @@ export interface BookmarkDetail {
   id: number;
   categoryId: number;
   categoryName: string;
+  categoryEmoji: string;
   memberId: number;
   url: string;
   title: string;
@@ -414,6 +419,7 @@ const getBookmarkDetailAPI = async ({
 export interface ClientBookmarkDetail {
   categoryId: number;
   categoryName: string;
+  categoryEmoji: string;
   memberId: number;
   url: string;
   title: string;
@@ -430,6 +436,7 @@ const getBookmarkDetailMapper = (
   return {
     categoryId: data.categoryId,
     categoryName: data.categoryName,
+    categoryEmoji: data.categoryEmoji,
     memberId: data.memberId,
     url: data.url,
     title: data.title,
