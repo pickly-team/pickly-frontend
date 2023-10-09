@@ -97,4 +97,5 @@ const CategoryWrapper = styled.div`
   background-color: ${theme.colors.lightPrimary};
   border-radius: 0.5rem;
   width: fit-content;
+  height: 1.5rem;
 `;

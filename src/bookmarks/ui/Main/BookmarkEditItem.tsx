@@ -12,6 +12,7 @@ import {
 } from 'react-icons/tb';
 import { BsBookFill as BookFillIcon } from 'react-icons/bs';
 import { css } from '@emotion/react';
+import getRem from '@/utils/getRem';
 
 const BookmarkEditItem = ({
   bookmarkId,
@@ -52,23 +53,31 @@ const BookmarkEditItem = ({
               </EllipsisText>
               <CategoryTimeWrapper>
                 <CategoryWrapper>
-                  <Text.Span
+                  <CategoryEllipsisText
                     fontSize={categoryName.length > 5 ? 0.5 : 0.8}
                     color="white"
                   >
                     {categoryEmoji}
-                  </Text.Span>
-                  <Text.Span
+                  </CategoryEllipsisText>
+                  <CategoryEllipsisText
                     fontSize={categoryName.length > 5 ? 0.5 : 0.8}
                     color="white"
                     css={css`
-                      text-shadow: 1px 1px 10px black;
+                      margin-left: 0.3rem;
+                      text-shadow: 1px 1px 5px black;
                     `}
                   >
                     {` ${categoryName}`}
-                  </Text.Span>
+                  </CategoryEllipsisText>
                 </CategoryWrapper>
-                <Text.Span fontSize={0.9} color="lightPrimary">
+                <Text.Span
+                  css={css`
+                    display: flex;
+                    flex-grow: 1;
+                  `}
+                  fontSize={0.9}
+                  color="lightPrimary"
+                >
                   {createdDate}
                 </Text.Span>
               </CategoryTimeWrapper>
@@ -108,14 +117,15 @@ export default BookmarkEditItem;
 const Box = styled.div`
   & label:first-of-type {
     justify-content: space-between;
-    padding: 10px 20px;
-    margin-bottom: 1rem;
-    border-radius: 1rem;
+    padding: ${getRem(15, 20)};
+
     transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
     &:active {
       background-color: ${theme.colors.grey800};
       opacity: 0.8;
     }
+    border-bottom: 1px solid ${theme.colors.grey800};
+    width: 100%;
   }
 `;
 
@@ -127,8 +137,8 @@ const Wrapper = styled.div`
 
 const ItemWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  width: 100%;
 `;
 
 const IconWrapper = styled.div`
@@ -148,6 +158,13 @@ const EllipsisText = styled(Text.Span)`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const CategoryEllipsisText = styled(Text.Span)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 80%; // 이 값을 조절하면서 원하시는 결과에 맞게 설정하세요
 `;
 
 const ItemUpperRight = styled.div`
@@ -170,7 +187,12 @@ const CategoryTimeWrapper = styled.div`
 `;
 
 const CategoryWrapper = styled.div`
+  display: flex;
+  align-items: center;
   padding: 0.1rem 0.5rem;
   background-color: ${theme.colors.lightPrimary};
   border-radius: 0.5rem;
+  max-width: 5rem;
+  overflow: hidden;
+  height: 1.5rem;
 `;
