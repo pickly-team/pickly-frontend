@@ -47,13 +47,13 @@ const BookmarkItem = ({
           <CategoryTimeWrapper>
             <CategoryWrapper>
               <Text.Span
-                fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                fontSize={categoryName.length > 5 ? 0.7 : 0.8}
                 color="white"
               >
                 {categoryEmoji}
               </Text.Span>
               <Text.Span
-                fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                fontSize={categoryName.length > 5 ? 0.7 : 0.8}
                 color="white"
                 css={css`
                   text-shadow: 1px 1px 10px black;
@@ -99,8 +99,8 @@ interface LinkWrapperProps {
 
 const LinkWrapper = styled(NavLink)<LinkWrapperProps>`
   display: block;
-  padding: ${getRem(10, 20)};
-  margin-bottom: 1rem;
+  padding: ${getRem(15, 20)};
+
   transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
 
   border: ${(props) =>
