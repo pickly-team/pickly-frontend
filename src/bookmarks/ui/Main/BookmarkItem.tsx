@@ -11,6 +11,8 @@ import {
   TbMessageCircle2Filled as MessageFillIcon,
   TbMessageCircle2 as MessageIcon,
 } from 'react-icons/tb';
+import { BsBookFill as BookFillIcon } from 'react-icons/bs';
+import { css } from '@emotion/react';
 
 const BookmarkItem = ({
   bookmarkId,
@@ -20,8 +22,9 @@ const BookmarkItem = ({
   previewImageUrl,
   readByUser,
   title,
-  url,
   disabled = false,
+  categoryName,
+  categoryEmoji,
 }: BookmarkItem) => {
   const onImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = process.env.VITE_ASSETS_URL + '/main.webp';
@@ -41,9 +44,40 @@ const BookmarkItem = ({
           <EllipsisText fontSize={1.1} weight="bold">
             {title}
           </EllipsisText>
-          <EllipsisText fontSize={0.9} color="lightPrimary">
-            {url}
-          </EllipsisText>
+          <CategoryTimeWrapper>
+            <CategoryWrapper>
+              <Text.Span
+                fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                color="white"
+              >
+                {categoryEmoji}
+              </Text.Span>
+              <Text.Span
+                fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                color="white"
+                css={css`
+                  text-shadow: 1px 1px 10px black;
+                `}
+              >
+                {` ${categoryName}`}
+              </Text.Span>
+            </CategoryWrapper>
+            <Text.Span fontSize={0.9} color="lightPrimary">
+              {createdDate}
+            </Text.Span>
+          </CategoryTimeWrapper>
+          <IconWrapper>
+            <Icon name={isUserLike ? 'like-green' : 'like'} size="xs" />
+            {commentCnt > 0 && (
+              <MessageFillIcon color={theme.colors.lightPrimary} size={16} />
+            )}
+            {commentCnt === 0 && (
+              <MessageIcon color={theme.colors.white} size={16} />
+            )}
+            {!readByUser && (
+              <BookFillIcon color={theme.colors.white} size={16} />
+            )}
+          </IconWrapper>
         </ItemUpperLeft>
         <ItemUpperRight>
           <Thumbnail
@@ -53,22 +87,6 @@ const BookmarkItem = ({
           />
         </ItemUpperRight>
       </ItemWrapper>
-      <UnderWrapper>
-        <IconWrapper>
-          <Icon name={isUserLike ? 'like-green' : 'like'} size="xs" />
-          {commentCnt > 0 && (
-            <MessageFillIcon color={theme.colors.lightPrimary} size={16} />
-          )}
-          {commentCnt === 0 && (
-            <MessageIcon color={theme.colors.white} size={16} />
-          )}
-
-          {!readByUser && <Icon name="not-read" size="xs" />}
-        </IconWrapper>
-        <Text.Span fontSize={0.9} color="lightPrimary">
-          {createdDate}
-        </Text.Span>
-      </UnderWrapper>
     </LinkWrapper>
   );
 };
@@ -88,7 +106,8 @@ const LinkWrapper = styled(NavLink)<LinkWrapperProps>`
   border: ${(props) =>
     props.disabled ? `1px solid ${theme.colors.grey800}` : 'none'};
 
-  border-radius: 0.5rem;
+  border-bottom: 1px solid ${theme.colors.grey800};
+  height: 100%;
 
   &:active {
     background-color: ${(props) =>
@@ -103,17 +122,25 @@ const ItemWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  height: 100%;
 `;
 
-const UnderWrapper = styled.div`
+const CategoryTimeWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  margin-top: 0.4rem;
+  column-gap: 1rem;
+  align-items: center;
+`;
+
+const CategoryWrapper = styled.div`
+  padding: 0.1rem 0.5rem;
+  background-color: ${theme.colors.lightPrimary};
+  border-radius: 0.5rem;
 `;
 
 const IconWrapper = styled.div`
   display: flex;
   column-gap: 0.7rem;
+  margin-left: 0.3rem;
 `;
 
 const ItemUpperLeft = styled.div`
@@ -131,12 +158,12 @@ const EllipsisText = styled(Text.Span)`
 `;
 
 const ItemUpperRight = styled.div`
-  display: flex;
+  height: 100%;
 `;
 
 const Thumbnail = styled(LazyLoadImage)`
   width: 7rem;
-  height: 5rem;
+  height: 6rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
   object-fit: contain;

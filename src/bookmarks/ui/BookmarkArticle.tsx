@@ -25,6 +25,7 @@ import useBookmarkStore from '@/store/bookmark';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import { BsFillClipboard2Fill as CopyIcon } from 'react-icons/bs';
 import DisabledButton from '@/common-ui/DisabledButton';
+import { css } from '@emotion/react';
 
 const BookMarkArticle = () => {
   const { id: bookmarkId } = useParams<{ id: string }>();
@@ -109,13 +110,17 @@ const BookMarkArticle = () => {
         <CategoryAndIconsWrapper>
           <CategoryButtonWrapper>
             <CategoryButton height={2.5} buttonColor="lightPrimary">
+              <Text.Span>{bookmarkDetail?.categoryEmoji ?? '📖 '} </Text.Span>
               {bookmarkDetail?.categoryName && (
                 <CategoryText
-                  color="black"
+                  color="white"
                   weight="bold"
                   fontSize={bookmarkDetail.categoryName.length > 5 ? 0.8 : 1}
+                  css={css`
+                    text-shadow: 1px 1px 4px black;
+                  `}
                 >
-                  {bookmarkDetail.categoryName ?? ''}
+                  {bookmarkDetail.categoryName}
                 </CategoryText>
               )}
             </CategoryButton>
@@ -212,6 +217,7 @@ const CategoryButtonWrapper = styled.div`
 const CategoryButton = styled(DisabledButton)`
   color: ${theme.colors.black};
   padding: 1rem;
+  column-gap: 0.3rem;
 `;
 
 const CategoryText = styled(Text.Span)`

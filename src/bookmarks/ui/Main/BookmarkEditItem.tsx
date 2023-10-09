@@ -10,6 +10,8 @@ import {
   TbMessageCircle2Filled as MessageFillIcon,
   TbMessageCircle2 as MessageIcon,
 } from 'react-icons/tb';
+import { BsBookFill as BookFillIcon } from 'react-icons/bs';
+import { css } from '@emotion/react';
 
 const BookmarkEditItem = ({
   bookmarkId,
@@ -19,7 +21,8 @@ const BookmarkEditItem = ({
   previewImageUrl,
   readByUser,
   title,
-  url,
+  categoryName,
+  categoryEmoji,
   onClickItem,
 }: BookmarkItem & { onClickItem: (bookmarkId: number) => void }) => {
   const [checked, setChecked] = useState(false);
@@ -47,9 +50,43 @@ const BookmarkEditItem = ({
               <EllipsisText fontSize={1.1} weight="bold">
                 {title}
               </EllipsisText>
-              <EllipsisText fontSize={0.9} color="lightPrimary">
-                {url}
-              </EllipsisText>
+              <CategoryTimeWrapper>
+                <CategoryWrapper>
+                  <Text.Span
+                    fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                    color="white"
+                  >
+                    {categoryEmoji}
+                  </Text.Span>
+                  <Text.Span
+                    fontSize={categoryName.length > 5 ? 0.5 : 0.8}
+                    color="white"
+                    css={css`
+                      text-shadow: 1px 1px 10px black;
+                    `}
+                  >
+                    {` ${categoryName}`}
+                  </Text.Span>
+                </CategoryWrapper>
+                <Text.Span fontSize={0.9} color="lightPrimary">
+                  {createdDate}
+                </Text.Span>
+              </CategoryTimeWrapper>
+              <IconWrapper>
+                <Icon name={isUserLike ? 'like-green' : 'like'} size="xs" />
+                {commentCnt > 0 && (
+                  <MessageFillIcon
+                    color={theme.colors.lightPrimary}
+                    size={16}
+                  />
+                )}
+                {commentCnt === 0 && (
+                  <MessageIcon color={theme.colors.white} size={16} />
+                )}
+                {!readByUser && (
+                  <BookFillIcon color={theme.colors.white} size={16} />
+                )}
+              </IconWrapper>
             </ItemUpperLeft>
             <ItemUpperRight>
               <Thumbnail
@@ -59,21 +96,6 @@ const BookmarkEditItem = ({
               />
             </ItemUpperRight>
           </ItemWrapper>
-          <UnderWrapper>
-            <IconWrapper>
-              <Icon name={isUserLike ? 'like-green' : 'like'} size="xs" />
-              {commentCnt > 0 && (
-                <MessageFillIcon color={theme.colors.lightPrimary} size={16} />
-              )}
-              {commentCnt === 0 && (
-                <MessageIcon color={theme.colors.white} size={16} />
-              )}
-              {!readByUser && <Icon name="not-read" size="xs" />}
-            </IconWrapper>
-            <Text.Span fontSize={0.9} color="lightPrimary">
-              {createdDate}
-            </Text.Span>
-          </UnderWrapper>
         </Wrapper>
       </CheckBox>
     </Box>
@@ -145,4 +167,16 @@ const Thumbnail = styled(LazyLoadImage)`
   margin-left: 1rem;
   object-fit: contain;
   background-color: ${theme.colors.grey800};
+`;
+
+const CategoryTimeWrapper = styled.div`
+  display: flex;
+  column-gap: 1rem;
+  align-items: center;
+`;
+
+const CategoryWrapper = styled.div`
+  padding: 0.1rem 0.5rem;
+  background-color: ${theme.colors.lightPrimary};
+  border-radius: 0.5rem;
 `;
