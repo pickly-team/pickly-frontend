@@ -23,7 +23,10 @@ const NetworkError = ({ errorType }: NetworkErrorProps) => {
   };
   return (
     <>
-      <Header showBackButton backButtonCallback={reload} />
+      <Header
+        showBackButton={errorType === 'USER'}
+        backButtonCallback={reload}
+      />
       <Wrapper>
         <ErrorImage src={process.env.VITE_ASSETS_URL + '/network-error.webp'} />
         <ErrorText>{ERROR_STRING[errorType]}</ErrorText>
