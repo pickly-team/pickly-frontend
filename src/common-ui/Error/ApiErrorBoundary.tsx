@@ -26,6 +26,7 @@ export type CustomAxiosError = AxiosError<CustomData>;
 interface State {
   shouldHandleError: boolean;
   error: AxiosError | null;
+  isServerError: boolean;
 }
 
 interface Props {
@@ -42,9 +43,18 @@ class ApiErrorBoundary extends Component<Props, State> {
   state: State = {
     shouldHandleError: false,
     error: null,
+    isServerError: false,
   };
 
   static getDerivedStateFromError(error: CustomAxiosError): State {
+    if (error.response && !error.response.data.code) {
+      return {
+        shouldHandleError: true,
+        error,
+        isServerError: true,
+      };
+    }
+
     if (
       error.response &&
       error.response.data?.code !== ErrorTypes.PRIVATE_BOOKMARK
@@ -52,11 +62,14 @@ class ApiErrorBoundary extends Component<Props, State> {
       return {
         shouldHandleError: true,
         error,
+        isServerError: false,
       };
     }
+
     return {
       shouldHandleError: false,
       error: null,
+      isServerError: false,
     };
   }
 
@@ -71,8 +84,12 @@ class ApiErrorBoundary extends Component<Props, State> {
       return this.props.children;
     }
 
-    if (this.state.error && this.state.error.response) {
-      return <NetworkError />;
+    if (this.state.error && this.state.isServerError) {
+      return <NetworkError errorType="SERVER" />;
+    }
+
+    if (this.state.error && !this.state.isServerError) {
+      return <NetworkError errorType="USER" />;
     }
 
     return this.props.children;
