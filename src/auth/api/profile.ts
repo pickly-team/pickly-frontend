@@ -42,7 +42,6 @@ export const useGETUserProfile = (params: GetAPIRequest) => {
       }));
       if (data.nickname === '') router(navigatePath.USER);
     },
-    onError: (e) => console.log(e),
     cacheTime: 10 * 60 * 1000,
     staleTime: 10 * 60 * 1000,
   });

@@ -4,7 +4,18 @@ import Button from '../Button';
 import { theme } from '@/styles/theme';
 import Header from '../Header/Header';
 
-const NetworkError = () => {
+type ERROR = 'SERVER' | 'USER';
+
+const ERROR_STRING: Record<ERROR, string> = {
+  SERVER: '앗 서버에 문제가 있어요\n 잠시 후 다시 시도해주세요',
+  USER: '앗! 네트워크에 문제가 있는거 같아요',
+};
+
+interface NetworkErrorProps {
+  errorType: ERROR;
+}
+
+const NetworkError = ({ errorType }: NetworkErrorProps) => {
   const reload = () => {
     setTimeout(() => {
       window.location.reload();
@@ -12,13 +23,18 @@ const NetworkError = () => {
   };
   return (
     <>
-      <Header showBackButton backButtonCallback={reload} />
+      <Header
+        showBackButton={errorType === 'USER'}
+        backButtonCallback={reload}
+      />
       <Wrapper>
         <ErrorImage src={process.env.VITE_ASSETS_URL + '/network-error.webp'} />
-        <ErrorText>{'앗! 네트워크에 문제가\n 있는거 같아요'}</ErrorText>
-        <ErrorButton buttonColor="lightPrimary" onClick={reload}>
-          다시 시도하기
-        </ErrorButton>
+        <ErrorText>{ERROR_STRING[errorType]}</ErrorText>
+        {errorType === 'USER' && (
+          <ErrorButton buttonColor="lightPrimary" onClick={reload}>
+            다시 시도하기
+          </ErrorButton>
+        )}
       </Wrapper>
     </>
   );

@@ -51,10 +51,10 @@ const App = () => {
         <IconLoader />
         <ToastList />
         <BrowserRouter>
-          <RNListener />
           <WithPostMessage>
             {(postMessage) => (
               <ApiErrorBoundary postMessage={postMessage}>
+                <RNListener />
                 <Layout>
                   <Routes>
                     <Route
