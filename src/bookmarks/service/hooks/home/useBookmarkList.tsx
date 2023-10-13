@@ -17,7 +17,7 @@ const useBookmarkList = ({
   categoryId,
 }: BookmarkListProps) => {
   const navigate = useLocation();
-  const { userInfo } = useAuthStore();
+  const { memberId: loginId } = useAuthStore();
   // SERVER
   // 1. 북마크 리스트 조회
   const {
@@ -30,7 +30,7 @@ const useBookmarkList = ({
     readByUser,
     categoryId,
     memberId,
-    loginId: userInfo?.id,
+    loginId,
   });
 
   useEffect(() => {

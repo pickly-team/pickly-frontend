@@ -34,7 +34,7 @@ const BookmarkListView = ({
 
   const { bottom } = useBottomIntersection({
     fetchNextPage,
-    enabled: !isFetchingNextPage,
+    enabled: !isFetchingNextPage && memberId !== 0,
   });
 
   const flatBookMarkList = bookMarkList?.pages.flatMap((page) => page.contents);
