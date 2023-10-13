@@ -35,6 +35,7 @@ const RNListener = () => {
   }, [userInfo]);
 
   useBridgeCallback('login', (params) => {
+    if (!params.memberId) return;
     login(params);
   });
 
@@ -51,8 +52,8 @@ const RNListener = () => {
   const { setUrl } = useBookmarkStore();
 
   useBridgeCallback('androidShareUrl', (params) => {
-    setUrl(params.url);
     if (params.url === '') return;
+    setUrl(params.url);
     router(navigatePath.BOOKMARK_ADD);
   });
 
