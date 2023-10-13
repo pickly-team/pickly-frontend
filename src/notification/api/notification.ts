@@ -65,8 +65,14 @@ export const GET_NOTIFICATION_LIST_KEY = (params: GetAPIRequest) => [
 ];
 
 export const useGETNotificationListQuery = (params: GetAPIRequest) => {
-  return useQuery(GET_NOTIFICATION_LIST_KEY(params), async () =>
-    getNotificationListAPI(params),
+  return useQuery(
+    GET_NOTIFICATION_LIST_KEY(params),
+    async () => getNotificationListAPI(params),
+    {
+      enabled: params.memberId !== 0,
+      cacheTime: 10 * 60 * 1000,
+      staleTime: 10 * 60 * 1000,
+    },
   );
 };
 
