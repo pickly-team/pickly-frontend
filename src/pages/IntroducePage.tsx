@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Pagination, A11y } from 'swiper/modules';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -31,29 +32,29 @@ const introduceItems: Record<Introduce, IntroduceText> = {
     title: 'Pick 1. 북마크 추가하기',
     description:
       '북마크를 자유롭게 추가할 수 있어요!\n 추가한 북마크는 피클리가 관리해줄게요',
-    image: `${process.env.VITE_ASSETS_URL}/introduce/bookmark.webp`,
+    image: `${process.env.VITE_ASSETS_URL}/introduce/bookmark.png`,
   },
   notification: {
     title: 'Pick 2. 알림 설정하기',
     description:
       '친구를 팔로우해봐요!\n친구가 추가한 북마크를 함께 볼 수 있어요',
-    image: `${process.env.VITE_ASSETS_URL}/introduce/notification.webp`,
+    image: `${process.env.VITE_ASSETS_URL}/introduce/notification.png`,
   },
   friend: {
     title: 'Pick 3. 친구와 공유하기',
     description: '내가 북마크한 페이지를 모아서 볼 수 있어요',
-    image: `${process.env.VITE_ASSETS_URL}/introduce/friend.webp`,
+    image: `${process.env.VITE_ASSETS_URL}/introduce/friend.png`,
   },
   share: {
     title: 'Pick 4. URL 공유하기',
     description: 'URL 공유하기 기능을 이용해서\n북마크를 더 쉽게 추가해봐요!',
-    image: `${process.env.VITE_ASSETS_URL}/introduce/share.webp`,
+    image: `${process.env.VITE_ASSETS_URL}/introduce/share.png`,
   },
   chrome: {
     title: 'Pick 5. 웹에서 이용하기',
     description:
       '웹에서 extension을 통해 북마크를 추가할 수 있어요!\n자세한 내용은 마이 페이지 > FAQ를 확인해주세요',
-    image: `${process.env.VITE_ASSETS_URL}/introduce/chrome.webp`,
+    image: `${process.env.VITE_ASSETS_URL}/introduce/chrome.png`,
   },
 } as const;
 
@@ -107,7 +108,7 @@ const IntroducePage = () => {
                 `}
                 onClick={onClickConfirm}
               >
-                피클리 시작하기
+                <Text.Span weight="bold">피클리 시작하기</Text.Span>
               </Button>
             </ButtonWrapper>
           </IntroduceItem>
@@ -122,7 +123,7 @@ export default IntroducePage;
 const ContentWrapper = styled.div`
   display: flex;
   height: 100%;
-  padding: 9dvh 0;
+  padding: 10% 0;
 `;
 
 interface IntroduceItemProps {
@@ -133,7 +134,11 @@ interface IntroduceItemProps {
 const IntroduceItem = ({ type, children }: IntroduceItemProps) => {
   return (
     <Wrapper>
-      <Image src={introduceItems[type].image} />
+      <Image
+        alt="introduce image"
+        src={introduceItems[type].image}
+        type={type}
+      />
       <Title level="h2" weight="bold" fontSize={1.4}>
         {introduceItems[type].title}
       </Title>
@@ -154,8 +159,19 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-const Image = styled.img`
-  margin-bottom: 2rem;
+interface ImageProps {
+  type: Introduce;
+}
+
+const Image = styled(LazyLoadImage)<ImageProps>`
+  margin-bottom: ${(props) => (props.type === 'chrome' ? '0' : '2rem')};
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  width: ${(props) => (props.type === 'chrome' ? '90%' : '70%')};
+  height: 68dvh;
+  display: flex;
+  align-items: flex-start;
 `;
 
 const Title = styled(Text.Header)``;
