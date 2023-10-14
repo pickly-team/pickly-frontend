@@ -1,134 +1,118 @@
-import BookmarkItem from '@/bookmarks/ui/Main/BookmarkItem';
-import Divider from '@/category/ui/Divider';
-import BottomFixedButton from '@/common-ui/BottomFixedButton';
-import Text from '@/common-ui/Text';
-import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import { navigatePath } from '@/constants/navigatePath';
-import FriendFollowingItem from '@/friend/ui/friend/FriendFollowingItem';
-import SettingsBox from '@/members/ui/SettingsBox';
-import getRem from '@/utils/getRem';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Pagination, A11y } from 'swiper/modules';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+// import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-cube';
+
+import Text from '@/common-ui/Text';
+import { css } from '@emotion/react';
+import { theme } from '@/styles/theme';
+import Button from '@/common-ui/Button';
+import getRem from '@/utils/getRem';
+
+type Introduce = 'bookmark' | 'notification' | 'friend' | 'share' | 'chrome';
+
+interface IntroduceText {
+  title: string;
+  description: string;
+  image: string;
+}
+
+const introduceItems: Record<Introduce, IntroduceText> = {
+  bookmark: {
+    title: 'Pick 1. 북마크 추가하기',
+    description:
+      '북마크를 자유롭게 추가할 수 있어요!\n 추가한 북마크는 피클리가 관리해줄게요',
+    image: `${process.env.VITE_ASSETS_URL}/introduce/bookmark.webp`,
+  },
+  notification: {
+    title: 'Pick 2. 알림 설정하기',
+    description:
+      '친구를 팔로우해봐요!\n친구가 추가한 북마크를 함께 볼 수 있어요',
+    image: `${process.env.VITE_ASSETS_URL}/introduce/notification.webp`,
+  },
+  friend: {
+    title: 'Pick 3. 친구와 공유하기',
+    description: '내가 북마크한 페이지를 모아서 볼 수 있어요',
+    image: `${process.env.VITE_ASSETS_URL}/introduce/friend.webp`,
+  },
+  share: {
+    title: 'Pick 4. URL 공유하기',
+    description: 'URL 공유하기 기능을 이용해서\n북마크를 더 쉽게 추가해봐요!',
+    image: `${process.env.VITE_ASSETS_URL}/introduce/share.webp`,
+  },
+  chrome: {
+    title: 'Pick 5. 웹에서 이용하기',
+    description:
+      '웹에서 extension을 통해 북마크를 추가할 수 있어요!\n자세한 내용은 마이 페이지 > FAQ를 확인해주세요',
+    image: `${process.env.VITE_ASSETS_URL}/introduce/chrome.webp`,
+  },
+} as const;
 
 const IntroducePage = () => {
   const navigate = useNavigate();
+  const [swiperIndex, setSwiperIndex] = useState(0);
   const onClickConfirm = () => {
     navigate(navigatePath.PROFILE);
   };
 
-  const [isShowButton, setIsShowButton] = useState(false);
-  const showButton = () => {
-    setIsShowButton(true);
-  };
-
-  const { bottom } = useBottomIntersection({
-    fetchNextPage: showButton,
-  });
-
   return (
     <ContentWrapper>
-      <Title level="h2" fontSize={1.5} weight="bold">
-        피클리는 이런 서비스에요
-      </Title>
-      {/** Pick 1 */}
-      <BoxWrapper>
-        <SubTitle level="h3" fontSize={1.5} weight="bold">
-          Pick 1.
-        </SubTitle>
-        <Description>
-          {
-            '북마크를 자유롭게 추가할 수 있어요!\n북마크를 추가하면 다음과 같이 보여요'
+      <Swiper
+        // install Swiper modules
+        modules={[Pagination, A11y]}
+        pagination={{ clickable: true }}
+        onSlideChange={({ realIndex }) => setSwiperIndex(realIndex)}
+        css={css`
+          display: flex;
+          .swiper-pagination-bullet {
+            width: 0.7rem;
+            height: 0.7rem;
+            border-radius: 100%;
+            margin: 0;
+            line-height: 40px;
+            background-color: ${swiperIndex === 4
+              ? 'transparent'
+              : theme.colors.lightPrimary};
           }
-        </Description>
-      </BoxWrapper>
-      <BookmarkWrapper>
-        <BookmarkItem
-          bookmarkId={1}
-          commentCnt={3}
-          isUserLike
-          createdDate="2023-08-09"
-          previewImageUrl="/image/"
-          readByUser={false}
-          title="북마크를 추가한 예시에요"
-          url="https://velog.io"
-          disabled
-          categoryEmoji="📚"
-          categoryName="개발"
-        />
-      </BookmarkWrapper>
-      <DividerWrapper paddingSize="s">
-        <Divider size="m" margin="off" />
-      </DividerWrapper>
-      {/** Pick 2 */}
-      <BoxWrapper>
-        <SubTitle level="h3" fontSize={1.5} weight="bold">
-          Pick 2.
-        </SubTitle>
-        <Description>읽지 않은 북마크는 저희가 알려드릴게요!</Description>
-      </BoxWrapper>
-      <PaddingWrapper>
-        <SettingsBox serverRemindInDays={3} disabled />
-      </PaddingWrapper>
-      <DividerWrapper paddingSize="m">
-        <Divider size="m" margin="off" />
-      </DividerWrapper>
-      {/** Pick 3 */}
-      <BoxWrapper>
-        <SubTitle level="h3" fontSize={1.5} weight="bold">
-          Pick 3.
-        </SubTitle>
-        <Description>친구들과 북마크를 공유해 보세요!</Description>
-      </BoxWrapper>
-      <PaddingWrapper>
-        <FriendFollowingItem
-          id={1}
-          name="피클리"
-          memberId={1}
-          profileEmoji="😃"
-          isFollowing={false}
-          isBlocked={false}
-          disabled
-        />
-      </PaddingWrapper>
-
-      <DividerWrapper paddingSize="m">
-        <Divider size="m" margin="off" />
-      </DividerWrapper>
-      {/** Pick 4 */}
-      <BoxWrapper>
-        <SubTitle level="h3" fontSize={1.5} weight="bold">
-          Pick 4.
-        </SubTitle>
-        <Description>북마크를 어디서든 추가해보세요!</Description>
-      </BoxWrapper>
-
-      <PaddingWrapper>
-        <DescriptionBox>
-          <DescriptionText fontSize={0.85} color="white" weight="bold">
-            {
-              '🖥️ : Pickly Chrome Extension\n 📱 : URL 공유하기 기능\n\n 더 자세한 내용은 내 정보 페이지 > FAQ를 확인해주세요!'
-            }
-          </DescriptionText>
-        </DescriptionBox>
-      </PaddingWrapper>
-
-      <BlankBox
-        css={css`
-          margin-bottom: 5rem;
         `}
-      />
-      <div ref={bottom} />
-      <BlankBox
-        css={css`
-          margin-bottom: 7rem;
-        `}
-      />
-
-      <BottomFixedButton disabled={!isShowButton} onClick={onClickConfirm}>
-        <Text.Span weight="bold">확인했어요</Text.Span>
-      </BottomFixedButton>
+      >
+        <SwiperSlide>
+          <IntroduceItem type="bookmark" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <IntroduceItem type="notification" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <IntroduceItem type="friend" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <IntroduceItem type="share" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <IntroduceItem type="chrome">
+            <ButtonWrapper>
+              <Button
+                css={css`
+                  margin-top: 2rem;
+                  width: 100%;
+                `}
+                onClick={onClickConfirm}
+              >
+                피클리 시작하기
+              </Button>
+            </ButtonWrapper>
+          </IntroduceItem>
+        </SwiperSlide>
+      </Swiper>
     </ContentWrapper>
   );
 };
@@ -136,60 +120,53 @@ const IntroducePage = () => {
 export default IntroducePage;
 
 const ContentWrapper = styled.div`
-  overflow-y: scroll;
+  display: flex;
+  height: 100%;
+  padding: 9dvh 0;
 `;
 
-const Title = styled(Text.Header)`
-  padding: 0 ${getRem(20)};
-  margin: ${getRem(50)} 0 ${getRem(20)} 0;
-`;
-
-const BoxWrapper = styled.div`
-  h3 {
-    margin-top: ${getRem(10)};
-    margin-bottom: ${getRem(15)};
-  }
-  p {
-    margin-bottom: ${getRem(10)};
-  }
-`;
-
-const BookmarkWrapper = styled.div`
-  /* padding: 0 ${getRem(20)}; */
-`;
-
-const SubTitle = styled(Text.Header)`
-  padding: 0 ${getRem(20)};
-`;
-
-const Description = styled(Text.P)`
-  padding: 0 ${getRem(20)};
-  white-space: pre-line;
-`;
-
-const PaddingWrapper = styled.div`
-  padding: 0 ${getRem(20)};
-`;
-
-interface Size {
-  paddingSize: 's' | 'm';
+interface IntroduceItemProps {
+  type: Introduce;
+  children?: React.ReactNode;
 }
 
-const DividerWrapper = styled.div<Size>`
-  padding: ${(props) =>
-    props.paddingSize === 's'
-      ? `${getRem(5)} 0 ${getRem(15)} 0`
-      : `${getRem(20)} 0`};
+const IntroduceItem = ({ type, children }: IntroduceItemProps) => {
+  return (
+    <Wrapper>
+      <Image src={introduceItems[type].image} />
+      <Title level="h2" weight="bold" fontSize={1.4}>
+        {introduceItems[type].title}
+      </Title>
+      <Description fontSize={0.9}>
+        {introduceItems[type].description}
+      </Description>
+      {children}
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
 `;
 
-const DescriptionBox = styled.div`
-  background-color: ${({ theme }) => theme.colors.grey900};
-  padding: ${getRem(10)};
-  border-radius: ${getRem(8)};
+const Image = styled.img`
+  margin-bottom: 2rem;
 `;
 
-const DescriptionText = styled(Text.P)`
+const Title = styled(Text.Header)``;
+
+const Description = styled(Text.Span)`
+  text-align: center;
   white-space: pre-line;
+  margin-top: 1rem;
 `;
 
-const BlankBox = styled.div``;
+const ButtonWrapper = styled.div`
+  padding: 0 ${getRem(20)};
+  width: 100%;
+`;
