@@ -6,9 +6,10 @@ import { theme } from '@/styles/theme';
 import { timeStampToDate } from '@/utils/date/timeConverter';
 import { navigatePath } from '@/constants/navigatePath';
 import { useNavigate } from 'react-router-dom';
+import { css } from '@emotion/react';
 
 interface CommentListProps {
-  id: number;
+  profileEmoji: string;
   bookmarkId: number;
   title: string;
   nickName: string;
@@ -18,7 +19,7 @@ interface CommentListProps {
 }
 
 const CommentItem = ({
-  id,
+  profileEmoji,
   bookmarkId,
   title,
   nickName,
@@ -31,6 +32,13 @@ const CommentItem = ({
   const navigateToBookmark = () => {
     navigate(navigatePath.BOOKMARK_DETAIL.replace(':id', String(bookmarkId)));
   };
+
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const convertedText = content.replace(
+    urlRegex,
+    (url) =>
+      `<a style="color: ${theme.colors.lightPrimary}" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`,
+  );
 
   return (
     <>
@@ -46,21 +54,40 @@ const CommentItem = ({
           </IconAndTitleWrapper>
         </CommentHeader>
         <IconAndNickNameWrapper>
-          {<Icon name="badge-green" size={'s'} />}
+          <ProfileEmoji fontSize={getRem(14)}>{profileEmoji}</ProfileEmoji>
           <NicknameText fontSize={getRem(14)} weight={'bold'}>
             {nickName}
           </NicknameText>
         </IconAndNickNameWrapper>
-        <ContentText fontSize={getRem(11)}>{content}</ContentText>
-        <IconAndTimeAndCategoryWrapper>
-          <Icon name="timeline" size={'s'} />
-          <UpdatedAtText fontSize={getRem(10)}>
-            {timeStampToDate(updatedAt)}
-          </UpdatedAtText>
-          <CategoryText fontSize={getRem(10)} weight={'bold'}>
-            {category}
-          </CategoryText>
-        </IconAndTimeAndCategoryWrapper>
+        <ContentText
+          fontSize={0.8}
+          dangerouslySetInnerHTML={{ __html: convertedText }}
+          onClick={(e) => {
+            const target = e.target as HTMLAnchorElement;
+            if (target.tagName === 'A') {
+              e.preventDefault();
+            }
+          }}
+        />
+        <BottomWrapper>
+          <IconAndTimeAndCategoryWrapper>
+            <Icon name="timeline" size={'s'} />
+            <UpdatedAtText fontSize={getRem(10)}>
+              {timeStampToDate(updatedAt)}
+            </UpdatedAtText>
+          </IconAndTimeAndCategoryWrapper>
+          <CategoryWrapper>
+            <CategoryText
+              fontSize={getRem(10)}
+              weight={'bold'}
+              css={css`
+                text-shadow: 1px 1px 10px black;
+              `}
+            >
+              {category}
+            </CategoryText>
+          </CategoryWrapper>
+        </BottomWrapper>
       </Container>
     </>
   );
@@ -86,6 +113,10 @@ const CommentHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const ProfileEmoji = styled(Text.Span)`
+  margin-top: -2px;
 `;
 
 const TitleText = styled(Text.Span)`
@@ -122,6 +153,11 @@ const IconAndNickNameWrapper = styled.div`
   column-gap: ${getRem(8)};
 `;
 
+const BottomWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const IconAndTimeAndCategoryWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -130,4 +166,13 @@ const IconAndTimeAndCategoryWrapper = styled.div`
 
 const StyleIconWrapper = styled.div`
   flex-shrink: 0;
+`;
+
+const CategoryWrapper = styled.div`
+  padding: 0.1rem 0.5rem;
+  background-color: ${theme.colors.lightPrimary};
+  border-radius: 0.5rem;
+  height: 1.7rem;
+  display: flex;
+  align-items: center;
 `;
