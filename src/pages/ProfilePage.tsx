@@ -70,5 +70,4 @@ const Layout = styled.div`
 const LBody = styled.div`
   padding: 0 ${getRem(20)};
   margin: ${getRem(12)} 0;
-  margin-bottom: 7rem;
 `;
