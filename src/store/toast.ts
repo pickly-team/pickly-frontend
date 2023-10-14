@@ -26,7 +26,8 @@ export type ToastMessage =
   | '앗! 카테고리 이름이 비어있어요'
   | '삭제 되었습니다'
   | '추가 되었습니다'
-  | '수정 되었습니다';
+  | '수정 되었습니다'
+  | '차단된 사용자 입니다';
 
 export type ToastMode = 'SUCCESS' | 'DELETE' | 'ERROR';
 
