@@ -27,6 +27,7 @@ interface ServerCommentItem {
   isOwnerComment: boolean;
   content: string;
   createdTimestamp: number;
+  profileEmoji: string;
 }
 
 export interface GETCommentListRequest {
