@@ -8,6 +8,7 @@ import { usePOSTFollowUserQuery } from '@/friend/api/friends';
 import useSearchStore from '@/store/search';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import Text from '@/common-ui/Text';
+import { css } from '@emotion/react';
 
 interface FollowButtonProps {
   memberId: number;
@@ -43,7 +44,13 @@ const FollowButton = ({
   };
   return (
     <StyledButton onClick={onClick} buttonColor={'black'}>
-      <Text.Span color="white" fontSize={0.8}>
+      <Text.Span
+        color="white"
+        fontSize={0.8}
+        css={css`
+          text-shadow: 1px 1px 10px black;
+        `}
+      >
         팔로우
       </Text.Span>
     </StyledButton>
