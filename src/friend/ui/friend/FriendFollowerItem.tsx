@@ -1,6 +1,7 @@
 import FriendItemLayout from '@/friend/ui/friend/layout/FriendItemLayout';
 import FollowButton from '@/friend/ui/buttons/FollowButton';
 import UnFollowButton from '@/friend/ui/buttons/UnFollowButton';
+import BlockedButton from '../buttons/BlockedButton';
 
 type FriendFollowerProps = {
   id: number;
@@ -24,7 +25,9 @@ const FriendFollowerItem = ({
       name={name}
       emoji={profileEmoji}
       button={
-        isFollowing ? (
+        isBlocked ? (
+          <BlockedButton />
+        ) : isFollowing ? (
           <UnFollowButton
             followerId={memberId}
             memberId={id}
