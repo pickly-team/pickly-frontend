@@ -77,9 +77,12 @@ const PullToRefresh = ({
       onTouchMove={onTouchMove}
     >
       <IconContainer
-        style={{
-          transform: `translateY(${pullDistance - threshold}rem)`,
-        }}
+        css={css`
+          transform: translateY(${pullDistance - threshold}rem);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        `}
       >
         <SpinnerContainer
           css={css`
@@ -92,7 +95,11 @@ const PullToRefresh = ({
           ))}
         </SpinnerContainer>
       </IconContainer>
-      <ContentContainer style={{ transform: `translateY(${pullDistance}rem)` }}>
+      <ContentContainer
+        css={css`
+          transition: translateY(${pullDistance}rem);
+        `}
+      >
         {children}
       </ContentContainer>
     </div>
@@ -110,6 +117,8 @@ const IconContainer = styled.div`
   top: 0;
   transition: transform 0.3s;
   background-color: ${theme.colors.black};
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 `;
 
 const fade = keyframes`
@@ -219,6 +228,8 @@ const SpinnerContainer = styled.div`
 
 const ContentContainer = styled.div`
   transition: transform 0.3s;
+  overflow: scroll;
+  height: 100%;
 `;
 
 export default PullToRefresh;
