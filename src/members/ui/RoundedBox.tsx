@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
 import { ColorType, theme } from '@/styles/theme';
+import getRem from '@/utils/getRem';
 
 const RoundedBox = ({
   children,
@@ -32,7 +33,7 @@ const RoundedBox = ({
 };
 
 const StyledRoundedBox = styled.div`
-  padding: 1.25rem;
+  padding: ${getRem(20)};
   border-radius: 0.625rem;
   ${({
     backgroundColor,

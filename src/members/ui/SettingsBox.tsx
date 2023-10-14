@@ -130,7 +130,7 @@ const RemindingDescription = ({
 
   return (
     <>
-      <Text.P fontSize={1.25} weight="bold" color="grey900">
+      <Text.P fontSize={1.1} weight="bold" color="grey900">
         {unreadBookmarkExists
           ? '앗! 잊혀진 북마크가 있어요 🔥'
           : '북마크를 모두 읽으셨어요! 👏'}
@@ -152,11 +152,11 @@ const RemindingDescription = ({
                   max={MAX_DAYS}
                 />
               ) : (
-                <Text.Span color={'lightPrimary'} fontSize={1.25} weight="bold">
+                <Text.Span color={'lightPrimary'} fontSize={1.1} weight="bold">
                   {`${remindInDays}`}
                 </Text.Span>
               )}
-              <Text.Span color={'lightPrimary'} fontSize={1.25} weight="bold">
+              <Text.Span color={'lightPrimary'} fontSize={1.1} weight="bold">
                 일
               </Text.Span>
 
@@ -176,7 +176,7 @@ const RemindingDescription = ({
 };
 
 const StyledDescription = styled.div`
-  margin-top: ${getRem(20)};
+  margin-top: ${getRem(10)};
 `;
 const RemindingLine = styled.div`
   display: flex;

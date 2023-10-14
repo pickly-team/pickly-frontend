@@ -41,7 +41,7 @@ const ProfilePage = () => {
 
   return (
     <PullToRefresh onRefresh={handleRefresh}>
-      <Layout>
+      <>
         {/** 유저 정보 */}
         <BasicInfoBox />
         <LBody>
@@ -57,17 +57,15 @@ const ProfilePage = () => {
           <SettingsBox serverRemindInDays={notificationSettingDay || 7} />
           <CustomerFeedbackBox />
         </LBody>
-      </Layout>
+      </>
     </PullToRefresh>
   );
 };
 
 export default ProfilePage;
 
-const Layout = styled.div`
-  overflow-y: scroll;
-`;
 const LBody = styled.div`
   padding: 0 ${getRem(20)};
   margin: ${getRem(12)} 0;
+  margin-bottom: 6rem;
 `;
