@@ -58,14 +58,17 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   };
 
   // 2. 저장 버튼 > 저장
-  const { mutate: postCategory } = usePOSTCategoryMutation({
-    memberId,
-  });
-  const { mutate: putCategory } = usePUTCategoryMutation({
-    memberId,
-    categoryId: categoryId ?? '',
-  });
+  const { mutate: postCategory, isLoading: isPostLoading } =
+    usePOSTCategoryMutation({
+      memberId,
+    });
+  const { mutate: putCategory, isLoading: isPutLoading } =
+    usePUTCategoryMutation({
+      memberId,
+      categoryId: categoryId ?? '',
+    });
   const onClickSave = () => {
+    if (isPostLoading || isPutLoading) return;
     if (!categoryName.length) {
       fireToast({ message: '앗! 카테고리 이름이 비어있어요', mode: 'ERROR' });
       return;
