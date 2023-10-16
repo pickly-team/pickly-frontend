@@ -59,21 +59,23 @@ const BookmarkAddPage = () => {
   );
 
   const { memberId } = useAuthStore();
-  const { mutate: postBookmark } = usePOSTBookmarkMutation({
-    resetAll: {
-      resetAllInputs,
-      resetCategory: () => {
-        setSelectedCategoryId(0);
-        setCategoryList(toggleCategory(0));
+  const { mutate: postBookmark, isLoading: isPostLoading } =
+    usePOSTBookmarkMutation({
+      resetAll: {
+        resetAllInputs,
+        resetCategory: () => {
+          setSelectedCategoryId(0);
+          setCategoryList(toggleCategory(0));
+        },
+        resetVisibility: () => onClickPublishScoped('SCOPE_PUBLIC'),
       },
-      resetVisibility: () => onClickPublishScoped('SCOPE_PUBLIC'),
-    },
-    memberId,
-  });
+      memberId,
+    });
 
   const { fireToast } = useToast();
 
   const onClickSubmitButton = () => {
+    if (isPostLoading) return;
     if (isBookmarkError) {
       fireToast({
         mode: 'ERROR',
