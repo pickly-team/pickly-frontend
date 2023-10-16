@@ -24,11 +24,13 @@ const CommentUploadInput = () => {
     initComment();
   };
 
-  const { mutate: postComment } = usePOSTCommentQuery({
-    bookmarkId: bookmarkId ?? '',
-    initComment,
-  });
-  const { mutate: editComment } = usePUTCommentQuery({
+  const { mutate: postComment, isLoading: isPostLoading } = usePOSTCommentQuery(
+    {
+      bookmarkId: bookmarkId ?? '',
+      initComment,
+    },
+  );
+  const { mutate: editComment, isLoading: isEditLoading } = usePUTCommentQuery({
     bookmarkId: bookmarkId ?? '',
     initComment,
   });
@@ -37,6 +39,9 @@ const CommentUploadInput = () => {
     event: React.FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
+    if (isPostLoading || isEditLoading) return;
+    if (!comment.content) return;
+
     if (mode === 'CREATE') {
       postComment({
         bookmarkId: Number(id),
