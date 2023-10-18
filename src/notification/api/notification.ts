@@ -32,6 +32,10 @@ export interface NotificationItem {
   createdAt: number;
 }
 
+export type ClientNotificationItem = {
+  isSelected: boolean;
+} & NotificationItem;
+
 interface GETNotificationQuery {
   memberId: number;
   token?: string;
@@ -40,7 +44,7 @@ interface GETNotificationQuery {
 const getNotificationListAPI = async ({
   memberId,
   token,
-}: GETNotificationQuery) => {
+}: GETNotificationQuery): Promise<ClientNotificationItem[]> => {
   const { data } = await client<NotificationItem[]>({
     method: 'get',
     url: `/members/${memberId}/notifications`,
@@ -50,6 +54,7 @@ const getNotificationListAPI = async ({
   });
   return data.map((item) => ({
     ...item,
+    isSelected: false,
     createdAt: dayjs(item.createdAt).unix() * 1000,
   }));
 };
@@ -138,6 +143,76 @@ export const useDELETENotificationQuery = ({
   const queryClient = useQueryClient();
   const toast = useToast();
   return useMutation(deleteNotificationAPI, {
+    onSuccess: () => {
+      queryClient.refetchQueries(GET_NOTIFICATION_LIST_KEY({ memberId }));
+      toast.fireToast({
+        message: '삭제 되었습니다',
+        mode: 'DELETE',
+      });
+    },
+  });
+};
+
+interface PatchNotificationAllReadRequest {
+  memberId: number;
+  token?: string;
+}
+
+const patchNotificationAllReadAPI = async ({
+  memberId,
+  token,
+}: PatchNotificationAllReadRequest) => {
+  const { data } = await client({
+    method: 'patch',
+    url: `/members/${memberId}/notifications`,
+    params: {},
+    data: {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return data;
+};
+
+export interface PatchNotificationAllReadMutationRequest {
+  memberId: number;
+  token?: string;
+}
+export const usePATCHNotificationAllReadQuery = ({
+  memberId,
+}: PatchNotificationAllReadMutationRequest) => {
+  const queryClient = useQueryClient();
+  return useMutation(patchNotificationAllReadAPI, {
+    onSuccess: () => {
+      queryClient.refetchQueries(GET_NOTIFICATION_LIST_KEY({ memberId }));
+    },
+  });
+};
+
+interface DELETEAllNotificationRequest {
+  memberId: number;
+  token?: string;
+}
+
+const deleteAllNotificationAPI = async ({
+  memberId,
+}: DELETEAllNotificationRequest) => {
+  const { data } = await client({
+    method: 'delete',
+    url: `/members/${memberId}/notifications`,
+    data: {},
+  });
+  return data;
+};
+
+export interface DELETENotificationQueryRequest {
+  memberId: number;
+  token?: string;
+}
+export const useDELETEAllNotificationQuery = ({
+  memberId,
+}: DELETENotificationQueryRequest) => {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+  return useMutation(deleteAllNotificationAPI, {
     onSuccess: () => {
       queryClient.refetchQueries(GET_NOTIFICATION_LIST_KEY({ memberId }));
       toast.fireToast({
