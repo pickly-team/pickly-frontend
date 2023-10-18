@@ -1,57 +1,46 @@
-import NotificationSlideItem from '@/notification/ui/skeleton/NotificationSlideItem';
 import {
-  useDELETENotificationQuery,
+  ClientNotificationItem,
   useGETNotificationListQuery,
-  usePATCHNotificationReadQuery,
 } from '@/notification/api/notification';
 import useAuthStore from '@/store/auth';
-import BlankItem from '@/common-ui/BlankItem';
 import styled from '@emotion/styled';
+import { NOTIFICATION_MODE } from '@/pages/NotificationPage';
+import { Dispatch, useEffect, useState } from 'react';
+import NotificationList from './NotificationList';
 
-const Notifications = () => {
+interface NotificationsProps {
+  mode: NOTIFICATION_MODE;
+  deleteNotificationList: string[];
+  setDeleteNotificationList: Dispatch<React.SetStateAction<string[]>>;
+}
+
+const Notifications = ({
+  mode,
+  deleteNotificationList,
+  setDeleteNotificationList,
+}: NotificationsProps) => {
   // FIRST RENDER
   const { memberId } = useAuthStore();
   const { data: notificationList } = useGETNotificationListQuery({ memberId });
+  const [clientNotificationList, setClientNotificationList] = useState<
+    ClientNotificationItem[]
+  >([]);
 
-  // USER INTERACTION
-  // 1. 알림 읽음 처리
-  const { mutate: updateReadNotification } = usePATCHNotificationReadQuery({
-    memberId,
-  });
-  const onClickReadNotification = (
-    notificationId: number,
-    isChecked: boolean,
-  ) => {
-    !isChecked && updateReadNotification({ notificationId });
-  };
-
-  // 2. 알림 삭제
-  const { mutate: deleteNotification } = useDELETENotificationQuery({
-    memberId,
-  });
-  const onClickDeleteNotification = (notificationId: number) => {
-    deleteNotification({ notificationId });
-  };
+  useEffect(() => {
+    if (notificationList) {
+      setClientNotificationList(notificationList);
+    }
+  }, [notificationList, setClientNotificationList]);
 
   return (
     <Wrapper>
-      {notificationList?.length === 0 && <BlankItem page="NOTIFICATION" />}
-      {notificationList?.map((notification) => (
-        <NotificationSlideItem
-          key={notification.id}
-          bookMarkInfo={{
-            id: String(notification.bookmarkId),
-            content: notification.content,
-          }}
-          createdAt={notification.createdAt}
-          isRead={notification.isChecked}
-          title={notification.title}
-          toggleReadNotification={() =>
-            onClickReadNotification(notification.id, notification.isChecked)
-          }
-          deleteNotification={() => onClickDeleteNotification(notification.id)}
-        />
-      ))}
+      <NotificationList
+        mode={mode}
+        notificationList={clientNotificationList ?? []}
+        setClientNotificationList={setClientNotificationList}
+        deleteNotificationList={deleteNotificationList}
+        setDeleteNotificationList={setDeleteNotificationList}
+      />
     </Wrapper>
   );
 };
