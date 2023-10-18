@@ -1,20 +1,32 @@
 import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
 
 interface ListItemProps {
   children: React.ReactNode;
+  height?: number;
+  withPadding?: boolean;
   onClick?: () => void;
 }
 
-const ListItem = ({ children, onClick }: ListItemProps) => {
+const ListItem = ({
+  children,
+  onClick,
+  height = 52,
+  withPadding = true,
+}: ListItemProps) => {
   return (
     <ItemWrapper
       onClick={(e) => {
         e.preventDefault();
         onClick && onClick();
       }}
+      css={css`
+        height: ${getRem(height)};
+        padding: ${withPadding ? getRem(20) : 0};
+      `}
     >
       {children}
     </ItemWrapper>
@@ -23,11 +35,9 @@ const ListItem = ({ children, onClick }: ListItemProps) => {
 
 const ItemWrapper = styled.div`
   display: flex;
-  padding: ${getRem(20)} ${getRem(20)};
   width: 100%;
   align-items: center;
   transition: background-color 0.2s ease-in-out;
-  height: ${getRem(52)};
   :active {
     background-color: ${theme.colors.grey900};
   }
@@ -52,6 +62,7 @@ const Left = ({ left, middle, right }: LeftProps) => {
 const LeftWrapper = styled.div`
   display: flex;
   column-gap: ${getRem(20)};
+  width: 100%;
   align-items: center;
 `;
 
