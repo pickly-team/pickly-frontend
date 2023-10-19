@@ -54,6 +54,7 @@ export default FriendList;
 
 const Container = styled.div`
   padding: 0 ${getRem(20)};
+  margin-top: 1rem;
   :first-of-type {
     padding-top: ${getRem(20)};
   }
