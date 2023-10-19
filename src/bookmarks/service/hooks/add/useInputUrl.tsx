@@ -1,6 +1,6 @@
 import { useGETBookmarkTitleQuery } from '@/bookmarks/api/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
 import useBookmarkStore from '@/store/bookmark';
 import useAuthStore from '@/store/auth';
@@ -24,7 +24,11 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
 
   // url 입력시 0.5초 후에 url 검증
   // 추가적으로 title 불러오는 api 호출
-  const debouncedChangeUrl = debounce((url) => setDebouncedUrl(url), 500);
+  const debouncedChangeUrl = useCallback(
+    debounce((url) => setDebouncedUrl(url), 750),
+    [],
+  );
+  const validatedUrl = checkValidateURL(debouncedUrl);
 
   useEffect(() => {
     if (isInitial && url !== '' && defaultTitle === '' && debouncedUrl === '') {
@@ -40,6 +44,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     const { key } = event;
     if (key === 'Backspace' || key === 'Delete') {
       isDeleting = true;
+      setTitle('');
     } else {
       isDeleting = false;
     }
@@ -52,9 +57,11 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     }
   };
 
-  const onChangeTitle = (title: string) => {
+  const onChangeTitle = useCallback((title: string) => {
     setTitle(title);
-  };
+  }, []);
+
+  console.log('it is rendering useInputUrl.tsx');
 
   const onDeleteInput = (type: 'url' | 'title') => {
     if (type === 'url') {
@@ -65,10 +72,9 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     type === 'title' && setTitle('');
   };
 
-  const validatedUrl = checkValidateURL(debouncedUrl);
   const { isFetching } = useGETBookmarkTitleQuery({
     memberId: userInfo.id,
-    url: validatedUrl ? validatedUrl : '',
+    url: validatedUrl,
     setTitle: onChangeTitle,
   });
 
@@ -78,7 +84,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   };
 
   return {
-    url: url,
+    url,
     title,
     onChangeUrl,
     onChangeTitle,
