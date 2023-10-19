@@ -301,6 +301,7 @@ export const useGETBookmarkTitleQuery = ({
     {
       enabled: !!url.length,
       retry: 0,
+      retryDelay: 2000,
       onSuccess: (data) => {
         setTitle && setTitle(data);
         setIsBookmarkError(false);
