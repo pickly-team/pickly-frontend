@@ -5,8 +5,12 @@ import { NOTIFICATION_MODE } from '@/pages/NotificationPage';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
-import { usePATCHNotificationAllReadQuery } from '../api/notification';
+import {
+  useGETNotificationListQuery,
+  usePATCHNotificationAllReadQuery,
+} from '../api/notification';
 import useAuthStore from '@/store/auth';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 
 interface NotificationModeProps {
   mode: NOTIFICATION_MODE;
@@ -20,10 +24,43 @@ const useNotificationMode = ({
   openDeleteNotificationBS,
 }: NotificationModeProps) => {
   const { memberId } = useAuthStore();
+  const { fireToast } = useToast();
+
+  const { data: notificationList } = useGETNotificationListQuery({ memberId });
+
   const setNormalMode = () => setMode('NORMAL');
-  const setReadAllMode = () => setMode('READ_ALL');
-  const setDeleteMode = () => setMode('DELETE');
+
+  const setReadAllMode = () => {
+    const isAllRead = notificationList?.every(
+      (notification) => notification.isChecked,
+    );
+    if (isAllRead) {
+      fireToast({
+        message: '앗! 이미 모든 알림을 읽었어요',
+        mode: 'ERROR',
+      });
+      return;
+    }
+    setMode('READ_ALL');
+  };
+  const setDeleteMode = () => {
+    if (notificationList?.length === 0) {
+      fireToast({
+        message: '앗! 아직 알림이 없어요',
+        mode: 'ERROR',
+      });
+      return;
+    }
+    setMode('DELETE');
+  };
   const setAllDeleteMode = () => {
+    if (notificationList?.length === 0) {
+      fireToast({
+        message: '앗! 아직 알림이 없어요',
+        mode: 'ERROR',
+      });
+      return;
+    }
     setMode('DELETE_ALL');
     openDeleteNotificationBS();
   };
