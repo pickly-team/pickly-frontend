@@ -48,7 +48,7 @@ const FollowButton = ({
         color="white"
         fontSize={0.8}
         css={css`
-          text-shadow: 1px 1px 10px black;
+          text-shadow: 0.5px 0.5px 20px black;
         `}
       >
         팔로우
