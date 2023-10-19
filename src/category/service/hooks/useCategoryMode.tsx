@@ -42,8 +42,26 @@ const useCategoryMode = ({
   };
 
   const setNormalMode = () => setMode('NORMAL');
-  const setDeleteMode = () => setMode('DELETE');
-  const setOrderMode = () => setMode('ORDER');
+  const setDeleteMode = () => {
+    if (categoryLength === 0) {
+      fireToast({
+        message: '앗! 삭제할 카테고리가 없어요',
+        mode: 'ERROR',
+      });
+      return;
+    }
+    setMode('DELETE');
+  };
+  const setOrderMode = () => {
+    if (categoryLength === 0) {
+      fireToast({
+        message: '앗! 아직 카테고리가 없어요',
+        mode: 'ERROR',
+      });
+      return;
+    }
+    setMode('ORDER');
+  };
   const headerRight = () => {
     if (mode === 'NORMAL') {
       return (
