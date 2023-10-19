@@ -1,4 +1,3 @@
-import Divider from '@/category/ui/Divider';
 import Header from '@/common-ui/Header/Header';
 import Input from '@/common-ui/Input';
 import useSearchUser from '@/friend/services/hooks/useSearchUser';
@@ -24,15 +23,12 @@ const FriendSearchPage = () => {
           value={keyword}
           onChange={handleChange}
           border={{
-            color: 'white',
+            color: 'grey800',
             borderWidth: 1,
             borderRadius: 0.5,
           }}
         />
       </Wrapper>
-      <DividerWrapper>
-        <Divider size="s" margin="off" />
-      </DividerWrapper>
       <Suspense
         fallback={Array.from({ length: 5 }, (_, item) => (
           <FriendSkeletonItem key={item} />
@@ -52,8 +48,4 @@ const Wrapper = styled.div`
 
 const SearchInput = styled(Input)`
   margin-top: ${getRem(12)};
-`;
-
-const DividerWrapper = styled.div`
-  margin-top: 1.6rem;
 `;
