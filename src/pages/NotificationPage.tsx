@@ -48,7 +48,8 @@ const NotificationPage = () => {
     // NOTE : 임시로 하나씩 삭제 call
     if (mode === 'DELETE') {
       await mutateDeleteCategory({
-        notificationId: Number(deleteCategoryList[0]),
+        memberId,
+        notificationIds: deleteCategoryList,
       });
     }
     if (mode === 'DELETE_ALL') {
