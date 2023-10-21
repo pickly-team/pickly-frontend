@@ -28,7 +28,10 @@ const NotificationItem = ({
   return (
     <NotificationInfoWrapper
       isRead={isChecked}
-      onClick={toggleReadNotification}
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleReadNotification();
+      }}
     >
       <Text.Span fontSize={getRem(14)} weight={'bold'}>
         {title}
