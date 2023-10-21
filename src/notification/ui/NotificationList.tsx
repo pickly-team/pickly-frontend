@@ -93,6 +93,7 @@ const NotificationList = ({
                 onClickNotification(
                   notification.bookmarkId,
                   String(notification.id),
+                  notification.isChecked,
                 );
               }}
             >
@@ -101,7 +102,7 @@ const NotificationList = ({
                   mode === 'DELETE' && (
                     <Box>
                       <CheckBox
-                        isChecked={notification.isSelected}
+                        isChecked={notification.isChecked}
                         // eslint-disable-next-line @typescript-eslint/no-empty-function
                         onChange={() => {}}
                       />
@@ -115,6 +116,7 @@ const NotificationList = ({
                       onClickNotification(
                         notification.bookmarkId,
                         String(notification.id),
+                        notification.isChecked,
                       )
                     }
                   />
