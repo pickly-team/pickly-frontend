@@ -1,9 +1,8 @@
-import { useGETBookmarkTitleQuery } from '@/bookmarks/api/bookmark';
+import { useGETOGDataQuery } from '@/bookmarks/api/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
 import { useCallback, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
 import useBookmarkStore from '@/store/bookmark';
-import useAuthStore from '@/store/auth';
 
 interface InputUrlProps {
   defaultUrl?: string;
@@ -11,7 +10,7 @@ interface InputUrlProps {
 }
 
 const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
-  const { userInfo } = useAuthStore();
+  // const { userInfo } = useAuthStore();
   const { url, setUrl, title, setTitle, isBookmarkError } = useBookmarkStore();
   const [debouncedUrl, setDebouncedUrl] = useState<string>('');
 
@@ -72,11 +71,18 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     type === 'title' && setTitle('');
   };
 
-  const { isFetching } = useGETBookmarkTitleQuery({
-    memberId: userInfo.id,
+  const { isFetching } = useGETOGDataQuery({
     url: validatedUrl,
-    setTitle: onChangeTitle,
+    setOGData: (ogData) => {
+      ogData.title && setTitle(ogData.title);
+    },
   });
+
+  // const { isFetching } = useGETBookmarkTitleQuery({
+  //   memberId: userInfo.id,
+  //   url: validatedUrl,
+  //   setTitle: onChangeTitle,
+  // });
 
   const resetAllInputs = () => {
     setUrl('');
