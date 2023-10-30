@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 
 export interface UserInfo {
   id: number;
@@ -24,13 +24,13 @@ interface Auth {
 }
 
 const useAuthStore = create<Auth>()(
-  persist(
+  devtools(
     (set) => ({
       isLogin: false,
       token: '',
-      memberId: 0,
+      memberId: 112,
       userInfo: {
-        id: 0,
+        id: 112,
         name: '',
         nickname: '',
         profileEmoji: '😃',
