@@ -4,6 +4,8 @@ import useHandleInput from '@/common/service/useHandleInput';
 import { FormEventHandler, useEffect, useState } from 'react';
 import useAuthStore from '@/store/auth';
 import { usePutUserInfoQuery } from '@/user/api/user';
+import { 특수문자_제거, 특수문자_확인 } from '@/utils/check';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 
 const PREFIX = '-+@*' as const;
 
@@ -13,6 +15,7 @@ interface UserCreatePageProps {
 
 const UserInfoPage = ({ mode }: UserCreatePageProps) => {
   const { userInfo, memberId } = useAuthStore();
+  const { fireToast } = useToast();
 
   const [name, onChangeElementName, onChangeName] = useHandleInput();
   const [nickname, onChangeElementNickname, onChangeNickname] =
@@ -84,6 +87,20 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
     });
   };
 
+  const onChangeNicknameWithCheck = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (!특수문자_확인(e.target.value)) {
+      fireToast({
+        message: '앗! 닉네임에는 특수문자를 사용할 수 없어요',
+        mode: 'ERROR',
+      });
+      onChangeNickname(특수문자_제거(e.target.value));
+      return;
+    }
+    onChangeElementNickname(e);
+  };
+
   return (
     <UserProfileInfo
       emoji={emoji}
@@ -96,7 +113,7 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
       setEmojiBSOpen={setEmojiBSOpen}
       closeEmojiBS={closeEmojiBS}
       onChangeName={onChangeElementName}
-      onChangeNickname={onChangeElementNickname}
+      onChangeNickname={onChangeNicknameWithCheck}
       onSubmit={onSubmitUserInfo}
     />
   );

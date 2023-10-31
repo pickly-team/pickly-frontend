@@ -70,7 +70,7 @@ const UserProfileInfo = ({
             isEssential
           />
           <EditBox
-            name="닉네임"
+            name="닉네임 ( 특수문자 제외 )"
             value={nickname}
             onChange={onChangeNickname}
             isEssential
