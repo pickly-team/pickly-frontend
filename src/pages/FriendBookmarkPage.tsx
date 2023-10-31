@@ -108,16 +108,14 @@ const FriendBookmarkPage = () => {
       />
       <LTop>
         {profileLoading ? (
-          <SkeletonWrapper>
-            <SkeletonBookmarkUserInfo
-              isFriendPage={{
-                isFollowing: false,
-                friendId: Number(friendId),
-                memberId,
-                isBlocked: false,
-              }}
-            />
-          </SkeletonWrapper>
+          <SkeletonBookmarkUserInfo
+            isFriendPage={{
+              isFollowing: false,
+              friendId: Number(friendId),
+              memberId,
+              isBlocked: false,
+            }}
+          />
         ) : (
           <BookmarkUserInfo
             userEmoji={profileInfo?.profileEmoji ?? ''}
