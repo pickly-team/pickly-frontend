@@ -62,7 +62,7 @@ const TagBox = ({ tag, isSelected, onClickCategory }: TagBoxProps) => {
         color: ${isSelected ? theme.colors.black : theme.colors.white};
         padding: ${getRem(5)} ${getRem(10)};
         border-radius: ${getRem(10)};
-        transition: background-color 0.3s ease-in-out;
+        transition: background-color 0.5s ease-out;
         height: ${getRem(50)};
         :active {
           background-color: ${theme.colors.lightPrimary};
