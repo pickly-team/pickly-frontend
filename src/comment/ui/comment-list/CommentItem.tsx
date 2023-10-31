@@ -102,6 +102,10 @@ const Container = styled.div`
   padding: ${getRem(15, 20)};
   border-radius: ${getRem(7)};
   background-color: ${theme.colors.grey800};
+  transition: background-color 0.5s ease-out;
+  :active {
+    background-color: ${theme.colors.grey850};
+  }
 `;
 
 const StyleIcon = styled(Icon)`

@@ -59,6 +59,10 @@ const NotificationInfoWrapper = styled.div<{ isRead: boolean }>`
   padding: ${getRem(12, 20)};
   background-color: ${(p) =>
     p.isRead ? theme.colors.grey900 : theme.colors.grey800};
+  :active {
+    background-color: ${theme.colors.grey850};
+  }
+  transition: background-color 0.2s ease-in-out;
 `;
 
 const NotificationContentWrapper = styled.div`
