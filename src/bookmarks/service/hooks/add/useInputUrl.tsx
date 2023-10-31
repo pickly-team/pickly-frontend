@@ -30,7 +30,12 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   const validatedUrl = checkValidateURL(debouncedUrl);
 
   useEffect(() => {
-    if (isInitial && url !== '' && defaultTitle === '' && debouncedUrl === '') {
+    if (
+      isInitial &&
+      url !== '' &&
+      defaultTitle === undefined &&
+      debouncedUrl === ''
+    ) {
       setIsInitial(false);
       setDebouncedUrl(url);
       return;
@@ -60,8 +65,6 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     setTitle(title);
   }, []);
 
-  console.log('it is rendering useInputUrl.tsx');
-
   const onDeleteInput = (type: 'url' | 'title') => {
     if (type === 'url') {
       setUrl('');
@@ -77,12 +80,6 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
       ogData.title && setTitle(ogData.title);
     },
   });
-
-  // const { isFetching } = useGETBookmarkTitleQuery({
-  //   memberId: userInfo.id,
-  //   url: validatedUrl,
-  //   setTitle: onChangeTitle,
-  // });
 
   const resetAllInputs = () => {
     setUrl('');
