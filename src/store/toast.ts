@@ -31,7 +31,8 @@ export type ToastMessage =
   | '앗! 삭제할 카테고리가 없어요'
   | '앗! 아직 카테고리가 없어요'
   | '앗! 아직 알림이 없어요'
-  | '앗! 이미 모든 알림을 읽었어요';
+  | '앗! 이미 모든 알림을 읽었어요'
+  | '앗! 닉네임에는 특수문자를 사용할 수 없어요';
 
 export type ToastMode = 'SUCCESS' | 'DELETE' | 'ERROR';
 
