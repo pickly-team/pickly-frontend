@@ -268,13 +268,10 @@ export interface OGData {
 }
 
 const getOGData = async (url: string) => {
-  const { data } = await axios.get(
-    'https://pickly-frontend-dev.vercel.app/api/fetchOGData',
-    {
-      method: 'get',
-      params: { url },
-    },
-  );
+  const { data } = await axios.get('/og/api', {
+    method: 'get',
+    params: { url },
+  });
   return data;
 };
 
@@ -295,15 +292,12 @@ export const useGETOGDataQuery = ({ url, setOGData }: GETOGDataQuery) => {
     retryDelay: 2000,
     onSuccess: (data) => {
       setOGData && setOGData(data);
-      // 성공 시 필요한 로직을 추가하세요.
     },
     onError: () => {
-      // 여기서는 에러 처리 로직을 작성합니다.
       fireToast({
         message: '앗! 유효하지 않은 주소에요',
         mode: 'ERROR',
       });
-      // 필요한 에러 처리 로직을 추가하세요.
     },
   });
 };
