@@ -228,7 +228,6 @@ const SpinnerContainer = styled.div`
 
 const ContentContainer = styled.div`
   transition: transform 0.3s;
-  overflow: scroll;
   height: 100%;
 `;
 
