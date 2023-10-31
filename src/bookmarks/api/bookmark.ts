@@ -19,6 +19,7 @@ import {
   ErrorTypes,
 } from '@/common-ui/Error/ApiErrorBoundary';
 import useBookmarkStore from '@/store/bookmark';
+import axios from 'axios';
 dayjs.locale('ko');
 
 const DOMAIN = 'BOOKMARK';
@@ -259,6 +260,48 @@ export const useGETCategoryListQuery = ({
 
 //////////////////////////////////////
 // 북마크 제목 조회
+
+export interface OGData {
+  title?: string;
+  image?: string;
+  description?: string;
+}
+
+const getOGData = async (url: string) => {
+  const { data } = await axios.get('/og/api', {
+    method: 'get',
+    params: { url },
+  });
+  return data;
+};
+
+const GET_OG_DATA = (url: string) => ['GET_OG_DATA', url];
+
+interface GETOGDataQuery {
+  url: string;
+  setOGData: (data: OGData) => void;
+}
+
+export const useGETOGDataQuery = ({ url, setOGData }: GETOGDataQuery) => {
+  const { fireToast } = useToast();
+  // 필요한 상태나 스토어를 여기서 가져올 수 있습니다.
+
+  return useQuery(GET_OG_DATA(url), () => getOGData(url), {
+    enabled: !!url.length,
+    retry: 0,
+    retryDelay: 2000,
+    onSuccess: (data) => {
+      setOGData && setOGData(data);
+    },
+    onError: () => {
+      // 여기서는 에러 처리 로직을 작성합니다.
+      fireToast({
+        message: '앗! 유효하지 않은 주소에요',
+        mode: 'ERROR',
+      });
+    },
+  });
+};
 
 type GETBookmarkTitleResponse = string;
 
