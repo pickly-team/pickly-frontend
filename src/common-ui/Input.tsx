@@ -55,7 +55,7 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
           ? `${border.borderWidth}px solid ${theme.colors[border.color]}`
           : 'none'};
         background-color: ${theme.colors[backgroundColor]};
-        transition: all ease 0.5s 0s;
+        transition: all 0.5s ease-out;
         width: 100%;
         height: ${getRem(52)};
         padding: ${getRem(15)};
