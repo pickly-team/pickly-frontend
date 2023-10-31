@@ -294,6 +294,7 @@ export const useGETOGDataQuery = ({ url, setOGData }: GETOGDataQuery) => {
       setOGData && setOGData(data);
     },
     onError: () => {
+      // 여기서는 에러 처리 로직을 작성합니다.
       fireToast({
         message: '앗! 유효하지 않은 주소에요',
         mode: 'ERROR',
