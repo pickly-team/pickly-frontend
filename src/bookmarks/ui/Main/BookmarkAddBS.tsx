@@ -84,11 +84,8 @@ const URLInput = ({
           </IconWrapper>
           <StyledInputCloseWrapper>
             <StyledInput
-              css={css`
-                transition: all 0.5s ease-in-out;
-              `}
               border={{
-                color: isValidateUrl ? 'lightPrimary' : 'grey700',
+                color: isValidateUrl ? 'lightPrimary' : 'grey900',
                 borderWidth: calculateRem(30),
                 borderRadius: calculateRem(10),
               }}
@@ -131,11 +128,8 @@ const URLInput = ({
             ) : (
               <>
                 <StyledInput
-                  css={css`
-                    transition: all 0.5s ease-in-out;
-                  `}
                   border={{
-                    color: title.length ? 'lightPrimary' : 'grey700',
+                    color: title.length ? 'lightPrimary' : 'grey900',
                     borderWidth: calculateRem(30),
                     borderRadius: calculateRem(10),
                   }}
@@ -220,7 +214,7 @@ const PublishScoped = ({
           margin-bottom: ${getRem(90)};
         `}
       >
-        <Button
+        <StyledButton
           buttonColor={
             selectedPublishScoped === 'SCOPE_PUBLIC'
               ? 'lightPrimary'
@@ -230,12 +224,13 @@ const PublishScoped = ({
         >
           <Text.Span
             weight="bold"
+            fontSize={0.9}
             color={selectedPublishScoped === 'SCOPE_PUBLIC' ? 'black' : 'white'}
           >
             👀 전체 공개
           </Text.Span>
-        </Button>
-        <Button
+        </StyledButton>
+        <StyledButton
           buttonColor={
             selectedPublishScoped === 'SCOPE_FRIEND'
               ? 'lightPrimary'
@@ -245,12 +240,13 @@ const PublishScoped = ({
         >
           <Text.Span
             weight="bold"
+            fontSize={0.9}
             color={selectedPublishScoped === 'SCOPE_FRIEND' ? 'black' : 'white'}
           >
             👥 친구 공개
           </Text.Span>
-        </Button>
-        <Button
+        </StyledButton>
+        <StyledButton
           buttonColor={
             selectedPublishScoped === 'SCOPE_PRIVATE'
               ? 'lightPrimary'
@@ -260,13 +256,14 @@ const PublishScoped = ({
         >
           <Text.Span
             weight="bold"
+            fontSize={0.9}
             color={
               selectedPublishScoped === 'SCOPE_PRIVATE' ? 'black' : 'white'
             }
           >
             🔒 비공개
           </Text.Span>
-        </Button>
+        </StyledButton>
       </div>
     </>
   );
@@ -383,4 +380,8 @@ const StyledMarginSpanText = styled.div`
 
 const IconWrapper = styled.div`
   width: ${getRem(40)};
+`;
+
+const StyledButton = styled(Button)`
+  transition: background-color 0.5s ease-out;
 `;
