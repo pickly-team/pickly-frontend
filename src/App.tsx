@@ -153,7 +153,6 @@ const App = () => {
             )}
           </WithPostMessage>
         </BrowserRouter>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
       <Analytics />
     </ThemeProvider>

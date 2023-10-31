@@ -30,7 +30,12 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   const validatedUrl = checkValidateURL(debouncedUrl);
 
   useEffect(() => {
-    if (isInitial && url !== '' && defaultTitle === '' && debouncedUrl === '') {
+    if (
+      isInitial &&
+      url !== '' &&
+      defaultTitle === undefined &&
+      debouncedUrl === ''
+    ) {
       setIsInitial(false);
       setDebouncedUrl(url);
       return;
@@ -59,8 +64,6 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   const onChangeTitle = useCallback((title: string) => {
     setTitle(title);
   }, []);
-
-  console.log('it is rendering useInputUrl.tsx');
 
   const onDeleteInput = (type: 'url' | 'title') => {
     if (type === 'url') {
