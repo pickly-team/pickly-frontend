@@ -1,47 +1,80 @@
-import BSDeleteConfirmation from '@/bookmarks/ui/Main/BSDeleteConfirmation';
-import BottomFixedButton from '@/common-ui/BottomFixedButton';
-import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
-import Header from '@/common-ui/Header/Header';
 import Text from '@/common-ui/Text';
-import useWebview from '@/common/service/hooks/useWebview';
 import Emoji from '@/common/ui/Emoji';
 import EmojiSelect from '@/common/ui/EmojiSelect';
-import { useDELETEUserInfoQuery } from '@/members/api/member';
-import useAuthStore from '@/store/auth';
-import EditBox from '@/user/ui/EditBox';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
-import { FormEvent } from 'react';
+import { FormEvent, ReactNode } from 'react';
+import EditBox from './EditBox';
+import BSDeleteConfirmation from '@/bookmarks/ui/Main/BSDeleteConfirmation';
+import { useDELETEUserInfoQuery } from '@/members/api/member';
+import useAuthStore from '@/store/auth';
+import useWebview from '@/common/service/hooks/useWebview';
+import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 
-interface UserProfileInfoProps {
-  emoji: string;
-  name: string;
-  nickname: string;
-  isEmojiBSOpen: boolean;
-  buttonDisabled: boolean;
-  mode: Mode;
-  setEmojiBSOpen: () => void;
-  closeEmojiBS: () => void;
-  onChangeEmoji: (emoji: string) => void;
-  onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeNickname: (e: React.ChangeEvent<HTMLInputElement>) => void;
+interface UserProfileInfo2Props {
+  children: ReactNode;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
-const UserProfileInfo = ({
+const UserProfileInfo = ({ children, onSubmit }: UserProfileInfo2Props) => {
+  return <Form onSubmit={onSubmit}>{children}</Form>;
+};
+
+interface EmojiSelectorProps {
+  emoji: string;
+  isEmojiBSOpen: boolean;
+  setEmojiBSOpen: () => void;
+  closeEmojiBS: () => void;
+  onChangeEmoji: (emoji: string) => void;
+}
+
+const EmojiSelector = ({
   emoji,
-  name,
-  nickname,
   isEmojiBSOpen,
-  buttonDisabled,
-  mode,
   setEmojiBSOpen,
   closeEmojiBS,
   onChangeEmoji,
+}: EmojiSelectorProps) => {
+  return (
+    <>
+      <Emoji emoji={emoji} onClickEmoji={setEmojiBSOpen} />
+      {isEmojiBSOpen && (
+        <EmojiBackDrop onClick={closeEmojiBS}>
+          <EmojiSelect onChangeEmoji={onChangeEmoji} />
+        </EmojiBackDrop>
+      )}
+    </>
+  );
+};
+
+interface EditBoxProps {
+  name: string;
+  nickname: string;
+  onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeNickname: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const EditBoxGroup = ({
+  name,
+  nickname,
   onChangeName,
   onChangeNickname,
-  onSubmit,
-}: UserProfileInfoProps) => {
+}: EditBoxProps) => {
+  return (
+    <StyleEditBox>
+      <EditBox name="이름" value={name} onChange={onChangeName} isEssential />
+      <EditBox
+        name="닉네임 ( 특수문자 제외 )"
+        value={nickname}
+        onChange={onChangeNickname}
+        isEssential
+        withCount
+      />
+    </StyleEditBox>
+  );
+};
+
+const DeleteUserInfo = () => {
   const {
     isOpen: deleteUserInfoBS,
     open: openDeleteUserInfo,
@@ -56,61 +89,32 @@ const UserProfileInfo = ({
     initializeUserInfo();
     postMessage('signUp', null);
   };
-
   return (
-    <Form onSubmit={onSubmit}>
-      <Header showBackButton={mode === 'EDIT'} />
-      <EmojiBackDrop onClick={closeEmojiBS}>
-        <Emoji emoji={emoji} onClickEmoji={setEmojiBSOpen} />
-        <StyleEditBox>
-          <EditBox
-            name="이름"
-            value={name}
-            onChange={onChangeName}
-            isEssential
-          />
-          <EditBox
-            name="닉네임 ( 특수문자 제외 )"
-            value={nickname}
-            onChange={onChangeNickname}
-            isEssential
-            withCount
-          />
-        </StyleEditBox>
-        {mode === 'EDIT' && (
-          <DeleteUserInfoWrapper>
-            <DeleteUserInfoText
-              onClick={openDeleteUserInfo}
-              fontSize={0.8}
-              color="grey600"
-            >
-              탈퇴하기
-            </DeleteUserInfoText>
-          </DeleteUserInfoWrapper>
-        )}
-        <BottomFixedButton
-          activeButtonColor="lightGreen"
-          buttonColor="buttonGreen"
-          type="submit"
-          disabled={buttonDisabled}
+    <>
+      <DeleteUserInfoWrapper>
+        <DeleteUserInfoText
+          onClick={openDeleteUserInfo}
+          fontSize={0.8}
+          color="grey600"
         >
-          {mode === 'CREATE' ? '회원가입' : '수정하기'}
-        </BottomFixedButton>
-      </EmojiBackDrop>
-      {isEmojiBSOpen && <EmojiSelect onChangeEmoji={onChangeEmoji} />}
-      {mode === 'EDIT' && (
-        <BSDeleteConfirmation
-          open={deleteUserInfoBS}
-          onClose={closeDeleteUserInfo}
-          onDelete={onClickDeleteUserInfo}
-          mainText="정말로 탈퇴할까요?"
-          subText="탈퇴하면 다시 복구할 수 없습니다. 탈퇴하시겠습니까?"
-          buttonText="탈퇴"
-        />
-      )}
-    </Form>
+          탈퇴하기
+        </DeleteUserInfoText>
+      </DeleteUserInfoWrapper>
+      <BSDeleteConfirmation
+        open={deleteUserInfoBS}
+        onClose={closeDeleteUserInfo}
+        onDelete={onClickDeleteUserInfo}
+        mainText="정말로 탈퇴할까요?"
+        subText="탈퇴하면 다시 복구할 수 없습니다. 탈퇴하시겠습니까?"
+        buttonText="탈퇴"
+      />
+    </>
   );
 };
+
+UserProfileInfo.EmojiSelector = EmojiSelector;
+UserProfileInfo.EditBoxGroup = EditBoxGroup;
+UserProfileInfo.DeleteUserInfo = DeleteUserInfo;
 
 export default UserProfileInfo;
 
@@ -118,9 +122,11 @@ const Form = styled.form``;
 
 const EmojiBackDrop = styled.div`
   position: absolute;
-  top: ${getRem(60)};
+  bottom: 0;
   left: 0;
-  width: 100%;
+  width: 100dvw;
+  height: 100dvh;
+  z-index: 100;
 `;
 
 const StyleEditBox = styled.div`
