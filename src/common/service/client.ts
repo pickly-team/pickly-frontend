@@ -14,7 +14,6 @@ client.interceptors.response.use(
     if (error.response) {
       // 서버가 에러 상태 코드를 리턴한 경우
       // console.log(error.response.data);
-      console.log(error.response.status);
       // console.log(error.response.headers);
     } else if (error.request) {
       // 요청이 만들어졌지만 응답을 받지 못한 경우
