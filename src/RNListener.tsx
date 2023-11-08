@@ -14,7 +14,7 @@ const PREFIX = '-+@*' as const;
 
 const RNListener = () => {
   const { memberId, login, userInfo } = useAuthStore();
-  const { initializeUrlAndTitle } = useBookmarkStore();
+  const { initializeBookmarkInfo } = useBookmarkStore();
   const { initComment } = useCommentStore();
 
   const { postMessage } = useWebview();
@@ -40,7 +40,7 @@ const RNListener = () => {
   });
 
   useBridgeCallback('initialize', () => {
-    initializeUrlAndTitle();
+    initializeBookmarkInfo();
     initComment();
   });
 
@@ -49,11 +49,14 @@ const RNListener = () => {
     handleRefresh();
   });
 
-  const { setUrl } = useBookmarkStore();
+  const { setBookmarkInfo } = useBookmarkStore();
 
   useBridgeCallback('androidShareUrl', (params) => {
     if (params.url === '') return;
-    setUrl(params.url);
+    setBookmarkInfo((prev) => ({
+      ...prev,
+      url: params.url,
+    }));
     router(navigatePath.BOOKMARK_ADD);
   });
 

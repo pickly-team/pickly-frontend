@@ -14,12 +14,8 @@ import 'dayjs/locale/ko';
 import { GET_LIKE_BOOKMARK_LIST } from './like';
 import { GET_USER_PROFILE } from '@/auth/api/profile';
 import { READ_OPTION, READ_OPTIONS } from '../service/hooks/home/useReadList';
-import {
-  CustomAxiosError,
-  ErrorTypes,
-} from '@/common-ui/Error/ApiErrorBoundary';
 import useBookmarkStore from '@/store/bookmark';
-import axios from 'axios';
+
 dayjs.locale('ko');
 
 const DOMAIN = 'BOOKMARK';
@@ -262,14 +258,19 @@ export const useGETCategoryListQuery = ({
 // 북마크 제목 조회
 
 export interface OGData {
-  title?: string;
-  image?: string;
-  description?: string;
+  title: string;
+  thumbnail: string;
 }
 
-const getOGData = async (url: string) => {
-  const { data } = await axios.get('/og/api', {
+interface GETOGDataRequest {
+  url: string;
+  token?: string;
+}
+
+const getOGData = async ({ url }: GETOGDataRequest) => {
+  const { data } = await client<OGData>({
     method: 'get',
+    url: '/members/bookmark/info',
     params: { url },
   });
   return data;
@@ -279,101 +280,40 @@ const GET_OG_DATA = (url: string) => ['GET_OG_DATA', url];
 
 interface GETOGDataQuery {
   url: string;
+  enabled: boolean;
   setOGData: (data: OGData) => void;
 }
 
-export const useGETOGDataQuery = ({ url, setOGData }: GETOGDataQuery) => {
+export const useGETOgDataQuery = ({
+  url,
+  enabled,
+  setOGData,
+}: GETOGDataQuery) => {
   const { fireToast } = useToast();
-  // 필요한 상태나 스토어를 여기서 가져올 수 있습니다.
-
-  return useQuery(GET_OG_DATA(url), () => getOGData(url), {
-    enabled: !!url.length,
-    retry: 0,
-    retryDelay: 2000,
+  const { setIsBookmarkError } = useBookmarkStore();
+  return useQuery(GET_OG_DATA(url), () => getOGData({ url }), {
     onSuccess: (data) => {
       setOGData && setOGData(data);
+      setIsBookmarkError(false);
     },
     onError: () => {
-      // 여기서는 에러 처리 로직을 작성합니다.
+      setIsBookmarkError(true);
       fireToast({
-        message: '앗! 유효하지 않은 주소에요',
+        message: '앗! 제목을 받아올 수 없는 북마크에요',
         mode: 'ERROR',
       });
     },
+    enabled: !!url.length && enabled,
+    retry: 0,
   });
-};
-
-type GETBookmarkTitleResponse = string;
-
-interface GetBookmarkTitleRequest {
-  memberId: number;
-  url: string;
-}
-
-const getBookmarkTitleAPI = async ({
-  memberId,
-  url,
-}: GetBookmarkTitleRequest) => {
-  const { data } = await client<GETBookmarkTitleResponse>({
-    method: 'get',
-    url: `/members/${memberId}/bookmark/title`,
-    params: { url },
-    data: {},
-  });
-  return data;
-};
-
-const GET_BOOKMARK_TITLE = (url: string) => ['GET_BOOKMARK_TITLE', url];
-
-interface GETBookmarkTitleQuery {
-  memberId: number;
-  url: string;
-  setTitle: (title: string) => void;
-}
-
-export const useGETBookmarkTitleQuery = ({
-  memberId,
-  url,
-  setTitle,
-}: GETBookmarkTitleQuery) => {
-  const { fireToast } = useToast();
-  const { setIsBookmarkError } = useBookmarkStore();
-  return useQuery(
-    GET_BOOKMARK_TITLE(url),
-    () => getBookmarkTitleAPI({ memberId, url }),
-    {
-      enabled: !!url.length,
-      retry: 0,
-      retryDelay: 2000,
-      onSuccess: (data) => {
-        setTitle && setTitle(data);
-        setIsBookmarkError(false);
-      },
-      onError: (e: CustomAxiosError) => {
-        if (e.response?.data.code === ErrorTypes.PRIVATE_BOOKMARK) {
-          fireToast({
-            message: '앗! 비공개 북마크는 공유할 수 없어요',
-            mode: 'ERROR',
-          });
-        } else {
-          console.log(e.response?.data.code);
-          fireToast({
-            message: '앗! 유효하지 않은 주소에요',
-            mode: 'ERROR',
-          });
-        }
-
-        setIsBookmarkError(true);
-      },
-    },
-  );
 };
 
 interface POSTBookmarkRequest {
   memberId: number;
   categoryId: number;
   url: string;
-  title: string;
+  title: string | null;
+  thumbnail: string;
   visibility: Visibility;
 }
 
