@@ -110,15 +110,15 @@ const UserInfoPage = ({ mode }: UserCreatePageProps) => {
           onChangeNickname={handleNicknameChange}
         />
         {mode === 'EDIT' && <UserProfileInfo.DeleteUserInfo />}
+        <BottomFixedButton
+          activeButtonColor="lightGreen"
+          buttonColor="buttonGreen"
+          type="submit"
+          disabled={disabled}
+        >
+          {mode === 'CREATE' ? '회원가입' : '수정하기'}
+        </BottomFixedButton>
       </UserProfileInfo>
-      <BottomFixedButton
-        activeButtonColor="lightGreen"
-        buttonColor="buttonGreen"
-        type="submit"
-        disabled={disabled}
-      >
-        {mode === 'CREATE' ? '회원가입' : '수정하기'}
-      </BottomFixedButton>
     </>
   );
 };
