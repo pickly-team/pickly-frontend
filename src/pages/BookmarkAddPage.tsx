@@ -11,7 +11,6 @@ import useBookmarkStore from '@/store/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const BookmarkAddPage = () => {
