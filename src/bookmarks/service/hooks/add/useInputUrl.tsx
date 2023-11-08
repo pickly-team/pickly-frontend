@@ -1,8 +1,8 @@
-import { useGETOGDataQuery } from '@/bookmarks/api/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
 import { useCallback, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
 import useBookmarkStore from '@/store/bookmark';
+import { useGETOgDataQuery } from '@/bookmarks/api/bookmark';
 
 interface InputUrlProps {
   defaultUrl?: string;
@@ -10,16 +10,22 @@ interface InputUrlProps {
 }
 
 const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
-  // const { userInfo } = useAuthStore();
-  const { url, setUrl, title, setTitle, isBookmarkError } = useBookmarkStore();
+  const { bookmarkInfo, setBookmarkInfo, isBookmarkError } = useBookmarkStore();
+
   const [debouncedUrl, setDebouncedUrl] = useState<string>('');
 
-  const [isInitial, setIsInitial] = useState<boolean>(true);
-
   useEffect(() => {
-    if (defaultTitle) setTitle(defaultTitle);
-    if (defaultUrl) setUrl(defaultUrl);
-  }, [defaultTitle, defaultUrl]);
+    if (defaultUrl !== undefined && defaultTitle !== undefined) {
+      setBookmarkInfo((prev) => ({
+        ...prev,
+        url: defaultUrl,
+        title: defaultTitle,
+      }));
+      // 초기 URL이 설정되었으므로 debouncedUrl도 설정합니다.
+      setDebouncedUrl(defaultUrl);
+    }
+    // 의존성 배열에서 isInitial을 제거합니다.
+  }, [defaultUrl, defaultTitle]);
 
   // url 입력시 0.5초 후에 url 검증
   // 추가적으로 title 불러오는 api 호출
@@ -27,20 +33,6 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     debounce((url) => setDebouncedUrl(url), 750),
     [],
   );
-  const validatedUrl = checkValidateURL(debouncedUrl);
-
-  useEffect(() => {
-    if (
-      isInitial &&
-      url !== '' &&
-      defaultTitle === undefined &&
-      debouncedUrl === ''
-    ) {
-      setIsInitial(false);
-      setDebouncedUrl(url);
-      return;
-    }
-  }, [isInitial, url, debouncedUrl, defaultTitle]);
 
   let isDeleting = false; // 사용자가 지우는 동작을 수행하고 있는지 여부를 저장하는 변수
 
@@ -48,60 +40,71 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
     const { key } = event;
     if (key === 'Backspace' || key === 'Delete') {
       isDeleting = true;
-      setTitle('');
+      setBookmarkInfo((prev) => ({
+        ...prev,
+        url: '',
+      }));
     } else {
       isDeleting = false;
     }
   };
 
   const onChangeUrl = (url: string) => {
-    setUrl(url);
+    setBookmarkInfo((prev) => ({
+      ...prev,
+      url,
+    }));
     if (!isDeleting) {
       debouncedChangeUrl(url);
     }
   };
 
   const onChangeTitle = useCallback((title: string) => {
-    setTitle(title);
+    setBookmarkInfo((prev) => ({
+      ...prev,
+      title,
+    }));
   }, []);
 
   const onDeleteInput = (type: 'url' | 'title') => {
     if (type === 'url') {
-      setUrl('');
+      setBookmarkInfo(() => ({
+        thumbnail: '',
+        url: '',
+        title: '',
+      }));
       setDebouncedUrl('');
-      setTitle('');
     }
-    type === 'title' && setTitle('');
+    type === 'title' && setBookmarkInfo((prev) => ({ ...prev, title: '' }));
   };
 
-  const { isFetching } = useGETOGDataQuery({
-    url: validatedUrl,
+  const { isFetching } = useGETOgDataQuery({
+    url: checkValidateURL(debouncedUrl),
+    enabled: !isBookmarkError,
     setOGData: (ogData) => {
-      ogData.title && setTitle(ogData.title);
+      ogData.title &&
+        setBookmarkInfo((prev) => ({ ...prev, title: ogData.title }));
     },
   });
 
-  // const { isFetching } = useGETBookmarkTitleQuery({
-  //   memberId: userInfo.id,
-  //   url: validatedUrl,
-  //   setTitle: onChangeTitle,
-  // });
-
   const resetAllInputs = () => {
-    setUrl('');
-    setTitle('');
+    setBookmarkInfo(() => ({
+      thumbnail: '',
+      url: '',
+      title: '',
+    }));
   };
 
   return {
-    url,
-    title,
+    url: bookmarkInfo.url,
+    title: bookmarkInfo.title,
+    thumbnail: bookmarkInfo.thumbnail,
     onChangeUrl,
     onChangeTitle,
     handleKeyDown,
     onDeleteInput,
     resetAllInputs,
     isLoadingGetTitle: isFetching,
-    isBookmarkError,
   };
 };
 

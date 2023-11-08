@@ -3,7 +3,7 @@ import useCategoryList from '@/bookmarks/service/hooks/add/useCategoryList';
 import useInputUrl from '@/bookmarks/service/hooks/add/useInputUrl';
 import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
 import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
-import BookmarkAddBS from '@/bookmarks/ui/Main/BookmarkAddBS';
+import BookmarkAdd from '@/bookmarks/ui/Main/BookmarkAdd';
 import Header from '@/common-ui/Header/Header';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import useAuthStore from '@/store/auth';
@@ -11,20 +11,22 @@ import useBookmarkStore from '@/store/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const BookmarkAddPage = () => {
   // SERVER
   const { categoryList, setCategoryList, toggleCategory } = useCategoryList();
-  const { initializeUrlAndTitle } = useBookmarkStore();
+  const { initializeBookmarkInfo } = useBookmarkStore();
   // INITIALIZE
   const router = useNavigate();
+
   // 1. URL & 북마크 Title 입력
   const {
     url,
     title,
+    thumbnail,
     isLoadingGetTitle,
-    isBookmarkError,
     onChangeUrl,
     onChangeTitle,
     handleKeyDown,
@@ -54,8 +56,7 @@ const BookmarkAddPage = () => {
     url &&
     isValidateUrl &&
     selectedCategoryId &&
-    selectedPublishScoped &&
-    !isBookmarkError
+    selectedPublishScoped
   );
 
   const { memberId } = useAuthStore();
@@ -75,21 +76,13 @@ const BookmarkAddPage = () => {
   const { fireToast } = useToast();
 
   const onClickSubmitButton = () => {
+    // 로딩 중이면 클릭 무시
     if (isPostLoading) return;
-    if (isBookmarkError) {
-      fireToast({
-        mode: 'ERROR',
-        message: '앗! 추가할 수 없는 북마크에요',
-      });
-      return;
-    }
+
+    // 모든 입력이 완료되지 않았다면 클릭 무시
     if (!isAllWritten) {
       if (!url.length) {
         fireToast({ mode: 'ERROR', message: '앗! URL을 입력해주세요' });
-        return;
-      }
-      if (!title.length) {
-        fireToast({ mode: 'ERROR', message: '앗! 제목을 입력해주세요' });
         return;
       }
       if (!selectedCategoryId) {
@@ -98,9 +91,11 @@ const BookmarkAddPage = () => {
       }
       return;
     }
+
     postBookmark({
       url: checkValidateURL(url) ? checkValidateURL(url) : '',
       title,
+      thumbnail,
       categoryId: Number(selectedCategoryId),
       visibility: selectedPublishScoped,
       memberId,
@@ -111,10 +106,10 @@ const BookmarkAddPage = () => {
     <>
       <Header
         showBackButton
-        backButtonCallback={() => initializeUrlAndTitle()}
+        backButtonCallback={() => initializeBookmarkInfo()}
       />
       <Wrapper>
-        <BookmarkAddBS.URLInput
+        <BookmarkAdd.URLInput
           url={url}
           title={title}
           isValidateUrl={isValidateUrl.length > 0}
@@ -124,16 +119,16 @@ const BookmarkAddPage = () => {
           onDeleteInput={onDeleteInput}
           isLoadingGetTitle={isLoadingGetTitle}
         />
-        <BookmarkAddBS.SelectCategory
+        <BookmarkAdd.SelectCategory
           categoryList={categoryList}
           selectedCategoryId={selectedCategoryId}
           onClickCategory={onClickCategory}
         />
-        <BookmarkAddBS.PublishScoped
+        <BookmarkAdd.PublishScoped
           selectedPublishScoped={selectedPublishScoped}
           onClickPublishScoped={onClickPublishScoped}
         />
-        <BookmarkAddBS.SubmitButton
+        <BookmarkAdd.SubmitButton
           onClick={onClickSubmitButton}
           isAllWritten={isAllWritten}
         />

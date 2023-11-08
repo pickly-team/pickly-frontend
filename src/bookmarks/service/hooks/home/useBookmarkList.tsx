@@ -37,10 +37,10 @@ const useBookmarkList = ({
     if (categoryId) refetch();
   }, [categoryId]);
 
-  const { initializeUrlAndTitle } = useBookmarkStore();
+  const { initializeBookmarkInfo } = useBookmarkStore();
 
   useEffect(() => {
-    initializeUrlAndTitle();
+    initializeBookmarkInfo();
     refetch();
   }, [navigate]);
 
