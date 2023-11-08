@@ -14,7 +14,7 @@ const useHandleBookmarkDetailMore = () => {
   const { memberId } = useAuthStore();
   const { id } = useParams() as { id: string };
 
-  const { initializeUrlAndTitle, setSelectedBookmarkId } = useBookmarkStore();
+  const { initializeBookmarkInfo, setSelectedBookmarkId } = useBookmarkStore();
 
   useEffect(() => {
     setSelectedBookmarkId(Number(id));
@@ -38,7 +38,7 @@ const useHandleBookmarkDetailMore = () => {
   };
   // 2. 뒤로가기
   const onClickBackCallback = () => {
-    initializeUrlAndTitle();
+    initializeBookmarkInfo();
   };
   // 3. 북마크 수정
   const onClickEditBookmark = () => {
