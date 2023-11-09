@@ -8,6 +8,7 @@ const navigatePath = {
   NOTIFICATION: '/notification',
   PROFILE: '/profile',
   BOOKMARK: '/bookmark',
+  BOOKMARK_SEARCH: '/bookmark/search',
   BOOKMARK_DETAIL: '/bookmark/:id',
   BOOKMARK_ADD: '/bookmark/add',
   BOOKMARK_EDIT: '/bookmark/edit/:id',
@@ -29,4 +30,4 @@ const navigatePath = {
 
 type NavigatePath = (typeof navigatePath)[keyof typeof navigatePath];
 
-export { navigatePath, NavigatePath };
+export { NavigatePath, navigatePath };
