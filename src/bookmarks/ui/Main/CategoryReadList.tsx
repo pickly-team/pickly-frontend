@@ -26,6 +26,7 @@ const CategoryReadList = () => {
           readCount={category.readStatus.readCount}
           totalCount={category.readStatus.total}
           onClickCategory={() => onClickCategory(category.categoryId)}
+          key={category.categoryId}
         />
       ))}
     </Container>
