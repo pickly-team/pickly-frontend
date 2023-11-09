@@ -80,10 +80,6 @@ const SkeletonUpperRightWrapper = styled.div`
   align-items: flex-end;
 `;
 
-interface SkeletonTextProps {
-  width?: string;
-}
-
 const SkeletonLowerWrapper = styled.div`
   display: flex;
   column-gap: 1rem;
