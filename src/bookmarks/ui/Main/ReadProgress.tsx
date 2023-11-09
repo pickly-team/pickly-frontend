@@ -28,10 +28,12 @@ const ReadProgress = () => {
         현재까지 읽은 북마크
       </Text.Header>
       <Text.P fontSize={0.9}>
-        현재까지 {bookmarkStatus?.readCount}개의 북마크를 읽었어요!
+        현재까지 {bookmarkStatus?.readCount ?? 0}개의 북마크를 읽었어요!
       </Text.P>
       <ProgressWrapper>
-        <Text.P fontSize={0.9}>{bookmarkStatus?.readStatusPercentage}%</Text.P>
+        <Text.P fontSize={0.9}>
+          {bookmarkStatus?.readStatusPercentage ?? 0}%
+        </Text.P>
         <ProgressBar progress={bookmarkStatus?.readStatusPercentage ?? 0} />
       </ProgressWrapper>
     </Wrapper>
