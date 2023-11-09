@@ -1,6 +1,7 @@
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import CategoryReadList from '@/bookmarks/ui/Main/CategoryReadList';
 import ReadProgress from '@/bookmarks/ui/Main/ReadProgress';
+import SkeletonCategoryReadList from '@/bookmarks/ui/Main/SkeletonCategoryReadList';
 import PullToRefresh from '@/common-ui/PullToRefresh';
 import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 import Text from '@/common-ui/Text';
@@ -34,13 +35,17 @@ const MainPage = () => {
             />
           }
         />
-        <Suspense fallback={<SkeletonWrapper></SkeletonWrapper>}>
-          <ReadProgress />
-        </Suspense>
+        <ReadProgress />
         <Text.Header level="h2" weight="bold" fontSize={1.3}>
           카테고리별 읽기 현황
         </Text.Header>
-        <Suspense fallback={<SkeletonWrapper></SkeletonWrapper>}>
+        <Suspense
+          fallback={
+            <SkeletonWrapper>
+              <SkeletonCategoryReadList />
+            </SkeletonWrapper>
+          }
+        >
           <CategoryReadList />
         </Suspense>
       </Container>

@@ -849,6 +849,7 @@ const getBookmarkCategoryReadStatusAPI = async ({
     method: 'get',
     url: `/members/${memberId}/categories/bookmarks/read-status`,
   });
+
   return data;
 };
 
@@ -864,8 +865,12 @@ export const GET_BOOKMARK_CATEGORY_STATUS = (
 export const useGETBookmarkCategoryStatusQuery = (
   params: GETBookmarkCategoryReadStatusQueryRequest,
 ) => {
-  return useQuery(GET_BOOKMARK_CATEGORY_STATUS(params), async () =>
-    getBookmarkCategoryReadStatusAPI(params),
+  return useQuery(
+    GET_BOOKMARK_CATEGORY_STATUS(params),
+    async () => getBookmarkCategoryReadStatusAPI(params),
+    {
+      suspense: true,
+    },
   );
 };
 
