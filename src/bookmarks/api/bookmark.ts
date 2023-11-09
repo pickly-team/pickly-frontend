@@ -174,9 +174,23 @@ export const useDELETEBookMarkMutation = ({
 }: DELETEBookMarkListMutation) => {
   const queryClient = useQueryClient();
   const toast = useToast();
+  const { selectedCategoryId } = useBookmarkStore();
   return useMutation(DELETEBookMarkList.API, {
     onSuccess: () => {
-      refetchAllBookmarkQuery({ queryClient, memberId: userId });
+      refetchAllBookmarkQuery({
+        queryClient,
+        memberId: userId,
+        categoryId: selectedCategoryId ?? null,
+      });
+      queryClient.refetchQueries(GET_USER_PROFILE({ loginId: userId }));
+      queryClient.refetchQueries(
+        GET_BOOKMARK_READ_STATUS({ memberId: userId }),
+      );
+      queryClient.refetchQueries(
+        GET_BOOKMARK_CATEGORY_STATUS({ memberId: userId }),
+      );
+      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(userId));
+
       toast.fireToast({
         message: '삭제 되었습니다',
         mode: 'DELETE',
@@ -359,6 +373,7 @@ export const usePOSTBookmarkMutation = ({
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
       queryClient.refetchQueries(GET_BOOKMARK_READ_STATUS({ memberId }));
       queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_STATUS({ memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
     },
     onError: () => {
       fireToast({ message: '앗! 추가할 수 없는 북마크에요', mode: 'DELETE' });
@@ -651,7 +666,16 @@ export const useDELETEBookmarkQuery = ({
     onSuccess: () => {
       fireToast({ message: '삭제 되었습니다', mode: 'DELETE' });
       refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
+      refetchAllBookmarkQuery({ queryClient, memberId });
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_READ_STATUS({ memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_STATUS({ memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
+
+      fireToast({
+        message: '삭제 되었습니다',
+        mode: 'DELETE',
+      });
     },
   });
 };
@@ -660,36 +684,20 @@ interface RefetchAllBookmark {
   queryClient: ReturnType<typeof useQueryClient>;
   memberId: number;
   bookmarkId?: string;
+  categoryId?: number | null;
 }
 
 export const refetchAllBookmarkQuery = ({
   queryClient,
   memberId,
   bookmarkId,
+  categoryId: selectedCategoryId,
 }: RefetchAllBookmark) => {
   const bookmark = queryClient.getQueryData<ClientBookmarkDetail>(
     GET_BOOKMARK_DETAIL_KEY({ bookmarkId: bookmarkId ?? '', memberId }),
   );
-  const categoryId = bookmark?.categoryId ?? 0;
+  const categoryId = bookmark?.categoryId ?? selectedCategoryId ?? null;
   // NOTE : 왜 도대체 뒤로 가기 시에는 refetch가 되지 않는지 모르겠음
-  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, '📖 전체', categoryId),
-    (prev) => {
-      return toggleBookmarkRead(prev, Number(bookmarkId));
-    },
-  );
-  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, '👀 읽음', categoryId),
-    (prev) => {
-      return toggleBookmarkRead(prev, Number(bookmarkId));
-    },
-  );
-  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, '🫣 읽지 않음', categoryId),
-    (prev) => {
-      return toggleBookmarkRead(prev, Number(bookmarkId));
-    },
-  );
   queryClient.invalidateQueries(GET_BOOKMARK_LIST(memberId, '📖 전체', null));
   queryClient.invalidateQueries(GET_BOOKMARK_LIST(memberId, '👀 읽음', null));
   queryClient.invalidateQueries(
