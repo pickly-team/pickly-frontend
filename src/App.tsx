@@ -1,36 +1,38 @@
+import Layout from '@/common-ui/Layout';
+import { navigatePath } from '@/constants/navigatePath';
+import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
+import FaqPage from '@/pages/FaqPage';
+import FriendPage from '@/pages/FriendPage';
+import NotificationPage from '@/pages/NotificationPage';
+import ProfilePage from '@/pages/ProfilePage';
 import { theme } from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import IconLoader from './common-ui/assets/IconLoader';
-import MainPage from './pages/MainPage';
-import LikePage from './pages/LikePage';
-import GlobalStyle from './styles/GlobalStyle';
-import { navigatePath } from '@/constants/navigatePath';
-import BookMarkDetailPage from '@/pages/BookMarkDetailPage';
-import Layout from '@/common-ui/Layout';
-import FaqPage from '@/pages/FaqPage';
-import UserCreatePage from './pages/UserInfoPage';
-import CategoryAddPage from './pages/CategoryManagePage';
-import ReportPage from './pages/ReportPage';
-import CommentPage from './pages/CommentPage';
-import ProfilePage from '@/pages/ProfilePage';
-import CategoryListPage from './pages/CategoryListPage';
-import ToastList from './common-ui/Toast/ToastList';
-import NotificationPage from '@/pages/NotificationPage';
 import { Analytics } from '@vercel/analytics/react';
-import FriendPage from '@/pages/FriendPage';
-import FriendBookmarkPage from './pages/FriendBookmarkPage';
-import ApiErrorBoundary from './common-ui/Error/ApiErrorBoundary';
-import FriendSearchPage from './pages/FriendSearchPage';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import RNListener from './RNListener';
+import ApiErrorBoundary from './common-ui/Error/ApiErrorBoundary';
+import ToastList from './common-ui/Toast/ToastList';
+import IconLoader from './common-ui/assets/IconLoader';
+import AuthenticationCodePage from './pages/AuthenticationCodePage';
 import BlockUserListPage from './pages/BlockUserListPage';
-import IntroducePage from './pages/IntroducePage';
-import WithPostMessage from './utils/WithPostMessage';
 import BookmarkAddPage from './pages/BookmarkAddPage';
 import BookmarkEditPage from './pages/BookmarkEditPage';
-import AuthenticationCodePage from './pages/AuthenticationCodePage';
+import BookmarkPage from './pages/BookmarkPage';
+import BookmarkSearchPage from './pages/BookmarkSearchPage';
+import CategoryListPage from './pages/CategoryListPage';
+import CategoryAddPage from './pages/CategoryManagePage';
+import CommentPage from './pages/CommentPage';
+import FriendBookmarkPage from './pages/FriendBookmarkPage';
+import FriendSearchPage from './pages/FriendSearchPage';
+import IntroducePage from './pages/IntroducePage';
+import LikePage from './pages/LikePage';
+import MainPage from './pages/MainPage';
+import ReportPage from './pages/ReportPage';
 import SettingPage from './pages/SettingPage';
+import UserCreatePage from './pages/UserInfoPage';
+import GlobalStyle from './styles/GlobalStyle';
+import WithPostMessage from './utils/WithPostMessage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -62,6 +64,14 @@ const App = () => {
                       element={<IntroducePage />}
                     />
                     <Route path={navigatePath.MAIN} element={<MainPage />} />
+                    <Route
+                      path={navigatePath.BOOKMARK}
+                      element={<BookmarkPage />}
+                    />
+                    <Route
+                      path={navigatePath.BOOKMARK_SEARCH}
+                      element={<BookmarkSearchPage />}
+                    />
                     <Route
                       path={navigatePath.BOOKMARK_DETAIL}
                       element={<BookMarkDetailPage />}
@@ -153,6 +163,7 @@ const App = () => {
             )}
           </WithPostMessage>
         </BrowserRouter>
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
       <Analytics />
     </ThemeProvider>
