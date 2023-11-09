@@ -15,12 +15,14 @@ interface BookmarkUserInfoProps {
     memberId: number;
     isBlocked: boolean;
   };
+  rightButton?: React.ReactNode;
 }
 
 const BookmarkUserInfo = ({
   userEmoji,
   userName,
   isFriendPage,
+  rightButton,
 }: BookmarkUserInfoProps) => {
   return (
     <StyleWrapper>
@@ -33,7 +35,7 @@ const BookmarkUserInfo = ({
         )}
         {!isFriendPage && (
           <Text.Span
-            fontSize={1.2}
+            fontSize={1.1}
             weight="bold"
           >{`👋 안녕하세요, ${userName}님!`}</Text.Span>
         )}
@@ -56,6 +58,7 @@ const BookmarkUserInfo = ({
           )}
         </>
       )}
+      {!isFriendPage && <>{rightButton}</>}
     </StyleWrapper>
   );
 };
@@ -70,8 +73,8 @@ const StyleWrapper = styled.div`
 
 const UserBox = styled.div`
   display: flex;
-  width: 4rem;
-  height: 4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
   background-color: ${theme.colors.grey800};
   justify-content: center;
