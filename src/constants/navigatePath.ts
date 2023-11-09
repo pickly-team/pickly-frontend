@@ -7,6 +7,7 @@ const navigatePath = {
   BLOCK_USER: '/block',
   NOTIFICATION: '/notification',
   PROFILE: '/profile',
+  BOOKMARK: '/bookmark',
   BOOKMARK_DETAIL: '/bookmark/:id',
   BOOKMARK_ADD: '/bookmark/add',
   BOOKMARK_EDIT: '/bookmark/edit/:id',

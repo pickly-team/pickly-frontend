@@ -3,7 +3,7 @@ import useCategoryList from '@/bookmarks/service/hooks/add/useCategoryList';
 import useInputUrl from '@/bookmarks/service/hooks/add/useInputUrl';
 import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
 import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
-import BookmarkAdd from '@/bookmarks/ui/Main/BookmarkAdd';
+import BookmarkAdd from '@/bookmarks/ui/Bookmark/BookmarkAdd';
 import Header from '@/common-ui/Header/Header';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import useAuthStore from '@/store/auth';
