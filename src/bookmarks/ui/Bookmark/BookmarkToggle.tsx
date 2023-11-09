@@ -193,7 +193,7 @@ interface ToggleWrapperProps {
 const ToggleWrapper = styled.div<ToggleWrapperProps>`
   display: flex;
   position: sticky;
-  top: -1px;
+
   align-self: flex-start;
   background-color: ${theme.colors.black};
   height: ${getRem(80)};
@@ -201,7 +201,9 @@ const ToggleWrapper = styled.div<ToggleWrapperProps>`
   justify-content: space-between;
   padding: ${getRem(20)};
   z-index: ${TOGGLE_BUTTON_Z_INDEX};
-  top: ${({ isFriendPage }) => (isFriendPage ? `${getRem(50)}` : 0)};
+  top: ${({ isFriendPage }) =>
+    isFriendPage ? `${getRem(50)}` : `${getRem(-1)}`};
+  z-index: ${TOGGLE_BUTTON_Z_INDEX};
 `;
 
 const ButtonWrapper = styled.div`
