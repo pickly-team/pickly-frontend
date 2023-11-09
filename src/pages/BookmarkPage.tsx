@@ -1,22 +1,21 @@
 import styled from '@emotion/styled';
 
-import BookmarkToggle from '@/bookmarks/ui/Bookmark/BookmarkToggle';
-import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
-import BSDeleteConfirmation from '@/bookmarks/ui/Bookmark/BSDeleteConfirmation';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
-import useReadList from '@/bookmarks/service/hooks/home/useReadList';
 import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
-import getRem from '@/utils/getRem';
-import useAuthStore from '@/store/auth';
+import useReadList from '@/bookmarks/service/hooks/home/useReadList';
+import BSDeleteConfirmation from '@/bookmarks/ui/Bookmark/BSDeleteConfirmation';
 import BookmarkListView from '@/bookmarks/ui/Bookmark/BookmarkListView';
-import { Suspense } from 'react';
-import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 import BookmarkSkeletonItem from '@/bookmarks/ui/Bookmark/BookmarkSkeletonItem';
+import BookmarkToggle from '@/bookmarks/ui/Bookmark/BookmarkToggle';
+import Header from '@/common-ui/Header/Header';
 import PullToRefresh from '@/common-ui/PullToRefresh';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
+import useAuthStore from '@/store/auth';
+import { Suspense } from 'react';
 
 const BookmarkPage = () => {
-  const { memberId, userInfo } = useAuthStore();
+  const { memberId } = useAuthStore();
   const { selectedCategoryId, categoryOptions, onChangeCategory } = useCategory(
     {
       memberId,
@@ -35,17 +34,12 @@ const BookmarkPage = () => {
     deleteBookmarkClose,
   } = useDeleteBookmarkList();
 
-  const { handleRefresh } = useHandleRefresh({ pageType: 'MAIN' });
+  const { handleRefresh } = useHandleRefresh({ pageType: 'BOOKMARK' });
 
   return (
     <>
       <PullToRefresh onRefresh={handleRefresh}>
-        <LTop>
-          <BookmarkUserInfo
-            userEmoji={userInfo.profileEmoji}
-            userName={userInfo.nickname}
-          />
-        </LTop>
+        <Header showBackButton />
         <BookmarkToggle>
           <BookmarkToggle.SelectCategory
             selectedCategoryId={selectedCategoryId}
@@ -94,9 +88,6 @@ const BookmarkPage = () => {
 
 export default BookmarkPage;
 
-const LTop = styled.div`
-  padding: ${getRem(20)} ${getRem(20)} 0 ${getRem(20)};
-`;
 const LMiddle = styled.div`
   padding-bottom: 5rem;
 `;
