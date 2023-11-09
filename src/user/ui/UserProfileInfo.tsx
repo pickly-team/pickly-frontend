@@ -5,7 +5,7 @@ import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { FormEvent, ReactNode } from 'react';
 import EditBox from './EditBox';
-import BSDeleteConfirmation from '@/bookmarks/ui/Main/BSDeleteConfirmation';
+import BSDeleteConfirmation from '@/bookmarks/ui/Bookmark/BSDeleteConfirmation';
 import { useDELETEUserInfoQuery } from '@/members/api/member';
 import useAuthStore from '@/store/auth';
 import useWebview from '@/common/service/hooks/useWebview';
