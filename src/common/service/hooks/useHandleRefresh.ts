@@ -1,9 +1,11 @@
 import { GET_USER_PROFILE } from '@/auth/api/profile';
 import {
   GET_BOOKMARK_CATEGORY_LIST,
+  GET_BOOKMARK_CATEGORY_STATUS,
   GET_BOOKMARK_COMMENT,
   GET_BOOKMARK_DETAIL_KEY,
   GET_BOOKMARK_LIST,
+  GET_BOOKMARK_READ_STATUS,
 } from '@/bookmarks/api/bookmark';
 import { GET_LIKE_BOOKMARK_LIST } from '@/bookmarks/api/like';
 import { GET_COMMENT_LIST } from '@/comment/api/Comment';
@@ -29,6 +31,7 @@ import { useQueryClient } from '@tanstack/react-query';
 interface HandleRefreshProps {
   pageType:
     | 'MAIN'
+    | 'BOOKMARK'
     | 'FRIENDS'
     | 'NOTIFICATIONS'
     | 'PROFILE'
@@ -48,6 +51,14 @@ const useHandleRefresh = ({ pageType }: HandleRefreshProps) => {
 
   const handleRefresh = async () => {
     if (pageType === 'MAIN') {
+      await queryClient.invalidateQueries(
+        GET_BOOKMARK_CATEGORY_STATUS({ memberId }),
+      );
+      return queryClient.invalidateQueries(
+        GET_BOOKMARK_READ_STATUS({ memberId }),
+      );
+    }
+    if (pageType === 'BOOKMARK') {
       await queryClient.invalidateQueries(
         GET_BOOKMARK_LIST(memberId, readOption, selectedCategoryId),
       );
