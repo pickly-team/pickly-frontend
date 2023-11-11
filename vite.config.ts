@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/og': {
-          target: env.VITE_OG_URL,
+          target: JSON.stringify(env.VITE_OG_URL),
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/og/, ''),
         },

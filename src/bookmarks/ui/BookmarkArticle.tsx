@@ -1,31 +1,29 @@
-import getRem from '@/utils/getRem';
-import Icon from '@/common-ui/assets/Icon';
+import CommentCountInfo from '@/comment/ui/bookmark/CommentCountInfo';
+import DisabledButton from '@/common-ui/DisabledButton';
 import Text from '@/common-ui/Text';
-import styled from '@emotion/styled';
-import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import useToast from '@/common-ui/Toast/hooks/useToast';
+import Icon from '@/common-ui/assets/Icon';
+import useWebview from '@/common/service/hooks/useWebview';
+import useAuthStore from '@/store/auth';
+import useBookmarkStore from '@/store/bookmark';
+import useCommentStore from '@/store/comment';
 import { theme } from '@/styles/theme';
-import BookmarkLikeButton from './Like/BookmarkLikeButton';
+import { timeStampToDate } from '@/utils/date/timeConverter';
+import getRem from '@/utils/getRem';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+import { useQueryClient } from '@tanstack/react-query';
+import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
+import { BsFillClipboard2Fill as CopyIcon } from 'react-icons/bs';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useParams } from 'react-router-dom';
 import {
   GET_BOOKMARK_LIST,
-  SeverBookMarkItem,
-  toggleBookmarkRead,
   useDELETEBookmarkLikeQuery,
   useGETBookmarkDetailQuery,
   usePOSTBookmarkLikeQuery,
 } from '../api/bookmark';
-import { timeStampToDate } from '@/utils/date/timeConverter';
-import CommentCountInfo from '@/comment/ui/bookmark/CommentCountInfo';
-import useCommentStore from '@/store/comment';
-import useAuthStore from '@/store/auth';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import useWebview from '@/common/service/hooks/useWebview';
-import { InfiniteData, useQueryClient } from '@tanstack/react-query';
-import useBookmarkStore from '@/store/bookmark';
-import useToast from '@/common-ui/Toast/hooks/useToast';
-import { BsFillClipboard2Fill as CopyIcon } from 'react-icons/bs';
-import DisabledButton from '@/common-ui/DisabledButton';
-import { css } from '@emotion/react';
+import BookmarkLikeButton from './Like/BookmarkLikeButton';
 
 const BookMarkArticle = () => {
   const { id: bookmarkId } = useParams<{ id: string }>();
@@ -41,11 +39,14 @@ const BookMarkArticle = () => {
   const { selectedCategoryId } = useBookmarkStore();
 
   useEffect(() => {
-    queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
+    queryClient.refetchQueries(
+      GET_BOOKMARK_LIST(memberId, '👀 읽음', selectedCategoryId),
+    );
+    queryClient.refetchQueries(
+      GET_BOOKMARK_LIST(memberId, '🫣 읽지 않음', selectedCategoryId),
+    );
+    queryClient.refetchQueries(
       GET_BOOKMARK_LIST(memberId, '📖 전체', selectedCategoryId),
-      (prev) => {
-        return toggleBookmarkRead(prev, Number(bookmarkId));
-      },
     );
   }, [bookmarkId, selectedCategoryId, memberId, queryClient]);
 

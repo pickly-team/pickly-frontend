@@ -1,9 +1,11 @@
 import { GET_USER_PROFILE } from '@/auth/api/profile';
 import {
   GET_BOOKMARK_CATEGORY_LIST,
+  GET_BOOKMARK_CATEGORY_STATUS,
   GET_BOOKMARK_COMMENT,
   GET_BOOKMARK_DETAIL_KEY,
   GET_BOOKMARK_LIST,
+  GET_BOOKMARK_READ_STATUS,
 } from '@/bookmarks/api/bookmark';
 import { GET_LIKE_BOOKMARK_LIST } from '@/bookmarks/api/like';
 import { GET_COMMENT_LIST } from '@/comment/api/Comment';
@@ -29,6 +31,7 @@ import { useQueryClient } from '@tanstack/react-query';
 interface HandleRefreshProps {
   pageType:
     | 'MAIN'
+    | 'BOOKMARK'
     | 'FRIENDS'
     | 'NOTIFICATIONS'
     | 'PROFILE'
@@ -49,9 +52,17 @@ const useHandleRefresh = ({ pageType }: HandleRefreshProps) => {
   const handleRefresh = async () => {
     if (pageType === 'MAIN') {
       await queryClient.invalidateQueries(
+        GET_BOOKMARK_CATEGORY_STATUS({ memberId }),
+      );
+      return await queryClient.invalidateQueries(
+        GET_BOOKMARK_READ_STATUS({ memberId }),
+      );
+    }
+    if (pageType === 'BOOKMARK') {
+      await queryClient.invalidateQueries(
         GET_BOOKMARK_LIST(memberId, readOption, selectedCategoryId),
       );
-      return queryClient.invalidateQueries(
+      return await queryClient.invalidateQueries(
         GET_BOOKMARK_CATEGORY_LIST(memberId),
       );
     }
@@ -72,7 +83,7 @@ const useHandleRefresh = ({ pageType }: HandleRefreshProps) => {
       );
     }
     if (pageType === 'NOTIFICATIONS') {
-      return queryClient.invalidateQueries(
+      return await queryClient.invalidateQueries(
         GET_NOTIFICATION_LIST_KEY({
           memberId,
         }),
@@ -91,7 +102,7 @@ const useHandleRefresh = ({ pageType }: HandleRefreshProps) => {
       );
       await queryClient.invalidateQueries(GetCategoryCntKey({ memberId }));
       await queryClient.invalidateQueries(GetCommentCntKey({ memberId }));
-      return queryClient.invalidateQueries(
+      return await queryClient.invalidateQueries(
         GET_NOTIFICATION_SETTING_DAY_KEY({
           loginId: memberId,
         }),
@@ -107,20 +118,22 @@ const useHandleRefresh = ({ pageType }: HandleRefreshProps) => {
       await queryClient.invalidateQueries(
         GET_BOOKMARK_LIST(memberId, readOption, selectedCategoryId ?? 0),
       );
-      return queryClient.invalidateQueries(
+      return await queryClient.invalidateQueries(
         GET_BOOKMARK_CATEGORY_LIST(friendId),
       );
     }
     if (pageType === 'LIKE_PAGE') {
-      return queryClient.invalidateQueries(GET_LIKE_BOOKMARK_LIST(memberId));
+      return await queryClient.invalidateQueries(
+        GET_LIKE_BOOKMARK_LIST(memberId),
+      );
     }
     if (pageType === 'CATEGORY_LIST') {
-      return queryClient.invalidateQueries(
+      return await queryClient.invalidateQueries(
         GET_BOOKMARK_CATEGORY_LIST(memberId),
       );
     }
     if (pageType === 'COMMENT_LIST') {
-      return queryClient.invalidateQueries(GET_COMMENT_LIST);
+      return await queryClient.invalidateQueries(GET_COMMENT_LIST);
     }
     if (pageType === 'BOOKMARK_DETAIL') {
       await queryClient.invalidateQueries(
@@ -129,7 +142,7 @@ const useHandleRefresh = ({ pageType }: HandleRefreshProps) => {
           memberId,
         }),
       );
-      return queryClient.invalidateQueries(
+      return await queryClient.invalidateQueries(
         GET_BOOKMARK_DETAIL_KEY({
           bookmarkId: String(selectedBookmarkId),
           memberId,

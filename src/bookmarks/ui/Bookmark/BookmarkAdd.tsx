@@ -17,13 +17,13 @@ import { Oval } from 'react-loader-spinner';
 import DisabledButton from '@/common-ui/DisabledButton';
 import { AiOutlinePaperClip as PaperClip } from 'react-icons/ai';
 
-interface BookmarkAddBSProps {
+interface BookmarkAddProps {
   isOpen: boolean;
   close: () => void;
   children: React.ReactNode;
 }
 
-const BookmarkAddBS = ({ isOpen, close, children }: BookmarkAddBSProps) => {
+const BookmarkAdd = ({ isOpen, close, children }: BookmarkAddProps) => {
   const location = useLocation();
   const { setFromPath } = useBookmarkStore();
   useEffect(() => {
@@ -314,12 +314,12 @@ const SubmitButton = ({ isAllWritten, onClick }: SubmitButtonProps) => {
   );
 };
 
-BookmarkAddBS.URLInput = URLInput;
-BookmarkAddBS.SelectCategory = SelectCategory;
-BookmarkAddBS.PublishScoped = PublishScoped;
-BookmarkAddBS.SubmitButton = SubmitButton;
+BookmarkAdd.URLInput = URLInput;
+BookmarkAdd.SelectCategory = SelectCategory;
+BookmarkAdd.PublishScoped = PublishScoped;
+BookmarkAdd.SubmitButton = SubmitButton;
 
-export default BookmarkAddBS;
+export default BookmarkAdd;
 
 interface HeadingTextProps {
   children: string;

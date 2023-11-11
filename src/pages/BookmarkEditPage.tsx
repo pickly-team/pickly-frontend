@@ -6,7 +6,7 @@ import useCategoryList from '@/bookmarks/service/hooks/add/useCategoryList';
 import useInputUrl from '@/bookmarks/service/hooks/add/useInputUrl';
 import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
 import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
-import BookmarkAddBS from '@/bookmarks/ui/Main/BookmarkAddBS';
+import BookmarkAdd from '@/bookmarks/ui/Bookmark/BookmarkAdd';
 import Header from '@/common-ui/Header/Header';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import useAuthStore from '@/store/auth';
@@ -18,7 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const BookmarkEditPage = () => {
   const router = useNavigate();
-  const { initializeUrlAndTitle } = useBookmarkStore();
+  const { initializeBookmarkInfo } = useBookmarkStore();
   const { id: bookmarkId } = useParams<{ id: string }>();
   const { memberId } = useAuthStore();
   const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
@@ -104,10 +104,10 @@ const BookmarkEditPage = () => {
     <>
       <Header
         showBackButton
-        backButtonCallback={() => initializeUrlAndTitle()}
+        backButtonCallback={() => initializeBookmarkInfo()}
       />
       <Wrapper>
-        <BookmarkAddBS.URLInput
+        <BookmarkAdd.URLInput
           url={url}
           title={title}
           isValidateUrl={isValidateUrl.length > 0}
@@ -118,16 +118,16 @@ const BookmarkEditPage = () => {
           onDeleteInput={onDeleteInput}
           disabled
         />
-        <BookmarkAddBS.SelectCategory
+        <BookmarkAdd.SelectCategory
           categoryList={categoryList}
           selectedCategoryId={selectedCategoryId}
           onClickCategory={onClickCategory}
         />
-        <BookmarkAddBS.PublishScoped
+        <BookmarkAdd.PublishScoped
           selectedPublishScoped={selectedPublishScoped}
           onClickPublishScoped={onClickPublishScoped}
         />
-        <BookmarkAddBS.SubmitButton
+        <BookmarkAdd.SubmitButton
           onClick={onSubmitBookmark}
           isAllWritten={isAllWritten}
         />

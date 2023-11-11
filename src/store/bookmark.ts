@@ -8,6 +8,12 @@ interface OptionType {
   label: string;
 }
 
+interface BookmarkInfo {
+  title: string;
+  url: string;
+  thumbnail: string;
+}
+
 interface BookmarkStore {
   categoryOptions: OptionType[];
   setCategoryOptions: (options: OptionType[]) => void;
@@ -19,11 +25,9 @@ interface BookmarkStore {
   setReadOption: (option: READ_OPTION) => void;
   friendReadOption: READ_OPTION;
   setFriendReadOption: (option: READ_OPTION) => void;
-  url: string;
-  setUrl: (url: string) => void;
-  title: string;
-  setTitle: (title: string) => void;
-  initializeUrlAndTitle: () => void;
+  bookmarkInfo: BookmarkInfo;
+  setBookmarkInfo: (fn: (info: BookmarkInfo) => BookmarkInfo) => void;
+  initializeBookmarkInfo: () => void;
   fromPath: string;
   setFromPath: (path: string) => void;
   selectedBookmarkId: number;
@@ -53,16 +57,22 @@ const useBookmarkStore = create<BookmarkStore>((set) => ({
   setFriendReadOption: (option) => {
     set({ friendReadOption: option });
   },
-  url: '',
-  setUrl: (url) => {
-    set({ url });
+  bookmarkInfo: {
+    title: '',
+    url: '',
+    thumbnail: '',
   },
-  title: '',
-  setTitle: (title) => {
-    set({ title });
+  setBookmarkInfo: (fn) => {
+    set((state) => ({ bookmarkInfo: fn(state.bookmarkInfo) }));
   },
-  initializeUrlAndTitle: () => {
-    set({ url: '', title: '' });
+  initializeBookmarkInfo: () => {
+    set({
+      bookmarkInfo: {
+        title: '',
+        url: '',
+        thumbnail: '',
+      },
+    });
   },
   fromPath: '',
   setFromPath: (path) => {
