@@ -1,8 +1,9 @@
+import BookmarkSkeletonItem from '@/bookmarks/ui/Bookmark/BookmarkSkeletonItem';
 import BookmarkSearchList from '@/comment/ui/bookmark/BookmarkSearchList';
 import Header from '@/common-ui/Header/Header';
 import Input from '@/common-ui/Input';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
 import useSearchUser from '@/friend/services/hooks/useSearchUser';
-import FriendSkeletonItem from '@/friend/ui/FriendSkeletonItem';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
@@ -30,9 +31,13 @@ const BookmarkSearchPage = () => {
         />
       </Wrapper>
       <Suspense
-        fallback={Array.from({ length: 5 }, (_, item) => (
-          <FriendSkeletonItem key={item} />
-        ))}
+        fallback={
+          <SkeletonWrapper>
+            {Array.from({ length: 5 }, (_, item) => (
+              <BookmarkSkeletonItem key={item} />
+            ))}
+          </SkeletonWrapper>
+        }
       >
         <BookmarkSearchList keyword={debounceKeyword} />
       </Suspense>
