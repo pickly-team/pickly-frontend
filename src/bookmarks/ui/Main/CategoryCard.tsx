@@ -29,9 +29,9 @@ const CategoryCard = ({
           <Text.P fontSize={1.4}>{emoji}</Text.P>
         </EmojiBox>
         <UpperRightWrapper>
-          <Text.P weight="bold" fontSize={1}>
+          <CategoryName weight="bold" fontSize={1}>
             {name}
-          </Text.P>
+          </CategoryName>
           <Text.P fontSize={0.8}>{percentage}%</Text.P>
         </UpperRightWrapper>
       </UpperWrapper>
@@ -54,7 +54,7 @@ const StyledLink = styled(Link)`
   flex-direction: column;
   background-color: ${theme.colors.grey850};
   border-radius: 1rem;
-  min-width: calc(50% - 0.5rem);
+  width: calc(50% - 0.5rem);
   padding: 1rem;
   row-gap: 1rem;
   :active {
@@ -63,10 +63,20 @@ const StyledLink = styled(Link)`
   transition: 0.2s ease-in;
 `;
 
+const CategoryName = styled(Text.P)`
+  width: 5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: right;
+`;
+
 const UpperWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  overflow: hidden;
 `;
 
 const EmojiBox = styled.div`
@@ -77,6 +87,7 @@ const EmojiBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 `;
 
 const UpperRightWrapper = styled.div`
