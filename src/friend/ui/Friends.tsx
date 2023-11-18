@@ -1,20 +1,19 @@
-import FriendFollowingItem from '@/friend/ui/friend/FriendFollowingItem';
+import { GET_USER_PROFILE } from '@/auth/api/profile';
+import BlankItem from '@/common-ui/BlankItem';
 import FriendFollowerItem from '@/friend/ui/friend/FriendFollowerItem';
-import FriendTypeSelect from '@/friend/ui/FriendTypeSelect';
-import styled from '@emotion/styled';
-import getRem from '@/utils/getRem';
+import FriendFollowingItem from '@/friend/ui/friend/FriendFollowingItem';
 import useAuthStore, { UserInfo } from '@/store/auth';
+import useFriendStore, { FriendType } from '@/store/friend';
+import getRem from '@/utils/getRem';
+import styled from '@emotion/styled';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import {
   useGETFollowerCountQuery,
   useGETFollowerListQuery,
   useGETFollowingCountQuery,
   useGETFollowingListQuery,
 } from '../api/friends';
-import BlankItem from '@/common-ui/BlankItem';
-import useFriendStore, { FriendType } from '@/store/friend';
-import { useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { GET_USER_PROFILE } from '@/auth/api/profile';
 
 const Friends = () => {
   const { memberId } = useAuthStore();
@@ -42,7 +41,7 @@ const Friends = () => {
     );
   }, [followerTotalCount, followingTotalCount]);
 
-  const { selectedType, setSelectedType } = useFriendStore();
+  const { selectedType } = useFriendStore();
 
   const followers = followerData?.pages.flatMap((page) => page.contents) ?? [];
   const followings =
@@ -50,12 +49,6 @@ const Friends = () => {
 
   return (
     <>
-      <FriendTypeSelect
-        value={selectedType}
-        onSelect={setSelectedType}
-        followerTotalCount={followerTotalCount ?? 0}
-        followingTotalCount={followingTotalCount ?? 0}
-      />
       <Container>
         {selectedType === FriendType.Follower && !followers.length && (
           <BlankItem page="FOLLOWER" />

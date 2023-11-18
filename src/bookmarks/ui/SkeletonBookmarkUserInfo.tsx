@@ -44,8 +44,8 @@ const StyleWrapper = styled.div`
 
 const UserBox = styled.div`
   display: flex;
-  width: 4rem;
-  height: 4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
   background-color: ${theme.colors.grey800};
   justify-content: center;
