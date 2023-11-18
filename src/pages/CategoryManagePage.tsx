@@ -1,19 +1,19 @@
-import useChangeCategoryName from '@/category/service/hooks/useChangeCategoryName';
-import useChangeEmoji from '@/common/service/useChangeEmoji';
-import CategoryAddInfo from '@/category/ui/Add/CategoryManageInfo';
-import EmojiSelect from '@/common/ui/EmojiSelect';
-import HeaderLeftAndRight from '@/common-ui/Header/HeaderLeftAndRight';
-import getRem from '@/utils/getRem';
-import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import Emoji from '@/common/ui/Emoji';
-import CategoryName from '@/category/ui/Add/CategoryName';
 import { usePOSTCategoryMutation } from '@/category/api/add';
 import { useGETCategoryAPI } from '@/category/api/category';
-import { useEffect } from 'react';
 import { usePUTCategoryMutation } from '@/category/api/edit';
-import useAuthStore from '@/store/auth';
+import useChangeCategoryName from '@/category/service/hooks/useChangeCategoryName';
+import CategoryAddInfo from '@/category/ui/Add/CategoryManageInfo';
+import CategoryName from '@/category/ui/Add/CategoryName';
+import HeaderLeftAndRight from '@/common-ui/Header/HeaderLeftAndRight';
 import useToast from '@/common-ui/Toast/hooks/useToast';
+import useChangeEmoji from '@/common/service/useChangeEmoji';
+import Emoji from '@/common/ui/Emoji';
+import EmojiSelect from '@/common/ui/EmojiSelect';
+import useAuthStore from '@/store/auth';
+import getRem from '@/utils/getRem';
+import styled from '@emotion/styled';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface CategoryManagePageProps {
   mode: 'ADD' | 'EDIT';
@@ -35,7 +35,7 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
   const { fireToast } = useToast();
 
   // BUSINESS LOGIC
-  const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen } =
+  const { emoji, isEmojiBSOpen, onChangeEmoji, setEmojiBSOpen, closeEmojiBS } =
     useChangeEmoji();
   const { categoryName, onChangeCategoryName } = useChangeCategoryName();
 
@@ -114,16 +114,17 @@ const CategoryManagePage = ({ mode }: CategoryManagePageProps) => {
         />
       </CategoryNameInputWrapper>
       {/** 이모지 BS */}
-      {isEmojiBSOpen && <EmojiSelect onChangeEmoji={onChangeEmoji} />}
+      {isEmojiBSOpen && (
+        <EmojiSelect
+          onChangeEmoji={onChangeEmoji}
+          closeEmojiBS={closeEmojiBS}
+        />
+      )}
     </>
   );
 };
 
 export default CategoryManagePage;
-
-// const MarginDivider = styled.div`
-//   margin: ${getRem(40)} 0;
-// `;
 
 const CategoryNameInputWrapper = styled.div`
   display: flex;
