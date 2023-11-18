@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import CommentUploadInput from '@/comment/ui/bookmark/CommentUploadInput';
-import styled from '@emotion/styled';
 import BookmarkArticle from '@/bookmarks/ui/BookmarkArticle';
-import { Suspense } from 'react';
-import CommentList from '@/comment/ui/bookmark/CommentList';
-import SkeletonBookmarkDetail from '@/bookmarks/ui/Detail/SkeletonBookmarkDetail';
-import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
-import SkeletonCommentList from '@/comment/ui/bookmark/SkeletonCommentList';
 import BookmarkDetailHeader from '@/bookmarks/ui/Detail/BookmarkDetailHeader';
+import SkeletonBookmarkDetail from '@/bookmarks/ui/Detail/SkeletonBookmarkDetail';
+import CommentList from '@/comment/ui/bookmark/CommentList';
+import CommentUploadInput from '@/comment/ui/bookmark/CommentUploadInput';
+import SkeletonCommentList from '@/comment/ui/bookmark/SkeletonCommentList';
 import Header from '@/common-ui/Header/Header';
-import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
 import PullToRefresh from '@/common-ui/PullToRefresh';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
+import styled from '@emotion/styled';
+import { Suspense } from 'react';
 
 const BookMarkDetailPage = () => {
   const { handleRefresh } = useHandleRefresh({ pageType: 'BOOKMARK_DETAIL' });
