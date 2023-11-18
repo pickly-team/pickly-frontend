@@ -1,9 +1,9 @@
+import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 import { useGETSearchListQuery } from '@/friend/api/friends';
 import useAuthStore from '@/store/auth';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import FriendFollowerItem from './FriendFollowerItem';
-import useBottomIntersection from '@/common/service/hooks/useBottomIntersection';
 
 interface FriendListProps {
   keyword: string;
@@ -22,7 +22,9 @@ const FriendList = ({ keyword }: FriendListProps) => {
   });
 
   const flatSearchList =
-    searchList?.pages.flatMap((page) => page.contents) ?? [];
+    searchList?.pages
+      .flatMap((page) => page.contents)
+      .filter((member) => member.nickname.length < 8) ?? [];
 
   const shouldFetchNextPage = !isFetchingNextPage && keyword.length > 0;
   const { bottom } = useBottomIntersection({

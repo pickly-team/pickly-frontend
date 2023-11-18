@@ -1,18 +1,34 @@
 import Header from '@/common-ui/Header/Header';
+import PullToRefresh from '@/common-ui/PullToRefresh';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import IconButton from '@/common/ui/IconButton';
+import { navigatePath } from '@/constants/navigatePath';
+import FriendSkeletonItem from '@/friend/ui/FriendSkeletonItem';
 import Friends from '@/friend/ui/Friends';
 import { Suspense } from 'react';
-import FriendSkeletonItem from '@/friend/ui/FriendSkeletonItem';
-import IconButton from '@/common/ui/IconButton';
 import { useNavigate } from 'react-router-dom';
-import { navigatePath } from '@/constants/navigatePath';
-import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
-import PullToRefresh from '@/common-ui/PullToRefresh';
 
 import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
+import {
+  useGETFollowerCountQuery,
+  useGETFollowingCountQuery,
+} from '@/friend/api/friends';
+import FriendTypeSelect from '@/friend/ui/FriendTypeSelect';
+import useAuthStore from '@/store/auth';
+import useFriendStore from '@/store/friend';
 
 const FriendPage = () => {
   const router = useNavigate();
+  const { memberId } = useAuthStore();
   const { handleRefresh } = useHandleRefresh({ pageType: 'FRIENDS' });
+
+  const { selectedType, setSelectedType } = useFriendStore();
+  const { data: followerTotalCount } = useGETFollowerCountQuery({
+    memberId,
+  });
+  const { data: followingTotalCount } = useGETFollowingCountQuery({
+    memberId,
+  });
 
   return (
     <PullToRefresh onRefresh={handleRefresh}>
@@ -25,6 +41,12 @@ const FriendPage = () => {
             onClick={() => router(navigatePath.FRIEND_SEARCH)}
           />
         }
+      />
+      <FriendTypeSelect
+        value={selectedType}
+        onSelect={setSelectedType}
+        followerTotalCount={followerTotalCount ?? 0}
+        followingTotalCount={followingTotalCount ?? 0}
       />
       <Suspense
         fallback={
