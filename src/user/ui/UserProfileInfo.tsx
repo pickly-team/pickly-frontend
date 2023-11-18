@@ -1,15 +1,15 @@
+import BSDeleteConfirmation from '@/bookmarks/ui/Bookmark/BSDeleteConfirmation';
+import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 import Text from '@/common-ui/Text';
+import useWebview from '@/common/service/hooks/useWebview';
 import Emoji from '@/common/ui/Emoji';
 import EmojiSelect from '@/common/ui/EmojiSelect';
+import { useDELETEUserInfoQuery } from '@/members/api/member';
+import useAuthStore from '@/store/auth';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { FormEvent, ReactNode } from 'react';
 import EditBox from './EditBox';
-import BSDeleteConfirmation from '@/bookmarks/ui/Bookmark/BSDeleteConfirmation';
-import { useDELETEUserInfoQuery } from '@/members/api/member';
-import useAuthStore from '@/store/auth';
-import useWebview from '@/common/service/hooks/useWebview';
-import useBottomSheet from '@/common-ui/BottomSheet/hooks/useBottomSheet';
 
 interface UserProfileInfo2Props {
   children: ReactNode;
@@ -40,7 +40,10 @@ const EmojiSelector = ({
       <Emoji emoji={emoji} onClickEmoji={setEmojiBSOpen} />
       {isEmojiBSOpen && (
         <EmojiBackDrop onClick={closeEmojiBS}>
-          <EmojiSelect onChangeEmoji={onChangeEmoji} />
+          <EmojiSelect
+            onChangeEmoji={onChangeEmoji}
+            closeEmojiBS={closeEmojiBS}
+          />
         </EmojiBackDrop>
       )}
     </>
