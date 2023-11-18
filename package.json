@@ -27,7 +27,7 @@
     "buffer": "^6.0.3",
     "cheerio": "^1.0.0-rc.12",
     "dayjs": "^1.11.9",
-    "emoji-picker-react": "^4.4.8",
+    "emoji-picker-react": "^4.5.15",
     "lodash": "^4.17.21",
     "patch-package": "^6.5.1",
     "postinstall-postinstall": "^2.1.0",
