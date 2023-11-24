@@ -15,13 +15,15 @@ const SettingPage = () => {
 
   const onClickUserEdit = () => {
     router(navigatePath.USER_EDIT.replace(':id', String(memberId)));
-  };
+    
   const onClickCode = () => {
     router(navigatePath.CODE);
   };
+    
   const onClickHelp = () => {
     router(navigatePath.INTRODUCE);
   };
+    
   const onClickUserBlock = () => {
     router(navigatePath.BLOCK_USER);
   };
