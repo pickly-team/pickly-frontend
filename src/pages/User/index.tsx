@@ -4,6 +4,7 @@ import AuthenticationCodePage from './AuthenticationCodePage';
 import BlockUserListPage from './BlockUserListPage';
 import CommentPage from './CommentPage';
 import FaqPage from './FaqPage';
+import IntroducePage from './IntroducePage';
 import LikePage from './LikePage';
 import ProfilePage from './ProfilePage';
 import SettingPage from './SettingPage';
@@ -17,9 +18,13 @@ const UserRoutes = () => {
     <Route path={navigatePath.FAQ} element={<FaqPage />} />,
     <Route path={navigatePath.SETTING} element={<SettingPage />} />,
     <Route path={navigatePath.USER} element={<UserInfoPage mode="CREATE" />} />,
-    <Route path={navigatePath.USER} element={<UserInfoPage mode="EDIT" />} />,
+    <Route
+      path={navigatePath.USER_EDIT}
+      element={<UserInfoPage mode="EDIT" />}
+    />,
     <Route path={navigatePath.CODE} element={<AuthenticationCodePage />} />,
     <Route path={navigatePath.BLOCK_USER} element={<BlockUserListPage />} />,
+    <Route path={navigatePath.INTRODUCE} element={<IntroducePage />} />,
   ];
 };
 
