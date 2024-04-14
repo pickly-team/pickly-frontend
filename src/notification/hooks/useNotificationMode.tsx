@@ -1,7 +1,9 @@
 import TriggerBottomSheet from '@/common-ui/BottomSheet/TriggerBottomSheet';
 import Text from '@/common-ui/Text';
+import useToast from '@/common-ui/Toast/hooks/useToast';
 import IconButton from '@/common/ui/IconButton';
-import { NOTIFICATION_MODE } from '@/pages/NotificationPage';
+import { NOTIFICATION_MODE } from '@/pages/Notification/NotificationPage';
+import useAuthStore from '@/store/auth';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
@@ -9,8 +11,6 @@ import {
   useGETNotificationListQuery,
   usePATCHNotificationAllReadQuery,
 } from '../api/notification';
-import useAuthStore from '@/store/auth';
-import useToast from '@/common-ui/Toast/hooks/useToast';
 
 interface NotificationModeProps {
   mode: NOTIFICATION_MODE;

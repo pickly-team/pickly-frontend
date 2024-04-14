@@ -1,102 +1,67 @@
-import styled from '@emotion/styled';
-
-import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
-import BSDeleteConfirmation from '@/bookmarks/ui/Main/BSDeleteConfirmation';
-import useCategory from '@/bookmarks/service/hooks/home/useCategory';
-import useReadList from '@/bookmarks/service/hooks/home/useReadList';
-import useDeleteBookmarkList from '@/bookmarks/service/hooks/home/useDeleteBookmarkList';
-import getRem from '@/utils/getRem';
-import useAuthStore from '@/store/auth';
-import BookmarkListView from '@/bookmarks/ui/Main/BookmarkListView';
-import { Suspense } from 'react';
-import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
-import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
+import CategoryReadList from '@/bookmarks/ui/Main/CategoryReadList';
+import ReadProgress from '@/bookmarks/ui/Main/ReadProgress';
+import SkeletonCategoryReadList from '@/bookmarks/ui/Main/SkeletonCategoryReadList';
 import PullToRefresh from '@/common-ui/PullToRefresh';
+import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
+import Text from '@/common-ui/Text';
 import useHandleRefresh from '@/common/service/hooks/useHandleRefresh';
+import IconButton from '@/common/ui/IconButton';
+import { navigatePath } from '@/constants/navigatePath';
+import useAuthStore from '@/store/auth';
+import getRem from '@/utils/getRem';
+import styled from '@emotion/styled';
+import { Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
-  const { memberId, userInfo } = useAuthStore();
-  const { selectedCategoryId, categoryOptions, onChangeCategory } = useCategory(
-    {
-      memberId,
-    },
-  );
-
-  const { readSelectOptionsList, selectedReadOption, onClickReadMode } =
-    useReadList({ memberId });
-
-  const {
-    isEditMode: isEdit,
-    isDeleteBookmarkOpen,
-    onClickBookmarkItemInEdit,
-    onClickDelete,
-    onClickEdit,
-    deleteBookmarkClose,
-  } = useDeleteBookmarkList();
-
+  const router = useNavigate();
   const { handleRefresh } = useHandleRefresh({ pageType: 'MAIN' });
-
+  const { userInfo } = useAuthStore();
   return (
-    <>
-      <PullToRefresh onRefresh={handleRefresh}>
-        <LTop>
-          <BookmarkUserInfo
-            userEmoji={userInfo.profileEmoji}
-            userName={userInfo.nickname}
-          />
-        </LTop>
-        <BookmarkToggle>
-          <BookmarkToggle.SelectCategory
-            selectedCategoryId={selectedCategoryId}
-            categoryOptions={categoryOptions}
-            setCategoryId={onChangeCategory}
-          />
-          <BookmarkToggle.SelectReadMode
-            selectedReadOption={selectedReadOption}
-            readOptions={readSelectOptionsList}
-            onChangeRead={onClickReadMode}
-          />
-          <BookmarkToggle.ToggleEdit
-            isEdit={isEdit}
-            onClickEdit={onClickEdit}
-          />
-        </BookmarkToggle>
-        <LMiddle>
-          <Suspense
-            fallback={
-              <SkeletonWrapper>
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <BookmarkSkeletonItem key={index} />
-                ))}
-              </SkeletonWrapper>
-            }
-          >
-            <BookmarkListView
-              memberId={memberId}
-              isEditMode={isEdit}
-              readMode={selectedReadOption}
-              selectedCategory={selectedCategoryId}
-              onClickBookmarkItemInEdit={onClickBookmarkItemInEdit}
+    <PullToRefresh onRefresh={handleRefresh}>
+      <Container>
+        <BlankView />
+        <BookmarkUserInfo
+          userEmoji={userInfo.profileEmoji}
+          userName={userInfo.nickname}
+          rightButton={
+            <IconButton
+              name="search"
+              size="m"
+              onClick={() => router(navigatePath.BOOKMARK_SEARCH)}
+              width={30}
+              height={30}
             />
-          </Suspense>
-        </LMiddle>
-        {/** 북마크 삭제 확인 */}
-        <BSDeleteConfirmation
-          onClose={deleteBookmarkClose}
-          onDelete={onClickDelete}
-          open={isDeleteBookmarkOpen}
+          }
         />
-      </PullToRefresh>
-    </>
+        <ReadProgress />
+        <Text.Header level="h2" weight="bold" fontSize={1.3}>
+          카테고리별 읽기 현황
+        </Text.Header>
+        <Suspense
+          fallback={
+            <SkeletonWrapper>
+              <SkeletonCategoryReadList />
+            </SkeletonWrapper>
+          }
+        >
+          <CategoryReadList />
+        </Suspense>
+      </Container>
+    </PullToRefresh>
   );
 };
 
 export default MainPage;
 
-const LTop = styled.div`
-  padding: ${getRem(20)} ${getRem(20)} 0 ${getRem(20)};
+const BlankView = styled.div`
+  height: 1rem;
 `;
-const LMiddle = styled.div`
-  padding-bottom: 5rem;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 ${getRem(20)};
+  row-gap: 1.5rem;
 `;

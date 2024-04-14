@@ -1,13 +1,17 @@
 diff --git a/node_modules/emoji-picker-react/dist/emoji-picker-react.cjs.development.js b/node_modules/emoji-picker-react/dist/emoji-picker-react.cjs.development.js
-index a4673ae..8fe860c 100644
+index 23f65cf..b332e58 100644
 --- a/node_modules/emoji-picker-react/dist/emoji-picker-react.cjs.development.js
 +++ b/node_modules/emoji-picker-react/dist/emoji-picker-react.cjs.development.js
-@@ -16729,31 +16729,31 @@ var SuggestedRecent = {
+@@ -302,34 +302,34 @@ var SuggestedRecent = {
  };
  var configByCategory = (_configByCategory = {}, _configByCategory[exports.Categories.SUGGESTED] = {
    category: exports.Categories.SUGGESTED,
 -  name: 'Frequently Used'
 +  name: '최근 사용'
+ }, _configByCategory[exports.Categories.CUSTOM] = {
+   category: exports.Categories.CUSTOM,
+-  name: 'Custom Emojis'
++  name: '사용자 정의'
  }, _configByCategory[exports.Categories.SMILEYS_PEOPLE] = {
    category: exports.Categories.SMILEYS_PEOPLE,
 -  name: 'Smileys & People'
@@ -44,15 +48,31 @@ index a4673ae..8fe860c 100644
  function baseCategoriesConfig(modifiers) {
    return categoriesOrdered.map(function (category) {
 diff --git a/node_modules/emoji-picker-react/dist/emoji-picker-react.esm.js b/node_modules/emoji-picker-react/dist/emoji-picker-react.esm.js
-index 1ef7dc3..4ae3a36 100644
+index 264f3d5..bfdc58d 100644
 --- a/node_modules/emoji-picker-react/dist/emoji-picker-react.esm.js
 +++ b/node_modules/emoji-picker-react/dist/emoji-picker-react.esm.js
-@@ -16735,31 +16735,31 @@ var SuggestedRecent = {
+@@ -1,4 +1,4 @@
+-import React__default, { useRef, createElement, createContext, createRef, useContext, useState, useEffect, useMemo, useCallback, Fragment, memo, Component } from 'react';
++import React__default, { Component, Fragment, createContext, createElement, createRef, memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+ 
+ var ClassNames;
+ 
+@@ -302,39 +302,39 @@ var SkinTonePickerLocation;
+ var _configByCategory;
+ var categoriesOrdered = [Categories.SUGGESTED, Categories.CUSTOM, Categories.SMILEYS_PEOPLE, Categories.ANIMALS_NATURE, Categories.FOOD_DRINK, Categories.TRAVEL_PLACES, Categories.ACTIVITIES, Categories.OBJECTS, Categories.SYMBOLS, Categories.FLAGS];
+ var SuggestedRecent = {
+-  name: 'Recently Used',
++  name: '최근 사용한 이모지',
+   category: Categories.SUGGESTED
  };
  var configByCategory = (_configByCategory = {}, _configByCategory[Categories.SUGGESTED] = {
    category: Categories.SUGGESTED,
 -  name: 'Frequently Used'
-+  name: '최근 사용'
++  name: '최근 사용한 이모지'
+ }, _configByCategory[Categories.CUSTOM] = {
+   category: Categories.CUSTOM,
+-  name: 'Custom Emojis'
++  name: '사용자 정의'
  }, _configByCategory[Categories.SMILEYS_PEOPLE] = {
    category: Categories.SMILEYS_PEOPLE,
 -  name: 'Smileys & People'
@@ -88,16 +108,33 @@ index 1ef7dc3..4ae3a36 100644
  }, _configByCategory);
  function baseCategoriesConfig(modifiers) {
    return categoriesOrdered.map(function (category) {
+diff --git a/node_modules/emoji-picker-react/src/components/footer/Preview.css b/node_modules/emoji-picker-react/src/components/footer/Preview.css
+index 37a9b41..d9bae01 100644
+--- a/node_modules/emoji-picker-react/src/components/footer/Preview.css
++++ b/node_modules/emoji-picker-react/src/components/footer/Preview.css
+@@ -6,6 +6,7 @@
+   height: var(--epr-preview-height);
+   position: relative;
+   z-index: var(--epr-preview-z-index);
++  display: none;
+ }
+ 
+ .EmojiPickerReact .epr-preview .epr-preview-emoji-label {
 diff --git a/node_modules/emoji-picker-react/src/config/categoryConfig.ts b/node_modules/emoji-picker-react/src/config/categoryConfig.ts
-index efe01c1..3e9fe69 100644
+index e3a60aa..5f8f9a6 100644
 --- a/node_modules/emoji-picker-react/src/config/categoryConfig.ts
 +++ b/node_modules/emoji-picker-react/src/config/categoryConfig.ts
-@@ -22,39 +22,39 @@ export const SuggestedRecent: CategoryConfig = {
+@@ -28,43 +28,43 @@ export type CustomCategoryConfig = {
  const configByCategory: Record<Categories, CategoryConfig> = {
    [Categories.SUGGESTED]: {
      category: Categories.SUGGESTED,
 -    name: 'Frequently Used'
-+    name: '최근 사용'
++    name: '최근 사용한 이모지'
+   },
+   [Categories.CUSTOM]: {
+     category: Categories.CUSTOM,
+-    name: 'Custom Emojis'
++    name: '사용자 정의'
    },
    [Categories.SMILEYS_PEOPLE]: {
      category: Categories.SMILEYS_PEOPLE,

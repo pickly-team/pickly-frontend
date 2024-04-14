@@ -15,6 +15,7 @@ const BookmarkDetailHeader = () => {
     onClickEditBookmark,
     openDeleteBookmarkBS,
     onClickReportBookmark,
+    onClickAddToMyBookmark,
   } = useHandleBookmarkDetailMore();
   return (
     <>
@@ -36,9 +37,14 @@ const BookmarkDetailHeader = () => {
                 </>
               )}
               {!isMyBookmark && (
-                <TriggerBottomSheet.Item onClick={onClickReportBookmark}>
-                  신고하기
-                </TriggerBottomSheet.Item>
+                <>
+                  <TriggerBottomSheet.Item onClick={onClickAddToMyBookmark}>
+                    내 북마크에 추가하기
+                  </TriggerBottomSheet.Item>
+                  <TriggerBottomSheet.Item onClick={onClickReportBookmark}>
+                    신고하기
+                  </TriggerBottomSheet.Item>
+                </>
               )}
             </TriggerBottomSheet.BottomSheet>
           </TriggerBottomSheet>

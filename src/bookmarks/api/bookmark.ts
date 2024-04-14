@@ -1,7 +1,8 @@
+import { GET_USER_PROFILE } from '@/auth/api/profile';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import client from '@/common/service/client';
 import { navigatePath } from '@/constants/navigatePath';
-import qs from 'qs';
+import useBookmarkStore from '@/store/bookmark';
 import {
   InfiniteData,
   useInfiniteQuery,
@@ -11,10 +12,9 @@ import {
 } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { GET_LIKE_BOOKMARK_LIST } from './like';
-import { GET_USER_PROFILE } from '@/auth/api/profile';
+import qs from 'qs';
 import { READ_OPTION, READ_OPTIONS } from '../service/hooks/home/useReadList';
-import useBookmarkStore from '@/store/bookmark';
+import { GET_LIKE_BOOKMARK_LIST } from './like';
 
 dayjs.locale('ko');
 
@@ -174,9 +174,23 @@ export const useDELETEBookMarkMutation = ({
 }: DELETEBookMarkListMutation) => {
   const queryClient = useQueryClient();
   const toast = useToast();
+  const { selectedCategoryId } = useBookmarkStore();
   return useMutation(DELETEBookMarkList.API, {
     onSuccess: () => {
-      refetchAllBookmarkQuery({ queryClient, memberId: userId });
+      refetchAllBookmarkQuery({
+        queryClient,
+        memberId: userId,
+        categoryId: selectedCategoryId ?? null,
+      });
+      queryClient.refetchQueries(GET_USER_PROFILE({ loginId: userId }));
+      queryClient.refetchQueries(
+        GET_BOOKMARK_READ_STATUS({ memberId: userId }),
+      );
+      queryClient.refetchQueries(
+        GET_BOOKMARK_CATEGORY_STATUS({ memberId: userId }),
+      );
+      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(userId));
+
       toast.fireToast({
         message: '삭제 되었습니다',
         mode: 'DELETE',
@@ -357,6 +371,9 @@ export const usePOSTBookmarkMutation = ({
         bookmarkId: res.id.toString(),
       });
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_READ_STATUS({ memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_STATUS({ memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
     },
     onError: () => {
       fireToast({ message: '앗! 추가할 수 없는 북마크에요', mode: 'DELETE' });
@@ -649,7 +666,16 @@ export const useDELETEBookmarkQuery = ({
     onSuccess: () => {
       fireToast({ message: '삭제 되었습니다', mode: 'DELETE' });
       refetchAllBookmarkQuery({ queryClient, memberId, bookmarkId });
+      refetchAllBookmarkQuery({ queryClient, memberId });
       queryClient.refetchQueries(GET_USER_PROFILE({ loginId: memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_READ_STATUS({ memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_STATUS({ memberId }));
+      queryClient.refetchQueries(GET_BOOKMARK_CATEGORY_LIST(memberId));
+
+      fireToast({
+        message: '삭제 되었습니다',
+        mode: 'DELETE',
+      });
     },
   });
 };
@@ -658,36 +684,20 @@ interface RefetchAllBookmark {
   queryClient: ReturnType<typeof useQueryClient>;
   memberId: number;
   bookmarkId?: string;
+  categoryId?: number | null;
 }
 
 export const refetchAllBookmarkQuery = ({
   queryClient,
   memberId,
   bookmarkId,
+  categoryId: selectedCategoryId,
 }: RefetchAllBookmark) => {
   const bookmark = queryClient.getQueryData<ClientBookmarkDetail>(
     GET_BOOKMARK_DETAIL_KEY({ bookmarkId: bookmarkId ?? '', memberId }),
   );
-  const categoryId = bookmark?.categoryId ?? 0;
+  const categoryId = bookmark?.categoryId ?? selectedCategoryId ?? null;
   // NOTE : 왜 도대체 뒤로 가기 시에는 refetch가 되지 않는지 모르겠음
-  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, '📖 전체', categoryId),
-    (prev) => {
-      return toggleBookmarkRead(prev, Number(bookmarkId));
-    },
-  );
-  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, '👀 읽음', categoryId),
-    (prev) => {
-      return toggleBookmarkRead(prev, Number(bookmarkId));
-    },
-  );
-  queryClient.setQueryData<InfiniteData<SeverBookMarkItem>>(
-    GET_BOOKMARK_LIST(memberId, '🫣 읽지 않음', categoryId),
-    (prev) => {
-      return toggleBookmarkRead(prev, Number(bookmarkId));
-    },
-  );
   queryClient.invalidateQueries(GET_BOOKMARK_LIST(memberId, '📖 전체', null));
   queryClient.invalidateQueries(GET_BOOKMARK_LIST(memberId, '👀 읽음', null));
   queryClient.invalidateQueries(
@@ -718,7 +728,7 @@ export const toggleBookmarkRead = (
           if (bookmark.bookmarkId === Number(bookmarkId)) {
             return {
               ...bookmark,
-              readByUser: true,
+              readByUser: !bookmark.readByUser,
             };
           }
           return bookmark;
@@ -777,6 +787,203 @@ export const usePUTBookmarkQuery = ({
       );
     },
   });
+};
+
+// 북마크 읽음 현황 조회
+
+export interface BookmarkReadStatus {
+  total: number;
+  readCount: number;
+  unreadCount: number;
+  readStatusPercentage: number;
+}
+
+interface GETBookmarkReadStatusRequest {
+  memberId: number;
+  token?: string;
+}
+
+const getBookmarkReadStatusAPI = async ({
+  memberId,
+}: GETBookmarkReadStatusRequest) => {
+  const { data } = await client<BookmarkReadStatus>({
+    method: 'get',
+    url: `/members/${memberId}/bookmarks/read-status`,
+  });
+  return data;
+};
+
+export interface GETBookmarkReadStatusQueryRequest {
+  memberId: number;
+  token?: string;
+}
+
+export const GET_BOOKMARK_READ_STATUS = (
+  params: GETBookmarkReadStatusQueryRequest,
+) => ['GET_BOOKMARK_READ_STATUS', params.memberId];
+
+export const useGETBookmarkReadStatusQuery = (
+  params: GETBookmarkReadStatusQueryRequest,
+) => {
+  return useQuery(GET_BOOKMARK_READ_STATUS(params), async () =>
+    getBookmarkReadStatusAPI(params),
+  );
+};
+
+// 카테고리 별 북마크 읽음 현황 조회
+export interface CategoryReadItem {
+  categoryId: number;
+  categoryName: string;
+  categoryEmoji: string;
+  readStatus: ReadStatus;
+}
+export interface ReadStatus {
+  total: number;
+  readCount: number;
+  unreadCount: number;
+  readStatusPercentage: number;
+}
+
+interface GETBookmarkCategoryReadStatusRequest {
+  memberId: number;
+  token?: string;
+}
+
+const getBookmarkCategoryReadStatusAPI = async ({
+  memberId,
+  token,
+}: GETBookmarkCategoryReadStatusRequest) => {
+  const { data } = await client<CategoryReadItem[]>({
+    method: 'get',
+    url: `/members/${memberId}/categories/bookmarks/read-status`,
+  });
+
+  return data;
+};
+
+export interface GETBookmarkCategoryReadStatusQueryRequest {
+  memberId: number;
+  token?: string;
+}
+
+export const GET_BOOKMARK_CATEGORY_STATUS = (
+  params: GETBookmarkCategoryReadStatusQueryRequest,
+) => ['GET_BOOKMARK_CATEGORY_STATUS', params.memberId];
+
+export const useGETBookmarkCategoryStatusQuery = (
+  params: GETBookmarkCategoryReadStatusQueryRequest,
+) => {
+  return useQuery(
+    GET_BOOKMARK_CATEGORY_STATUS(params),
+    async () => getBookmarkCategoryReadStatusAPI(params),
+    {
+      suspense: true,
+    },
+  );
+};
+
+export interface SeverBookMarkItem {
+  hasNext: boolean;
+  contents: BookmarkItem[];
+}
+
+export interface BookmarkItem {
+  bookmarkId: number;
+  title: string;
+  url: string;
+  previewImageUrl: string;
+  isUserLike: boolean;
+  readByUser: boolean;
+  commentCnt: number;
+  createdDate: string;
+  disabled?: boolean;
+  categoryName: string;
+  categoryEmoji: string;
+}
+
+/** mapping 결과 */
+
+interface GETBookMarkSearchListRequest {
+  memberId: number;
+  keyword: string;
+  pageRequest?: {
+    cursorId?: number;
+    pageSize?: number;
+  };
+}
+
+const GETBookSearchMarkList = {
+  API: async (params: GETBookMarkSearchListRequest) => {
+    const { data } = await client.get<SeverBookMarkItem>(
+      `/members/${params.memberId}/bookmarks/search`,
+      {
+        params: {
+          keyword: params.keyword,
+          cursorId: params.pageRequest?.cursorId,
+          pageSize: params.pageRequest?.pageSize,
+        },
+      },
+    );
+
+    return {
+      hasNext: data.hasNext,
+      contents: GETBookMarkList.Mapper(data.contents),
+    };
+  },
+  Mapper: (bookmarkList: BookmarkItem[]): bookmarkGETBookMarkList => {
+    return bookmarkList.map((bookmark) => ({
+      bookmarkId: bookmark.bookmarkId,
+      title: bookmark.title,
+      url: bookmark.url,
+      previewImageUrl:
+        bookmark.previewImageUrl ?? process.env.VITE_ASSETS_URL + '/main.webp',
+      isUserLike: bookmark.isUserLike,
+      readByUser: bookmark.readByUser,
+      commentCnt: bookmark.commentCnt,
+      createdDate: bookmark.createdDate,
+      categoryName: bookmark.categoryName,
+      categoryEmoji: bookmark.categoryEmoji,
+    }));
+  },
+};
+
+const GET_BOOKMARK_SEARCH_LIST = (keyword: string) => [
+  'GET_BOOKMARK_SEARCH_LIST',
+  keyword,
+];
+
+export const useGETBookmarkSearchListQuery = (
+  params: GETBookMarkSearchListRequest,
+) => {
+  return useInfiniteQuery(
+    GET_BOOKMARK_SEARCH_LIST(params.keyword),
+    async ({ pageParam = null }) => {
+      const { contents, hasNext } = await GETBookSearchMarkList.API({
+        ...params,
+        pageRequest: {
+          cursorId: pageParam,
+          pageSize: 10,
+        },
+      });
+      return {
+        contents,
+        hasNext,
+      };
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.hasNext) {
+          return lastPage.contents[lastPage.contents.length - 1].bookmarkId;
+        }
+        return undefined;
+      },
+      refetchOnWindowFocus: false,
+      cacheTime: 5 * 60 * 1000,
+      staleTime: 5 * 60 * 1000,
+      enabled: params.memberId !== 0 && params.keyword.length > 0,
+      suspense: true,
+    },
+  );
 };
 
 // TODO : 추후 테스트 코드 작성

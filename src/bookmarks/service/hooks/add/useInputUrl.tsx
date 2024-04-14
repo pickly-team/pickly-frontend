@@ -1,13 +1,19 @@
-import checkValidateURL from '@/utils/checkValidateURL';
-import { useCallback, useEffect, useState } from 'react';
-import { debounce } from 'lodash';
-import useBookmarkStore from '@/store/bookmark';
 import { useGETOgDataQuery } from '@/bookmarks/api/bookmark';
+import useBookmarkStore from '@/store/bookmark';
+import checkValidateURL from '@/utils/checkValidateURL';
+import { debounce } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
 
 interface InputUrlProps {
   defaultUrl?: string;
   defaultTitle?: string;
 }
+
+// 북마크 추가 & 수정 방식
+
+// 1. 바텀 Nav > 북마크 추가
+// 2. 북마크 상세 페이지 > 수정하기
+// 3. 친구 북마크 페이지 > 내 북마크 추가하기
 
 const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
   const { bookmarkInfo, setBookmarkInfo, isBookmarkError } = useBookmarkStore();
@@ -21,11 +27,17 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
         url: defaultUrl,
         title: defaultTitle,
       }));
-      // 초기 URL이 설정되었으므로 debouncedUrl도 설정합니다.
-      setDebouncedUrl(defaultUrl);
+      // 초기 Title이 없을 경우에만 title 불러오기
+      if (!defaultTitle) setDebouncedUrl(defaultUrl);
     }
-    // 의존성 배열에서 isInitial을 제거합니다.
   }, [defaultUrl, defaultTitle]);
+
+  useEffect(() => {
+    // url이 있는데 title이 없을 경우에만 api 호출
+    if (bookmarkInfo.url && !bookmarkInfo.title) {
+      setDebouncedUrl(bookmarkInfo.url);
+    }
+  }, [bookmarkInfo]);
 
   // url 입력시 0.5초 후에 url 검증
   // 추가적으로 title 불러오는 api 호출

@@ -1,12 +1,9 @@
-import {
-  useGETBookmarkDetailQuery,
-  usePUTBookmarkQuery,
-} from '@/bookmarks/api/bookmark';
+import { usePOSTBookmarkMutation } from '@/bookmarks/api/bookmark';
 import useCategoryList from '@/bookmarks/service/hooks/add/useCategoryList';
 import useInputUrl from '@/bookmarks/service/hooks/add/useInputUrl';
 import useSelectCategory from '@/bookmarks/service/hooks/add/useSelectCategory';
 import useSelectPublishScoped from '@/bookmarks/service/hooks/add/useSelectPublishScoped';
-import BookmarkAdd from '@/bookmarks/ui/Main/BookmarkAdd';
+import BookmarkAdd from '@/bookmarks/ui/Bookmark/BookmarkAdd';
 import Header from '@/common-ui/Header/Header';
 import useToast from '@/common-ui/Toast/hooks/useToast';
 import useAuthStore from '@/store/auth';
@@ -14,73 +11,77 @@ import useBookmarkStore from '@/store/bookmark';
 import checkValidateURL from '@/utils/checkValidateURL';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const BookmarkEditPage = () => {
-  const router = useNavigate();
-  const { initializeBookmarkInfo } = useBookmarkStore();
-  const { id: bookmarkId } = useParams<{ id: string }>();
-  const { memberId } = useAuthStore();
-  const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
-    bookmarkId: bookmarkId ?? '',
-    memberId,
-  });
-
+const BookmarkAddPage = () => {
   // SERVER
-  const { categoryList, toggleCategory } = useCategoryList(
-    bookmarkDetail?.categoryId,
-  );
+  const { categoryList, setCategoryList, toggleCategory } = useCategoryList();
+  const { initializeBookmarkInfo } = useBookmarkStore();
+  // INITIALIZE
+  const router = useNavigate();
+
   // 1. URL & 북마크 Title 입력
   const {
     url,
     title,
+    thumbnail,
     isLoadingGetTitle,
     onChangeUrl,
     onChangeTitle,
     handleKeyDown,
     onDeleteInput,
-  } = useInputUrl({
-    defaultUrl: bookmarkDetail?.url ?? '',
-    defaultTitle: bookmarkDetail?.title ?? '',
-  });
+    resetAllInputs,
+  } = useInputUrl({});
 
   // 2. 카테고리 선택
-  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory({
-    defaultCategoryId: bookmarkDetail?.categoryId ?? 0,
-  });
+  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory({});
 
   // 3. 공개 범위 선택
   const { onClickPublishScoped, selectedPublishScoped } =
-    useSelectPublishScoped({
-      defaultPublishScoped: bookmarkDetail?.visibility ?? 'SCOPE_PUBLIC',
-    });
+    useSelectPublishScoped({});
 
+  // 2. 카테고리 변경
   const onClickCategory = (id: number) => {
     // 새로운 카테고리 선택
     setSelectedCategoryId(id);
     // 선택된 카테고리 변경
-    toggleCategory(id);
+    setCategoryList(toggleCategory(id));
   };
 
   // VALIDATION
   const isValidateUrl = checkValidateURL(url);
-  const isAllWritten = !!(url && selectedCategoryId && selectedPublishScoped);
 
-  const { mutate: putBookmark } = usePUTBookmarkQuery({
-    bookmarkId: bookmarkId ?? '',
-    memberId,
-  });
+  const isAllWritten = !!(
+    url &&
+    isValidateUrl &&
+    selectedCategoryId &&
+    selectedPublishScoped
+  );
+
+  const { memberId } = useAuthStore();
+  const { mutate: postBookmark, isLoading: isPostLoading } =
+    usePOSTBookmarkMutation({
+      resetAll: {
+        resetAllInputs,
+        resetCategory: () => {
+          setSelectedCategoryId(0);
+          setCategoryList(toggleCategory(0));
+        },
+        resetVisibility: () => onClickPublishScoped('SCOPE_PUBLIC'),
+      },
+      memberId,
+    });
 
   const { fireToast } = useToast();
 
-  const onSubmitBookmark = () => {
+  const onClickSubmitButton = () => {
+    // 로딩 중이면 클릭 무시
+    if (isPostLoading) return;
+
+    // 모든 입력이 완료되지 않았다면 클릭 무시
     if (!isAllWritten) {
       if (!url.length) {
         fireToast({ mode: 'ERROR', message: '앗! URL을 입력해주세요' });
-        return;
-      }
-      if (!title.length) {
-        fireToast({ mode: 'ERROR', message: '앗! 제목을 입력해주세요' });
         return;
       }
       if (!selectedCategoryId) {
@@ -89,14 +90,14 @@ const BookmarkEditPage = () => {
       }
       return;
     }
-    putBookmark({
-      bookmarkId: bookmarkId ?? '',
-      putData: {
-        categoryId: String(selectedCategoryId) ?? 0,
-        title: title,
-        readByUser: true,
-        visibility: selectedPublishScoped,
-      },
+
+    postBookmark({
+      url: checkValidateURL(url) ? checkValidateURL(url) : '',
+      title,
+      thumbnail,
+      categoryId: Number(selectedCategoryId),
+      visibility: selectedPublishScoped,
+      memberId,
     });
     router(-1);
   };
@@ -111,12 +112,11 @@ const BookmarkEditPage = () => {
           url={url}
           title={title}
           isValidateUrl={isValidateUrl.length > 0}
-          isLoadingGetTitle={isLoadingGetTitle}
           onChangeUrl={onChangeUrl}
           onChangeTitle={onChangeTitle}
           handleKeyDown={handleKeyDown}
           onDeleteInput={onDeleteInput}
-          disabled
+          isLoadingGetTitle={isLoadingGetTitle}
         />
         <BookmarkAdd.SelectCategory
           categoryList={categoryList}
@@ -128,7 +128,7 @@ const BookmarkEditPage = () => {
           onClickPublishScoped={onClickPublishScoped}
         />
         <BookmarkAdd.SubmitButton
-          onClick={onSubmitBookmark}
+          onClick={onClickSubmitButton}
           isAllWritten={isAllWritten}
         />
       </Wrapper>
@@ -136,7 +136,7 @@ const BookmarkEditPage = () => {
   );
 };
 
-export default BookmarkEditPage;
+export default BookmarkAddPage;
 
 const Wrapper = styled.div`
   padding: 0 ${getRem(20)};

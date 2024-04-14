@@ -1,6 +1,6 @@
 import CheckBox from '@/common-ui/CheckBox';
 import Text from '@/common-ui/Text';
-import { ReportMode } from '@/pages/ReportPage';
+import { ReportMode } from '@/pages/Report/ReportPage';
 import getRem from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction, useState } from 'react';

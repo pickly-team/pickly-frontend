@@ -1,19 +1,19 @@
-import ListItem from '@/common/ui/ListItem';
-import { Dispatch } from 'react';
-import styled from '@emotion/styled';
-import { theme } from '@/styles/theme';
-import CheckBox from '@/common-ui/CheckBox';
-import { useNavigate } from 'react-router-dom';
 import BlankItem from '@/common-ui/BlankItem';
+import CheckBox from '@/common-ui/CheckBox';
+import ListItem from '@/common/ui/ListItem';
+import { navigatePath } from '@/constants/navigatePath';
+import { NOTIFICATION_MODE } from '@/pages/Notification/NotificationPage';
 import useAuthStore from '@/store/auth';
-import { NOTIFICATION_MODE } from '@/pages/NotificationPage';
+import { theme } from '@/styles/theme';
+import getRem from '@/utils/getRem';
+import styled from '@emotion/styled';
+import { Dispatch } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ClientNotificationItem,
   usePATCHNotificationReadQuery,
 } from '../api/notification';
 import NotificationItem from './NotificationItem';
-import getRem from '@/utils/getRem';
-import { navigatePath } from '@/constants/navigatePath';
 
 interface NotificationListProps {
   mode: NOTIFICATION_MODE;

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import styled from '@emotion/styled';
 
-import BookmarkToggle from '@/bookmarks/ui/Main/BookmarkToggle';
+import BookmarkToggle from '@/bookmarks/ui/Bookmark/BookmarkToggle';
 import BookmarkUserInfo from '@/bookmarks/ui/BookmarkUserInfo';
 import useCategory from '@/bookmarks/service/hooks/home/useCategory';
 import useReadList from '@/bookmarks/service/hooks/home/useReadList';
@@ -16,10 +16,10 @@ import {
   useUnblockUserQuery,
 } from '@/members/api/member';
 import useAuthStore from '@/store/auth';
-import BookmarkListView from '@/bookmarks/ui/Main/BookmarkListView';
+import BookmarkListView from '@/bookmarks/ui/Bookmark/BookmarkListView';
 import { Suspense, useEffect } from 'react';
 import SkeletonWrapper from '@/common-ui/SkeletonWrapper';
-import BookmarkSkeletonItem from '@/bookmarks/ui/Main/BookmarkSkeletonItem';
+import BookmarkSkeletonItem from '@/bookmarks/ui/Bookmark/BookmarkSkeletonItem';
 import useFriendStore from '@/store/friend';
 import useBookmarkStore from '@/store/bookmark';
 import SkeletonBookmarkUserInfo from '@/bookmarks/ui/SkeletonBookmarkUserInfo';

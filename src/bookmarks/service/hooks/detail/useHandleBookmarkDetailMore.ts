@@ -14,7 +14,8 @@ const useHandleBookmarkDetailMore = () => {
   const { memberId } = useAuthStore();
   const { id } = useParams() as { id: string };
 
-  const { initializeBookmarkInfo, setSelectedBookmarkId } = useBookmarkStore();
+  const { setBookmarkInfo, initializeBookmarkInfo, setSelectedBookmarkId } =
+    useBookmarkStore();
 
   useEffect(() => {
     setSelectedBookmarkId(Number(id));
@@ -40,18 +41,18 @@ const useHandleBookmarkDetailMore = () => {
   const onClickBackCallback = () => {
     initializeBookmarkInfo();
   };
-  // 3. 북마크 수정
+  // 3. 내 북마크 > 북마크 수정
   const onClickEditBookmark = () => {
     router(navigatePath.BOOKMARK_EDIT.replace(':id', id));
   };
 
-  // 4. 북마크 신고
+  // 4. 친구 북마크 > 북마크 신고
+  const [isMyBookmark, setIsMyBookmark] = useState(true);
+
   const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
     bookmarkId: id,
     memberId: memberId ?? 0,
   });
-
-  const [isMyBookmark, setIsMyBookmark] = useState(true);
 
   useEffect(() => {
     setIsMyBookmark(memberId === bookmarkDetail?.memberId);
@@ -59,6 +60,15 @@ const useHandleBookmarkDetailMore = () => {
 
   const onClickReportBookmark = () => {
     router(navigatePath.BOOKMARK_REPORT.replace(':id', id));
+  };
+
+  // 5. 친구 북마크 > 내 북마크로 추가하기
+  const onClickAddToMyBookmark = () => {
+    router(navigatePath.BOOKMARK_ADD);
+    setBookmarkInfo((prev) => ({
+      ...prev,
+      url: bookmarkDetail?.url ?? '',
+    }));
   };
 
   return {
@@ -70,6 +80,7 @@ const useHandleBookmarkDetailMore = () => {
     onClickBackCallback,
     onClickEditBookmark,
     onClickReportBookmark,
+    onClickAddToMyBookmark,
   };
 };
 

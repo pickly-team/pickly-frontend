@@ -2,9 +2,9 @@ import {
   ClientNotificationItem,
   useGETNotificationListQuery,
 } from '@/notification/api/notification';
+import { NOTIFICATION_MODE } from '@/pages/Notification/NotificationPage';
 import useAuthStore from '@/store/auth';
 import styled from '@emotion/styled';
-import { NOTIFICATION_MODE } from '@/pages/NotificationPage';
 import { Dispatch, useEffect, useState } from 'react';
 import NotificationList from './NotificationList';
 

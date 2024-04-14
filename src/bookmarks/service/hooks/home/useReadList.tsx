@@ -1,4 +1,4 @@
-import { ReadType } from '@/bookmarks/ui/Main/BookmarkToggle';
+import { ReadType } from '@/bookmarks/ui/Bookmark/BookmarkToggle';
 import useBookmarkStore from '@/store/bookmark';
 import { useEffect } from 'react';
 

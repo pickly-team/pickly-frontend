@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import Header from '@/common-ui/Header/Header';
 import getRem from '@/utils/getRem';
 
-import Collapsible from '../common-ui/Collapsible';
+import Collapsible from '../../common-ui/Collapsible';
 
 const FaqPage = () => {
   const showBackButton = true;

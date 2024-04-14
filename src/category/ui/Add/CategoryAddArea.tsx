@@ -1,22 +1,25 @@
-import Icon from '@/common-ui/assets/Icon';
+import type { CategoryItem } from '@/category';
 import Text from '@/common-ui/Text';
+import Icon from '@/common-ui/assets/Icon';
 import { theme } from '@/styles/theme';
 import getRem, { calculateRem } from '@/utils/getRem';
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
 import IconButton from '../../../common/ui/IconButton';
-import type { CategoryItem } from '@/category';
 
 type StrictPropsWithChildren<P = unknown> = P & { children: ReactNode };
 
 type CategoryAddAreaProps = {
-  categoryList: CategoryItem[];
+  categoryList?: CategoryItem[];
 } & StrictPropsWithChildren;
 
 const CategoryAddArea = ({ categoryList, children }: CategoryAddAreaProps) => {
   return (
     <Flip>
-      <Card hasCategory={categoryList.length !== 0}>{children}</Card>
+      {!!categoryList?.length && (
+        <Card hasCategory={categoryList.length !== 0}>{children}</Card>
+      )}
+      {!categoryList?.length && <Card hasCategory={false}>{children}</Card>}
     </Flip>
   );
 };
@@ -69,9 +72,8 @@ const BlankCategoryBoxWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: calc(100% - ${getRem(40)});
-  margin: 0 ${getRem(20)};
-  height: ${getRem(170)};
+  width: 100%;
+  height: ${getRem(250)};
   background-color: ${theme.colors.grey900};
   border-radius: ${getRem(10)};
   transition: 0.4s;

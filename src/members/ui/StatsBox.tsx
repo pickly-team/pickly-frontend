@@ -1,11 +1,12 @@
-import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 
 import Text from '@/common-ui/Text';
-import { theme } from '@/styles/theme';
-import { numberWithCommas } from '@/utils/numberWithCommas';
 import Icon from '@/common-ui/assets/Icon';
+import { navigatePath } from '@/constants/navigatePath';
+import { theme } from '@/styles/theme';
 import getRem from '@/utils/getRem';
+import { numberWithCommas } from '@/utils/numberWithCommas';
 
 const StatsBox = ({
   numberOfLikes,
@@ -19,7 +20,7 @@ const StatsBox = ({
   return (
     <Container>
       <StatsContainer>
-        <Link to="/likes">
+        <Link to={navigatePath.LIKE_PAGE}>
           <StatItemContainer>
             <IconLabelContainer>
               <Icon name={'like'} size={'s'} />
@@ -33,7 +34,7 @@ const StatsBox = ({
           </StatItemContainer>
         </Link>
         <Divider />
-        <Link to="/category/list">
+        <Link to={navigatePath.CATEGORY_LIST}>
           <StatItemContainer>
             <IconLabelContainer>
               <Icon name={'folder'} size={'s'} />
@@ -49,7 +50,7 @@ const StatsBox = ({
           </StatItemContainer>
         </Link>
         <Divider />
-        <Link to="/comment">
+        <Link to={navigatePath.COMMENT}>
           <StatItemContainer>
             <IconLabelContainer>
               <Icon name={'message'} size={'s'} />
