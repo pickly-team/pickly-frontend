@@ -16,11 +16,7 @@ const SkeletonBookmarkDetail = () => {
         <SkeletonTitleText>​</SkeletonTitleText>
         <CategoryAndIconsWrapper>
           <CategoryButtonWrapper>
-            <CategoryButton
-              height={2.5}
-              buttonColor="lightPrimary"
-              children={undefined}
-            >
+            <CategoryButton height={2.5} buttonColor="lightPrimary">
               ​
             </CategoryButton>
           </CategoryButtonWrapper>

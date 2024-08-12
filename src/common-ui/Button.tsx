@@ -10,7 +10,7 @@ export type ButtonProps = {
   width?: number;
   height?: number;
   fontSize?: number;
-  children: ReactNode;
+  children?: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 /**
