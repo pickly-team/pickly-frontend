@@ -216,7 +216,7 @@ export const useGETNotificationStandardsQuery = (
     GetNotificationStandardsKey(params),
     async () => getNotificationStandardAPI(params),
     {
-      enabled: !!params.loginId,
+      enabled: false,
     },
   );
 };
@@ -259,7 +259,7 @@ export const useGETNotificationSettingDayQuery = (
     GET_NOTIFICATION_SETTING_DAY_KEY(params),
     async () => getNotificationSettingDayAPI(params),
     {
-      enabled: !!params.loginId,
+      enabled: false,
       onError: (e) => console.log(e),
     },
   );
