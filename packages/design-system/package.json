@@ -1,0 +1,57 @@
+{
+  "name": "@pickly/design-system",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "watch": "NODE_OPTIONS=--max_old_space_size=8192 vite build --watch & tsc --emitDeclarationOnly",
+    "build": "NODE_OPTIONS=--max_old_space_size=8192 vite build & tsc --emitDeclarationOnly",
+    "build:types": "tsc --emitDeclarationOnly",
+    "storybook": "storybook dev -p 6006",
+    "lint": "eslint '**/*.{ts,tsx}' --ext .ts --fix --cache",
+    "prettier": "prettier '**/*.{js,ts,tsx,json,yaml,md}' --write --cache",
+    "format": "pnpm prettier && pnpm lint",
+    "build-storybook": "storybook build"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.26.3",
+    "@chromatic-com/storybook": "^3.2.4",
+    "@emotion/babel-plugin": "^11.13.5",
+    "@eslint/eslintrc": "^3.3.0",
+    "@pickly/eslint-config": "workspace:*",
+    "@pickly/prettier-config": "workspace:*",
+    "@pickly/typescript-config": "workspace:*",
+    "@storybook/addon-essentials": "^8.5.8",
+    "@storybook/addon-interactions": "^8.5.8",
+    "@storybook/addon-onboarding": "^8.5.8",
+    "@storybook/addon-themes": "^8.5.8",
+    "@storybook/blocks": "^8.5.8",
+    "@storybook/preview-api": "^8.5.8",
+    "@storybook/react": "^8.5.8",
+    "@storybook/react-vite": "^8.5.8",
+    "@storybook/test": "^8.5.8",
+    "@types/react": "^18.0.26",
+    "@vitejs/plugin-react": "^3.0.0",
+    "eslint-plugin-storybook": "^0.11.3",
+    "storybook": "^8.5.8",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vite-plugin-svgr": "^4.3.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "peerDependencies": {
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "dependencies": {
+    "react-icons": "^4.10.1",
+    "react-textarea-autosize": "^8.5.3"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "types": ["@emotion/react/types/css-prop"],
+    "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react",
+    "baseUrl": "./src",
+    "paths": {}
+  },
+  "include": ["src"],
+  "exclude": ["**/*.stories.mdx", "**/*.docs.mdx"]
+}
