@@ -8,7 +8,7 @@ import {
 import useAuthStore from '@/shared/store/auth';
 import useWebview from '@/shared/common/service/hooks/useWebview';
 import RoundedBox from './RoundedBox';
-import useToast from '@/common-ui/Toast/hooks/useToast';
+import useToast from '@/shared/ui/Toast/hooks/useToast';
 
 const TEMP_NOTIFICATION_DISABLED = true as const;
 
