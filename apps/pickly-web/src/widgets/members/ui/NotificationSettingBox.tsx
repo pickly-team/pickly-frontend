@@ -8,11 +8,15 @@ import {
 import useAuthStore from '@/shared/store/auth';
 import useWebview from '@/shared/common/service/hooks/useWebview';
 import RoundedBox from './RoundedBox';
+import useToast from '@/common-ui/Toast/hooks/useToast';
+
+const TEMP_NOTIFICATION_DISABLED = true as const;
 
 const NotificationSettingBox = () => {
   const [isNotificationOn, setIsNotificationOn] = useState(false);
 
   const { memberId } = useAuthStore();
+  const { fireToast } = useToast();
 
   const { data: defaultTime } = useGETNotificationStandardsQuery({
     loginId: memberId,
@@ -33,6 +37,13 @@ const NotificationSettingBox = () => {
   }, [isNotificationOn]);
 
   const onActive = () => {
+    if (TEMP_NOTIFICATION_DISABLED) {
+      fireToast({
+        message: '앗! 알림 기능에 문제가 있어 수정 중이에요',
+        mode: 'ERROR',
+      });
+      return;
+    }
     setIsNotificationOn(true);
     mutate({
       loginId: memberId,
@@ -44,6 +55,13 @@ const NotificationSettingBox = () => {
   };
 
   const onDeactivate = () => {
+    if (TEMP_NOTIFICATION_DISABLED) {
+      fireToast({
+        message: '앗! 알림 기능에 문제가 있어 수정 중이에요',
+        mode: 'ERROR',
+      });
+      return;
+    }
     setIsNotificationOn(false);
     mutate({
       loginId: memberId,
