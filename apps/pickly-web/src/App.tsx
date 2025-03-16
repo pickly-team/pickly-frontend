@@ -9,17 +9,6 @@ import ToastList from './shared/ui/Toast/ToastList';
 import ApiErrorBoundary from './shared/ui/Error/ApiErrorBoundary';
 import Layout from './shared/ui/Layout/Layout';
 
-import createCache from '@emotion/cache';
-import { CacheProvider } from '@emotion/react';
-
-const insertionPoint = document.querySelector(
-  'meta[name="emotion-insertion-point"]',
-);
-const cache = createCache({
-  key: 'my-prefix',
-  insertionPoint: insertionPoint as HTMLElement,
-});
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
