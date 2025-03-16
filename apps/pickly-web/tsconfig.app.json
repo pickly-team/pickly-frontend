@@ -1,0 +1,15 @@
+{
+  "extends": "@pickly/typescript-config/app",
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/app/*": ["./app/*"],
+      "@/pages/*": ["./pages/*"],
+      "@/shared/*": ["./shared/*"],
+      "@/widgets/*": ["./widgets/*"],
+      "@/features/*": ["./features/*"],
+      "@/entities/*": ["./entities/*"]
+    }
+  },
+  "include": ["src"]
+}

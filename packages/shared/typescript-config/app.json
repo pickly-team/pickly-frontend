@@ -1,0 +1,23 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Web",
+	"extends": "./base.json",
+	"compilerOptions": {
+		/* Bundler mode */
+		"useDefineForClassFields": true,
+		"noEmit": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "@emotion/react",
+		"experimentalDecorators": true,
+		"downlevelIteration": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+
+		/* Linting */
+		"strict": true,
+		"noImplicitAny": false,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"allowJs": false
+	}
+}

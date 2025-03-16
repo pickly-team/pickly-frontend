@@ -1,0 +1,7 @@
+{
+  "extends": "@pickly/typescript-config/node",
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["vite.config.ts"]
+}

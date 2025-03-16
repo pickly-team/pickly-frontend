@@ -1,0 +1,42 @@
+import styled from '@emotion/styled';
+import {
+  getRem,
+  Header,
+  PullToRefresh,
+  SkeletonWrapper,
+} from '@pickly/design-system';
+import { Suspense } from 'react';
+import BookmarkLikeList from '@/widgets/bookmarks/ui/Like/BookmarkLikeList';
+import SkeletonBookmarkLikeList from '@/widgets/bookmarks/ui/Like/SkeletonBookmarkLikeList';
+import useHandleRefresh from '@/shared/common/service/hooks/useHandleRefresh';
+
+const LikePage = () => {
+  const showBackButton = true;
+  const title = '좋아요 목록';
+
+  const { handleRefresh } = useHandleRefresh({ pageType: 'LIKE_PAGE' });
+
+  return (
+    <PullToRefresh onRefresh={handleRefresh}>
+      <Header title={title} showBackButton={showBackButton} />
+      <LBody>
+        <Suspense
+          fallback={
+            <SkeletonWrapper>
+              <SkeletonBookmarkLikeList />
+            </SkeletonWrapper>
+          }
+        >
+          <BookmarkLikeList />
+        </Suspense>
+      </LBody>
+    </PullToRefresh>
+  );
+};
+
+export default LikePage;
+
+const LBody = styled.div`
+  margin-top: ${getRem(12)};
+  row-gap: ${getRem(21)};
+`;

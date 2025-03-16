@@ -1,0 +1,143 @@
+import {
+  useGETBookmarkDetailQuery,
+  usePUTBookmarkQuery,
+} from '@/widgets/bookmarks/api/bookmark';
+import useCategoryList from '@/widgets/bookmarks/service/hooks/add/useCategoryList';
+import useInputUrl from '@/widgets/bookmarks/service/hooks/add/useInputUrl';
+import useSelectCategory from '@/widgets/bookmarks/service/hooks/add/useSelectCategory';
+import useSelectPublishScoped from '@/widgets/bookmarks/service/hooks/add/useSelectPublishScoped';
+import BookmarkAdd from '@/widgets/bookmarks/ui/Bookmark/BookmarkAdd';
+
+import checkValidateURL from '@/shared/utils/checkValidateURL';
+import styled from '@emotion/styled';
+import { useNavigate, useParams } from 'react-router-dom';
+import useBookmarkStore from '@/shared/store/bookmark';
+import useAuthStore from '@/shared/store/auth';
+import useToast from '@/shared/ui/Toast/hooks/useToast';
+import { getRem, Header } from '@pickly/design-system';
+
+const BookmarkEditPage = () => {
+  const router = useNavigate();
+  const { initializeBookmarkInfo } = useBookmarkStore();
+  const { id: bookmarkId } = useParams<{ id: string }>();
+  const { memberId } = useAuthStore();
+  const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
+    bookmarkId: bookmarkId ?? '',
+    memberId,
+  });
+
+  // SERVER
+  const { categoryList, toggleCategory } = useCategoryList(
+    bookmarkDetail?.categoryId,
+  );
+  // 1. URL & 북마크 Title 입력
+  const {
+    url,
+    title,
+    isLoadingGetTitle,
+    onChangeUrl,
+    onChangeTitle,
+    handleKeyDown,
+    onDeleteInput,
+  } = useInputUrl({
+    defaultUrl: bookmarkDetail?.url ?? '',
+    defaultTitle: bookmarkDetail?.title ?? '',
+  });
+
+  // 2. 카테고리 선택
+  const { setSelectedCategoryId, selectedCategoryId } = useSelectCategory({
+    defaultCategoryId: bookmarkDetail?.categoryId ?? 0,
+  });
+
+  // 3. 공개 범위 선택
+  const { onClickPublishScoped, selectedPublishScoped } =
+    useSelectPublishScoped({
+      defaultPublishScoped: bookmarkDetail?.visibility ?? 'SCOPE_PUBLIC',
+    });
+
+  const onClickCategory = (id: number) => {
+    // 새로운 카테고리 선택
+    setSelectedCategoryId(id);
+    // 선택된 카테고리 변경
+    toggleCategory(id);
+  };
+
+  // VALIDATION
+  const isValidateUrl = checkValidateURL(url);
+  const isAllWritten = !!(url && selectedCategoryId && selectedPublishScoped);
+
+  const { mutate: putBookmark } = usePUTBookmarkQuery({
+    bookmarkId: bookmarkId ?? '',
+    memberId,
+  });
+
+  const { fireToast } = useToast();
+
+  const onSubmitBookmark = () => {
+    if (!isAllWritten) {
+      if (!url.length) {
+        fireToast({ mode: 'ERROR', message: '앗! URL을 입력해주세요' });
+        return;
+      }
+      if (!title.length) {
+        fireToast({ mode: 'ERROR', message: '앗! 제목을 입력해주세요' });
+        return;
+      }
+      if (!selectedCategoryId) {
+        fireToast({ mode: 'ERROR', message: '앗! 카테고리를 선택해주세요' });
+        return;
+      }
+      return;
+    }
+    putBookmark({
+      bookmarkId: bookmarkId ?? '',
+      putData: {
+        categoryId: String(selectedCategoryId) ?? 0,
+        title: title,
+        readByUser: true,
+        visibility: selectedPublishScoped,
+      },
+    });
+    router(-1);
+  };
+  return (
+    <>
+      <Header
+        showBackButton
+        backButtonCallback={() => initializeBookmarkInfo()}
+      />
+      <Wrapper>
+        <BookmarkAdd.URLInput
+          url={url}
+          title={title}
+          isValidateUrl={isValidateUrl.length > 0}
+          isLoadingGetTitle={isLoadingGetTitle}
+          onChangeUrl={onChangeUrl}
+          onChangeTitle={onChangeTitle}
+          handleKeyDown={handleKeyDown}
+          onDeleteInput={onDeleteInput}
+          disabled
+        />
+        <BookmarkAdd.SelectCategory
+          categoryList={categoryList}
+          selectedCategoryId={selectedCategoryId}
+          onClickCategory={onClickCategory}
+        />
+        <BookmarkAdd.PublishScoped
+          selectedPublishScoped={selectedPublishScoped}
+          onClickPublishScoped={onClickPublishScoped}
+        />
+        <BookmarkAdd.SubmitButton
+          onClick={onSubmitBookmark}
+          isAllWritten={isAllWritten}
+        />
+      </Wrapper>
+    </>
+  );
+};
+
+export default BookmarkEditPage;
+
+const Wrapper = styled.div`
+  padding: 0 ${getRem(20)};
+`;

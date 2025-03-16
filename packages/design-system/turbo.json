@@ -1,0 +1,16 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "storybook": {
+      "cache": false,
+      "persistent": true
+    },
+    "watch": {
+      "cache": false
+    },
+    "build": {
+      "cache": false
+    }
+  }
+}
