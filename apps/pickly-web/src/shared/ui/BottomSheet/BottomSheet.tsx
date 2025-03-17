@@ -1,9 +1,10 @@
-import './style.module.css';
-import type {ReactNode} from 'react';
-import {useEffect, useRef, useState} from 'react';
-import type {BottomSheetRef} from 'react-spring-bottom-sheet';
-import {BottomSheet as SpringBottomSheet} from 'react-spring-bottom-sheet';
+import type { ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { BottomSheetRef } from 'react-spring-bottom-sheet';
+import { BottomSheet as SpringBottomSheet } from 'react-spring-bottom-sheet';
 import styled from '@emotion/styled';
+
+import './style.css';
 
 export interface BottomSheetProps {
   children: ReactNode;
@@ -26,7 +27,7 @@ export interface BottomSheetProps {
  * <BottomSheet open={open} onClose={onClose}>
  */
 
-const BottomSheet = ({children, open, onClose}: BottomSheetProps) => {
+const BottomSheet = ({ children, open, onClose }: BottomSheetProps) => {
   const ref = useRef<BottomSheetRef>(null);
   const [showBackground, setShowBackground] = useState(false);
 
@@ -36,8 +37,8 @@ const BottomSheet = ({children, open, onClose}: BottomSheetProps) => {
   }, [open]);
 
   return (
-    <Background onClick={e => e.stopPropagation()} visible={showBackground}>
-      <div data-testid='bottom-sheet'>
+    <Background onClick={(e) => e.stopPropagation()} visible={showBackground}>
+      <div data-testid="bottom-sheet">
         <SpringBottomSheet
           open={open}
           onDismiss={onClose}
@@ -53,10 +54,10 @@ const BottomSheet = ({children, open, onClose}: BottomSheetProps) => {
 
 export default BottomSheet;
 
-const Background = styled.div<{visible: boolean}>`
+const Background = styled.div<{ visible: boolean }>`
   background: transparent;
   bottom: 0px;
-  display: ${({visible}) => (visible ? 'block' : 'none')};
+  display: ${({ visible }) => (visible ? 'block' : 'none')};
   left: 0px;
   position: absolute;
   right: 0px;
