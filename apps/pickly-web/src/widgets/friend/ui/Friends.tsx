@@ -90,9 +90,10 @@ const Friends = () => {
 export default Friends;
 
 const Container = styled.div`
-  min-height: 80dvh;
+  min-height: 60dvh;
   padding: ${getRem(10)};
   > * + * {
     margin-top: ${getRem(10)};
   }
+  margin-bottom: ${getRem(80)};
 `;
