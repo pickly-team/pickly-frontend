@@ -10,7 +10,8 @@
 		"build": {
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],
 			"dependsOn": ["^build"],
-			"outputs": ["dist/**"]
+			"outputs": ["dist/**"],
+			"cache": false
 		},
 		"watch": {}
 	}
