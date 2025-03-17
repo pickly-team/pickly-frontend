@@ -101,6 +101,10 @@ const Container = styled.form`
   display: flex;
   align-items: center;
   column-gap: ${getRem(10)};
-  padding: ${getRem(10)};
+  padding: ${getRem(5)} ${getRem(20)};
   background-color: ${theme.colors.grey900};
+  border-top-left-radius: ${getRem(15)};
+  border-top-right-radius: ${getRem(15)};
+  border: 1px solid ${theme.colors.grey800};
+  border-bottom: none;
 `;
