@@ -18,18 +18,23 @@ import { getRem, Header } from '@pickly/design-system';
 
 const BookmarkEditPage = () => {
   const router = useNavigate();
-  const { initializeBookmarkInfo } = useBookmarkStore();
   const { id: bookmarkId } = useParams<{ id: string }>();
+
+  const { initializeBookmarkInfo } = useBookmarkStore();
   const { memberId } = useAuthStore();
+
+  // SERVER
   const { data: bookmarkDetail } = useGETBookmarkDetailQuery({
     bookmarkId: bookmarkId ?? '',
     memberId,
   });
 
-  // SERVER
   const { categoryList, toggleCategory } = useCategoryList(
     bookmarkDetail?.categoryId,
   );
+
+  console.log(bookmarkDetail);
+
   // 1. URL & 북마크 Title 입력
   const {
     url,
