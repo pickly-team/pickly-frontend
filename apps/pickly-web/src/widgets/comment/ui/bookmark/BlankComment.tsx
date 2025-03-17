@@ -24,8 +24,8 @@ export default BlankComment;
 const Container = styled.div`
   display: grid;
   flex-direction: column;
-  row-gap: 0.6rem;
-  padding: ${getRem(15, 20)};
+  row-gap: 1rem;
+  padding: ${getRem(30, 20)};
   border-radius: ${getRem(7)};
   background-color: ${theme.colors.grey900};
   margin-bottom: 1rem;
