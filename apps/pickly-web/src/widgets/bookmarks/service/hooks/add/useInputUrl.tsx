@@ -34,7 +34,7 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
 
   useEffect(() => {
     // url이 있는데 title이 없을 경우에만 api 호출
-    if (bookmarkInfo.url && !bookmarkInfo.title) {
+    if (bookmarkInfo.url && !bookmarkInfo.title && !defaultTitle) {
       setDebouncedUrl(bookmarkInfo.url);
     }
   }, [bookmarkInfo]);
@@ -86,8 +86,10 @@ const useInputUrl = ({ defaultTitle, defaultUrl }: InputUrlProps) => {
         title: '',
       }));
       setDebouncedUrl('');
+      return;
     }
-    type === 'title' && setBookmarkInfo((prev) => ({ ...prev, title: '' }));
+
+    setBookmarkInfo((prev) => ({ ...prev, title: '' }));
   };
 
   const { isFetching } = useGETOgDataQuery({
