@@ -60,17 +60,22 @@ const CommentItem = ({
   return (
     <Container>
       <CommentHeader>
-        <NicknameTextAndIconWrapper onClick={onClickUserProfile}>
-          <NicknameText fontSize={1}>{profileEmoji}</NicknameText>
-          <NicknameText fontSize={1} weight={'bold'}>
-            {nickname}
-          </NicknameText>
-        </NicknameTextAndIconWrapper>
-        <div />
-        <div />
+        <InfoWrapper>
+          <NicknameTextAndIconWrapper onClick={onClickUserProfile}>
+            <NicknameText fontSize={1}>{profileEmoji}</NicknameText>
+            <NicknameText fontSize={0.8} weight={'bold'}>
+              {nickname}
+            </NicknameText>
+          </NicknameTextAndIconWrapper>
+
+          <IconAndTextWrapper>
+            <UpdatedAtText fontSize={0.7}>{updatedAt}</UpdatedAtText>
+          </IconAndTextWrapper>
+        </InfoWrapper>
+
         <TriggerBottomSheet>
           <TriggerBottomSheet.Trigger
-            as={<IconButton onClick={() => {}} name="more" size="s" />}
+            as={<IconButton onClick={() => {}} name="more" size="xs" />}
           />
           <TriggerBottomSheet.BottomSheet>
             {isWriter ? (
@@ -96,10 +101,6 @@ const CommentItem = ({
           }
         }}
       />
-      <IconAndTextWrapper>
-        <Icon name="timeline" size={'xs'} />
-        <UpdatedAtText fontSize={0.625}>{updatedAt}</UpdatedAtText>
-      </IconAndTextWrapper>
     </Container>
   );
 };
@@ -109,7 +110,7 @@ export default CommentItem;
 const Container = styled.div`
   display: grid;
   flex-direction: column;
-  row-gap: 0.8rem;
+  row-gap: 1rem;
   padding: ${getRem(15, 20)};
   border-radius: ${getRem(7)};
   border: 1px solid ${theme.colors.grey800};
@@ -122,24 +123,33 @@ const Container = styled.div`
 
 const CommentHeader = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   height: 1.5rem;
+`;
+
+const InfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: ${getRem(8)};
+  width: 100%;
 `;
 
 const NicknameTextAndIconWrapper = styled.div`
   display: flex;
   align-items: center;
   column-gap: ${getRem(8)};
-  margin-right: auto; // 추가
 `;
 
 const NicknameText = styled(Text.Span)``;
+
 const ContentText = styled(Text.Span)`
   white-space: pre-wrap;
   line-height: 1.2;
 `;
+
 const UpdatedAtText = styled(Text.Span)``;
+
 const IconAndTextWrapper = styled.div`
   display: flex;
   align-items: center;
