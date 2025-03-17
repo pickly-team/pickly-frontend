@@ -112,7 +112,7 @@ const Container = styled.div`
   row-gap: 0.8rem;
   padding: ${getRem(15, 20)};
   border-radius: ${getRem(7)};
-  background-color: ${theme.colors.grey800};
+  border: 1px solid ${theme.colors.grey800};
   margin-bottom: 1rem;
   :nth-last-of-type(1) {
     margin-bottom: 5rem;
