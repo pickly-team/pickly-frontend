@@ -62,7 +62,11 @@ const CommentItem = ({
       <CommentHeader>
         <InfoWrapper>
           <NicknameTextAndIconWrapper onClick={onClickUserProfile}>
-            <NicknameText fontSize={1}>{profileEmoji}</NicknameText>
+            <EmojiContainer>
+              <Text.Span fontSize={0.8} weight={'bold'}>
+                {profileEmoji}
+              </Text.Span>
+            </EmojiContainer>
             <NicknameText fontSize={0.8} weight={'bold'}>
               {nickname}
             </NicknameText>
@@ -139,6 +143,16 @@ const NicknameTextAndIconWrapper = styled.div`
   display: flex;
   align-items: center;
   column-gap: ${getRem(8)};
+`;
+
+const EmojiContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: ${theme.colors.grey700};
+  width: ${getRem(25)};
+  height: ${getRem(25)};
 `;
 
 const NicknameText = styled(Text.Span)``;
