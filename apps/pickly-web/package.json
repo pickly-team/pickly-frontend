@@ -41,7 +41,7 @@
     "react-loader-spinner": "^6.1.6",
     "react-router": "^7.2.0",
     "react-router-dom": "6.29.0",
-    "react-spring-bottom-sheet": "^3.4.1",
+    "react-spring-bottom-sheet": "3.4.1",
     "react-textarea-autosize": "^8.5.3",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-polyfill-node": "^0.12.0",
