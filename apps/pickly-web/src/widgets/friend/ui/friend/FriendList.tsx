@@ -16,6 +16,7 @@ const FriendList = ({ keyword }: FriendListProps) => {
     data: searchList,
     fetchNextPage,
     isFetchingNextPage,
+    hasNextPage,
   } = useGETSearchListQuery({
     memberId,
     keyword,
@@ -29,7 +30,7 @@ const FriendList = ({ keyword }: FriendListProps) => {
   const shouldFetchNextPage = !isFetchingNextPage && keyword.length > 0;
   const { bottom } = useBottomIntersection({
     fetchNextPage,
-    enabled: shouldFetchNextPage,
+    enabled: shouldFetchNextPage && hasNextPage,
   });
 
   return (
